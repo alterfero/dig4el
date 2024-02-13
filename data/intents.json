@@ -1,0 +1,68 @@
+{
+  "INTENT": {
+    "description": "Intent.",
+    "type": "intent",
+    "ontological parent": "SELF",
+    "requires": []
+  },
+  "REQUEST": {
+    "description": "Request information.",
+    "type": "INTENT",
+    "ontological parent": "SPEECH ACT",
+    "requires": []
+  },
+  "STATE": {
+    "description": "State an information.",
+    "type": "INTENT",
+    "ontological parent": "SPEECH ACT",
+    "requires": []
+  },
+  "CONFIRM": {
+    "description": "Confirm.",
+    "type": "intent",
+    "ontological parent": "STATE",
+    "requires": []
+  },
+  "DENY": {
+    "description": "Deny.",
+    "type": "intent",
+    "ontological parent": "STATE",
+    "requires": []
+  },
+  "GREET": {
+    "description": "Greet.",
+    "type": "intent",
+    "ontological parent": "STATE",
+    "requires": []
+  },
+  "PART": {
+  "description": "Part.",
+  "type": "intent",
+  "ontological parent": "STATE",
+  "requires": []
+  },
+  "THANK": {
+    "description": "Thank.",
+    "type": "intent",
+    "ontological parent": "STATE",
+    "requires": []
+  },
+    "COMMAND": {
+        "description": "Command",
+        "type": "INTENT",
+        "ontological parent": "SPEECH ACT",
+        "requires": []
+    },
+  "ACKNOWLEDGE": {
+    "description": "Acknowledge.",
+    "type": "intent",
+    "ontological parent": "STATE",
+    "requires": []
+  },
+    "WISH": {
+        "description": "Speech Act: Wish",
+        "type": "intent",
+        "ontological parent": "INTENT",
+        "requires": []
+    }
+}

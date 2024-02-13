@@ -1,0 +1,37 @@
+{
+  "go": {
+    "type": "process",
+    "dimension": "spatial",
+    "description": "spatial movement away from current or evoked position"
+  },
+  "fishing": {
+    "type": "process",
+    "dimension": "action",
+    "description": "fishing"
+  },
+  "river": {
+    "type": "entity",
+    "dimension": "material",
+    "description": "spatial object"
+  },
+  "there": {
+    "type": "reference",
+    "dimension": "spatial",
+    "description": "somewhere not very close to the current or evoked position"
+  },
+  "walking": {
+    "type": "process",
+    "dimension": "spatial",
+    "description": "walking"
+  },
+  "where?": {
+    "type": "question",
+    "dimension": "spatial",
+    "description": "spatial position request"
+  },
+  "why?": {
+    "type": "question",
+    "dimension": "causal",
+    "description": "causal reason request"
+  }
+}
