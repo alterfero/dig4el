@@ -22,6 +22,7 @@ print("PAGE RELOAD")
 print("focus: {}".format(st.session_state["focus"]))
 
 
+
 if st.button("SAVE"):
     json.dump(st.session_state["concepts_kson"], open("./data/concepts.json", "w"))
 
@@ -62,18 +63,40 @@ if cola.button("Down to {}".format(selected_child), key="jump to {} at {}".forma
 # EDIT FOCUS
 colb.subheader("Edit {}".format(st.session_state["focus"]))
 new_description = colb.text_input("DESCRIPTION", st.session_state["concepts_kson"][st.session_state["focus"]]["description"])
-new_type = colb.selectbox("TYPE", ["concept", "feature"], index=["concept", "feature"].index(st.session_state["concepts_kson"][st.session_state["focus"]]["type"]), key="change type")
-new_parent = colb.selectbox("PARENT", concept_key_list, index=concept_key_list.index(st.session_state["concepts_kson"][st.session_state["focus"]]["ontological parent"]),key="change parent")
+new_name = colb.text_input("NEW NAME", value=st.session_state["focus"], key="change name")
+#new_type = colb.selectbox("TYPE", ["concept", "feature"], index=["concept", "feature"].index(st.session_state["concepts_kson"][st.session_state["focus"]]["type"]), key="change type")
+new_parent = colb.selectbox("ONTOLOGICAL PARENT", concept_key_list, index=concept_key_list.index(st.session_state["concepts_kson"][st.session_state["focus"]]["ontological parent"]),key="change parent")
 try:
-    new_requires = colb.multiselect("REQUIRES", concept_key_list, default=st.session_state["concepts_kson"][st.session_state["focus"]]["requires"], key="change requires")
+    new_properties = colb.multiselect("INTRINSIC GRAMMATICALIZABLE PROPERTIES", concept_key_list, default=st.session_state["concepts_kson"][st.session_state["focus"]]["gramprop"], key="change properties")
 except:
-    new_requires = colb.multiselect("REQUIRES", concept_key_list, key="change requires")
+    new_properties = colb.multiselect("INTRINSIC GRAMMATICALIZABLE PROPERTIES", concept_key_list, key="change properties")
+    st.warning("ERROR: gramprop list is not valid")
+try:
+    new_requires = colb.multiselect("PARTICULARIZATION AND RELATIONAL EDGES", concept_key_list, default=st.session_state["concepts_kson"][st.session_state["focus"]]["requires"], key="change requires")
+except:
+    new_requires = colb.multiselect("PARTICULARIZATION AND RELATIONAL EDGES", concept_key_list, key="change requires")
     st.warning("ERROR: requires list is not valid")
 if colb.button("SUBMIT", key="submit changes"):
     st.session_state["concepts_kson"][st.session_state["focus"]]["description"] = new_description
-    st.session_state["concepts_kson"][st.session_state["focus"]]["type"] = new_type
+    st.session_state["concepts_kson"][st.session_state["focus"]]["type"] = "concept"
     st.session_state["concepts_kson"][st.session_state["focus"]]["ontological parent"] = new_parent
+    st.session_state["concepts_kson"][st.session_state["focus"]]["gramprop"] = new_properties
     st.session_state["concepts_kson"][st.session_state["focus"]]["requires"] = new_requires
+
+    if new_name != st.session_state["focus"]:
+        st.session_state["concepts_kson"][new_name] = st.session_state["concepts_kson"][st.session_state["focus"]]
+        del st.session_state["concepts_kson"][st.session_state["focus"]]
+        # update all the references to the old name in concepts_kson
+        for concept in st.session_state["concepts_kson"]:
+            if st.session_state["concepts_kson"][concept]["ontological parent"] == st.session_state["focus"]:
+                st.session_state["concepts_kson"][concept]["ontological parent"] = new_name
+            if st.session_state["concepts_kson"][concept]["requires"] != []:
+                for req in st.session_state["concepts_kson"][concept]["requires"]:
+                    if req == st.session_state["focus"]:
+                        st.session_state["concepts_kson"][concept]["requires"].remove(req)
+                        st.session_state["concepts_kson"][concept]["requires"].append(new_name)
+        st.session_state["focus"] = new_name
+
     st.rerun()
 if colb.button("DELETE"):
     if graphs_utils.get_children(st.session_state["concepts_kson"], st.session_state["focus"]) == []:
@@ -89,14 +112,14 @@ if colb.button("DELETE"):
 colc.subheader("Create")
 new_name = colc.text_input("NAME")
 new_description = colc.text_input("DESCRIPTION", key="new description")
-new_type = colc.selectbox("TYPE", ["concept", "feature"], key="new type")
-new_parent = colc.selectbox("PARENT", concept_key_list, key="new parent")
-new_requires = colc.multiselect("REQUIRES", concept_key_list, key="new require")
+#new_type = colc.selectbox("TYPE", ["concept", "feature"], key="new type")
+new_parent = colc.selectbox("ONTOLOGICAL PARENT", concept_key_list, key="new parent")
+new_gramprop = colc.multiselect("INTRINSIC GRAMMATICALIZABLE PROPERTIES", concept_key_list, key="new properties")
+new_requires = colc.multiselect("PARTICULARIZATION AND RELATIONAL EDGES", concept_key_list, key="new require")
 if colc.button("SUBMIT", key="submit new concept"):
-    st.session_state["concepts_kson"][new_name] = {"description": new_description, "type": new_type, "ontological parent": new_parent, "requires": new_requires}
+    st.session_state["concepts_kson"][new_name] = {"description": new_description, "type": "concept", "ontological parent": new_parent, "gramprop": new_gramprop, "requires": new_requires}
     st.session_state["focus"] = new_name
     st.rerun()
-
 
 # ---- VISUALIZATION of focus node, parents and children with a-graph
 nodes = []

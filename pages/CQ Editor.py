@@ -48,7 +48,7 @@ if "req_json" not in st.session_state:
 st.title("Conversational Questionnaire Editor")
 
 concepts_kson = json.load(open("./data/concepts.json"))
-intents_kson = json.load(open("./data/intents.json"))
+intent_list = graphs_utils.get_leaves_from_node(concepts_kson, "INTENT")
 
 st.write("You can start a new questionnaire right away, or load an existing one")
 if not st.session_state["loaded_existing"]:
@@ -150,9 +150,9 @@ s_name = st.session_state["cq"]["speakers"][s]["name"]
 t = st.text_input(s_name + " says", value=default_t)
 
 try:
-    i = st.multiselect("Intents", list(intents_kson.keys()), default=default_i)
+    i = st.multiselect("Intents", intent_list, default=default_i)
 except:
-    i = st.multiselect("Intents", list(intents_kson.keys()))
+    i = st.multiselect("Intents", intent_list)
     st.write("Original intents not found in intents.json, please select from the list")
 try:
     c = st.multiselect("Concepts", list(concepts_kson.keys()), default=default_c)
@@ -271,7 +271,7 @@ if colw.button("Save questionnaire"):
 
 #visualization of requirement graph
 if st.session_state["req_json"] != {}:
-    st.subheader("Requirement graph")
+    st.subheader("Conceptual graph")
     nodes = []
     edges = []
 
@@ -320,9 +320,22 @@ if st.session_state["req_json"] != {}:
                                   smooth=True,
                                   type="DYNAMIC",
                                   color="green"))
+    nodes.append(Node(id="-".join(i),
+                      label="-".join(i),
+                      size=20,
+                      color="yellow",
+                      title=i,
+                      symbolType="circle"))
+    edges.append(Edge(source="-".join(i),
+                    target="sentence",
+                    physics=True,
+                    smooth=True,
+                    type="DYNAMIC",
+                    color="grey"))
+
     # ---- graph
-    config = Config(width=800,
-                        height=600,
+    config = Config(width=1500,
+                        height=1200,
                         directed=True,
                         physics=True,
                         hierarchical=False,

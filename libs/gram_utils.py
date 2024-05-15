@@ -18,5 +18,6 @@ def get_all_recordings_filenames_for_language(language):
             local_recordings = [r for r in listdir(join(rec_folder, cq_folder, language))]
             if ".DS_Store" in local_recordings:
                 local_recordings.remove(".DS_Store")
-            recordings_filenames += local_recordings
+            recordings_filenames.append({"recording_filenames": local_recordings, "cq_folder": cq_folder})
+            print(recordings_filenames)
     return recordings_filenames

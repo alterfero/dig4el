@@ -51,7 +51,6 @@ def get_leaves_from_node(ontology_json, node):
             leaves = leaves + get_leaves_from_node(ontology_json, child)
     return leaves
 
-
 def inherit_required_features(ontology_json, feature):
     required_features = []
     if ontology_json[feature]["ontological parent"] != "self":
@@ -62,7 +61,7 @@ def inherit_required_features(ontology_json, feature):
 def get_genealogy(concept_graph, node):
     current_node = node
     parents = []
-    while graph[current_node]["ontological parent"] != "self" and graph[current_node]["ontological parent"] != "sentence":
+    while concept_graph[current_node]["ontological parent"] != "self" and concept_graph[current_node]["ontological parent"] != "sentence":
         #print("get_parent_list, current node ",graph[current_node])
         parents.append(graph[current_node]["ontological parent"])
         current_node = graph[current_node]["ontological parent"]
@@ -157,9 +156,11 @@ def create_requirement_graph(concept_list, concept_kson):
     g = {"sentence": {"is_required_by": ["self"], "requires": concept_list, "path": ["sentence"], "value": ""}}
     # for each concept in concept_list, recursively explore the required features and add them to the graph with the proper linkage
     for concept in concept_list:
+        print("concept: ", concept)
         g[concept] = {"is_required_by": ["sentence"], "requires": [], "path":["sentence", concept], "value": ""}
         require1 = inherit_required_features(concept_kson, concept)
         for req1 in require1:
+            print("req1: ", req1)
             req1_name = concept + " " + req1
             g[concept]["requires"].append(req1_name)
             g[req1_name] = {"is_required_by": [concept], "requires": [], "path":["sentence", concept, req1], "value": ""}

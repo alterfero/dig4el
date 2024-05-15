@@ -1,5 +1,16 @@
 import re
 import os
+import json
+
+def add_field_to_concept_json(concept_json_file, field_name, field_value):
+    """Add a field to a concept json file."""
+    with open(concept_json_file, "r") as f:
+        data = json.load(f)
+    for concept in data.keys():
+        data[concept][field_name] = field_value
+    with open(concept_json_file, "w") as f:
+        json.dump(data, f, indent=4)
+    print(f"Field {field_name} added to {concept_json_file}")
 
 
 def is_number(s):

@@ -1,1 +1,762 @@
-{"target language": "mwotlap", "pivot language": "English", "data": {"1": {"cq": {"speaker": "A", "text": "Good morning!", "intent": "greeting", "features": {}, "concept": []}, "recording": "l\u025bmtap newe!"}, "2": {"cq": {"speaker": "B", "text": "Hello!", "intent": "greeting", "features": {}, "concept": []}, "recording": "l\u025bmtap newe!"}, "3": {"cq": {"speaker": "A", "text": "How are you?", "intent": "QUEST", "features": {"PP2SG": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}}, "concept": []}, "recording": "nek itok?"}, "4": {"cq": {"speaker": "B", "text": "I'm fine.", "intent": "reply with information", "features": {"PP1SG": {"SEMANTIC ROLE": "SOLE"}}, "concept": []}, "recording": "in\u0254 itok"}, "5": {"cq": {"speaker": "B", "text": "And you?", "intent": "QUESTtion", "features": {"PP2DU": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}}, "concept": []}, "recording": "\u1d50ba komjo?"}, "6": {"cq": {"speaker": "A", "text": "Oh, we are fine too.", "intent": "reply with information", "features": {"PP1EXCDU": {"SEMANTIC ROLE": "SOLE"}}, "concept": []}, "recording": "\u0254\u0300 [\u02e6\u02e9], kamjo itok s\u025b."}, "7": {"cq": {"speaker": "B", "text": "Where are you going?", "intent": "QUEST", "features": {"PP2DU": {"SEMANTIC ROLE": "SOLE"}}, "concept": ["where", "going"]}, "recording": "komjo s\u0254 van av\u025b?"}, "8": {"cq": {"speaker": "A", "text": "Well, we're walking down the river, over there.", "intent": "information", "features": {"PP2DU": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "ASPIPFV": {"CONCEPT": "walking"}, "TENSPRS": {"CONCEPT": "walking"}}, "concept": ["well", "walking", "river"]}, "recording": "kamjo s\u0254 van how le\u1d50be \u025bn, a\u02d0\u02d0 how \u0270en."}, "9": {"cq": {"speaker": "B", "text": "What for?", "intent": "QUESTtion", "features": {}, "concept": []}, "recording": "s\u0254 akt\u025b\u0270?"}, "10": {"cq": {"speaker": "B", "text": "Are you going to be bathing?", "intent": "QUESTtion", "features": {"PP2DU": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "ASPIPFV": {"CONCEPT": "bathing"}, "TENSFUT": {"CONCEPT": "bathing"}}, "concept": ["bathing"]}, "recording": "a s\u0254 suwsuw ok?"}, "11": {"cq": {"speaker": "A", "text": "No, no ! We won't be bathing.", "intent": "information", "features": {"PP1EXCDU": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "ASPIPFV": {"CONCEPT": "bathing"}, "TENSFUT": {"CONCEPT": "bathing"}, "NEG": {"probability": 1.0}}, "concept": ["bathing"]}, "recording": "\u0254\u0301\u0254\u0300\u0254\u030c [\u02e6\u02e8\u02e9\u02e7] tat\u025bh, kamjo tit suwsuw vest\u025b k\u0361p\u02b7iji\u0270."}, "12": {"cq": {"speaker": "A", "text": "We're going fishing.", "intent": "information", "features": {"PP1EXCDU": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "ASPIPFV": {"CONCEPT": "fishing"}, "TENSFUT": {"CONCEPT": "fishing"}}, "concept": ["fishing"]}, "recording": "kamjo s\u0254 van japjap."}, "13": {"cq": {"speaker": "A", "text": "We'll catch some river fish for dinner.", "intent": "information", "features": {"PP1EXCDU": {"probability": 0.5, "SEMANTIC ROLE": "AGENT"}, "ASPIPFV": {"CONCEPT": "catching"}, "TENSFUT": {"CONCEPT": "catching"}}, "concept": ["catching", "river", "fishing", "dinner"]}, "recording": "kamjo s\u0254 jap ta\u0270anm\u025bm momo te le\u1d50be."}, "14": {"cq": {"speaker": "B", "text": "Oh, I see.", "intent": "acknowledgement", "features": {"PP1SG": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "TENSPRS": {"CONCEPT": "seeing"}}, "concept": ["seeing"]}, "recording": "\u0254 hijwe."}, "15": {"cq": {"speaker": "B", "text": "Is there a celebration in the village or something?", "intent": "QUESTtion", "features": {"QUEST": {"probability": 1.0}}, "concept": ["celebration", "village"]}, "recording": "wo nalavet ae l\u025bpno?!"}, "16": {"cq": {"speaker": "B", "text": "I didn't know.", "intent": "STATE", "features": {"NEG": {"probability": 0.5}, "PP1SG": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "TENSPST": {"CONCEPT": "knowing"}}, "concept": ["knowing"]}, "recording": "n\u0254k \u025bt e\u0270lal t\u025b."}, "17": {"cq": {"speaker": "A", "text": "No, there's no celebration.", "intent": "STATE", "features": {"NEG": {"probability": 0.5}}, "concept": ["celebration"]}, "recording": "\u0254\u0301\u0254\u0300\u0254\u030c, tat\u025bh lavet."}, "18": {"cq": {"speaker": "A", "text": "We just need food for our family.", "intent": "STATE", "features": {"PP1EXCDU": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "POSS1EXCDU": {"possessed": "family", "probability": 0.5}, "TENSPRS": {"CONCEPT": "where"}}, "concept": ["food", "family"]}, "recording": "kamjo n\u025bmjos ewe s\u0254 vel ta\u0270anm\u025bm \u0270\u025bn\u0270\u025bn."}, "19": {"cq": {"speaker": "A", "text": "My wife has bought a chicken at the market yesterday", "intent": "STATE", "features": {"POSS1SG": {"possessed": "wife", "probability": 0.5}, "LOCREF": {"concept": "market"}, "TIMEREF": {"concept": "yesterday"}}, "TENSPRS": {"type": "tense", "concept": "buying"}, "concept": ["buying", "chicken", "market", "yesterday"]}, "recording": "i\u0270nik mewel to nututu vitwa\u0270 lamaket anejeh \u025b,"}, "20": {"cq": {"speaker": "A", "text": "but our children ate it already:", "intent": "STATE", "features": {"CONTRAST": {"probability": 0.5}}, "POSS1EXCDU": {"possessed": "children", "probability": 0.5}, "TENSPRS": {"concept": "eat"}, "concept": ["children", "eating"]}, "recording": "\u1d50ba intimamjo kojo mal \u0270\u025bn k\u0361p\u02b7et,"}, "21": {"cq": {"speaker": "A", "text": "Now we have nothing left at home!", "intent": "STATE", "features": {"NOW": {"probability": 0.5}, "PP1EXCDU": {"probability": 0.5, "SEMANTIC ROLE": "AGENT"}, "TENSPRS": {"CONCEPT": "possessing"}}, "concept": ["nothing", "home"]}, "recording": "to\u02d0\u02d0 tat\u025bh \u0270anm\u025bm hap s\u025b le\u014b\u0361m\u02b7 e\u0270en !"}, "22": {"cq": {"speaker": "A", "text": "Besides, we don't have enough money anymore.", "intent": "STATE", "features": {"NEG": {"probability": 0.5}, "PP1EXCDU": {"probability": 0.5}, "TENSPRS": {"CONCEPT": "possessing"}}, "concept": ["possessing", "money"]}, "recording": "\u1d50basto, tat\u025bh n\u0254nm\u025bm sem s\u025b a s\u0254 hajtejeh."}, "23": {"cq": {"speaker": "A", "text": "We really have to go fishing today.", "intent": "STATE", "features": {"PP1EXCDU": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "TENSPRS": {"CONCEPT": "fishing"}}, "concept": ["fishing", "today"]}, "recording": "kamjo tit hi\u0270ap vest\u025b a s\u0254 van japjap k\u0361p\u02b7iji\u0270."}, "24": {"cq": {"speaker": "B", "text": "I understand.", "intent": "acknowledgement", "features": {"PP1SG": {"type": "pronoun", "probability": 0.5}, "TENSPRS": {"CONCEPT": "understanding"}}, "concept": ["understanding"]}, "recording": "\u0254, n\u0254 m\u025bl\u025bp."}, "25": {"cq": {"speaker": "B", "text": "I am sorry that you have no food left.", "intent": "compassion", "features": {"PP1SG": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "TENSPRS": {"type": "tense", "concept": ["sorry", "possessing"], "CONCEPT": "possessing"}, "PP2DU": {"probability": 0.5, "SEMANTIC ROLE": "AGENT"}, "NEG": {"probability": 0.5}}, "concept": ["sorry", "food", "possessing"]}, "recording": "n\u025bm\u0270ajsen a s\u0254 tat\u025bh \u0270anmi hap s\u025b."}, "26": {"cq": {"speaker": "B", "text": "I can help you my friends.", "intent": "STATE", "features": {"PP1SG": {"probability": 0.5}, "TENSPRS": {"concept": "can"}, "INDEF": {"concept": "help"}, "PP2DU": {"SEMANTIC ROLE": "PATIENT"}}, "concept": ["hoping", "fish"]}, "recording": "n\u0254 t\u025b\u1d50bji\u014b veh kimi, jehe min\u0254."}, "27": {"cq": {"speaker": "B", "text": "My husband and I, we have lots of vegetables from our garden,", "intent": "STATE", "features": {"PP1EXCDU": {"probability": 0.5, "SEMANTIC ROLE": "AGENT"}, "POSS1EXCDU": {"possessed": "vegetables", "probability": 0.5}, "TENSPRS": {"CONCEPT": "possessing"}}, "concept": ["husband", "vegetables", "garden"]}, "recording": "nihna\u0270 na\u0270anmamjo i\u0270nik \u025b hip ae, a nihna\u0270 te letk\u0361p\u02b7e n\u0254nmamjo."}, "28": {"cq": {"speaker": "B", "text": "which we harvested yesterday, and brought back home.", "intent": "STATE", "features": {"PP1EXCDU": {"probability": 0.5, "SEMANTIC ROLE": "AGENT"}, "TENSPST": {"concept": ["harvesting", "bringing"], "CONCEPT": "harvesting"}, "TIMEREF": {"concept": "yesterday"}, "LOCREF": {"concept": "home"}}, "concept": ["harvesting", "bringing", "vegetables", "home", "yesterday"]}, "recording": "ike a mi\u0270iljak to m\u025b an\u0254j to mavan tej m\u025b le\u014b\u0361m\u02b7 ."}, "29": {"cq": {"speaker": "B", "text": "If you want we can give you some.", "intent": "propose", "features": {"COND": {"probability": 0.5, "concept": "want"}, "PP2DU": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "TENSPRS": {"concept": ["want", "give", "being able to"], "CONCEPT": "wanting"}, "PP1EXCDU": {"probability": 0.5, "SEMANTIC ROLE": "AGENT"}, "PP2PL": {"probability": 0.5, "SEMANTIC ROLE": "PATIENT"}}, "concept": ["wanting", "giving", "vegetables"]}, "recording": "komjo w\u0254 n\u025bmjos \u025b, kamjo t\u025bl\u025bp ta\u0270anmi veh van."}, "30": {"cq": {"speaker": "A", "text": "Oh really? Thank you very much!", "intent": "gratitude", "features": {}, "concept": []}, "recording": "et, hijwe? vewe komjo a nekeken!"}, "31": {"cq": {"speaker": "B", "text": "You're welcome.", "intent": "gratitude acknowledgement", "features": {}, "concept": []}, "recording": "tat\u025bh, itok."}, "32": {"cq": {"speaker": "A", "text": "You'll give us some vegetables", "intent": "STATE", "features": {"PP2DU": {"probability": 0.5, "SEMANTIC ROLE": "AGENT"}, "TENSFUT": {"concept": "give", "CONCEPT": "giving"}, "PP1EXCLPL": {"SEMANTIC ROLE": "PATIENT"}}, "concept": ["vegetables"]}, "recording": "komjo s\u0254 l\u025bp ta\u0270anm\u025bm hina\u0270 m\u025b,"}, "33": {"cq": {"speaker": "A", "text": "and we'll give you some fish.", "intent": "STATE", "features": {"PP1EXCDU": {"probability": 0.5}, "TENSFUT": {"CONCEPT": "giving"}, "PP2DU": {"probability": 0.5, "SEMANTIC ROLE": "PATIENT"}}, "concept": ["giving", "fish"]}, "recording": "to kamjo s\u0254 l\u025bp ta\u0270anmi momo van."}, "34": {"cq": {"speaker": "A", "text": "Tonight we will all eat together.", "intent": "STATE", "features": {"PP1INCLPL": {"probability": 0.5, "SEMANTIC ROLE": "SOLE"}, "TENSFUT": {"CONCEPT": "eating"}, "TIMEREF": {"concept": "tonight"}}, "concept": ["eating", "together"]}, "recording": "k\u0361p\u02b7iji\u0270 a\u014bk\u0361p\u02b7o\u014b \u025b \u0270en \u207fd\u025bl s\u0254 \u0270\u025bn\u0270\u025bn tiwa\u0270."}, "35": {"cq": {"speaker": "B", "text": "Great!", "intent": "show enthusiasm", "features": {}, "concept": []}, "recording": "namnan les. "}, "36": {"cq": {"speaker": "B", "text": "Good bye!", "intent": "farewell", "features": {}, "concept": []}, "recording": "sowle!"}, "37": {"cq": {"speaker": "A", "text": "See you later!", "intent": "farewell", "features": {}, "concept": []}, "recording": "\u025bt l\u0254k s\u025b nek!"}}, "interviewer": "Sebastien", "interviewee": "Alex", "cq_uid": "1", "recording_uid": "1701692658"}
+{
+  "target language": "mwotlap",
+  "pivot language": "English",
+  "data": {
+    "1": {
+      "cq": {
+        "speaker": "A",
+        "text": "Good morning!",
+        "intent": "greeting",
+        "features": {},
+        "concept": []
+      },
+      "recording": "l\u025bmtap newe!"
+    },
+    "2": {
+      "cq": {
+        "speaker": "B",
+        "text": "Hello!",
+        "intent": "greeting",
+        "features": {},
+        "concept": []
+      },
+      "recording": "l\u025bmtap newe!"
+    },
+    "3": {
+      "cq": {
+        "speaker": "A",
+        "text": "How are you?",
+        "intent": "QUEST",
+        "features": {
+          "PP2SG": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          }
+        },
+        "concept": []
+      },
+      "recording": "nek itok?"
+    },
+    "4": {
+      "cq": {
+        "speaker": "B",
+        "text": "I'm fine.",
+        "intent": "reply with information",
+        "features": {
+          "PP1SG": {
+            "SEMANTIC ROLE": "SOLE"
+          }
+        },
+        "concept": []
+      },
+      "recording": "in\u0254 itok"
+    },
+    "5": {
+      "cq": {
+        "speaker": "B",
+        "text": "And you?",
+        "intent": "QUESTtion",
+        "features": {
+          "PP2DU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          }
+        },
+        "concept": []
+      },
+      "recording": "\u1d50ba komjo?"
+    },
+    "6": {
+      "cq": {
+        "speaker": "A",
+        "text": "Oh, we are fine too.",
+        "intent": "reply with information",
+        "features": {
+          "PP1EXCDU": {
+            "SEMANTIC ROLE": "SOLE"
+          }
+        },
+        "concept": []
+      },
+      "recording": "\u0254\u0300 [\u02e6\u02e9], kamjo itok s\u025b."
+    },
+    "7": {
+      "cq": {
+        "speaker": "B",
+        "text": "Where are you going?",
+        "intent": "QUEST",
+        "features": {
+          "PP2DU": {
+            "SEMANTIC ROLE": "SOLE"
+          }
+        },
+        "concept": [
+          "where",
+          "going"
+        ]
+      },
+      "recording": "komjo s\u0254 van av\u025b?"
+    },
+    "8": {
+      "cq": {
+        "speaker": "A",
+        "text": "Well, we're walking down the river, over there.",
+        "intent": "information",
+        "features": {
+          "PP2DU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "ASPIPFV": {
+            "CONCEPT": "walking"
+          },
+          "TENSPRS": {
+            "CONCEPT": "walking"
+          }
+        },
+        "concept": [
+          "well",
+          "walking",
+          "river"
+        ]
+      },
+      "recording": "kamjo s\u0254 van how le\u1d50be \u025bn, a\u02d0\u02d0 how \u0270en."
+    },
+    "9": {
+      "cq": {
+        "speaker": "B",
+        "text": "What for?",
+        "intent": "QUESTtion",
+        "features": {},
+        "concept": []
+      },
+      "recording": "s\u0254 akt\u025b\u0270?"
+    },
+    "10": {
+      "cq": {
+        "speaker": "B",
+        "text": "Are you going to be bathing?",
+        "intent": "QUESTtion",
+        "features": {
+          "PP2DU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "ASPIPFV": {
+            "CONCEPT": "bathing"
+          },
+          "TENSFUT": {
+            "CONCEPT": "bathing"
+          }
+        },
+        "concept": [
+          "bathing"
+        ]
+      },
+      "recording": "a s\u0254 suwsuw ok?"
+    },
+    "11": {
+      "cq": {
+        "speaker": "A",
+        "text": "No, no ! We won't be bathing.",
+        "intent": "information",
+        "features": {
+          "PP1EXCDU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "ASPIPFV": {
+            "CONCEPT": "bathing"
+          },
+          "TENSFUT": {
+            "CONCEPT": "bathing"
+          },
+          "NEG": {
+            "probability": 1.0
+          }
+        },
+        "concept": [
+          "bathing"
+        ]
+      },
+      "recording": "\u0254\u0301\u0254\u0300\u0254\u030c [\u02e6\u02e8\u02e9\u02e7] tat\u025bh, kamjo tit suwsuw vest\u025b k\u0361p\u02b7iji\u0270."
+    },
+    "12": {
+      "cq": {
+        "speaker": "A",
+        "text": "We're going fishing.",
+        "intent": "information",
+        "features": {
+          "PP1EXCDU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "ASPIPFV": {
+            "CONCEPT": "fishing"
+          },
+          "TENSFUT": {
+            "CONCEPT": "fishing"
+          }
+        },
+        "concept": [
+          "fishing"
+        ]
+      },
+      "recording": "kamjo s\u0254 van japjap."
+    },
+    "13": {
+      "cq": {
+        "speaker": "A",
+        "text": "We'll catch some river fish for dinner.",
+        "intent": "information",
+        "features": {
+          "PP1EXCDU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "AGENT"
+          },
+          "ASPIPFV": {
+            "CONCEPT": "catching"
+          },
+          "TENSFUT": {
+            "CONCEPT": "catching"
+          }
+        },
+        "concept": [
+          "catching",
+          "river",
+          "fishing",
+          "dinner"
+        ]
+      },
+      "recording": "kamjo s\u0254 jap ta\u0270anm\u025bm momo te le\u1d50be."
+    },
+    "14": {
+      "cq": {
+        "speaker": "B",
+        "text": "Oh, I see.",
+        "intent": "acknowledgement",
+        "features": {
+          "PP1SG": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "TENSPRS": {
+            "CONCEPT": "seeing"
+          }
+        },
+        "concept": [
+          "seeing"
+        ]
+      },
+      "recording": "\u0254 hijwe."
+    },
+    "15": {
+      "cq": {
+        "speaker": "B",
+        "text": "Is there a celebration in the village or something?",
+        "intent": "QUESTtion",
+        "features": {
+          "QUEST": {
+            "probability": 1.0
+          }
+        },
+        "concept": [
+          "celebration",
+          "village"
+        ]
+      },
+      "recording": "wo nalavet ae l\u025bpno?!"
+    },
+    "16": {
+      "cq": {
+        "speaker": "B",
+        "text": "I didn't know.",
+        "intent": "STATE",
+        "features": {
+          "NEG": {
+            "probability": 0.5
+          },
+          "PP1SG": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "TENSPST": {
+            "CONCEPT": "knowing"
+          }
+        },
+        "concept": [
+          "knowing"
+        ]
+      },
+      "recording": "n\u0254k \u025bt e\u0270lal t\u025b."
+    },
+    "17": {
+      "cq": {
+        "speaker": "A",
+        "text": "No, there's no celebration.",
+        "intent": "STATE",
+        "features": {
+          "NEG": {
+            "probability": 0.5
+          }
+        },
+        "concept": [
+          "celebration"
+        ]
+      },
+      "recording": "\u0254\u0301\u0254\u0300\u0254\u030c, tat\u025bh lavet."
+    },
+    "18": {
+      "cq": {
+        "speaker": "A",
+        "text": "We just need food for our family.",
+        "intent": "STATE",
+        "features": {
+          "PP1EXCDU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "POSS1EXCDU": {
+            "possessed": "family",
+            "probability": 0.5
+          },
+          "TENSPRS": {
+            "CONCEPT": "where"
+          }
+        },
+        "concept": [
+          "food",
+          "family"
+        ]
+      },
+      "recording": "kamjo n\u025bmjos ewe s\u0254 vel ta\u0270anm\u025bm \u0270\u025bn\u0270\u025bn."
+    },
+    "19": {
+      "cq": {
+        "speaker": "A",
+        "text": "My wife has bought a chicken at the market yesterday",
+        "intent": "STATE",
+        "features": {
+          "POSS1SG": {
+            "possessed": "wife",
+            "probability": 0.5
+          },
+          "LOCREF": {
+            "concept": "market"
+          },
+          "TIMEREF": {
+            "concept": "yesterday"
+          }
+        },
+        "TENSPRS": {
+          "type": "tense",
+          "concept": "buying"
+        },
+        "concept": [
+          "buying",
+          "chicken",
+          "market",
+          "yesterday"
+        ]
+      },
+      "recording": "i\u0270nik mewel to nututu vitwa\u0270 lamaket anejeh \u025b,"
+    },
+    "20": {
+      "cq": {
+        "speaker": "A",
+        "text": "but our children ate it already:",
+        "intent": "STATE",
+        "features": {
+          "CONTRAST": {
+            "probability": 0.5
+          }
+        },
+        "POSS1EXCDU": {
+          "possessed": "children",
+          "probability": 0.5
+        },
+        "TENSPRS": {
+          "concept": "eat"
+        },
+        "concept": [
+          "children",
+          "eating"
+        ]
+      },
+      "recording": "\u1d50ba intimamjo kojo mal \u0270\u025bn k\u0361p\u02b7et,"
+    },
+    "21": {
+      "cq": {
+        "speaker": "A",
+        "text": "Now we have nothing left at home!",
+        "intent": "STATE",
+        "features": {
+          "NOW": {
+            "probability": 0.5
+          },
+          "PP1EXCDU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "AGENT"
+          },
+          "TENSPRS": {
+            "CONCEPT": "possessing"
+          }
+        },
+        "concept": [
+          "nothing",
+          "home"
+        ]
+      },
+      "recording": "to\u02d0\u02d0 tat\u025bh \u0270anm\u025bm hap s\u025b le\u014b\u0361m\u02b7 e\u0270en !"
+    },
+    "22": {
+      "cq": {
+        "speaker": "A",
+        "text": "Besides, we don't have enough money anymore.",
+        "intent": "STATE",
+        "features": {
+          "NEG": {
+            "probability": 0.5
+          },
+          "PP1EXCDU": {
+            "probability": 0.5
+          },
+          "TENSPRS": {
+            "CONCEPT": "possessing"
+          }
+        },
+        "concept": [
+          "possessing",
+          "money"
+        ]
+      },
+      "recording": "\u1d50basto, tat\u025bh n\u0254nm\u025bm sem s\u025b a s\u0254 hajtejeh."
+    },
+    "23": {
+      "cq": {
+        "speaker": "A",
+        "text": "We really have to go fishing today.",
+        "intent": "STATE",
+        "features": {
+          "PP1EXCDU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "TENSPRS": {
+            "CONCEPT": "fishing"
+          }
+        },
+        "concept": [
+          "fishing",
+          "today"
+        ]
+      },
+      "recording": "kamjo tit hi\u0270ap vest\u025b a s\u0254 van japjap k\u0361p\u02b7iji\u0270."
+    },
+    "24": {
+      "cq": {
+        "speaker": "B",
+        "text": "I understand.",
+        "intent": "acknowledgement",
+        "features": {
+          "PP1SG": {
+            "type": "pronoun",
+            "probability": 0.5
+          },
+          "TENSPRS": {
+            "CONCEPT": "understanding"
+          }
+        },
+        "concept": [
+          "understanding"
+        ]
+      },
+      "recording": "\u0254, n\u0254 m\u025bl\u025bp."
+    },
+    "25": {
+      "cq": {
+        "speaker": "B",
+        "text": "I am sorry that you have no food left.",
+        "intent": "compassion",
+        "features": {
+          "PP1SG": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "TENSPRS": {
+            "type": "tense",
+            "concept": [
+              "sorry",
+              "possessing"
+            ],
+            "CONCEPT": "possessing"
+          },
+          "PP2DU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "AGENT"
+          },
+          "NEG": {
+            "probability": 0.5
+          }
+        },
+        "concept": [
+          "sorry",
+          "food",
+          "possessing"
+        ]
+      },
+      "recording": "n\u025bm\u0270ajsen a s\u0254 tat\u025bh \u0270anmi hap s\u025b."
+    },
+    "26": {
+      "cq": {
+        "speaker": "B",
+        "text": "I can help you my friends.",
+        "intent": "STATE",
+        "features": {
+          "PP1SG": {
+            "probability": 0.5
+          },
+          "TENSPRS": {
+            "concept": "can"
+          },
+          "INDEF": {
+            "concept": "help"
+          },
+          "PP2DU": {
+            "SEMANTIC ROLE": "PATIENT"
+          }
+        },
+        "concept": [
+          "hoping",
+          "fish"
+        ]
+      },
+      "recording": "n\u0254 t\u025b\u1d50bji\u014b veh kimi, jehe min\u0254."
+    },
+    "27": {
+      "cq": {
+        "speaker": "B",
+        "text": "My husband and I, we have lots of vegetables from our garden,",
+        "intent": "STATE",
+        "features": {
+          "PP1EXCDU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "AGENT"
+          },
+          "POSS1EXCDU": {
+            "possessed": "vegetables",
+            "probability": 0.5
+          },
+          "TENSPRS": {
+            "CONCEPT": "possessing"
+          }
+        },
+        "concept": [
+          "husband",
+          "vegetables",
+          "garden"
+        ]
+      },
+      "recording": "nihna\u0270 na\u0270anmamjo i\u0270nik \u025b hip ae, a nihna\u0270 te letk\u0361p\u02b7e n\u0254nmamjo."
+    },
+    "28": {
+      "cq": {
+        "speaker": "B",
+        "text": "which we harvested yesterday, and brought back home.",
+        "intent": "STATE",
+        "features": {
+          "PP1EXCDU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "AGENT"
+          },
+          "TENSPST": {
+            "concept": [
+              "harvesting",
+              "bringing"
+            ],
+            "CONCEPT": "harvesting"
+          },
+          "TIMEREF": {
+            "concept": "yesterday"
+          },
+          "LOCREF": {
+            "concept": "home"
+          }
+        },
+        "concept": [
+          "harvesting",
+          "bringing",
+          "vegetables",
+          "home",
+          "yesterday"
+        ]
+      },
+      "recording": "ike a mi\u0270iljak to m\u025b an\u0254j to mavan tej m\u025b le\u014b\u0361m\u02b7 ."
+    },
+    "29": {
+      "cq": {
+        "speaker": "B",
+        "text": "If you want we can give you some.",
+        "intent": "propose",
+        "features": {
+          "COND": {
+            "probability": 0.5,
+            "concept": "want"
+          },
+          "PP2DU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "TENSPRS": {
+            "concept": [
+              "want",
+              "give",
+              "being able to"
+            ],
+            "CONCEPT": "wanting"
+          },
+          "PP1EXCDU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "AGENT"
+          },
+          "PP2PL": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "PATIENT"
+          }
+        },
+        "concept": [
+          "wanting",
+          "giving",
+          "vegetables"
+        ]
+      },
+      "recording": "komjo w\u0254 n\u025bmjos \u025b, kamjo t\u025bl\u025bp ta\u0270anmi veh van."
+    },
+    "30": {
+      "cq": {
+        "speaker": "A",
+        "text": "Oh really? Thank you very much!",
+        "intent": "gratitude",
+        "features": {},
+        "concept": []
+      },
+      "recording": "et, hijwe? vewe komjo a nekeken!"
+    },
+    "31": {
+      "cq": {
+        "speaker": "B",
+        "text": "You're welcome.",
+        "intent": "gratitude acknowledgement",
+        "features": {},
+        "concept": []
+      },
+      "recording": "tat\u025bh, itok."
+    },
+    "32": {
+      "cq": {
+        "speaker": "A",
+        "text": "You'll give us some vegetables",
+        "intent": "STATE",
+        "features": {
+          "PP2DU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "AGENT"
+          },
+          "TENSFUT": {
+            "concept": "give",
+            "CONCEPT": "giving"
+          },
+          "PP1EXCLPL": {
+            "SEMANTIC ROLE": "PATIENT"
+          }
+        },
+        "concept": [
+          "vegetables"
+        ]
+      },
+      "recording": "komjo s\u0254 l\u025bp ta\u0270anm\u025bm hina\u0270 m\u025b,"
+    },
+    "33": {
+      "cq": {
+        "speaker": "A",
+        "text": "and we'll give you some fish.",
+        "intent": "STATE",
+        "features": {
+          "PP1EXCDU": {
+            "probability": 0.5
+          },
+          "TENSFUT": {
+            "CONCEPT": "giving"
+          },
+          "PP2DU": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "PATIENT"
+          }
+        },
+        "concept": [
+          "giving",
+          "fish"
+        ]
+      },
+      "recording": "to kamjo s\u0254 l\u025bp ta\u0270anmi momo van."
+    },
+    "34": {
+      "cq": {
+        "speaker": "A",
+        "text": "Tonight we will all eat together.",
+        "intent": "STATE",
+        "features": {
+          "PP1INCLPL": {
+            "probability": 0.5,
+            "SEMANTIC ROLE": "SOLE"
+          },
+          "TENSFUT": {
+            "CONCEPT": "eating"
+          },
+          "TIMEREF": {
+            "concept": "tonight"
+          }
+        },
+        "concept": [
+          "eating",
+          "together"
+        ]
+      },
+      "recording": "k\u0361p\u02b7iji\u0270 a\u014bk\u0361p\u02b7o\u014b \u025b \u0270en \u207fd\u025bl s\u0254 \u0270\u025bn\u0270\u025bn tiwa\u0270."
+    },
+    "35": {
+      "cq": {
+        "speaker": "B",
+        "text": "Great!",
+        "intent": "show enthusiasm",
+        "features": {},
+        "concept": []
+      },
+      "recording": "namnan les. "
+    },
+    "36": {
+      "cq": {
+        "speaker": "B",
+        "text": "Good bye!",
+        "intent": "farewell",
+        "features": {},
+        "concept": []
+      },
+      "recording": "sowle!"
+    },
+    "37": {
+      "cq": {
+        "speaker": "A",
+        "text": "See you later!",
+        "intent": "farewell",
+        "features": {},
+        "concept": []
+      },
+      "recording": "\u025bt l\u0254k s\u025b nek!"
+    }
+  },
+  "interviewer": "Sebastien",
+  "interviewee": "Alex",
+  "cq_uid": "1",
+  "recording_uid": "1701692658"
+}
