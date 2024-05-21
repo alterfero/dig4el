@@ -156,11 +156,11 @@ def create_requirement_graph(concept_list, concept_kson):
     g = {"sentence": {"is_required_by": ["self"], "requires": concept_list, "path": ["sentence"], "value": ""}}
     # for each concept in concept_list, recursively explore the required features and add them to the graph with the proper linkage
     for concept in concept_list:
-        print("concept: ", concept)
+        #print("concept: ", concept)
         g[concept] = {"is_required_by": ["sentence"], "requires": [], "path":["sentence", concept], "value": ""}
         require1 = inherit_required_features(concept_kson, concept)
         for req1 in require1:
-            print("req1: ", req1)
+            #print("req1: ", req1)
             req1_name = concept + " " + req1
             g[concept]["requires"].append(req1_name)
             g[req1_name] = {"is_required_by": [concept], "requires": [], "path":["sentence", concept, req1], "value": ""}
@@ -233,3 +233,62 @@ def is_agraph_edge(source, target, edge_list):
                               color="grey"):
             is_edge = True
     return is_edge
+
+def arrange_requirement_graph_for_display(requirement_graph):
+    arranged_graph = {}
+    # add the concepts directly connected to the sentence node
+    for node in requirement_graph:
+        if "sentence" in requirement_graph[node]["is_required_by"]:
+            arranged_graph[node] = {"is_required_by": requirement_graph[node]["is_required_by"], "requires": requirement_graph[node]["requires"],
+                                    "path": ["sentence", node], "value": requirement_graph[node]["value"]}
+    # test all the graph branches starting at the sentence node, keep those where the leaf has a non-empty value or is required by the sentence or self nodes
+    paths_to_leaves = list_paths_to_leaves(requirement_graph, "sentence")
+    #print("PATHS TO LEAVES: ", paths_to_leaves)
+    for path in paths_to_leaves:
+        leaf = path[-1]
+        if requirement_graph[leaf]["value"] != "" or "sentence" in requirement_graph[leaf]["is_required_by"] or "self" in requirement_graph[leaf]["is_required_by"]:
+            #print("SELECTED PATH: ", path)
+            # add the path to the arranged_graph
+            current_node = "sentence"
+            for node in path:
+                if node not in arranged_graph:
+                    arranged_graph[node] = {"is_required_by": requirement_graph[node]["is_required_by"], "path": [], "value": requirement_graph[node]["value"]}
+                arranged_graph[node]["path"].append(current_node)
+                current_node = node
+
+        #bypass nodes with a label ending in "REFERENCE TO CONCEPT" and remove them for visual clarity
+        #print("REFERENCE TO CONCEPT NODE BYPASS")
+        for node in arranged_graph.keys():
+            kill_list = []
+            if node.endswith("REFERENCE TO CONCEPT"):
+                #print("node ***{}*** is a REFERENCE TO CONCEPT".format(node))
+                #bypass: pass its reference value to its parents
+                parents = arranged_graph[node]["is_required_by"]
+                for parent in parents:
+                    arranged_graph[parent]["value"] = arranged_graph[node]["value"]
+                #and get on the kill list
+                kill_list.append(node)
+        for k in kill_list:
+            #print("KILL LIST: ", kill_list)
+            try:
+                del arranged_graph[k]
+            except KeyError:
+                print("node {} not found in arranged_graph".format(k))
+                pass
+    return arranged_graph
+
+
+def list_paths_to_leaves(graph, start_node, end_node='sentence'):
+    #using DFS "Depth-First Search" to list all the paths from the start_node to leaves
+    #a leaf is a node that has no children or that is connected to the "sentence" node.
+    def dfs(current_node, path):
+        if current_node not in graph or not graph[current_node].get("requires"):
+            paths.append(path)
+            return
+
+        for child in graph[current_node]["requires"]:
+            dfs(child, path + [child])
+
+    paths = []
+    dfs(start_node, [start_node])
+    return paths
