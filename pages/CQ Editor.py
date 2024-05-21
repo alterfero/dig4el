@@ -217,7 +217,7 @@ else:
             st.session_state["path_in_progress"] = False
             st.rerun()
         colz.write("Input for {} in progress".format(st.session_state["starting_item"]))
-        colz.write("Current node: {}".format(st.session_state["current_concept_node"]))
+        #colz.write("Current node: {}".format(st.session_state["current_concept_node"]))
 
         #is the current node a terminal feature?
         current_node_leaves = sorted(graphs_utils.get_leaves_from_node(concepts_kson, st.session_state["current_concept_node"]), key=str.lower)
