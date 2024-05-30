@@ -19,7 +19,6 @@ questionnaires_folder = "./questionnaires"
 cq_list = [f for f in listdir(questionnaires_folder) if isfile(join(questionnaires_folder, f)) and f.endswith(".json")]
 
 concepts_kson = json.load(open("./data/concepts.json"))
-intents_kson = json.load(open("./data/intents.json"))
 
 if "current_cq" not in st.session_state:
     st.session_state["current_cq"] = cq_list[0]
@@ -104,7 +103,7 @@ if st.session_state["cq_is_chosen"]:
 
     if st.button("Validate sentence"):
         st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
-            "cq": cq["dialog"][str(st.session_state["counter"])],
+            "cq": cq["dialog"][str(st.session_state["counter"])]["text"],
             "translation": translation,
             "concept_words": concept_words
         }
@@ -131,18 +130,5 @@ if st.session_state["cq_is_chosen"]:
         with open(filename, "w") as outfile:
             json.dump(st.session_state["recording"], outfile)
         st.success("Recording saved as {}".format(filename))
-
-    st.subheader("Details on sentence")
-
-    base_concepts = cq["dialog"][str(st.session_state["counter"])]["concept"]
-    for node in cq["dialog"][str(st.session_state["counter"])]["graph"].keys():
-        node_value = cq["dialog"][str(st.session_state["counter"])]["graph"][node]["value"]
-        if node_value != "":
-            st.write("Elicits {}, from {}".format(node_value, cq["dialog"][str(st.session_state["counter"])]["graph"][node]["is_required_by"]))
-        elif node in concepts_kson.keys() and concepts_kson[node]["ontological parent"] == "TRANSFORMATION":
-            st.write("Transformation: {}".format(node))
-
-    #st.write(st.session_state["recording"])
-
 
 

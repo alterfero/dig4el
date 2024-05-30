@@ -126,8 +126,11 @@ if str(st.session_state["counter"]) in st.session_state["cq"]["dialog"].keys():
         default_s = "A"
     default_t = st.session_state["cq"]["dialog"][current_counter]["text"]
     default_i = st.session_state["cq"]["dialog"][current_counter]["intent"]
-    if default_i == "":
+    if default_i == []:
         default_i = None
+    default_p = st.session_state["cq"]["dialog"][current_counter]["predicate"]
+    if default_p ==[]:
+        default_p = None
     default_c = st.session_state["cq"]["dialog"][current_counter]["concept"]
     if default_c == []:
         default_c = None
