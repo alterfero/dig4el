@@ -4,6 +4,7 @@ from os import listdir, mkdir
 from os.path import isfile, join
 import time
 from libs import graphs_utils
+from libs import utils
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -12,13 +13,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-st.title("CQ Recorder")
-
 questionnaires_folder = "./questionnaires"
 # cq_list is the list of json files in the questionnaires folder
 cq_list = [f for f in listdir(questionnaires_folder) if isfile(join(questionnaires_folder, f)) and f.endswith(".json")]
 
 concepts_kson = json.load(open("./data/concepts.json"))
+available_languages = ["english", "french", "german", "tahitian", "mwotlap", "marquesan (Nuku Hiva)"]
+questionnaires_folder = "./questionnaires"
 
 if "current_cq" not in st.session_state:
     st.session_state["current_cq"] = cq_list[0]
@@ -32,28 +33,64 @@ if "counter" not in st.session_state:
     st.session_state["counter"] = 1
 if "recording" not in st.session_state:
     st.session_state["recording"] = {"target language": st.session_state["target_language"],
-                                     "pivot language": "English", "cq_uid": "xxx", "data": {}}
+                                     "pivot language": "english", "cq_uid": "xxx", "data": {}}
+if "loaded_existing" not in st.session_state:
+    st.session_state["loaded_existing"] = False
+if "existing_filename" not in st.session_state:
+    st.session_state["existing_filename"] = ""
+if "cq_id_dict" not in st.session_state:
+    cq_id_dict = {}
+    for cq in cq_list:
+        cq_json = json.load(open(join(questionnaires_folder, cq)))
+        cq_id_dict[cq_json["uid"]] = {"filename": cq, "content": cq_json}
+    st.session_state["cq_id_dict"] = cq_id_dict
 
-questionnaires_folder = "./questionnaires"
-# cq_list is the list of json files in the questionnaires folder
-cq_list = [f for f in listdir(questionnaires_folder) if isfile(join(questionnaires_folder, f)) and f.endswith(".json")]
 
-recording = {"target language": st.session_state["target_language"], "pivot language": "English", "data": {}}
+st.title("CQ Recorder")
 
-interviewer = st.text_input("Interviewer", key="interviewer")
+st.write("You can start a new recording right away, or load an existing one to edit it")
+if not st.session_state["loaded_existing"]:
+    with st.expander("Load recording"):
+        existing_recording = st.file_uploader("Load an existing recording", type="json")
+        if existing_recording is not None:
+            st.session_state["recording"] = json.load(existing_recording)
+            print("Existing recording loaded: ", existing_recording.name)
+            st.session_state["existing_filename"] = existing_recording.name
+            st.session_state["loaded_existing"] = True
+
+if st.session_state["loaded_existing"]:
+    default_interviewer = st.session_state["recording"]["interviewer"]
+    default_interviewee = st.session_state["recording"]["interviewee"]
+    default_target_language = st.session_state["recording"]["target language"]
+    default_pivot_language = st.session_state["recording"]["pivot language"]
+    default_cq_uid = st.session_state["recording"]["cq_uid"]
+    default_data = st.session_state["recording"]["data"]
+else:
+    default_interviewer = ""
+    default_interviewee = ""
+    default_target_language = "english"
+    default_pivot_language = "english"
+    default_cq_uid = ""
+    default_data = {}
+
+interviewer = st.text_input("Interviewer", value=default_interviewer, key="interviewer")
 st.session_state["recording"]["interviewer"] = interviewer
 
-interviewee = st.text_input("Interviewee", key="interviewee")
+interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee")
 st.session_state["recording"]["interviewee"] = interviewee
 
-tl = st.selectbox("Choose a target language", ["english", "french", "german", "tahitian", "mwotlap", "portuguese"])
+tl = st.selectbox("Choose a target language", available_languages, index=available_languages.index(default_target_language))
 if st.session_state["target_language"] != tl:
     st.session_state["target_language"] = tl
     st.session_state["cq_is_chosen"] = False
 
-select_cq = st.selectbox("Choose a CQ", cq_list, index=cq_list.index(st.session_state["current_cq"]))
-if st.button("select CQ"):
-    st.session_state["current_cq"] = select_cq
+if not st.session_state["loaded_existing"]:
+    select_cq = st.selectbox("Choose a CQ", cq_list, index=cq_list.index(st.session_state["current_cq"]))
+    if st.button("select CQ"):
+        st.session_state["current_cq"] = select_cq
+        st.session_state["cq_is_chosen"] = True
+else:
+    st.session_state["current_cq"] = st.session_state["cq_id_dict"][default_cq_uid]["filename"]
     st.session_state["cq_is_chosen"] = True
 
 if st.session_state["cq_is_chosen"]:
@@ -62,8 +99,7 @@ if st.session_state["cq_is_chosen"]:
     number_of_sentences = len(cq["dialog"])
     st.session_state["recording"]["cq_uid"] = cq["uid"]
 
-    recording["cq_uid"] = cq["uid"]
-    recording["recording_uid"] = str(int(time.time()))
+    st.session_state["recording"]["recording_uid"] = str(int(time.time()))
 
     st.title("Title: {}".format(cq["title"]))
     st.write("Context: ", cq["context"])
@@ -85,8 +121,9 @@ if st.session_state["cq_is_chosen"]:
     else:
         translation_default = ""
     st.write(translation_default)
-    translation = st.text_input("Equivalent in {}".format(st.session_state["target_language"]),
+    translation_raw = st.text_input("Equivalent in {}".format(st.session_state["target_language"]),
                                 value=translation_default, key=str(st.session_state["counter"]))
+    translation = utils.normalize_sentence(translation_raw)
 
     # for each base concept, display a text box to enter the word in the target language
     concept_words = {}
@@ -111,6 +148,8 @@ if st.session_state["cq_is_chosen"]:
             st.session_state["counter"] = st.session_state["counter"] + 1
         st.rerun()
 
+    #st.write(st.session_state["recording"])
+
     if st.button("Save Recording"):
         #if there is no folder with the name of the cq in the recordings folder, create it
         cq_folder_name = st.session_state["current_cq"].replace(".json", "")
@@ -120,15 +159,18 @@ if st.session_state["cq_is_chosen"]:
         if st.session_state["target_language"] not in listdir("./recordings/" + cq_folder_name):
             mkdir("./recordings/" + cq_folder_name + "/" + st.session_state["target_language"])
 
-        filename = ("./recordings/" + cq_folder_name + "/" + st.session_state["target_language"] + "/" + "recording_"
-                    + st.session_state["current_cq"].replace(".json", "") + "_"
-                    + st.session_state["target_language"] + "_"
-                    + st.session_state["recording"]["interviewer"] + "_"
-                    + st.session_state["recording"]["interviewee"] + "_"
-                    + str(int(time.time()))
-                    + ".json")
-        with open(filename, "w") as outfile:
-            json.dump(st.session_state["recording"], outfile)
+        if st.session_state["loaded_existing"]:
+            filename = ("./recordings/" + cq_folder_name + "/" + st.session_state["target_language"] + "/" +
+                        st.session_state["existing_filename"])
+        else:
+            filename = ("./recordings/" + cq_folder_name + "/" + st.session_state["target_language"] + "/" + "recording_"
+                        + st.session_state["current_cq"].replace(".json", "") + "_"
+                        + st.session_state["target_language"] + "_"
+                        + st.session_state["recording"]["interviewer"] + "_"
+                        + st.session_state["recording"]["interviewee"] + "_"
+                        + str(int(time.time()))
+                        + ".json")
+        json.dump(st.session_state["recording"], open(filename, "w"))
         st.success("Recording saved as {}".format(filename))
 
 

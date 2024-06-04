@@ -58,6 +58,7 @@ concepts_kson = json.load(open("./data/concepts.json"))
 intent_list = graphs_utils.get_leaves_from_node(concepts_kson, "INTENT")
 predicate_list = graphs_utils.get_leaves_from_node(concepts_kson, "PREDICATE")
 
+
 st.write("You can start a new questionnaire right away, or load an existing one")
 if not st.session_state["loaded_existing"]:
     with st.expander("Load CQ"):
@@ -284,6 +285,11 @@ with colz.container():
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["predicate"] = p
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["concept"] = c
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["graph"] = st.session_state["req_json"]
+        if st.session_state["req_json"] != {}:
+            trimmed_graph = graphs_utils.arrange_requirement_graph_for_display(st.session_state["req_json"])
+            st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["trimmed_graph"] = trimmed_graph
+        else:
+            st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["trimmed_graph"] = {}
         colu.success("validated sentence #{}".format(st.session_state["counter"]))
         #print(st.session_state["cq"]["dialog"][str(st.session_state["counter"])])
         st.rerun()

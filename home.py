@@ -74,13 +74,19 @@ if st.button("Compute statistics"):
     for tense in available_tense:
         tense_statistics[tense] = 0
 
+    #initialize polarity
+    available_polarity = ["POSITIVE", "NEGATIVE"]
+    polarity_statistics = {}
+    for polarity in available_polarity:
+        polarity_statistics[polarity] = 0
+
     for cq in cq_json_list:
         #load cq
         cq_json = json.load(open(join(questionnaires_folder, cq)))
         total_number_of_sentences += len(cq_json["dialog"])
         for sentence_key in cq_json["dialog"].keys():
             sentence_data = cq_json["dialog"][sentence_key]
-
+            #intent
             try:
                 if sentence_data["intent"] != []:
                     for intent in sentence_data["intent"]:
@@ -88,7 +94,7 @@ if st.button("Compute statistics"):
                             intent_statistics[intent] += 1
             except KeyError:
                 print("No intent field in sentence {} of cq {}".format(sentence_key, cq))
-
+            #predicate
             try:
                 if sentence_data["predicate"] != []:
                     for predicate in sentence_data["predicate"]:
@@ -97,6 +103,7 @@ if st.button("Compute statistics"):
             except KeyError:
                 print("No predicate field in sentence {} of cq {}".format(sentence_key, cq))
 
+            #tense
             for node_key in sentence_data["graph"]:
                 node_data = sentence_data["graph"][node_key]
                 if node_data["path"] != []:
@@ -109,27 +116,35 @@ if st.button("Compute statistics"):
                                 tense_statistics[ppf] += 1
                             except:
                                 print("ppf statistics issue: ",ppf)
+                    if node_data["path"][-1] == "POLARITY":
+                        if node_data["value"] == "":
+                            polarity_statistics["POSITIVE"] += 1
+                        else:
+                            polarity_statistics[node_data["value"]] += 1
 
     st.write("Total number of sentences: {}".format(total_number_of_sentences))
 
-    colz, colx, colc = st.columns(3)
+    colz, colx, colc, colv = st.columns(4)
 
-    #display intent df
-    colz.write("Intents")
+    #display intent df without the index column
+    colz.write("Intent")
     intent_stat_df = pd.DataFrame(intent_statistics.items(), columns=["Intent", "Count"]).sort_values(by="Count", ascending=False)
     colz.write(intent_stat_df)
 
     #display predicate df
-    colx.write("Predicates")
+    colx.write("Predicate")
     predicate_stat_df = pd.DataFrame(predicate_statistics.items(), columns=["Predicate", "Count"]).sort_values(by="Count", ascending=False)
     colx.write(predicate_stat_df)
 
     #display tense df
-    colc.write("Tenses")
+    colc.write("Tense")
     tense_stat_df = pd.DataFrame(tense_statistics.items(), columns=["Tense", "Count"]).sort_values(by="Count", ascending=False)
     colc.write(tense_stat_df)
 
-
+    #display polarity df
+    colv.write("Polarity")
+    polarity_stat_df = pd.DataFrame(polarity_statistics.items(), columns=["Polarity", "Count"]).sort_values(by="Count", ascending=False)
+    colv.write(polarity_stat_df)
 
 
 

@@ -28,6 +28,23 @@ def clean_sentence(sentence):
         out = out.replace(item, " ")
     return out
 
+def normalize_sentence(sentence):
+    #replace all single quotes with "'" to avoid issues with the tokenizer
+    various_single_quotes_characters = ["'", "`", "’", "‘", "’", "ʼ", "ʻ", "ʽ", "ʾ", "ʿ", "ˈ", "ˊ", "ˋ", "˴", "՚", "׳", "ꞌ", "＇", "｀"]
+    for single_quote in various_single_quotes_characters:
+        sentence = sentence.replace(single_quote, "'")
+    # remove final punctuation if any
+    if len(sentence) > 0 and sentence[-1] in [".", "!", "?", ":", ";"]:
+        sentence = sentence[:-1]
+    #remove extra spaces at the beginning and end of the sentence
+    sentence = sentence.strip()
+    #small caps
+    sentence = sentence.lower()
+    #replace all double spaces with single spaces
+    sentence = sentence.replace("  ", " ")
+
+    return sentence
+
 
     return sentence
 def list_folders(directory):
