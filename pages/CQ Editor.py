@@ -3,6 +3,7 @@ import json
 from libs import graphs_utils
 from libs import utils
 import time
+import copy
 from streamlit_agraph import agraph, Node, Edge, Config
 
 st.set_page_config(
@@ -22,12 +23,12 @@ if "cq" not in st.session_state:
         "speakers": {
             "A": {
                 "name": "xx",
-                "gender": "xx",
+                "gender": "indef",
                 "age": "adult"
             },
             "B": {
                 "name": "xx",
-                "gender": "xx",
+                "gender": "indef",
                 "age": "adult"
             }
         },
@@ -52,12 +53,27 @@ if "concept_set" not in st.session_state:
 if "req_json" not in st.session_state:
     st.session_state["req_json"] = {}
 
+def get_last_dialog_position():
+    last_position = st.session_state["counter"]
+    while str(last_position + 1) in st.session_state["cq"]["dialog"].keys():
+        last_position += 1
+    return last_position
+
+def reset_current_dialog():
+    st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["speaker"] = "A"
+    st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["text"] = ""
+    st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["intent"] = []
+    st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["predicate"] = []
+    st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["concept"] = []
+    st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["graph"] = {}
+    st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["trimmed_graph"] = {}
+    print("reset_current_dialog executed")
+
 st.title("Conversational Questionnaire Editor")
 
 concepts_kson = json.load(open("./data/concepts.json"))
 intent_list = graphs_utils.get_leaves_from_node(concepts_kson, "INTENT")
 predicate_list = graphs_utils.get_leaves_from_node(concepts_kson, "PREDICATE")
-
 
 st.write("You can start a new questionnaire right away, or load an existing one")
 if not st.session_state["loaded_existing"]:
@@ -106,9 +122,9 @@ with st.expander("Header"):
 st.subheader("Dialog")
 colz, colx = st.columns(2)
 
-colz.subheader("Sentence #"+str(st.session_state.counter))
+colz.subheader("Sentence #{}/{}".format(str(st.session_state.counter), str(get_last_dialog_position())))
 with colz.container():
-    cola, cols = st.columns(2)
+    cola, cols, cold, cole = st.columns(4)
     if cola.button("Previous"):
         if st.session_state["counter"] > 1:
             st.session_state["counter"] = st.session_state["counter"] - 1
@@ -116,6 +132,27 @@ with colz.container():
     if cols.button("Next"):
             st.session_state["counter"] = st.session_state["counter"] + 1
             st.rerun()
+    if cold.button("Insert"):
+    # insert a new empty sentence, push all the following one step ahead
+        last_position = get_last_dialog_position()
+        # shift everything
+        for i in range(0, last_position - st.session_state["counter"]):
+            st.session_state["cq"]["dialog"][str(last_position - i + 1)] = copy.deepcopy(st.session_state["cq"]["dialog"][str(last_position - i)])
+        # move counter to next and rerun
+        st.session_state["counter"] = st.session_state["counter"] + 1
+        # reset this position
+        reset_current_dialog()
+        st.rerun()
+    if cole.button("Delete"):
+        last_position = get_last_dialog_position()
+        # shift dialogs
+        for i in range(st.session_state["counter"], last_position - 1):
+            st.session_state["cq"]["dialog"][str(i)] = copy.deepcopy(st.session_state["cq"]["dialog"][str(i+1)])
+        # erase last
+        del(st.session_state["cq"]["dialog"][str(last_position)])
+        st.rerun()
+
+
 
 if str(st.session_state["counter"]) in st.session_state["cq"]["dialog"].keys():
     #print("Existing sentence in this dialog, retrieving content")
@@ -140,7 +177,7 @@ if str(st.session_state["counter"]) in st.session_state["cq"]["dialog"].keys():
         default_g = None
 
 else:
-    print("New sentence in this dialog, setting defaults")
+    #print("New sentence in this dialog, setting defaults")
     st.session_state["cq"]["dialog"][str(st.session_state["counter"])] = {
         "speaker": "",
         "text": "",
@@ -181,22 +218,17 @@ except:
 
 # if some concepts have been chosen, create concept graph with requirements or load if existing, otherwise clean st.session_state["req_json"]
 if c == []:
-    print("CONCEPT MULTISELECT EMPTY")
+    #print("CONCEPT MULTISELECT EMPTY")
     st.session_state["req_json"] = {}
 else:
     if c != st.session_state["concept_set"]:
         st.session_state["concept_set"] = c
-        #new concepts, recomputing graph
-        print("New concepts, recomputing req_json")
-        print(c)
-        st.session_state["req_json"] = graphs_utils.create_requirement_graph(c, concepts_kson)
 
-    if st.session_state["req_json"] != {}:
-        print("Using current requirement graph for this sentence.")
-    else:
-        print("No existing requirement graph: Computing requirement graph for this sentence")
-        st.session_state["req_json"] = graphs_utils.create_requirement_graph(c, concepts_kson)
+if colz.button("Initialize particularization graph with {}".format(c)):
+    st.session_state["req_json"] = graphs_utils.create_requirement_graph(c, concepts_kson)
+    st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["graph"] = st.session_state["req_json"]
 
+if st.session_state["req_json"] != {}:
     # focus on nodes with empty requires, end of requirement chain
     # [expression for item in iterable if condition]
     req_leaves = [r for r in st.session_state["req_json"].keys() if st.session_state["req_json"][r]["requires"] == []]
@@ -228,42 +260,40 @@ else:
         current_node_children = sorted(graphs_utils.get_children(concepts_kson, st.session_state["current_concept_node"]), key=str.lower)
         if current_node_leaves == current_node_children or current_node_children == [] or st.session_state["current_concept_node"]=="ABSOLUTE REFERENCE":
             st.session_state["is_terminal_feature"] = True
-            print("{} is a TERMINAL FEATURE".format(st.session_state["current_concept_node"]))
+            #print("{} is a TERMINAL FEATURE".format(st.session_state["current_concept_node"]))
         else:
             st.session_state["is_terminal_feature"] = False
-            print("{} is NOT A TERMINAL FEATURE".format(st.session_state["current_concept_node"]))
+            #print("{} is NOT A TERMINAL FEATURE".format(st.session_state["current_concept_node"]))
 
         #if the current node is a terminal feature, ask the user to choose a value if there are values to choose from.
         if st.session_state["is_terminal_feature"]:
-            print("terminal feature")
+            #print("terminal feature")
             if st.session_state["current_concept_node"] == "ABSOLUTE REFERENCE":
-                print("absolute reference")
+                #print("absolute reference")
                 # If the requirement is an absolute reference, the user will be asked to choose a value from the set of concepts in the questionnaire.
                 req_value = colz.selectbox("Choose value", st.session_state["concept_set"] + ["None"])
                 if colz.button("Set to {}?".format(req_value)):
                     if req_value == "None":
                         st.session_state["req_json"][st.session_state["starting_item"]]["value"] = st.session_state["current_concept_node"]
-                        print("Set {} to {}".format(st.session_state["starting_item"], st.session_state["current_concept_node"]))
-                        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["graph"] = st.session_state[
-                            "req_json"]
+                        #print("Set {} to {}".format(st.session_state["starting_item"], st.session_state["current_concept_node"]))
+                        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["graph"] = st.session_state["req_json"]
                         st.session_state["path_in_progress"] = False
                         st.rerun()
                     else:
                         st.session_state["req_json"][st.session_state["starting_item"]]["value"] = req_value
-                        print("Set {} to {}".format(st.session_state["starting_item"], req_value))
-                        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["graph"] = st.session_state[
-                            "req_json"]
+                        #print("Set {} to {}".format(st.session_state["starting_item"], req_value))
+                        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["graph"] = st.session_state["req_json"]
                         st.session_state["path_in_progress"] = False
                         st.rerun()
             else:
-                print("terminal feature that is not an absolute reference")
+                #print("terminal feature that is not an absolute reference")
                 if current_node_children != []:
                     req_value = colz.selectbox("Choose value", current_node_children)
                 else:
                     req_value = st.session_state["current_concept_node"]
                 if colz.button("set to {}?".format(req_value)):
                     st.session_state["req_json"][st.session_state["starting_item"]]["value"] = req_value
-                    print("Set {} to {}".format(st.session_state["starting_item"], req_value))
+                    #print("Set {} to {}".format(st.session_state["starting_item"], req_value))
                     st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["graph"] = st.session_state["req_json"]
                     st.session_state["path_in_progress"] = False
                     st.rerun()
@@ -298,7 +328,13 @@ with colz.container():
         json.dump(st.session_state["cq"], open("./questionnaires/" + cq_file_name, "w"))
         colo.success("Saved questionnaire as {}".format(cq_file_name))
     if colo.button("Reset sentence"):
-        del(st.session_state["cq"]["dialog"][str(st.session_state["counter"])])
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["speaker"] = "A"
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["text"] = ""
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["intent"] = []
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["predicate"] = []
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["concept"] = []
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["graph"] = {}
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["trimmed_graph"] = {}
         st.rerun()
 
 
@@ -315,7 +351,7 @@ if st.session_state["req_json"] != {}:
     for item in displayed_graph.keys():
         if displayed_graph[item]["value"] != "":
             values.append(displayed_graph[item]["value"])
-    print("VALUES:", values)
+    #print("VALUES:", values)
 
     # The graph drawing logic is as follows:
     # 1) Beyond the concept nodes entered by the user, only dependency nodes that received input from the user are drawn.
@@ -425,14 +461,12 @@ if st.session_state["req_json"] != {}:
                               config=config)
 
 
-#st.subheader("Current questionnaire")
-#st.write(st.session_state["cq"])
-#     st.write("displayed graph")
-#     st.write(displayed_graph)
+# st.subheader("Current questionnaire")
+# st.write(st.session_state["cq"])
 # st.write("req_json")
 # st.write(st.session_state["req_json"])
-# st.write("{}: {}".format(str(st.session_state["counter"]),
-#                          st.session_state["cq"]["dialog"][str(st.session_state["counter"])]))
+# st.write("concepts")
+# st.write(st.session_state["concept_set"])
     
     
 

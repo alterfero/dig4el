@@ -3,6 +3,9 @@ import json
 from os import listdir, mkdir
 from os.path import isfile, join
 import time
+from libs import graphs_utils
+from libs import utils
+
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -89,7 +92,7 @@ for recording in recordings_list_dict.keys():
                     "listener_gender": cq["speakers"][listener]["gender"],
                     "listener_age": cq["speakers"][listener]["age"],
                     "sentence_data": cq["dialog"][item],
-                    "recording_data": recording_json["data"][item]["translation"]
+                    "recording_data": recording_json["data"][item]
                 }
                 index_counter += 1
             else:
@@ -104,10 +107,14 @@ with open("./data/knowledge/knowledge_graph"+language+".json", "w") as f:
 st.success("Knowledge graph built and saved in ./data/knowledge/knowledge_graph"+language+"_"+str(int(time.time()))+".json")
 st.write("Knowledge graph contains {} sentences".format(len(knowledge_graph)))
 
-#focus = st.selectbox("Select a grammatical focus", ["expression of intents"])
-focus = "intent"
-# list intents
+#build statistics on target language
 
+
+
+# #focus = st.selectbox("Select a grammatical focus", ["expression of intents"])
+# focus = "intent"
+# # list intents
+# intent_list = graphs_utils.get_leaves_from_node(concept_kson, "INTENT")
 
 
 
