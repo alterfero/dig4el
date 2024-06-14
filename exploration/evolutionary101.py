@@ -1,7 +1,7 @@
 """ agent01 is an intelligent agent specialized in inferring grammatical rules based on conversation questionnaires.
 these exploration are used in evolutionary algorithms. each agent has beliefs, which are confronted to any source of insight.
 A belief is:  X is expressed as Y in context C.
-For example: PP1SG does not vary"""
+For example: PP1SG is a word does not vary agent01 knows about usual grammatical expressions of concepts"""
 
 from libs import utils as u, graphs_utils as gu, knowledge_graph_utils as kgu
 
@@ -16,7 +16,7 @@ class Agent01:
     def show_beliefs(self):
         return self.beliefs
 
-expressions = {
+expression_types = {
     "single specific invariable word" : {
         "paramaters": {
             "concept": "",

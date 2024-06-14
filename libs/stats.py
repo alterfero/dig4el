@@ -23,7 +23,6 @@ def build_blind_word_stats_from_knowledge_graph(knowledge_graph, delimiters):
     word_stats = {}
     sentence_list = []
     for entry in knowledge_graph:
-        print(knowledge_graph[entry]["recording_data"])
         target_sentence = knowledge_graph[entry]["recording_data"]["translation"]
         sentence_list.append(target_sentence)
 

@@ -2,6 +2,7 @@ import json
 from os import listdir, mkdir
 from os.path import isfile, join
 import time
+from libs import utils, stats
 
 delimiters = {
     "french": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
@@ -54,7 +55,6 @@ def build_knowledge_graph(language):
 
     # build and save knowledge graph ======================================================================================
     knowledge_graph = {}
-    knowledge_graph["language"] = language
     unique_words = []
     unique_words_frequency = {}
     total_target_word_count = 0
@@ -80,7 +80,8 @@ def build_knowledge_graph(language):
                         "listener_gender": cq["speakers"][listener]["gender"],
                         "listener_age": cq["speakers"][listener]["age"],
                         "sentence_data": cq["dialog"][item],
-                        "recording_data": recording_json["data"][item]
+                        "recording_data": recording_json["data"][item],
+                        "language": language
                     }
                     index_counter += 1
                     total_target_word_count += len(recording_json["data"][item]["translation"].split())
@@ -94,8 +95,6 @@ def build_knowledge_graph(language):
                 else:
                     print("BUILD KNOWLEDGE GRAPH: cq {} <========> recording {} don't match".format(
                         cq["dialog"][item]["text"], recording_json["data"][item]["cq"]))
-                print(
-                    "Warning: sentence #{}:{} of cq {} not found in recording".format(item, cq["dialog"][item]["text"],recording))
             except KeyError:
                     print("Warning: sentence #{}:{} of cq {} not found in recording".format(item, cq["dialog"][item]["text"], recording))
     # save knowledge graph
@@ -115,3 +114,12 @@ def get_sentences_with_and_without_value(knowledge_graph, concept):
             else:
                 sentences_without_value.append(knowledge_graph[entry]["recording_data"]["translation"])
     return sentences_with_value, sentences_without_value
+
+def get_sentences_with_word(knowledge_graph, word, language):
+    sentences_with_word = []
+    for entry in knowledge_graph:
+        words = stats.custom_split(knowledge_graph[entry]["recording_data"]["translation"], delimiters[language])
+        print(word, words)
+        if word in words:
+            sentences_with_word.append(entry)
+    return sentences_with_word
