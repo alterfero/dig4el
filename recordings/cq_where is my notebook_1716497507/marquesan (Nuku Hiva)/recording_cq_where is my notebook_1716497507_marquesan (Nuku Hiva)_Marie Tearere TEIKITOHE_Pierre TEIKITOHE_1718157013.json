@@ -1,0 +1,354 @@
+{
+    "target language": "English",
+    "pivot language": "english",
+    "cq_uid": "1716497507",
+    "data": {
+        "1": {
+            "cq": "Brother, have you seen my notebook?",
+            "translation": "e tu'ane, ua 'ite 'o tu'u kaie",
+            "concept_words": {
+                "brother": "",
+                "seeing": "",
+                "notebook": "",
+                "PP1SG": ""
+            }
+        },
+        "2": {
+            "cq": "I\u2019ve been looking for it everywhere, but I can\u2019t find it!",
+            "translation": "'umihi'ia e au paotu te vahi, a'i ko'ana",
+            "concept_words": {
+                "PP1SG": "",
+                "searching": "",
+                "object wildcard": "",
+                "everywhere": "",
+                "BUT": "",
+                "being able to": "",
+                "finding": ""
+            }
+        },
+        "3": {
+            "cq": "I don\u2019t know, sister.",
+            "translation": "a'e au i 'ite e tu'u tuehine",
+            "concept_words": {
+                "knowing": "",
+                "PP1SG": "",
+                "sister": ""
+            }
+        },
+        "4": {
+            "cq": "Which notebook?",
+            "translation": "e aha teia kaie",
+            "concept_words": {
+                "notebook": ""
+            }
+        },
+        "5": {
+            "cq": "It\u2019s my math book.",
+            "translation": "ta'u kaie hana numera",
+            "concept_words": {
+                "object wildcard": "",
+                "book": "",
+                "math": "",
+                "equating": ""
+            }
+        },
+        "6": {
+            "cq": "It\u2019s a thick, blue one.",
+            "translation": "maka kaie 'er'ere",
+            "concept_words": {
+                "object wildcard": "",
+                "being": "",
+                "thick": "",
+                "blue": "",
+                "AND": ""
+            }
+        },
+        "7": {
+            "cq": "You\u2019ve seen it already.",
+            "translation": "ua 'ite a'e nei 'oe",
+            "concept_words": {
+                "PP2SG": "",
+                "seeing": "",
+                "object wildcard": "",
+                "already": ""
+            }
+        },
+        "8": {
+            "cq": "I was doing my homework on it last night in the dining room.",
+            "translation": "i te ahiahi tinahi, ua va'e au i ta'u hana hamani me te'a kaie i te ha'e kaikai",
+            "concept_words": {
+                "PP1SG": "",
+                "doing": "",
+                "homework": "",
+                "last night": "",
+                "dining room": "",
+                "object wildcard": ""
+            }
+        },
+        "9": {
+            "cq": "Well, you probably left it there, then!",
+            "translation": "eo, ua avai'ia 'a e 'oe 'ina",
+            "concept_words": {
+                "PP2SG": "",
+                "leaving (transitive)": "",
+                "object wildcard": "",
+                "spatial position wildcard": "",
+                "probably": ""
+            }
+        },
+        "10": {
+            "cq": "No.",
+            "translation": "a'o'e",
+            "concept_words": {}
+        },
+        "11": {
+            "cq": "I put it away in my schoolbag before I went to sleep.",
+            "translation": "ua tikomo'ia e au i 'oto o ta'u kaka he'e hamani, epo e he'e atu ai au i te hiamoe",
+            "concept_words": {
+                "PP1SG": "",
+                "putting": "",
+                "schoolbag": "",
+                "BEFORE X": "",
+                "going": "",
+                "sleeping": ""
+            }
+        },
+        "12": {
+            "cq": "I think.",
+            "translation": "to'u ho' ma'akau",
+            "concept_words": {
+                "thinking": "",
+                "PP1SG": ""
+            }
+        },
+        "13": {
+            "cq": "Hm, did you look in your room, beside your bed?",
+            "translation": "e, ua ti'ohi 'oe io to taua pa'oto ma te kaokao 'oki",
+            "concept_words": {
+                "PP2SG": "",
+                "searching": "",
+                "ZOOM IN": "",
+                "bedroom": "",
+                "beside": "",
+                "bed": ""
+            }
+        },
+        "14": {
+            "cq": "Yes I did.",
+            "translation": "oia",
+            "concept_words": {}
+        },
+        "15": {
+            "cq": " It\u2019s not there.",
+            "translation": "ua ti'ohi'ia e au, a'e he mea",
+            "concept_words": {
+                "object wildcard": "",
+                "being": "",
+                "spatial position wildcard": ""
+            }
+        },
+        "16": {
+            "cq": "Or perhaps on Dad\u2019s desk?",
+            "translation": "a ko'e 'a ena io he tapu hana'ia a papa",
+            "concept_words": {
+                "SPATIAL ON": "",
+                "dad": "",
+                "desk": ""
+            }
+        },
+        "17": {
+            "cq": "Maybe it\u2019s hidden under another book?",
+            "translation": "hakana'ia oti ma'a'o o titahi hamani ke",
+            "concept_words": {
+                "object wildcard": "",
+                "hidden": "",
+                "UNDER": "",
+                "ANOTHER": "",
+                "book": "",
+                "being": ""
+            }
+        },
+        "18": {
+            "cq": "Wait... no.",
+            "translation": "epo, a'o'e",
+            "concept_words": {}
+        },
+        "19": {
+            "cq": "Wait\u2026 No, I can't find it.",
+            "translation": "epo, a'o'e, a'i ko'ana",
+            "concept_words": {
+                "PP1SG": "",
+                "being able to": "",
+                "finding": "",
+                "object wildcard": ""
+            }
+        },
+        "20": {
+            "cq": "Let me look in the kitchen...",
+            "translation": "hano atu au ti'ohi io he ha'e kuki",
+            "concept_words": {
+                "PP1SG": "",
+                "searching": "",
+                "kitchen": ""
+            }
+        },
+        "21": {
+            "cq": "Hm, not here.",
+            "translation": "ai, a'i ihoa he mea",
+            "concept_words": {
+                "being": "",
+                "CLOSE TO SPEAKER": ""
+            }
+        },
+        "22": {
+            "cq": "But I need it for my math class today!",
+            "translation": "e makimaki nei au no ta'u hana numera no tenei 'a",
+            "concept_words": {
+                "BUT": "",
+                "PP1SG": "",
+                "needing": "",
+                "object wildcard": "",
+                "school class": "",
+                "today": ""
+            }
+        },
+        "23": {
+            "cq": "The teacher will be quite angry if I don\u2019t have my notebook.",
+            "translation": "e peke tu'u tumu hamani me he mea a'e au kaie",
+            "concept_words": {
+                "teacher": "",
+                "being": "",
+                "angry": "",
+                "CONDITION": "",
+                "PP1SG": "",
+                "possessing": "",
+                "notebook": ""
+            }
+        },
+        "24": {
+            "cq": "He will think I didn\u2019t do my homework.",
+            "translation": "e ma'akau ia a'o'e au i hana i ta'u hana",
+            "concept_words": {
+                "PP3SG": "",
+                "thinking": "",
+                "PP1SG": "",
+                "doing": "",
+                "homework": ""
+            }
+        },
+        "25": {
+            "cq": "Uh oh\u2026 I think I found it!",
+            "translation": "'a\u00a0! ma'akau e ha'a u ko'ana",
+            "concept_words": {
+                "PP1SG": "",
+                "thinking": "",
+                "finding": "",
+                "object wildcard": ""
+            }
+        },
+        "26": {
+            "cq": "Really?!",
+            "translation": "a e",
+            "concept_words": {}
+        },
+        "27": {
+            "cq": "Where?",
+            "translation": "i hea",
+            "concept_words": {
+                "spatial position wildcard": ""
+            }
+        },
+        "28": {
+            "cq": "Look at our little brother out there in the garden.",
+            "translation": "a ti'ohi 'oe i to taua teina 'i'a, i 'oto o te papua,",
+            "concept_words": {
+                "PP2SG": "",
+                "looking": "",
+                "PP1INCDU": "",
+                "little brother": "",
+                "out there": "",
+                "garden": "",
+                "ZOOM IN": "",
+                "DIRECTION": ""
+            }
+        },
+        "29": {
+            "cq": "What is he holding in his hands?",
+            "translation": "e aha ta ia e mau'a i toia 'ima",
+            "concept_words": {
+                "holding": "",
+                "object wildcard": "",
+                "PP3SG": "",
+                "hands": ""
+            }
+        },
+        "30": {
+            "cq": "Isn\u2019t it your notebook?",
+            "translation": "a'e 'a o hua kaie a'a\u00a0a 'oe",
+            "concept_words": {
+                "being": "",
+                "object wildcard": "",
+                "notebook": "",
+                "COMP-EQUAL": ""
+            }
+        },
+        "31": {
+            "cq": "Oh my god, yes it is",
+            "translation": "aue ho'i e, oia",
+            "concept_words": {
+                "event wildcard": ""
+            }
+        },
+        "32": {
+            "cq": "But he has shredded it into pieces!",
+            "translation": "u vetiveti'ia momohi'i nui",
+            "concept_words": {
+                "BUT": "",
+                "shredding": "",
+                "PP3SG": "",
+                "object wildcard": "",
+                "pieces": ""
+            }
+        },
+        "33": {
+            "cq": "It looks like he\u2019s been playing with it all morning.",
+            "translation": "me he mea 'a, ua va'e ia i te keu",
+            "concept_words": {
+                "playing": "",
+                "PP3SG": "",
+                "object wildcard": "",
+                "morning": ""
+            }
+        },
+        "34": {
+            "cq": "Oh dear, what happened to my homework?!",
+            "translation": "aue ho'i e, pehea'a i tenei",
+            "concept_words": {
+                "happening": "",
+                "event wildcard": "",
+                "homework": "",
+                "PP1SG": ""
+            }
+        },
+        "35": {
+            "cq": "Now I need to buy a new notebook, and start my work all over again.",
+            "translation": "tenei e hoko haka'ua au i titahi kaie me te ha'amata haka'ua paotu ta'u hana",
+            "concept_words": {
+                "now": "",
+                "AND": "",
+                "needing": "",
+                "buying": "",
+                "starting": "",
+                "PP1SG": "",
+                "notebook": "",
+                "new": "",
+                "homework": "",
+                "all over": "",
+                "again": ""
+            }
+        }
+    },
+    "interviewer": "Marie Tearere TEIKITOHE",
+    "interviewee": "Pierre TEIKITOHE",
+    "recording_uid": "1718157013"
+}

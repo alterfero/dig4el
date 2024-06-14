@@ -292,3 +292,7 @@ def list_paths_to_leaves(graph, start_node, end_node='sentence'):
     paths = []
     dfs(start_node, [start_node])
     return paths
+
+
+def list_sentences_with_value_v(v):
+    l = []

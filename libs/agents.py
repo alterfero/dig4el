@@ -1,7 +1,7 @@
 
 
 class PronounFinder:
-    """PronounFinder class creates intelligent agents that find pronouns in a given text."""
+    """PronounFinder class creates intelligent exploration that find pronouns in a given text."""
     def __init__(self, language):
         """Initialize a PronounFinder object."""
         self.language = language

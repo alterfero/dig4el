@@ -1,0 +1,528 @@
+{
+    "target language": "marquesan (Nuku Hiva)",
+    "pivot language": "english",
+    "cq_uid": "1716852912",
+    "data": {
+        "1": {
+            "cq": "Have you ever seen pictures of my family?",
+            "translation": "ua 'ite 'oe i te ata o to'u hua'a",
+            "concept_words": {
+                "PP2SG": "'oe",
+                "PP1SG": "'u",
+                "seeing": "'ite",
+                "picture": "ata",
+                "family": "hua'a"
+            }
+        },
+        "2": {
+            "cq": "Well, I\u2019ve met some of your relatives, but I\u2019ve never seen your pictures.",
+            "translation": "ua 'avei a'e nei au me to 'oe hua'a a'e 'a au i 'ite a'e nei to 'atou ata",
+            "concept_words": {
+                "PP1SG": "au",
+                "PP2SG": "'oe",
+                "meeting": "avei",
+                "relatives": "hua'a",
+                "BUT": "'a",
+                "seeing": "'ite",
+                "picture": "ata",
+                "never": ""
+            }
+        },
+        "3": {
+            "cq": "Here is an old photo album I just found in my parents\u2019 room.",
+            "translation": "'eia titahi kaputu ata i ko'ana iau mei io he pa'oto o to'u motua kui",
+            "concept_words": {
+                "PRESENT X": "'eia",
+                "old": "",
+                "photo album": "kaputu ata",
+                "PP1SG": "iau",
+                "finding": "ko'ana",
+                "parents": "motua kui",
+                "room": "pa'oto"
+            }
+        },
+        "4": {
+            "cq": "Oh, show it to me please!",
+            "translation": "'ai, 'a haka'ite mai a'e",
+            "concept_words": {
+                "showing": "haka'ite",
+                "object wildcard": "",
+                "PP1SG": "",
+                "PP2SG": ""
+            }
+        },
+        "5": {
+            "cq": "Who\u2019s this on that first photo?",
+            "translation": "o ai tenei io he ata tomua ana 'oa",
+            "concept_words": {
+                "PERSONAL DEICTIC WILDCARD": "o ai",
+                "POINTED BY SPEAKER": "tenei",
+                "photo": "ata",
+                "first": "tomua",
+                "equating": ""
+            }
+        },
+        "6": {
+            "cq": "It looks like olden times.",
+            "translation": "vai ana'e mea 'oa",
+            "concept_words": {
+                "object wildcard": "",
+                "looking like": "vai ana'e",
+                "olden times": "'oa"
+            }
+        },
+        "7": {
+            "cq": "It's in black and white.",
+            "translation": "mea ke'eke'e tava'i'e",
+            "concept_words": {
+                "object wildcard": "",
+                "exhibiting (an attribute)": "",
+                "black and white": "ke'eke'e tava'i'e"
+            }
+        },
+        "8": {
+            "cq": "These are my grandparents, on my mother\u2019s side.",
+            "translation": "o to'u na koko'oua i te keke o to'u kui",
+            "concept_words": {
+                "PP1SG": "to'u",
+                "grandparents": "koko'oua",
+                "mothers side": "keke kui",
+                "POINTED BY SPEAKER": "",
+                "presenting (presentative)": "o"
+            }
+        },
+        "9": {
+            "cq": "Grandpa here on the left, and Grandma on the right.",
+            "translation": "o'oua, 'inei, i te keke a'e'a'e, pakahio i te keke oko",
+            "concept_words": {
+                "POINTED BY SPEAKER": "'inei",
+                "being": "",
+                "grandpa": "ko'oua",
+                "left": "a'ea'e",
+                "AND": "",
+                "grandma": "pakahio",
+                "right": "oko"
+            }
+        },
+        "10": {
+            "cq": "The people around them must be their friends, or other relatives.",
+            "translation": "te po'i ma to 'aua kaokao, ma'akau to 'aua tau hoa, ako'e'a e hua'a",
+            "concept_words": {
+                "being": "",
+                "people": "po'i",
+                "around": "kaokao",
+                "friends": "hoa",
+                "OR": "ako'e'a",
+                "other": "",
+                "relatives": "hua'a",
+                "PP3DU": "'aua"
+            }
+        },
+        "11": {
+            "cq": "Was that the day of their wedding?",
+            "translation": "e '\u0101 o to 'aua matiri",
+            "concept_words": {
+                "time position wildcard": "",
+                "day": "",
+                "wedding": "matiri",
+                "PP3DU": "'aua",
+                "equating": "",
+                "event wildcard": ""
+            }
+        },
+        "12": {
+            "cq": "No, I don\u2019t think so.",
+            "translation": "ma'akau a'o'e",
+            "concept_words": {
+                "PP1SG": "",
+                "thinking": "ma'akau",
+                "event wildcard": ""
+            }
+        },
+        "13": {
+            "cq": "They were older than this on their wedding. ",
+            "translation": "i to 'aua matiri'ia, ha'aoko atu 'aua i tena",
+            "concept_words": {
+                "PP3DU": "'aua",
+                "OLDER THAN X": "ha'aoko atu",
+                "being": "",
+                "wedding": "matiri'ia",
+                "POINTED BY SPEAKER": "tena"
+            }
+        },
+        "14": {
+            "cq": "This must have been the day when they got engaged.",
+            "translation": "ma'akau e '\u0101 o to 'aua ha'ahei'ia no te tau po'i moni, tiketike anaiho te'ina, a'e he ha'ahei'ia no tahipito",
+            "concept_words": {
+                "event wildcard": "",
+                "being": "",
+                "day": "",
+                "getting engaged": "",
+                "PP3DU": "'aua"
+            }
+        },
+        "15": {
+            "cq": "In those times, the engagement was a major event for the whole family,",
+            "translation": "i te'a tai, te ha'ahei'ia na 'enana ena matiri",
+            "concept_words": {
+                "those times": "te'a tai",
+                "engagement": "",
+                "event_": "mea",
+                "major": "taetae",
+                "family": "hua'a",
+                "equating": ""
+            }
+        },
+        "16": {
+            "cq": "People would wear beautiful clothes.",
+            "translation": "mea taetae no te hua'a paotu",
+            "concept_words": {
+                "people": "",
+                "wearing": "",
+                "beautiful": "",
+                "clothes": ""
+            }
+        },
+        "17": {
+            "cq": "Have you met them?",
+            "translation": "ua 'ite 'oe ia 'aua",
+            "concept_words": {
+                "meeting": "'ite",
+                "PP2SG": "'oe",
+                "PP3DU": "'aua"
+            }
+        },
+        "18": {
+            "cq": "Who? My grandparents?",
+            "translation": "o ai ? to'u mou koko'oua",
+            "concept_words": {
+                "PERSONAL DEICTIC WILDCARD": "o ai",
+                "grandparents": "koko'oua",
+                "PP1SG": "to'u"
+            }
+        },
+        "19": {
+            "cq": "Yes, your grandparents on the photo.",
+            "translation": "e e, to 'oe mou koko'oua io he ata",
+            "concept_words": {
+                "grandparents": "koko'oua",
+                "PP2SG": "'oe",
+                "photo": "ata"
+            }
+        },
+        "20": {
+            "cq": "Actually no. ",
+            "translation": "a'o'e",
+            "concept_words": {}
+        },
+        "21": {
+            "cq": "They died before I was born.",
+            "translation": "ua 'oko au te mea ua mate 'aua ma mua o to'u hanau'ia",
+            "concept_words": {
+                "PP3DU": "'aua",
+                "dying": "mate",
+                "BEFORE X": "ma mua",
+                "PP1SG": "au",
+                "being born": "hanau'ia"
+            }
+        },
+        "22": {
+            "cq": "They were born a long time ago.",
+            "translation": "mea 'oa oko i tenei to 'aua hanau'ia",
+            "concept_words": {
+                "PP3DU": "'aua",
+                "being born": "hanau'ia",
+                "_a long time ago": "'oa oko"
+            }
+        },
+        "23": {
+            "cq": "Oh I see.",
+            "translation": "ee, vivini au",
+            "concept_words": {}
+        },
+        "24": {
+            "cq": "And who\u2019s that on the second photo?",
+            "translation": "o ai te mea he 'ua o te ata",
+            "concept_words": {
+                "PERSONAL DEICTIC WILDCARD": "o ai",
+                "second": "'ua",
+                "photo": "ata",
+                "POINTED BY SPEAKER": "",
+                "equating": ""
+            }
+        },
+        "25": {
+            "cq": "This is my mother",
+            "translation": "o to'u kui na p\u014d hou",
+            "concept_words": {
+                "POINTED BY SPEAKER": "",
+                "mother": "kui",
+                "PP1SG": "to'u",
+                "equating": "hou"
+            }
+        },
+        "26": {
+            "cq": "She was young then!",
+            "translation": "na p\u014d hou",
+            "concept_words": {
+                "exhibiting (an attribute)": "",
+                "PP3SG": "",
+                "young": "hou"
+            }
+        },
+        "27": {
+            "cq": "I guess she was coming back from school",
+            "translation": "ma'akau, ua hua mai \u012ba mei te ha'e hamani",
+            "concept_words": {
+                "PP1SG": "",
+                "guessing": "ma'akau",
+                "PP3SG": "\u012ba",
+                "coming": "hua",
+                "school": "ha'e hamani"
+            }
+        },
+        "28": {
+            "cq": "look at her schoolbag.",
+            "translation": "me'ia me ta ia kaka hamani io he tua",
+            "concept_words": {
+                "PP2SG": "",
+                "looking": "",
+                "schoolbag": "kaka hamani",
+                "PP3SG": ""
+            }
+        },
+        "29": {
+            "cq": "Oh yeah, nice.",
+            "translation": "e, hei p\u016b",
+            "concept_words": {}
+        },
+        "30": {
+            "cq": "And who is the small boy behind her?",
+            "translation": "e te kaiu po'iti ma hope o \u012ba, o ai",
+            "concept_words": {
+                "PERSONAL DEICTIC WILDCARD": "o ai",
+                "small": "kaiu",
+                "boy": "po'iti",
+                "BEHIND X": "ma hope",
+                "PP3SG": "\u012ba",
+                "equating": ""
+            }
+        },
+        "31": {
+            "cq": "That\u2019s my uncle Teri.",
+            "translation": "o papa teri",
+            "concept_words": {
+                "uncle": "papa",
+                "Teri": "teri",
+                "equating": "",
+                "POINTED BY SPEAKER": "o",
+                "PP1SG": ""
+            }
+        },
+        "32": {
+            "cq": "You\u2019ve never met him.",
+            "translation": "a'i 'avei me 'oe",
+            "concept_words": {
+                "PP2SG": "'oe",
+                "never": "a'i",
+                "meeting": "'avei",
+                "PP3SG": ""
+            }
+        },
+        "33": {
+            "cq": "He lives far away from here.",
+            "translation": "mea mamao to \u012ba noho'ia mei 'inei",
+            "concept_words": {
+                "PP3SG": "\u012ba",
+                "residing": "noho",
+                "far away": "mamao",
+                "here": "'inei"
+            }
+        },
+        "34": {
+            "cq": "And what school did they attend then?",
+            "translation": "i hea to \u012ba ha'e hamani i te'a mou p\u014d",
+            "concept_words": {
+                "attending": "",
+                "PP3DU": "",
+                "school": "ha'e hamani",
+                "object wildcard": "",
+                "then (time)": "te'a mou p\u014d"
+            }
+        },
+        "35": {
+            "cq": "That was an old school, which doesn\u2019t exist anymore.",
+            "translation": "e ha'e hamai kakiu a'e he mea haka'ua i tenei",
+            "concept_words": {
+                "object wildcard": "",
+                "old": "kakiu",
+                "school": "ha'e hamani",
+                "existing": "",
+                "anymore": "",
+                "equating": ""
+            }
+        },
+        "36": {
+            "cq": "It was located down the road, towards the lake.",
+            "translation": "ena ma 'a'o mai o te va'anui, i te ka'o'ia 'oumati",
+            "concept_words": {
+                "object wildcard": "ena",
+                "being": "",
+                "AND": "",
+                "down the road": "ma 'a'o mai o te va'anui",
+                "TOWARD X": "keke",
+                "lake": ""
+            }
+        },
+        "37": {
+            "cq": "Let me see this other picture.",
+            "translation": "kaki au e 'ite i titahi ata 'a",
+            "concept_words": {
+                "PP2SG": "",
+                "allowing": "",
+                "PP1SG": "au",
+                "seeing": "'ite",
+                "OTHER X": "titahi",
+                "picture": "ata",
+                "POINTED BY SPEAKER": "'a"
+            }
+        },
+        "38": {
+            "cq": "This woman is surely your mother again, carrying a child on her back.",
+            "translation": "o to 'oe kui haka'ua oti me te tama io he vi'itua",
+            "concept_words": {
+                "women": "",
+                "POINTED BY SPEAKER": "",
+                "surely": "oti",
+                "mother": "kui",
+                "PP2SG": "'oe",
+                "again": "haka'ua",
+                "carrying": "",
+                "children": "tama",
+                "back (anatomy)": "tua",
+                "PP3SG": "",
+                "equating": ""
+            }
+        },
+        "39": {
+            "cq": "Oh, I think I know who this child is.",
+            "translation": "ma'akau ua 'ite au o ai tenei tama",
+            "concept_words": {
+                "PP1SG": "au",
+                "thinking": "ma'akau",
+                "knowing": "'ite",
+                "PERSONAL DEICTIC WILDCARD": "o ai",
+                "children": "tama",
+                "POINTED BY SPEAKER": "tenei",
+                "equating": ""
+            }
+        },
+        "40": {
+            "cq": "That\u2019s you!",
+            "translation": "o 'oe",
+            "concept_words": {
+                "POINTED BY SPEAKER": "o",
+                "PP2SG": "'oe",
+                "equating": ""
+            }
+        },
+        "41": {
+            "cq": "That's me indeed!",
+            "translation": "e, o au ihoa",
+            "concept_words": {
+                "POINTED BY SPEAKER": "o",
+                "PP1SG": "au",
+                "equating": ""
+            }
+        },
+        "42": {
+            "cq": "How did you recognize me?",
+            "translation": "pehea'ia to 'oe vivin'ia",
+            "concept_words": {
+                "PP2SG": "'oe",
+                "recognizing": "vivini'ia",
+                "PP1SG": "",
+                "process wildcard": "pehea'ia"
+            }
+        },
+        "43": {
+            "cq": "Well, on that photo you\u2019re a small child,",
+            "translation": "i tenei, o 'oe e kaiu to'iki, atika'a",
+            "concept_words": {
+                "PP2SG": "'oe",
+                "small": "kaiu",
+                "children": "to'iki",
+                "photo": "",
+                "POINTED BY SPEAKER": "",
+                "exhibiting (an attribute)": ""
+            }
+        },
+        "44": {
+            "cq": "but I recognize your eyes and your smile.",
+            "translation": "ua 'ite au i to 'oe mata me to 'oe mata katakata",
+            "concept_words": {
+                "BUT": "atika 'a",
+                "recognizing": "'ite",
+                "PP1SG": "au",
+                "PP2SG": "",
+                "eyes": "mata",
+                "AND": "me",
+                "smile": "mata katakata"
+            }
+        },
+        "45": {
+            "cq": "You look mischievous on that picture.",
+            "translation": "io tenei ata, o 'oe me he to'iki ko'iko'i",
+            "concept_words": {
+                "PP2SG": "'oe",
+                "looking like": "me he",
+                "mischievous": "to'iki ko'iko'i",
+                "picture": "ata",
+                "POINTED BY SPEAKER": "tenei"
+            }
+        },
+        "49": {
+            "cq": "Today my mother cannot carry me on her back!",
+            "translation": "i te 'a nei a'e 'i'o haka'ua i tu'u kui ia amo ia'u io to ia vi'itua ati'i",
+            "concept_words": {
+                "today": "te '\u0101 nei",
+                "mother": "kui",
+                "PP1SG": "to'u",
+                "being able to": "",
+                "carrying": "amo",
+                "back (anatomy)": "vi'itua",
+                "PP3SG": "\u012ba"
+            }
+        },
+        "50": {
+            "cq": "I\u2019m taller and heavier than her.",
+            "translation": "mea ka'uo'o, mea toko a'e au ia \u012ba",
+            "concept_words": {
+                "PP1SG": "au",
+                "MORE X THAN Y": "mea x a'e ia y",
+                "AND": "",
+                "tall": "",
+                "heavy": "toko",
+                "PP3SG": "\u012ba",
+                "exhibiting (an attribute)": ""
+            }
+        },
+        "51": {
+            "cq": "Ha, that\u2019s true.",
+            "translation": "e, toitoi",
+            "concept_words": {}
+        },
+        "52": {
+            "cq": "You\u2019ve eaten too much!",
+            "translation": "kai oko 'oe",
+            "concept_words": {
+                "PP2SG": "'oe",
+                "eating": "kai",
+                "TOO MUCH OF X": "oko"
+            }
+        }
+    },
+    "interviewer": "Marie Tearere TEIKITOHE",
+    "interviewee": "Pierre TEIKITOHE",
+    "recording_uid": "1718148540"
+}

@@ -5,7 +5,7 @@
   "data": {
     "1": {
       "cq": "Brother, have you seen my notebook?",
-      "translation": "Mon fr\u00e8re, tu as vu mon cahier ?",
+      "translation": "eh mon fr\u00e8re, tu as vu mon cahier",
       "concept_words": {
         "brother": "fr\u00e8re",
         "seeing": "vu",
@@ -15,11 +15,11 @@
     },
     "2": {
       "cq": "I\u2019ve been looking for it everywhere, but I can\u2019t find it!",
-      "translation": "J'ai cherch\u00e9 partout mais je ne le trouve pas !",
+      "translation": "je l'ai cherch\u00e9 partout mais je ne le trouve pas",
       "concept_words": {
-        "PP1SG": "J",
-        "searching": "cherch\u00e9",
-        "object wildcard": "le",
+        "PP1SG": "je",
+        "searching": "chercher",
+        "object wildcard": "l",
         "everywhere": "partout",
         "BUT": "mais",
         "being able to": "",
@@ -28,44 +28,44 @@
     },
     "3": {
       "cq": "I don\u2019t know, sister.",
-      "translation": "Je ne sais pas ma soeur",
+      "translation": "je ne sais pas soeurette",
       "concept_words": {
         "knowing": "sais",
         "PP1SG": "je",
-        "sister": "soeur"
+        "sister": "soeurette"
       }
     },
     "4": {
       "cq": "Which notebook?",
-      "translation": "Quel cahier ?",
+      "translation": "quel cahier",
       "concept_words": {
         "notebook": "cahier"
       }
     },
     "5": {
       "cq": "It\u2019s my math book.",
-      "translation": "C'est mon cahier de maths.",
+      "translation": "c'est mon cahier de math",
       "concept_words": {
-        "object wildcard": "C",
-        "being": "est",
+        "object wildcard": "c",
         "book": "cahier",
-        "math": "maths"
+        "math": "math",
+        "equating": "est"
       }
     },
     "6": {
       "cq": "It\u2019s a thick, blue one.",
-      "translation": "C'est un cahier bleu \u00e9pais",
+      "translation": "c'est un gros bleu",
       "concept_words": {
-        "object wildcard": "C",
+        "object wildcard": "c",
         "being": "est",
-        "thick": "\u00e9pais",
+        "thick": "gros",
         "blue": "bleu",
         "AND": ""
       }
     },
     "7": {
       "cq": "You\u2019ve seen it already.",
-      "translation": "Tu l'as d\u00e9j\u00e0 vu.",
+      "translation": "tu l'as d\u00e9j\u00e0 vu",
       "concept_words": {
         "PP2SG": "tu",
         "seeing": "vu",
@@ -75,7 +75,7 @@
     },
     "8": {
       "cq": "I was doing my homework on it last night in the dining room.",
-      "translation": "Je faisais mes devoirs dessus hier soir dans la salle \u00e0 manger",
+      "translation": "je faisais mes devoirs dessus hier soir dans la salle \u00e0 manger",
       "concept_words": {
         "PP1SG": "je",
         "doing": "faisais",
@@ -87,7 +87,7 @@
     },
     "9": {
       "cq": "Well, you probably left it there, then!",
-      "translation": "Ben tu l'as s\u00fbrement laiss\u00e9 l\u00e0 alors !",
+      "translation": "eh ben tu l'as s\u00fbrement laiss\u00e9 l\u00e0 alors",
       "concept_words": {
         "PP2SG": "tu",
         "leaving (transitive)": "laiss\u00e9",
@@ -103,19 +103,19 @@
     },
     "11": {
       "cq": "I put it away in my schoolbag before I went to sleep.",
-      "translation": "Je l'ai mis dans mon sac d'\u00e9cole avant d'aller me coucher",
+      "translation": "je l'ai mis dans mon sac d'\u00e9cole avant d'aller dormir",
       "concept_words": {
         "PP1SG": "je",
         "putting": "mis",
         "schoolbag": "sac d'\u00e9cole",
         "BEFORE X": "avant",
         "going": "aller",
-        "sleeping": "coucher"
+        "sleeping": "dormir"
       }
     },
     "12": {
       "cq": "I think.",
-      "translation": "Je pense",
+      "translation": "je pense",
       "concept_words": {
         "thinking": "pense",
         "PP1SG": "je"
@@ -123,13 +123,13 @@
     },
     "13": {
       "cq": "Hm, did you look in your room, beside your bed?",
-      "translation": "Tu as regard\u00e9 dans ta chambre, \u00e0 c\u00f4t\u00e9 du lit ?",
+      "translation": "hmm, tu as cherch\u00e9 dans ta chambre, \u00e0 c\u00f4t\u00e9 de ton lit",
       "concept_words": {
         "PP2SG": "tu",
         "searching": "cherch\u00e9",
         "ZOOM IN": "",
         "bedroom": "chambre",
-        "beside": "\u00e0 c\u00f4t\u00e9",
+        "beside": "\u00e0 c\u00f4t\u00e9 de",
         "bed": "lit"
       }
     },
@@ -148,8 +148,8 @@
       }
     },
     "16": {
-      "cq": "Or perhaps on Dad\u2019s desk",
-      "translation": "ou sur le bureau de papa",
+      "cq": "Or perhaps on Dad\u2019s desk?",
+      "translation": "ou peut-\u00eatre sur le bureau de papa",
       "concept_words": {
         "SPATIAL ON": "sur",
         "dad": "papa",
@@ -158,7 +158,7 @@
     },
     "17": {
       "cq": "Maybe it\u2019s hidden under another book?",
-      "translation": "peut \u00eatre il est cach\u00e9 sous un autre livre ?",
+      "translation": "peut-\u00eatre il est cach\u00e9 sous un autre livre",
       "concept_words": {
         "object wildcard": "il",
         "hidden": "cach\u00e9",
@@ -169,8 +169,13 @@
       }
     },
     "18": {
+      "cq": "Wait... no.",
+      "translation": "attends... non",
+      "concept_words": {}
+    },
+    "19": {
       "cq": "Wait\u2026 No, I can't find it.",
-      "translation": "attends... non, je ne le trouve pas",
+      "translation": "attends, non, je ne le trouve pas",
       "concept_words": {
         "PP1SG": "je",
         "being able to": "",
@@ -178,84 +183,84 @@
         "object wildcard": "le"
       }
     },
-    "19": {
+    "20": {
       "cq": "Let me look in the kitchen...",
-      "translation": "attends je regarde dans la cuisine",
+      "translation": "je regarde dans la cuisine",
       "concept_words": {
         "PP1SG": "je",
         "searching": "regarde",
         "kitchen": "cuisine"
       }
     },
-    "20": {
+    "21": {
       "cq": "Hm, not here.",
-      "translation": "hm, pas ici",
+      "translation": "hmm, pas ici",
       "concept_words": {
         "being": "",
         "CLOSE TO SPEAKER": "ici"
       }
     },
-    "21": {
+    "22": {
       "cq": "But I need it for my math class today!",
-      "translation": "Mais j'en ai besoin pour mon cours de maths aujourd'hui !",
+      "translation": "mais j'en ai besoin pour mon cours de maths aujourd'hui",
       "concept_words": {
         "BUT": "mais",
         "PP1SG": "j",
         "needing": "besoin",
         "object wildcard": "en",
-        "school class": "cours de maths",
+        "school class": "cours",
         "today": "aujourd'hui"
       }
     },
-    "22": {
+    "23": {
       "cq": "The teacher will be quite angry if I don\u2019t have my notebook.",
-      "translation": "Le prof va \u00eatre en col\u00e8re si je n'ai pas mon cahier.",
+      "translation": "le prof va \u00eatre en col\u00e8re si je n'ai pas mon cahier",
       "concept_words": {
         "teacher": "prof",
-        "being": "va \u00eatre",
-        "angry": "en col\u00e8re",
+        "being": "\u00eatre",
+        "angry": "col\u00e8re",
         "CONDITION": "si",
         "PP1SG": "je",
         "possessing": "ai",
         "notebook": "cahier"
       }
     },
-    "23": {
+    "24": {
       "cq": "He will think I didn\u2019t do my homework.",
-      "translation": "Il va penser que je n'ai pas fait mes devoirs",
+      "translation": "il va penser que je n'ai pas fait mes devoirs",
       "concept_words": {
         "PP3SG": "il",
-        "thinking": "va penser",
+        "thinking": "penser",
         "PP1SG": "je",
-        "doing": "ai fait",
+        "doing": "fait",
         "homework": "devoirs"
       }
     },
-    "24": {
+    "25": {
       "cq": "Uh oh\u2026 I think I found it!",
-      "translation": "Oh... je pense que je l'ai trouv\u00e9 !",
+      "translation": "oh, je pense que je l'ai trouv\u00e9",
       "concept_words": {
         "PP1SG": "je",
         "thinking": "pense",
-        "finding": "trouv\u00e9",
+        "finding": "ai trouv\u00e9",
         "object wildcard": "l"
       }
     },
-    "25": {
+    "26": {
       "cq": "Really?!",
-      "translation": "ah oui ?",
+      "translation": "ah oui",
       "concept_words": {}
     },
-    "26": {
+    "27": {
       "cq": "Where?",
-      "translation": "o\u00f9 ?",
+      "translation": "o\u00f9",
       "concept_words": {
-        "spatial position wildcard": "o\u00f9"
+        "spatial position wildcard": ""
       }
     },
-    "27": {
+    "28": {
       "cq": "Look at our little brother out there in the garden.",
-      "translation": "Regarde notre petit fr\u00e8re dans le jardin",
+      "translation": "regarde notre petit fr\u00e8re dans le jardin",
       "concept_words": {
         "PP2SG": "",
         "looking": "regarde",
@@ -267,9 +272,9 @@
         "DIRECTION": ""
       }
     },
-    "28": {
-      "cq": "What\u2019s that he\u2019s holding in his hands?",
-      "translation": "Qu'est-ce qu'il tient dans ses mains ?",
+    "29": {
+      "cq": "What is he holding in his hands?",
+      "translation": "qu'est-ce qu'il tient dans ses mains",
       "concept_words": {
         "holding": "tient",
         "object wildcard": "ce",
@@ -277,9 +282,9 @@
         "hands": "mains"
       }
     },
-    "29": {
+    "30": {
       "cq": "Isn\u2019t it your notebook?",
-      "translation": "Ce n'est pas ton cahier ?",
+      "translation": "ce n'est pas ton cahier",
       "concept_words": {
         "being": "est",
         "object wildcard": "ce",
@@ -287,16 +292,16 @@
         "COMP-EQUAL": ""
       }
     },
-    "30": {
+    "31": {
       "cq": "Oh my god, yes it is",
       "translation": "oh mon dieu oui",
       "concept_words": {
         "event wildcard": ""
       }
     },
-    "31": {
+    "32": {
       "cq": "But he has shredded it into pieces!",
-      "translation": "Mais il l'a d\u00e9chir\u00e9 en mille morceaux !",
+      "translation": "mais il l'a d\u00e9chir\u00e9 en mille morceaux",
       "concept_words": {
         "BUT": "mais",
         "shredding": "d\u00e9chir\u00e9",
@@ -305,36 +310,36 @@
         "pieces": "morceaux"
       }
     },
-    "32": {
+    "33": {
       "cq": "It looks like he\u2019s been playing with it all morning.",
-      "translation": "On dirait qu'il a jou\u00e9 avec toute la matin\u00e9e ",
+      "translation": "on dirait qu'il a jou\u00e9 avec toute la matin\u00e9e",
       "concept_words": {
-        "playing": "jou\u00e9",
+        "playing": "a jou\u00e9",
         "PP3SG": "il",
         "object wildcard": "",
         "morning": "matin\u00e9e"
       }
     },
-    "33": {
+    "34": {
       "cq": "Oh dear, what happened to my homework?!",
-      "translation": "Oh la la... mes devoirs !",
+      "translation": "oh la la, qu'est-il arriv\u00e9 \u00e0 mes devoirs",
       "concept_words": {
-        "happening": "",
-        "event wildcard": "",
+        "happening": "arriv\u00e9",
+        "event wildcard": "il",
         "homework": "devoirs",
         "PP1SG": "mes"
       }
     },
-    "34": {
+    "35": {
       "cq": "Now I need to buy a new notebook, and start my work all over again.",
-      "translation": "Maintenant je dois acheter un nouveau cahier et refaire tous mes devoirs. ",
+      "translation": "maintenant il faut que j'ach\u00e8te un nouveau cahier et que je recommence tout.",
       "concept_words": {
         "now": "maintenant",
         "AND": "et",
-        "needing": "besoin",
-        "buying": "acheter",
-        "starting": "refaire",
-        "PP1SG": "mes",
+        "needing": "faut",
+        "buying": "ach\u00e8te",
+        "starting": "recommence",
+        "PP1SG": "je",
         "notebook": "cahier",
         "new": "nouveau",
         "homework": "devoirs",
@@ -344,5 +349,6 @@
     }
   },
   "interviewer": "Sebastien",
-  "interviewee": "Sebastien"
+  "interviewee": "Sebastien",
+  "recording_uid": "1718159178"
 }
