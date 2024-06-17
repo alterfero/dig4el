@@ -1,10 +1,32 @@
 """ agent01 is an intelligent agent specialized in inferring grammatical rules based on conversation questionnaires.
 these exploration are used in evolutionary algorithms. each agent has beliefs, which are confronted to any source of insight.
 A belief is:  X is expressed as Y in context C.
-For example: PP1SG is a word does not vary agent01 knows about usual grammatical expressions of concepts"""
+For example: PP1SG is a word does not vary agent01 knows about usual grammatical expressions of concepts
+test on bijection, injection etc."""
 
 from libs import utils as u, graphs_utils as gu, knowledge_graph_utils as kgu
 
+# Typological data ================================================
+
+syntactic_elements = {
+    "single specific invariable word" : {
+        "paramaters": {
+            "concept": "",
+            "word": ""
+        },
+        "test": "test_single_specific_invariable_word"
+    }
+}
+
+typological_knowledge = {
+    "personal pronouns": {
+        "can be searched individually": True,
+        "can vary with": ["SEMANTIC ROLE", "NUMBER", "GENDER"]
+    }
+
+}
+
+# CLASSES ======================
 class Belief:
     def __init__(self, concept, expression):
         self.concept = concept
@@ -16,16 +38,9 @@ class Agent01:
     def show_beliefs(self):
         return self.beliefs
 
-expression_types = {
-    "single specific invariable word" : {
-        "paramaters": {
-            "concept": "",
-            "word": ""
-        },
-        "test": "test_single_specific_invariable_word"
-    }
-}
 
+
+# TESTS ========================
 def test_single_specific_invariable_word(knowledge_graph, concept, word):
     """a single_specific_invariable_word expression assumes that the word is
     always present in sentences where this concept occurs, and absent from sentences
