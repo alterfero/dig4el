@@ -19,6 +19,9 @@ def is_number(s):
     """Check if a string is a number."""
     return re.match(r"^\d+$", s) is not None
 
+def listify(string):
+    return(string.split("..."))
+
 def clean_sentence(sentence):
     """Clean a sentence."""
     nil_list = [",", ";"]

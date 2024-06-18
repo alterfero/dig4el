@@ -4,7 +4,7 @@ from os import listdir, mkdir
 from os.path import isfile, join
 import time
 from libs import graphs_utils
-from libs import utils
+from libs import utils, stats
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -12,6 +12,12 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+delimiters = {
+    "french": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
+    "english": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
+    "marquesan (Nuku Hiva)": [" ", ".", ",", ";", ":", "!", "?", "…"]
+}
 
 questionnaires_folder = "./questionnaires"
 # cq_list is the list of json files in the questionnaires folder
@@ -124,19 +130,28 @@ if st.session_state["cq_is_chosen"]:
     translation_raw = st.text_input("Equivalent in {}".format(st.session_state["target_language"]),
                                 value=translation_default, key=str(st.session_state["counter"]))
     translation = utils.normalize_sentence(translation_raw)
+    segmented_target_sentence = stats.custom_split(translation, delimiters[st.session_state["target_language"]])
 
-    # for each base concept, display a text box to enter the word in the target language
+    # for each base concept, display a multiselect tool to select the word(s) that express (part of) this concept in the target language
+    # the word(s) are stored as strings in the json, separated by "...", but must be a list for the multiselect tool to work.
     concept_words = {}
     for concept in cq["dialog"][str(st.session_state["counter"])]["concept"]:
+        concept_default = []
         if concept in concepts_kson.keys():
-            st.write("In this sentence, would you know which word would point to the following concepts?")
+            st.write("In this sentence, would you know which word(s) would contribute to the expression the following concepts?")
             if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
                 if concept in st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"].keys():
-                    concept_default = st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"][concept]
+                    target_word_list = utils.listify(st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"][concept])
+                    if all(element in segmented_target_sentence for element in target_word_list):
+                        concept_default = target_word_list
+                else:
+                    st.write("concept {} is in the CQ but not in this recording, it will be ignored".format(concept))
             else:
-                concept_default = ""
-            concept_translation = st.text_input("{} : ".format(concept), value=concept_default, key=concept+str(st.session_state["counter"]))
-            concept_words[concept] = concept_translation
+                concept_default = []
+            concept_translation_list = st.multiselect("{} : ".format(concept), segmented_target_sentence, default=concept_default, key=concept+str(st.session_state["counter"]))
+            concept_words[concept] = "...".join(concept_translation_list)
+        else:
+            st.write("Concept {} not found in the concept graph".format(concept))
 
     if st.button("Validate sentence"):
         st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
@@ -149,28 +164,35 @@ if st.session_state["cq_is_chosen"]:
         st.rerun()
 
     #st.write(st.session_state["recording"])
+    filename = ("recording_"
+                + st.session_state["current_cq"].replace(".json", "") + "_"
+                + st.session_state["target_language"] + "_"
+                + st.session_state["recording"]["interviewer"] + "_"
+                + st.session_state["recording"]["interviewee"] + "_"
+                + str(int(time.time())) + ".json")
+    st.download_button(label="download your recording", data=json.dumps(st.session_state["recording"], indent=4), file_name=filename)
 
-    if st.button("Save Recording"):
-        #if there is no folder with the name of the cq in the recordings folder, create it
-        cq_folder_name = st.session_state["current_cq"].replace(".json", "")
-        if cq_folder_name not in listdir("./recordings"):
-            mkdir("./recordings/" + cq_folder_name)
-        #if there is no folder with the name of the target language in the cq folder, create it
-        if st.session_state["target_language"] not in listdir("./recordings/" + cq_folder_name):
-            mkdir("./recordings/" + cq_folder_name + "/" + st.session_state["target_language"])
-
-        if st.session_state["loaded_existing"]:
-            filename = ("./recordings/" + cq_folder_name + "/" + st.session_state["target_language"] + "/" +
-                        st.session_state["existing_filename"])
-        else:
-            filename = ("./recordings/" + cq_folder_name + "/" + st.session_state["target_language"] + "/" + "recording_"
-                        + st.session_state["current_cq"].replace(".json", "") + "_"
-                        + st.session_state["target_language"] + "_"
-                        + st.session_state["recording"]["interviewer"] + "_"
-                        + st.session_state["recording"]["interviewee"] + "_"
-                        + str(int(time.time()))
-                        + ".json")
-        json.dump(st.session_state["recording"], open(filename, "w"))
-        st.success("Recording saved as {}".format(filename))
+            # LOCAL SAVING
+            # if there is no folder with the name of the cq in the recordings folder, create it
+            # cq_folder_name = st.session_state["current_cq"].replace(".json", "")
+            # if cq_folder_name not in listdir("./recordings"):
+            #     mkdir("./recordings/" + cq_folder_name)
+            # #if there is no folder with the name of the target language in the cq folder, create it
+            # if st.session_state["target_language"] not in listdir("./recordings/" + cq_folder_name):
+            #     mkdir("./recordings/" + cq_folder_name + "/" + st.session_state["target_language"])
+            #
+            # if st.session_state["loaded_existing"]:
+            #     filename = ("./recordings/" + cq_folder_name + "/" + st.session_state["target_language"] + "/" +
+            #                 st.session_state["existing_filename"])
+            # else:
+            #     filename = ("./recordings/" + cq_folder_name + "/" + st.session_state["target_language"] + "/" + "recording_"
+            #                 + st.session_state["current_cq"].replace(".json", "") + "_"
+            #                 + st.session_state["target_language"] + "_"
+            #                 + st.session_state["recording"]["interviewer"] + "_"
+            #                 + st.session_state["recording"]["interviewee"] + "_"
+            #                 + str(int(time.time()))
+            #                 + ".json")
+            # json.dump(st.session_state["recording"], open(filename, "w"))
+            # st.success("Recording saved as {}".format(filename))
 
 
