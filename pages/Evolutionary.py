@@ -1,6 +1,6 @@
 import streamlit as st
 import json
-from exploration import evolutionary101
+from exploration.evolutionary101 import Belief
 
 if "loaded_existing" not in st.session_state:
     st.session_state["loaded_existing"] = False
@@ -13,6 +13,25 @@ delimiters = {
     "french": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
     "english": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
     "marquesan (Nuku Hiva)": [" ", ".", ",", ";", ":", "!", "?", "…"]
+}
+
+# Typological data ================================================
+
+syntactic_elements = {
+    "single specific invariable word" : {
+        "paramaters": {
+            "concept": "",
+            "word": ""
+        },
+        "test": "test_single_specific_invariable_word"
+    }
+}
+
+typological_knowledge = {
+    "personal pronouns": {
+        "can be searched individually": True,
+        "can vary with": ["SEMANTIC ROLE", "NUMBER", "GENDER"]
+    }
 }
 
 

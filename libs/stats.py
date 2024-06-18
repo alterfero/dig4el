@@ -10,9 +10,19 @@ def calculate_entropy(prob_dict):
     return entropy
 
 def custom_split(text, delimiters):
+    punctuation = [".", ",", ":", ";", "?", "!", "(", ")"]
     # Create a regular expression pattern using the provided delimiters
     pattern = '|'.join(map(re.escape, delimiters))
     # Use re.split() to split the text based on the pattern
+    split_text = re.split(pattern, text)
+    # remove punctuation attached to words
+    split_text = [word.strip(''.join(punctuation)) for word in split_text]
+    # remove extra spaces
+    split_text = [word for word in split_text if word]
+    # remove spaces around each word
+    split_text = [word.strip() for word in split_text]
+    return split_text
+
     return re.split(pattern, text)
 def build_blind_word_stats_from_knowledge_graph(knowledge_graph, delimiters):
     """ takes a knowledge graph, returns a dictionary of all the words with their frequency and the list of the

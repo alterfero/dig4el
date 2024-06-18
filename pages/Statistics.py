@@ -50,7 +50,8 @@ delimiters = {
 }
 
 language = st.selectbox("Select a language", [ "marquesan (Nuku Hiva)", "english", "french"], index=0)
-st.session_state["knowledge_graph"], unique_words, unique_words_frequency, total_target_word_count = kgu.build_knowledge_graph(language)
+st.session_state["knowledge_graph"], unique_words, unique_words_frequency, total_target_word_count = (
+    kgu.build_knowledge_graph(language))
 st.write("total_target_word_count: {}".format(total_target_word_count))
 if st.session_state["knowledge_graph"] != {}:
     st.session_state["is_kg_computed"] = True

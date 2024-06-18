@@ -6,33 +6,15 @@ test on bijection, injection etc."""
 
 from libs import utils as u, graphs_utils as gu, knowledge_graph_utils as kgu
 
-# Typological data ================================================
 
-syntactic_elements = {
-    "single specific invariable word" : {
-        "paramaters": {
-            "concept": "",
-            "word": ""
-        },
-        "test": "test_single_specific_invariable_word"
-    }
-}
-
-typological_knowledge = {
-    "personal pronouns": {
-        "can be searched individually": True,
-        "can vary with": ["SEMANTIC ROLE", "NUMBER", "GENDER"]
-    }
-
-}
 
 # CLASSES ======================
 class Belief:
-    def __init__(self, concept, expression):
+    def __init__(self, concept, syntactic_element):
         self.concept = concept
-        self.expression = expression
+        self.expression = syntactic_element
 
-class Agent01:
+class Evolutionary_agent01:
     def __init__(self, beliefs):
         self.beliefs = []
     def show_beliefs(self):

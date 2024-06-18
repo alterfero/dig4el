@@ -84,8 +84,9 @@ def build_knowledge_graph(language):
                         "language": language
                     }
                     index_counter += 1
-                    total_target_word_count += len(recording_json["data"][item]["translation"].split())
-                    for word in recording_json["data"][item]["translation"].split():
+                    words = stats.custom_split(recording_json["data"][item]["translation"], delimiters[language])
+                    total_target_word_count += len(words)
+                    for word in words:
                         if word in unique_words_frequency:
                             unique_words_frequency[word] += 1000 / total_target_word_count
                         else:
