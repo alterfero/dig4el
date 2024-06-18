@@ -34,12 +34,13 @@ if "cq_is_chosen" not in st.session_state:
 if "current_sentence_number" not in st.session_state:
     st.session_state["current_sentence_number"] = 1
 if "target_language" not in st.session_state:
-    st.session_state["target_language"] = "English"
+    st.session_state["target_language"] = "english"
 if "counter" not in st.session_state:
     st.session_state["counter"] = 1
 if "recording" not in st.session_state:
     st.session_state["recording"] = {"target language": st.session_state["target_language"],
-                                     "pivot language": "english", "cq_uid": "xxx", "data": {}}
+                                     "pivot language": "english", "cq_uid": "xxx", "data": {},
+                                     "interviewer": "", "interviewee": ""}
 if "loaded_existing" not in st.session_state:
     st.session_state["loaded_existing"] = False
 if "existing_filename" not in st.session_state:
@@ -72,10 +73,24 @@ if st.session_state["loaded_existing"]:
     default_cq_uid = st.session_state["recording"]["cq_uid"]
     default_data = st.session_state["recording"]["data"]
 else:
-    default_interviewer = ""
-    default_interviewee = ""
-    default_target_language = "english"
-    default_pivot_language = "english"
+    if st.session_state["recording"]["interviewer"] == "":
+        default_interviewer = ""
+    else:
+        default_interviewer = st.session_state["recording"]["interviewer"]
+    if st.session_state["recording"]["interviewee"] == "":
+        default_interviewee = ""
+    else:
+        default_interviewee = st.session_state["recording"]["interviewee"]
+    if st.session_state["recording"]["target language"] == "english":
+        default_target_language = "english"
+    else:
+        default_target_language = st.session_state["recording"]["target language"]
+    if st.session_state["recording"]["pivot language"] == "english":
+        default_pivot_language = "english"
+    else:
+        default_pivot_language = st.session_state["recording"]["pivot language"]
+
+
     default_cq_uid = ""
     default_data = {}
 
