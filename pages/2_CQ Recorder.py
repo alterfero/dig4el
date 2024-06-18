@@ -89,30 +89,35 @@ else:
         default_pivot_language = "english"
     else:
         default_pivot_language = st.session_state["recording"]["pivot language"]
+    if st.session_state["recording"]["cq_uid"] == "xxx":
+        default_cq_uid = ""
+    else:
+        default_cq_uid = st.session_state["recording"]["cq_uid"]
+    if st.session_state["recording"]["data"] == {}:
+        default_data = {}
+    else:
+        default_data = st.session_state["recording"]["data"]
 
+with st.expander("Parameters"):
+    interviewer = st.text_input("Interviewer", value=default_interviewer, key="interviewer")
+    st.session_state["recording"]["interviewer"] = interviewer
 
-    default_cq_uid = ""
-    default_data = {}
+    interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee")
+    st.session_state["recording"]["interviewee"] = interviewee
 
-interviewer = st.text_input("Interviewer", value=default_interviewer, key="interviewer")
-st.session_state["recording"]["interviewer"] = interviewer
+    tl = st.selectbox("Choose a target language", available_languages, index=available_languages.index(default_target_language))
+    if st.session_state["target_language"] != tl:
+        st.session_state["target_language"] = tl
+        st.session_state["cq_is_chosen"] = False
 
-interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee")
-st.session_state["recording"]["interviewee"] = interviewee
-
-tl = st.selectbox("Choose a target language", available_languages, index=available_languages.index(default_target_language))
-if st.session_state["target_language"] != tl:
-    st.session_state["target_language"] = tl
-    st.session_state["cq_is_chosen"] = False
-
-if not st.session_state["loaded_existing"]:
-    select_cq = st.selectbox("Choose a CQ", cq_list, index=cq_list.index(st.session_state["current_cq"]))
-    if st.button("select CQ"):
-        st.session_state["current_cq"] = select_cq
+    if not st.session_state["loaded_existing"]:
+        select_cq = st.selectbox("Choose a CQ", cq_list, index=cq_list.index(st.session_state["current_cq"]))
+        if st.button("select CQ"):
+            st.session_state["current_cq"] = select_cq
+            st.session_state["cq_is_chosen"] = True
+    else:
+        st.session_state["current_cq"] = st.session_state["cq_id_dict"][default_cq_uid]["filename"]
         st.session_state["cq_is_chosen"] = True
-else:
-    st.session_state["current_cq"] = st.session_state["cq_id_dict"][default_cq_uid]["filename"]
-    st.session_state["cq_is_chosen"] = True
 
 if st.session_state["cq_is_chosen"]:
     # load the json file
