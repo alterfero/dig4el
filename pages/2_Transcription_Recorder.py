@@ -24,7 +24,8 @@ questionnaires_folder = "./questionnaires"
 cq_list = [f for f in listdir(questionnaires_folder) if isfile(join(questionnaires_folder, f)) and f.endswith(".json")]
 
 concepts_kson = json.load(open("./data/concepts.json"))
-available_languages = ["english", "french", "german", "tahitian", "mwotlap", "marquesan (Nuku Hiva)"]
+available_target_languages = ["french", "marquesan (Nuku Hiva)"]
+available_pivot_languages = ["english", "french"]
 questionnaires_folder = "./questionnaires"
 
 if "current_cq" not in st.session_state:
@@ -34,7 +35,9 @@ if "cq_is_chosen" not in st.session_state:
 if "current_sentence_number" not in st.session_state:
     st.session_state["current_sentence_number"] = 1
 if "target_language" not in st.session_state:
-    st.session_state["target_language"] = "english"
+    st.session_state["target_language"] = "marquesan (Nuku Hiva)"
+if "pivot_language" not in st.session_state:
+    st.session_state["pivot_language"] = "english"
 if "counter" not in st.session_state:
     st.session_state["counter"] = 1
 if "recording" not in st.session_state:
@@ -105,9 +108,17 @@ with st.expander("Parameters"):
     interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee")
     st.session_state["recording"]["interviewee"] = interviewee
 
-    tl = st.selectbox("Choose a target language", available_languages, index=available_languages.index(default_target_language))
+    tl = st.selectbox("Choose a target language", available_target_languages, index=available_target_languages.index(default_target_language))
     if st.session_state["target_language"] != tl:
         st.session_state["target_language"] = tl
+        st.session_state["cq_is_chosen"] = False
+
+    pl = st.selectbox("Choose a pivot language", available_pivot_languages,
+                      index=available_pivot_languages.index(default_pivot_language))
+    if st.session_state["pivot_language"] != pl:
+        st.session_state["pivot_language"] = pl
+        #print("pivot language switched to {}".format(pl))
+        st.session_state["recording"]["pivot language"] = pl
         st.session_state["cq_is_chosen"] = False
 
     if not st.session_state["loaded_existing"]:
@@ -142,11 +153,28 @@ if st.session_state["cq_is_chosen"]:
             st.rerun()
 
     st.subheader(cq["dialog"][str(st.session_state["counter"])]["speaker"] + " : " + cq["dialog"][str(st.session_state["counter"])]["text"])
+
+    #a recording exists at this index
     if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
         translation_default = st.session_state["recording"]["data"][str(st.session_state["counter"])]["translation"]
+        if "alternate_pivot" in st.session_state["recording"]["data"][str(st.session_state["counter"])].keys():
+            alternate_pivot_default = st.session_state["recording"]["data"][str(st.session_state["counter"])][
+                "alternate_pivot"]
+        else:
+            st.session_state["recording"]["data"][str(st.session_state["counter"])]["alternate_pivot"] = ""
+            alternate_pivot_default = ""
     else:
         translation_default = ""
-    st.write(translation_default)
+        alternate_pivot_default = ""
+
+    # if pivot language is not english, store the pivot form
+    if st.session_state["pivot_language"] != "english":
+        alternate_pivot = st.text_input(
+            "Enter here the expression you used in {}".format(st.session_state["pivot_language"]),
+            value=alternate_pivot_default)
+    else:
+        alternate_pivot = ""
+
     translation_raw = st.text_input("Equivalent in {}".format(st.session_state["target_language"]),
                                 value=translation_default, key=str(st.session_state["counter"]))
     translation = utils.normalize_sentence(translation_raw)
@@ -176,6 +204,7 @@ if st.session_state["cq_is_chosen"]:
     if st.button("Validate sentence"):
         st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
             "cq": cq["dialog"][str(st.session_state["counter"])]["text"],
+            "alternate_pivot": alternate_pivot,
             "translation": translation,
             "concept_words": concept_words
         }
@@ -183,7 +212,7 @@ if st.session_state["cq_is_chosen"]:
             st.session_state["counter"] = st.session_state["counter"] + 1
         st.rerun()
 
-    #st.write(st.session_state["recording"])
+    st.write(st.session_state["recording"])
     filename = ("recording_"
                 + st.session_state["current_cq"].replace(".json", "") + "_"
                 + st.session_state["target_language"] + "_"

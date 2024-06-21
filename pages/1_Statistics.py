@@ -80,7 +80,7 @@ if st.session_state["is_kg_computed"]:
         st.session_state["is_blind_word_statistics_computed"] = True
 
 colr, colt = st.columns(2)
-with colt.expander("word exploration"):
+with colt.expander("target word exploration"):
     word = st.selectbox("select a word", unique_words)
     refs = kgu.get_sentences_with_word(st.session_state["knowledge_graph"], word, language)
     st.write("***{}*** appears in {} sentences.".format(word, len(refs)))

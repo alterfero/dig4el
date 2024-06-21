@@ -67,6 +67,8 @@ def reset_current_dialog():
     st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["concept"] = []
     st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["graph"] = {}
     st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["trimmed_graph"] = {}
+    st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["legacy index"] = ""
+    st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["idiomaticity"] = 1
     print("reset_current_dialog executed")
 
 st.title("Conversational Questionnaire Editor")
@@ -153,7 +155,7 @@ with colz.container():
         st.rerun()
 
 
-
+# there's an entry on that counter mark
 if str(st.session_state["counter"]) in st.session_state["cq"]["dialog"].keys():
     #print("Existing sentence in this dialog, retrieving content")
     #print("getting defaults from {}".format(st.session_state["cq"]["dialog"][str(st.session_state["counter"])]))
@@ -169,6 +171,15 @@ if str(st.session_state["counter"]) in st.session_state["cq"]["dialog"].keys():
     default_p = st.session_state["cq"]["dialog"][current_counter]["predicate"]
     if default_p ==[]:
         default_p = None
+    if "legacy index" in st.session_state["cq"]["dialog"][current_counter]:
+        default_legacy_index = st.session_state["cq"]["dialog"][current_counter]["legacy index"]
+    else:
+        st.session_state["cq"]["dialog"][current_counter]["legacy index"] = ""
+        default_legacy_index = ""
+    if "idiomaticity" in st.session_state["cq"]["dialog"][current_counter]:
+        default_idiomaticity = st.session_state["cq"]["dialog"][current_counter]["idiomaticity"]
+    else:
+        default_idiomaticity = 1
     default_c = st.session_state["cq"]["dialog"][current_counter]["concept"]
     if default_c == []:
         default_c = None
@@ -176,45 +187,55 @@ if str(st.session_state["counter"]) in st.session_state["cq"]["dialog"].keys():
     if default_g == {}:
         default_g = None
 
+#print("New sentence in this dialog, setting defaults")
 else:
-    #print("New sentence in this dialog, setting defaults")
     st.session_state["cq"]["dialog"][str(st.session_state["counter"])] = {
         "speaker": "",
         "text": "",
         "intent": "",
+        "legacy index": "",
+        "idiomaticity": 1,
         "predicate": "",
         "concept": [],
         "graph": {},
+        "trimmed_graph": {}
     }
+    default_legacy_index = ""
     default_s = "A"
     default_t = ""
     default_i = None
     default_p = None
+    default_idiomaticity = 1
     default_f = None
     default_c = None
     default_g = {}
+    default_tg = {}
 
-s = colz.selectbox("Speaker", ["A", "B"], index=["A", "B"].index(default_s))
-s_name = st.session_state["cq"]["speakers"][s]["name"]
-t = colz.text_input(s_name + " says", value=default_t)
+with colz.expander("sentence-wise descriptors"):
+    lsi = st.text_input("legacy sentence index", default_legacy_index)
+    s = st.selectbox("Speaker", ["A", "B"], index=["A", "B"].index(default_s))
+    s_name = st.session_state["cq"]["speakers"][s]["name"]
+    t = st.text_input(s_name + " says", value=default_t)
 
-try:
-    i = colz.multiselect("Intents", intent_list, default=default_i)
-except:
-    i = colz.multiselect("Intents", intent_list)
-    colz.write("Original intents not found in intents.json, please select from the list")
+    idio = st.slider("idiomaticity evaluation (1 = should not be idiomatic, 5 = is for sure idiomatic)", 1, 5, value=default_idiomaticity)
 
-try:
-    p = colz.multiselect("Predicate", predicate_list, default=default_p)
-except:
-    p = colz.multiselect("Predicate", predicate_list)
-    colz.write("Original predicates not found, please select from the list")
+    try:
+        i = st.multiselect("Intents", intent_list, default=default_i)
+    except:
+        i = st.multiselect("Intents", intent_list)
+        #colz.write("Original intents not found in intents.json, please select from the list")
+
+    try:
+        p = st.multiselect("Predicate", predicate_list, default=default_p)
+    except:
+        p = st.multiselect("Predicate", predicate_list)
+        st.write("Original predicates not found, please select from the list")
 
 try:
     c = colz.multiselect("Concepts", list(concepts_kson.keys()), default=default_c)
 except:
     c = colz.multiselect("Concepts", list(concepts_kson.keys()))
-    colz.write("Original concepts not found in concepts.json, please select from the list")
+    #colz.write("Original concepts not found in concepts.json, please select from the list")
 
 # if some concepts have been chosen, create concept graph with requirements or load if existing, otherwise clean st.session_state["req_json"]
 if c == []:
@@ -309,8 +330,10 @@ if st.session_state["req_json"] != {}:
 with colz.container():
     colu, coli, colo = st.columns(3)
     if colu.button("Validate sentence"):
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["legacy index"] = lsi
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["speaker"] = s
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["text"] = t
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["idiomaticity"] = idio
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["intent"] = i
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["predicate"] = p
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["concept"] = c
@@ -323,11 +346,13 @@ with colz.container():
         colu.success("validated sentence #{}".format(st.session_state["counter"]))
         #print(st.session_state["cq"]["dialog"][str(st.session_state["counter"])])
         st.rerun()
-    # if coli.button("Save questionnaire"):
-    #     cq_file_name = "cq_" + st.session_state["cq"]["title"] + "_" + st.session_state["uid"] + ".json"
-    #     json.dump(st.session_state["cq"], open("./questionnaires/" + cq_file_name, "w"))
-    #     colo.success("Saved questionnaire as {}".format(cq_file_name))
+    if coli.button("Save questionnaire"):
+        cq_file_name = "cq_" + st.session_state["cq"]["title"] + "_" + st.session_state["uid"] + ".json"
+        json.dump(st.session_state["cq"], open("./questionnaires/" + cq_file_name, "w"))
+        colo.success("Saved questionnaire as {}".format(cq_file_name))
     if colo.button("Reset sentence"):
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["legacy index"] = ""
+        st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["idiomaticity"] = 1
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["speaker"] = "A"
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["text"] = ""
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["intent"] = []

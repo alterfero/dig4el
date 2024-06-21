@@ -2,7 +2,10 @@
 these exploration are used in evolutionary algorithms. each agent has beliefs, which are confronted to any source of insight.
 A belief is:  X is expressed as Y in context C.
 For example: PP1SG is a word does not vary agent01 knows about usual grammatical expressions of concepts
-test on bijection, injection etc."""
+test on bijection, injection etc.
+- Does Y vary with C
+- What is the structure of Y: words, word, morpheme, ellipsis, word order.
+"""
 
 from libs import utils as u, graphs_utils as gu, knowledge_graph_utils as kgu
 
