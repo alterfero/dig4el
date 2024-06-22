@@ -211,13 +211,13 @@ else:
     default_g = {}
     default_tg = {}
 
-with colz.expander("sentence-wise descriptors"):
+with colz.expander("sentence-wise descriptors", expanded=True):
     lsi = st.text_input("legacy sentence index", default_legacy_index)
     s = st.selectbox("Speaker", ["A", "B"], index=["A", "B"].index(default_s))
     s_name = st.session_state["cq"]["speakers"][s]["name"]
     t = st.text_input(s_name + " says", value=default_t)
 
-    idio = st.slider("idiomaticity evaluation (1 = should not be idiomatic, 5 = is for sure idiomatic)", 1, 5, value=default_idiomaticity)
+    idio = st.slider("idiomaticity evaluation (1 = should not be idiomatic, 5 = is most probably idiomatic)", 1, 5, value=default_idiomaticity)
 
     try:
         i = st.multiselect("Intents", intent_list, default=default_i)
