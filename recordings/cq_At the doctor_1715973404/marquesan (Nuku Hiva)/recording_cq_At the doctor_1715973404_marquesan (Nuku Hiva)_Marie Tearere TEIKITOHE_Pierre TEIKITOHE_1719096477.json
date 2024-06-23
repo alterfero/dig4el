@@ -1,0 +1,678 @@
+{
+    "target language": "marquesan (Nuku Hiva)",
+    "pivot language": "french",
+    "cq_uid": "1715973404",
+    "data": {
+        "1": {
+            "legacy index": "1a",
+            "cq": "Good morning Doctor",
+            "alternate_pivot": "Bonjour Docteur",
+            "translation": "ka'oha taote",
+            "concept_words": {}
+        },
+        "2": {
+            "legacy index": "1b",
+            "cq": "How are you?",
+            "alternate_pivot": "Comment allez-vous ?",
+            "translation": "e aha to 'oe hakatu",
+            "concept_words": {}
+        },
+        "3": {
+            "legacy index": "2",
+            "cq": "I'm fine, and you?",
+            "alternate_pivot": "Bien et vous ?",
+            "translation": "mea meita'i, 'e 'oe nei",
+            "concept_words": {}
+        },
+        "4": {
+            "legacy index": "3",
+            "cq": "Well\u2026 I\u2019m not feeling well these days.",
+            "alternate_pivot": "Eh bien\u2026 Je ne me sens pas bien ces jours-ci. ",
+            "translation": "e hoa, a'e ihoa au te mea meita'i i na '\u0101 nei",
+            "concept_words": {
+                "PP1SG": "",
+                "experiencing in the body": "",
+                "good": "meita'i",
+                "these days": ""
+            }
+        },
+        "5": {
+            "legacy index": "4",
+            "cq": "This is why I came to see you.",
+            "alternate_pivot": "C'est pour \u00e7a que je suis venu vous voir. ",
+            "translation": "e hoa, a'e ihoa au te mea meita'i i na '\u0101 nei",
+            "concept_words": {
+                "event wildcard": "",
+                "causality wildcard": "",
+                "PP1SG": "",
+                "coming": "",
+                "seeing": "",
+                "PP2SG": "",
+                "equating": ""
+            }
+        },
+        "6": {
+            "legacy index": "5a",
+            "cq": "What\u2019s happening to you?",
+            "alternate_pivot": "C'est pour \u00e7a que je suis venu vous voir. ",
+            "translation": "que vous arrive-t-il",
+            "concept_words": {
+                "event wildcard": "",
+                "happening": "",
+                "PP2SG": ""
+            }
+        },
+        "7": {
+            "legacy index": "5b",
+            "cq": "You look sick",
+            "alternate_pivot": "Vous avez l'air malade",
+            "translation": "me he mea 'a, ua hemo 'oe i te mate",
+            "concept_words": {
+                "PP2SG": "",
+                "looking like": "",
+                "sick": ""
+            }
+        },
+        "8": {
+            "legacy index": "6",
+            "cq": "I can\u2019t sleep well at night.",
+            "alternate_pivot": "J'ai du mal \u00e0 dormir la nuit",
+            "translation": "a'e au mea hiamoe meita'i i te p\u014d",
+            "concept_words": {
+                "PP1SG": "au",
+                "being able to": "",
+                "sleeping": "hiamoe",
+                "at night": ""
+            }
+        },
+        "9": {
+            "legacy index": "7a",
+            "cq": "I sweat",
+            "alternate_pivot": "Je transpire",
+            "translation": "e hit\u0101 au",
+            "concept_words": {
+                "sweating": "hit\u0101",
+                "PP1SG": "au"
+            }
+        },
+        "10": {
+            "legacy index": "7b",
+            "cq": "I have nightmares.",
+            "alternate_pivot": "Je fais des cauchemars",
+            "translation": "moemoea hauhau",
+            "concept_words": {
+                "PP1SG": "",
+                "experiencing in the body": "",
+                "nightmare": ""
+            }
+        },
+        "11": {
+            "legacy index": "7c",
+            "cq": "and then I wake up in the middle of the night.",
+            "alternate_pivot": "et je me r\u00e9veille au milieu de la nuit",
+            "translation": "e va'a pakapaka au i vaveka o te p\u014d",
+            "concept_words": {
+                "PP1SG": "au",
+                "waking up": "va'a",
+                "middle of the night": ""
+            }
+        },
+        "12": {
+            "legacy index": "8a",
+            "cq": "Sometimes I feel hot",
+            "alternate_pivot": "Parfois j'ai chaud",
+            "translation": "titahi mea u ve'ave'a au",
+            "concept_words": {
+                "PP1SG": "au",
+                "experiencing in the body": "",
+                "hot": "ve'ave'a",
+                "sometimes": ""
+            }
+        },
+        "13": {
+            "legacy index": "8b",
+            "cq": "sometimes I feel cold",
+            "alternate_pivot": "Parfois j'ai froid",
+            "translation": "titahi mea u kama'i'i au",
+            "concept_words": {
+                "sometimes": "mea",
+                "PP1SG": "au",
+                "experiencing in the body": "",
+                "cold": "kama'i'i"
+            }
+        },
+        "14": {
+            "legacy index": "8c",
+            "cq": "I must have fever?",
+            "alternate_pivot": "Je dois avoir de la fi\u00e8vre ?",
+            "translation": "e fiva 'a to'u",
+            "concept_words": {
+                "PP1SG": "to'u",
+                "experiencing in the body": "",
+                "fever": "fiva"
+            }
+        },
+        "15": {
+            "legacy index": "9a",
+            "cq": "Let me check your forehead",
+            "alternate_pivot": "Attendez, je v\u00e9rifie votre front\u2026  ",
+            "translation": "epo, h\u0101 h\u0101 au i to 'oe a'e",
+            "concept_words": {
+                "PP1SG": "au",
+                "PP2SG": "'oe",
+                "allowing": "",
+                "checking": "",
+                "forehead": ""
+            }
+        },
+        "16": {
+            "legacy index": "9b",
+            "cq": "Oh yes, you\u2019re hot!",
+            "alternate_pivot": "Oh oui vous \u00eates chaud !",
+            "translation": "e hoa, mea ve'ave'a 'oe",
+            "concept_words": {
+                "PP2SG": "'oe",
+                "experiencing in the body": "",
+                "hot": "ve'ave'a"
+            }
+        },
+        "17": {
+            "legacy index": "10",
+            "cq": "Do you cough?",
+            "alternate_pivot": "Vous toussez ?",
+            "translation": "e hapu nei 'oe",
+            "concept_words": {
+                "PP2SG": "'oe",
+                "coughing": "hapu"
+            }
+        },
+        "18": {
+            "legacy index": "11",
+            "cq": "No, I don\u2019t cough.",
+            "alternate_pivot": "Non je ne tousse pas",
+            "translation": "a'o'e, a'e au e hapu",
+            "concept_words": {
+                "PP1SG": "au",
+                "coughing": "hapu"
+            }
+        },
+        "19": {
+            "legacy index": "12a",
+            "cq": "But every time I wake up, I\u2019m very thirsty.",
+            "alternate_pivot": "Mais \u00e0 chaque fois que je me r\u00e9veille j'ai tr\u00e8s soif.",
+            "translation": "mea'a, ia va'a mai au, pao tu'u paka i te vai",
+            "concept_words": {
+                "PP1SG": "au",
+                "every time": "",
+                "waking up": "va'a",
+                "experiencing in the body": "",
+                "thirst": ""
+            }
+        },
+        "20": {
+            "legacy index": "12b",
+            "cq": "I feel I need to drink.",
+            "alternate_pivot": "Je sens que j'ai besoin de boire.",
+            "translation": "kaki oko au e inu i te vai",
+            "concept_words": {
+                "PP1SG": "",
+                "experiencing in the body": "",
+                "needing": "kaki",
+                "drinking": "inu"
+            }
+        },
+        "21": {
+            "legacy index": "13a",
+            "cq": "And also, my belly hurts.",
+            "alternate_pivot": "Et aussi, j'ai mal au ventre.",
+            "translation": "titahi, mamae tu'u kopu",
+            "concept_words": {
+                "PP1SG": "tu'u",
+                "experiencing in the body": "",
+                "pain": "mamae",
+                "belly": "kopu"
+            }
+        },
+        "22": {
+            "legacy index": "13b",
+            "cq": "It\u2019s painful.",
+            "alternate_pivot": "\u00c7a fait mal. ",
+            "translation": "mea oko nui te mamae",
+            "concept_words": {
+                "pain": "mamae"
+            }
+        },
+        "23": {
+            "legacy index": "14",
+            "cq": "Does it hurt during the day? or only at night?",
+            "alternate_pivot": "Est-ce que \u00e7a fait mal dans la journ\u00e9e ? ou seulement la nuit ?",
+            "translation": "mea mamae i te avatea, ako'e'a i te po anaiho",
+            "concept_words": {
+                "PP2SG": "",
+                "experiencing in the body": "",
+                "pain": "mamae",
+                "OR": "",
+                "day": "avatea",
+                "night": ""
+            }
+        },
+        "24": {
+            "legacy index": "15a",
+            "cq": "Mostly at night.",
+            "alternate_pivot": "Surtout la nuit.",
+            "translation": "totahi atu i te po",
+            "concept_words": {
+                "night": ""
+            }
+        },
+        "25": {
+            "legacy index": "15b",
+            "cq": "I don't know why.",
+            "alternate_pivot": "Je ne sais pas pourquoi.",
+            "translation": "ko'e au i 'ite no te aha",
+            "concept_words": {
+                "PP1SG": "au",
+                "knowing": "",
+                "causality wildcard": ""
+            }
+        },
+        "26": {
+            "legacy index": "16a",
+            "cq": "Doctor, I\u2019m a bit worried.",
+            "alternate_pivot": "Docteur je suis un peu inquiet.",
+            "translation": "taote, ma'ivi'ivi nei au",
+            "concept_words": {
+                "doctor": "taote",
+                "PP1SG": "au",
+                "experiencing in the body": "",
+                "anxiety": "",
+                "a bit": ""
+            }
+        },
+        "27": {
+            "legacy index": "16b",
+            "cq": "what is going on?",
+            "alternate_pivot": "Qu'est-ce qui m'arrive ?",
+            "translation": "e aha 'oa to'u",
+            "concept_words": {
+                "object wildcard": "",
+                "happening": ""
+            }
+        },
+        "28": {
+            "legacy index": "17",
+            "cq": "Have you eaten something particular lately?",
+            "alternate_pivot": "Avez-vous mang\u00e9 quelque chose de particulier ces derniers temps ?",
+            "translation": "kai 'oa 'oe titahi mea ke i tenei tau 'a",
+            "concept_words": {
+                "PP2SG": "",
+                "eating": "kai",
+                "object wildcard": "titahi",
+                "particular": "",
+                "lately": ""
+            }
+        },
+        "29": {
+            "legacy index": "18a",
+            "cq": "Hm, let me remember\u2026",
+            "alternate_pivot": "Hmmm, attendez que je me souvienne",
+            "translation": "epo",
+            "concept_words": {
+                "allowing": "",
+                "PP1SG": "",
+                "PP2SG": "",
+                "remembering": ""
+            }
+        },
+        "30": {
+            "legacy index": "18b",
+            "cq": "No, I don\u2019t think so.",
+            "alternate_pivot": "Non, je ne pense pas. ",
+            "translation": "a'e au e ma'akau nei",
+            "concept_words": {
+                "PP1SG": "",
+                "thinking": "",
+                "event wildcard": ""
+            }
+        },
+        "31": {
+            "legacy index": "19a",
+            "cq": "Oh wait",
+            "alternate_pivot": "Oh attendez...",
+            "translation": "epo",
+            "concept_words": {
+                "waiting": "",
+                "PP2SG": ""
+            }
+        },
+        "32": {
+            "legacy index": "19b",
+            "cq": "actually yes I did!",
+            "alternate_pivot": "En fait si !",
+            "translation": "oia ko'ina, a tahi nei a ma'akau",
+            "concept_words": {
+                "PP1SG": "",
+                "event wildcard": ""
+            }
+        },
+        "33": {
+            "legacy index": "20",
+            "cq": "Last week, my child came back from the forest with some strange fruit I had never seen.",
+            "alternate_pivot": "La semaine derni\u00e8re, mon fils est revenu de la for\u00eat avec un fruit \u00e9trange que je n\u2019avais jamais vu.  ",
+            "translation": "i te 'atapu pao nei, ua hua mai ta'u tama mei te ma'a 'eita me titahi puku kai ko'e au i 'ite a'e nei",
+            "concept_words": {
+                "last week": "",
+                "children": "tama",
+                "coming": "",
+                "forest": "",
+                "fruit": "",
+                "strange": "",
+                "PP1SG": "ta'u",
+                "seeing": ""
+            }
+        },
+        "34": {
+            "legacy index": "21",
+            "cq": "He gave me the fruits to try. ",
+            "alternate_pivot": "Il m'a donn\u00e9 les fruits, pour que je go\u00fbte.  ",
+            "translation": "tuku'ia mai iau mea tamata",
+            "concept_words": {
+                "PP3SG": "",
+                "PP1SG": "iau",
+                "giving": "",
+                "trying": "tamata",
+                "fruit": ""
+            }
+        },
+        "35": {
+            "legacy index": "22",
+            "cq": "Did you?",
+            "alternate_pivot": "Vous avez go\u00fbt\u00e9 ?  ",
+            "translation": "ua tamata'ia e 'oe",
+            "concept_words": {
+                "event wildcard": "",
+                "PP2SG": ""
+            }
+        },
+        "36": {
+            "legacy index": "23a",
+            "cq": "Yes I did.",
+            "alternate_pivot": "Oui j'ai go\u00fbt\u00e9.",
+            "translation": "e e, ua tamata au",
+            "concept_words": {
+                "event wildcard": "",
+                "PP1SG": ""
+            }
+        },
+        "37": {
+            "legacy index": "23b",
+            "cq": "Actually I liked them.",
+            "alternate_pivot": "En fait j'ai bien aim\u00e9.",
+            "translation": "mea hei oko to'u kai'ia",
+            "concept_words": {
+                "PP1SG": "to'u",
+                "liking": "hei",
+                "Ref_many_objects": ""
+            }
+        },
+        "38": {
+            "legacy index": "23c",
+            "cq": "They were sweet.",
+            "alternate_pivot": "Ils \u00e9taient sucr\u00e9s.",
+            "translation": "manini atu ai",
+            "concept_words": {
+                "Ref_many_objects": "",
+                "exhibiting (an attribute)": "",
+                "sweet": "manini"
+            }
+        },
+        "39": {
+            "legacy index": "23d",
+            "cq": "I ate many of them.",
+            "alternate_pivot": "J'en ai mang\u00e9 beaucoup. ",
+            "translation": "mea nui ta'u i kai",
+            "concept_words": {
+                "PP1SG": "ta'u",
+                "eating": "kai",
+                "object wildcard": ""
+            }
+        },
+        "40": {
+            "legacy index": "24",
+            "cq": "I became sick after that.",
+            "alternate_pivot": "Je suis tomb\u00e9 malade apr\u00e8s \u00e7a. ",
+            "translation": "mu'i iho, ua hemo au i te mate",
+            "concept_words": {
+                "becoming": "hemo",
+                "sick": "mate",
+                "after": "",
+                "event wildcard": "",
+                "PP1SG": "au"
+            }
+        },
+        "41": {
+            "legacy index": "25a",
+            "cq": "I see.",
+            "alternate_pivot": "Je vois.",
+            "translation": "oia na oti",
+            "concept_words": {}
+        },
+        "42": {
+            "legacy index": "25b",
+            "cq": "It must have been these fruits that made you sick.",
+            "alternate_pivot": "Ces sont s\u00fbrement ces fruits qui vous ont rendu malade. ",
+            "translation": "na tena puku i ha'ahemo ia 'oe i te mate",
+            "concept_words": {
+                "fruit": "puku",
+                "causing": "ha'ahemo",
+                "PP2SG": "'oe",
+                "sick": "mate",
+                "experiencing in the body": ""
+            }
+        },
+        "43": {
+            "legacy index": "26",
+            "cq": "If you hadn\u2019t eaten so much, you wouldn\u2019t have gotten sick.",
+            "alternate_pivot": "Si vous n'aviez pas autant mang\u00e9, vous ne seriez pas tomb\u00e9 malade.",
+            "translation": "anoa a'e 'oe i kai oko, a'e 'oe e hemo i te mate ati'i",
+            "concept_words": {
+                "CONDITION": "",
+                "PP2SG": "'oe",
+                "eating": "kai",
+                "becoming": "hemo",
+                "so much": "oko",
+                "sick": "mate"
+            }
+        },
+        "44": {
+            "legacy index": "27a",
+            "cq": "Oh Doctor, you\u2019re right.",
+            "alternate_pivot": "Oh Docteur vous avez raison.",
+            "translation": "ahi, ua hei taote",
+            "concept_words": {}
+        },
+        "45": {
+            "legacy index": "27b",
+            "cq": "I shouldn\u2019t have.",
+            "alternate_pivot": "Je n'aurais pas d\u00fb.",
+            "translation": "a kai ai ho'i au",
+            "concept_words": {
+                "PP1SG": "",
+                "doing": ""
+            }
+        },
+        "46": {
+            "legacy index": "28",
+            "cq": "What should I do now?",
+            "alternate_pivot": "Que dois-je faire maintenant ?",
+            "translation": "pehea 'a i tenei",
+            "concept_words": {
+                "event wildcard": "",
+                "PP1SG": "",
+                "doing": "",
+                "now": "pehea"
+            }
+        },
+        "47": {
+            "legacy index": "29a",
+            "cq": "Don\u2019t worry.",
+            "alternate_pivot": "Ne vous inqui\u00e9tez pas.",
+            "translation": "umo'i 'oe e ha'ameta'u",
+            "concept_words": {
+                "worrying": "ha'ameta'u",
+                "PP2SG": "'oe"
+            }
+        },
+        "48": {
+            "legacy index": "29b",
+            "cq": "I\u2019ll give you some medicine to drink.",
+            "alternate_pivot": "Je vais vous donner un m\u00e9dicament \u00e0 boire. ",
+            "translation": "e tuku atu au i titahi haika e inu 'oe",
+            "concept_words": {
+                "PP1SG": "au",
+                "giving": "tuku",
+                "PP2SG": "'oe",
+                "medicine": "haika",
+                "drinking": "inu"
+            }
+        },
+        "49": {
+            "legacy index": "30a",
+            "cq": "Take it twice a day.",
+            "alternate_pivot": "Prenez-le deux fois par jour. ",
+            "translation": "e 'ua ma te 'a",
+            "concept_words": {
+                "PP2SG": "",
+                "taking": "",
+                "object wildcard": "",
+                "twice a day": ""
+            }
+        },
+        "50": {
+            "legacy index": "30b",
+            "cq": "In the morning, and in the evening.",
+            "alternate_pivot": "Le matin, et le soir.",
+            "translation": "e tahi i te popou'i, e tahi i te ahiahi ma hope o te kaikai",
+            "concept_words": {
+                "AND": "",
+                "morning": "popou'i",
+                "evening": "ahiahi"
+            }
+        },
+        "51": {
+            "legacy index": "31a",
+            "cq": "Alright Doctor.",
+            "alternate_pivot": "D'accord docteur.",
+            "translation": "oia'a e taote",
+            "concept_words": {}
+        },
+        "52": {
+            "legacy index": "31b",
+            "cq": "And then I\u2019ll be better?",
+            "alternate_pivot": "Et apr\u00e8s j'irai mieux ?",
+            "translation": "e meita'i au ma mu'i mai",
+            "concept_words": {
+                "then (time)": "",
+                "PP1SG": "",
+                "COMP-MORE": "",
+                "healthy": "",
+                "exhibiting (an attribute)": ""
+            }
+        },
+        "53": {
+            "legacy index": "32a",
+            "cq": "Yes",
+            "alternate_pivot": "oui",
+            "translation": "e e",
+            "concept_words": {}
+        },
+        "54": {
+            "legacy index": "32b",
+            "cq": "you should get better soon.",
+            "alternate_pivot": "vous devriez aller mieux tr\u00e8s bient\u00f4t.",
+            "translation": "a'e teve'e e meita'i 'oe",
+            "concept_words": {
+                "PP2SG": "",
+                "becoming": "",
+                "COMP-MORE": "",
+                "healthy": "",
+                "soon": ""
+            }
+        },
+        "55": {
+            "legacy index": "33",
+            "cq": "This is efficient medicine against fever and belly-ache.",
+            "alternate_pivot": "C'est un m\u00e9dicament efficace contre la fi\u00e8vre et les maux de ventre. ",
+            "translation": "e haika meita'i no te fiva me te mamae kop\u016b",
+            "concept_words": {
+                "object wildcard": "",
+                "being": "",
+                "efficient": "meita'i",
+                "medicine": "haika",
+                "AND": "",
+                "fever": "fiva",
+                "belly-ache": ""
+            }
+        },
+        "56": {
+            "legacy index": "34",
+            "cq": "Also, you must get some rest.",
+            "alternate_pivot": "Et puis, vous devez vous reposer.",
+            "translation": "totahi atu, ha'amo'\u016b",
+            "concept_words": {
+                "PP2SG": "",
+                "experiencing": "",
+                "rest": ""
+            }
+        },
+        "57": {
+            "legacy index": "35a",
+            "cq": "Don\u2019t go to work",
+            "alternate_pivot": "N'allez pas au travail. ",
+            "translation": "umo'i e he'e i te hana",
+            "concept_words": {
+                "PP2SG": "",
+                "going": "he'e",
+                "work": "hana"
+            }
+        },
+        "58": {
+            "legacy index": "35b",
+            "cq": "You need to sleep.",
+            "alternate_pivot": "Vous avez besoin de dormir. ",
+            "translation": "a va'e i te hiamoe",
+            "concept_words": {
+                "PP2SG": "",
+                "needing": "",
+                "sleeping": ""
+            }
+        },
+        "59": {
+            "legacy index": "36a",
+            "cq": "Alright Doctor",
+            "alternate_pivot": "D'accord docteur.",
+            "translation": "e e taote",
+            "concept_words": {}
+        },
+        "60": {
+            "legacy index": "36b",
+            "cq": "I understand.",
+            "alternate_pivot": "Je comprends.",
+            "translation": "vivini au",
+            "concept_words": {
+                "PP1SG": "au",
+                "understanding": "vivini"
+            }
+        },
+        "61": {
+            "legacy index": "36c",
+            "cq": "Thank you so much!",
+            "alternate_pivot": "Merci beaucoup !",
+            "translation": "ko'utau nui",
+            "concept_words": {}
+        }
+    },
+    "interviewer": "Marie Tearere TEIKITOHE",
+    "interviewee": "Pierre TEIKITOHE",
+    "recording_uid": "1719096477"
+}

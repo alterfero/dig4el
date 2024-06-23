@@ -56,7 +56,7 @@ if "cq_id_dict" not in st.session_state:
     st.session_state["cq_id_dict"] = cq_id_dict
 
 
-st.title("CQ Recorder")
+st.title("Transcription Recorder")
 
 st.write("You can start a new recording right away, or load an existing one to edit it")
 if not st.session_state["loaded_existing"]:
@@ -141,13 +141,17 @@ if st.session_state["cq_is_chosen"]:
     st.title("Title: {}".format(cq["title"]))
     st.write("Context: ", cq["context"])
 
-    colq, colw, cole = st.columns(3)
+    colq, colw, cole, colr = st.columns(4)
     if colq.button("Previous"):
         if st.session_state["counter"] > 1:
             st.session_state["counter"] = st.session_state["counter"] - 1
             st.rerun()
-    colw.subheader("Sentence #" + str(st.session_state.counter))
-    if cole.button("Next"):
+    colw.subheader("Counter: {}".format(str(st.session_state.counter)))
+    if "legacy index" in cq["dialog"][str(st.session_state["counter"])]:
+        cole.subheader("Index: {}".format(cq["dialog"][str(st.session_state["counter"])]["legacy index"]))
+    else:
+        cole.write("No legacy index")
+    if colr.button("Next"):
         if st.session_state["counter"] < number_of_sentences:
             st.session_state["counter"] = st.session_state["counter"] + 1
             st.rerun()
@@ -170,7 +174,7 @@ if st.session_state["cq_is_chosen"]:
     # if pivot language is not english, store the pivot form
     if st.session_state["pivot_language"] != "english":
         alternate_pivot = st.text_input(
-            "Enter here the expression you used in {}".format(st.session_state["pivot_language"]),
+            "Enter here the expression you used in {}".format(st.session_state["pivot_language"], value=alternate_pivot_default),
             value=alternate_pivot_default)
     else:
         alternate_pivot = ""
@@ -203,6 +207,7 @@ if st.session_state["cq_is_chosen"]:
 
     if st.button("Validate sentence"):
         st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
+            "legacy index": cq["dialog"][str(st.session_state["counter"])]["legacy index"],
             "cq": cq["dialog"][str(st.session_state["counter"])]["text"],
             "alternate_pivot": alternate_pivot,
             "translation": translation,
@@ -212,7 +217,7 @@ if st.session_state["cq_is_chosen"]:
             st.session_state["counter"] = st.session_state["counter"] + 1
         st.rerun()
 
-    st.write(st.session_state["recording"])
+    #st.write(st.session_state["recording"])
     filename = ("recording_"
                 + st.session_state["current_cq"].replace(".json", "") + "_"
                 + st.session_state["target_language"] + "_"
