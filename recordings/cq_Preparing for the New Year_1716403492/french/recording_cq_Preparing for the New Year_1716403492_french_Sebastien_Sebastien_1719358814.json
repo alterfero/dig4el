@@ -1,0 +1,407 @@
+{
+    "target language": "french",
+    "pivot language": "english",
+    "cq_uid": "1716403492",
+    "data": {
+        "1": {
+            "legacy index": "1a",
+            "cq": "Hey, you know what?",
+            "alternate_pivot": "",
+            "translation": "eh tu sais quoi",
+            "concept_words": {}
+        },
+        "2": {
+            "legacy index": "1b",
+            "cq": "In two months\u2019 time, we\u2019ll have celebrations for the New Year.",
+            "alternate_pivot": "",
+            "translation": "dans deux mois c'est les f\u00eates du nouvel an",
+            "concept_words": {
+                "existing": "est",
+                "celebration": "f\u00eates",
+                "IN FUTURE DIRECTION": "dans",
+                "month": "mois",
+                "new year": "nouvel...an"
+            }
+        },
+        "3": {
+            "legacy index": "2a",
+            "cq": "Oh, that\u2019s right.",
+            "alternate_pivot": "",
+            "translation": "oh tu as raison",
+            "concept_words": {}
+        },
+        "4": {
+            "legacy index": "2b",
+            "cq": "This time, the people from village X will all be coming to our community.",
+            "alternate_pivot": "",
+            "translation": "cette fois, ce sont les gens du village x qui viennent chez nous",
+            "concept_words": {
+                "this time": "cette...fois",
+                "people": "gens",
+                "village X": "village...x",
+                "coming": "viennent",
+                "community": "",
+                "PP1PLU": "nous"
+            }
+        },
+        "5": {
+            "legacy index": "3",
+            "cq": "men and women, children, old people, entire families\u2026",
+            "alternate_pivot": "",
+            "translation": "hommes et femmes, enfants, a\u00een\u00e9s, des familles enti\u00e8res",
+            "concept_words": {
+                "men": "hommes",
+                "women": "femmes",
+                "children": "enfants",
+                "old people": "a\u00een\u00e9s",
+                "families": "familles"
+            }
+        },
+        "6": {
+            "legacy index": "4",
+            "cq": "We should welcome them in a friendly way",
+            "alternate_pivot": "",
+            "translation": "il faut les accueillir chaleureusement",
+            "concept_words": {
+                "PP1PLU": "",
+                "welcoming": "accueillir",
+                "PP3PLU": "les",
+                "friendly way": "chaleureusement"
+            }
+        },
+        "7": {
+            "legacy index": "5",
+            "cq": "just like they did to us last year",
+            "alternate_pivot": "",
+            "translation": "comme ils ont fait avec nous l'ann\u00e9e derni\u00e8re",
+            "concept_words": {
+                "COMP-EQUAL": "comme",
+                "doing": "ont...fait",
+                "PP1PLU": "nous",
+                "PP3PLU": "ils",
+                "last year": "ann\u00e9e...derni\u00e8re",
+                "event wildcard": ""
+            }
+        },
+        "8": {
+            "legacy index": "6a",
+            "cq": "Yes of course",
+            "alternate_pivot": "",
+            "translation": "oui bien s\u00fbr",
+            "concept_words": {}
+        },
+        "9": {
+            "legacy index": "6b",
+            "cq": "like we always do",
+            "alternate_pivot": "",
+            "translation": "comme on fait \u00e0 chaque fois",
+            "concept_words": {
+                "COMP-EQUAL": "comme",
+                "PP1PLU": "on",
+                "doing": "fait",
+                "always": "\u00e0...chaque...fois",
+                "event wildcard": ""
+            }
+        },
+        "10": {
+            "legacy index": "7",
+            "cq": "Our leaders will start with a welcome speech.",
+            "alternate_pivot": "",
+            "translation": "nos chefs commenceront par un discours de bienvenue",
+            "concept_words": {
+                "PP1PLU": "nos",
+                "leaders": "chefs",
+                "starting": "commenceront",
+                "welcome speech": "discours...de...bienvenue",
+                "event wildcard": ""
+            }
+        },
+        "11": {
+            "legacy index": "8",
+            "cq": "Then, people will play in the morning.",
+            "alternate_pivot": "",
+            "translation": "ensuite, les gens joueront le matin",
+            "concept_words": {
+                "then": "ensuite",
+                "people": "gens",
+                "playing": "",
+                "in the morning": "matin"
+            }
+        },
+        "12": {
+            "legacy index": "9",
+            "cq": "After that, we\u2019ll all share lunch together.",
+            "alternate_pivot": "",
+            "translation": "et apr\u00e8s nous partagerons un d\u00e9jeuner",
+            "concept_words": {
+                "AFTER X": "apr\u00e8s",
+                "sharing": "partagerons",
+                "lunch": "d\u00e9jeuner",
+                "together": "",
+                "PP1PLU": "nous",
+                "event wildcard": ""
+            }
+        },
+        "13": {
+            "legacy index": "10",
+            "cq": "In the afternoon, I hope we can have songs and dances.",
+            "alternate_pivot": "",
+            "translation": "l'apr\u00e8s midi, j'esp\u00e8re que nous pourrons avoir des chants et des danses",
+            "concept_words": {
+                "in the afternoon": "l...apr\u00e8s...midi",
+                "hoping": "esp\u00e8re",
+                "experiencing": "avoir",
+                "songs": "chants",
+                "dances": "danses",
+                "AND": "et",
+                "PP1SG": "j"
+            }
+        },
+        "14": {
+            "legacy index": "11",
+            "cq": "The people of X will sing their songs, dance their dances;",
+            "alternate_pivot": "",
+            "translation": "les gens de x chanterons leur chansons, danserons leurs danses",
+            "concept_words": {
+                "people": "gens",
+                "PP3PLU": "",
+                "AND": "",
+                "singing": "chanterons",
+                "songs": "chansons",
+                "dancing": "danserons",
+                "dances": "danses",
+                "village X": "x"
+            }
+        },
+        "15": {
+            "legacy index": "12",
+            "cq": "we too, we shall sing our own songs, and do our own dances\u2026",
+            "alternate_pivot": "",
+            "translation": "nous aussi on devrait chanter nos chansons et danser no danses \u00e0 nous",
+            "concept_words": {
+                "PP1PLU": "on",
+                "too": "aussi",
+                "singing": "chanter",
+                "songs": "chansons",
+                "dancing": "danser",
+                "dances": "danses",
+                "AND": "et"
+            }
+        },
+        "16": {
+            "legacy index": "13a",
+            "cq": "Yes, good idea.",
+            "alternate_pivot": "",
+            "translation": "oui bonne id\u00e9e",
+            "concept_words": {}
+        },
+        "17": {
+            "legacy index": "13b",
+            "cq": "Everyone loves music and dance.",
+            "alternate_pivot": "",
+            "translation": "tout le monde aime la musique et la danse",
+            "concept_words": {
+                "AND": "et",
+                "everyone": "tout...le...monde",
+                "loving": "aime",
+                "music": "musique",
+                "dance": "danse"
+            }
+        },
+        "18": {
+            "legacy index": "14",
+            "cq": "Then our elders will tell stories from the olden times, for the young to hear.",
+            "alternate_pivot": "",
+            "translation": "ensuite nos a\u00een\u00e9s raconteront des histoires de l'ancien temps, pour que les jeunes les entendent",
+            "concept_words": {
+                "PP1PLU": "nos",
+                "elders": "a\u00een\u00e9s",
+                "telling": "raconteront",
+                "stories": "histoires",
+                "hearing": "entendent",
+                "youngs": "jeunes"
+            }
+        },
+        "19": {
+            "legacy index": "15a",
+            "cq": "This will be great.",
+            "alternate_pivot": "",
+            "translation": "ce sera super",
+            "concept_words": {}
+        },
+        "20": {
+            "legacy index": "15b",
+            "cq": "They know so many stories.",
+            "alternate_pivot": "",
+            "translation": "ils connaissent tellement d'histoires",
+            "concept_words": {
+                "PP3PLU": "ils",
+                "knowing": "connaissent",
+                "so many": "tellement",
+                "stories": "histoires"
+            }
+        },
+        "21": {
+            "legacy index": "16",
+            "cq": "And then, in the late afternoon, our two communities will part again.",
+            "alternate_pivot": "",
+            "translation": "enfin, en fin d'apr\u00e8s-midi, nos deux communaut\u00e9s se s\u00e9pareront de nouveaux",
+            "concept_words": {
+                "then": "enfin",
+                "late afternoon": "fin...d...apr\u00e8s-midi",
+                "communities": "communaut\u00e9s",
+                "two": "deux",
+                "parting": "se...s\u00e9pareront",
+                "again": "de...nouveaux"
+            }
+        },
+        "22": {
+            "legacy index": "17",
+            "cq": "This will be the end of a day of celebration.",
+            "alternate_pivot": "",
+            "translation": "ce sera la fin d'une journ\u00e9e de f\u00eate",
+            "concept_words": {
+                "event wildcard": "ce",
+                "equating": "sera",
+                "END OF X": "fin...de",
+                "day of celebration": "journ\u00e9e...de...f\u00eate"
+            }
+        },
+        "23": {
+            "legacy index": "18",
+            "cq": "Remember that you and I are in charge of the organization this year.",
+            "alternate_pivot": "",
+            "translation": "tu te souviens que toi et moi nous sommes responsables de l'organisation cette ann\u00e9e",
+            "concept_words": {
+                "PP2SG": "tu",
+                "PP1INCDU": "nous",
+                "remembering": "souviens",
+                "being in charge of": "sommes...responsables...de",
+                "organization": "organisation",
+                "this year": "cette...ann\u00e9e"
+            }
+        },
+        "24": {
+            "legacy index": "19-20",
+            "cq": "We should organize a meeting tomorrow morning in the community to tell our people what they should do",
+            "alternate_pivot": "",
+            "translation": "on devrait organiser une r\u00e9union demain pour dire aux gens ce qu'ils doivent faire",
+            "concept_words": {
+                "PP1INCDU": "on",
+                "organizing": "organiser",
+                "meeting": "r\u00e9union",
+                "community": "",
+                "telling": "dire",
+                "people": "gens",
+                "event wildcard": "ce",
+                "doing": "doivent"
+            }
+        },
+        "25": {
+            "legacy index": "21",
+            "cq": "Some of us will clean the village",
+            "alternate_pivot": "",
+            "translation": "certain nettoieront le village",
+            "concept_words": {
+                "PP1PLU": "",
+                "cleaning": "nettoieront",
+                "village": "village"
+            }
+        },
+        "26": {
+            "legacy index": "23",
+            "cq": "Other people will make the costumes for the dances.",
+            "alternate_pivot": "",
+            "translation": "d'autres confectionneront les costumes pour les danses",
+            "concept_words": {
+                "people": "",
+                "making": "confectionneront",
+                "costume": "costumes",
+                "dances": "danses",
+                "other": "autres"
+            }
+        },
+        "27": {
+            "legacy index": "24",
+            "cq": "We must choose dances to showcase",
+            "alternate_pivot": "",
+            "translation": "nous devons choisir les danses \u00e0 pr\u00e9senter",
+            "concept_words": {
+                "PP1PLU": "nous",
+                "having to": "devons",
+                "choosing": "choisir",
+                "dances": "danses",
+                "showcasing": "pr\u00e9senter"
+            }
+        },
+        "28": {
+            "legacy index": "25",
+            "cq": "and we must rehearse them",
+            "alternate_pivot": "",
+            "translation": "et nous devons les r\u00e9p\u00e9ter",
+            "concept_words": {
+                "having to": "devons",
+                "rehearsing": "r\u00e9p\u00e9ter",
+                "Ref_many_objects": "les",
+                "PP1PLU": "nous"
+            }
+        },
+        "29": {
+            "legacy index": "26",
+            "cq": "Also, don\u2019t forget",
+            "alternate_pivot": "",
+            "translation": "et aussi n'oublie pas",
+            "concept_words": {
+                "PP2SG": "",
+                "forgetting": "oublie"
+            }
+        },
+        "30": {
+            "legacy index": "27",
+            "cq": "we\u2019ll have to prepare enough food for two hundred people.",
+            "alternate_pivot": "",
+            "translation": "nous devrons pr\u00e9parer assez de nourriture pour deux cents personnes",
+            "concept_words": {
+                "PP1PLU": "nous",
+                "having to": "devrons",
+                "preparing": "pr\u00e9parer",
+                "food": "nourriture",
+                "two hundred": "deux...cents",
+                "people": "personnes"
+            }
+        },
+        "31": {
+            "legacy index": "28",
+            "cq": "Oh dear, that will be so much work for us all.",
+            "alternate_pivot": "",
+            "translation": "oh la la, \u00e7a va faire beaucoup de travail pour tout le monde",
+            "concept_words": {
+                "event wildcard": "\u00e7a",
+                "work": "travail",
+                "PP1PLU": "",
+                "equating": "va...faire"
+            }
+        },
+        "32": {
+            "legacy index": "29a",
+            "cq": "A lot of work indeed.",
+            "alternate_pivot": "",
+            "translation": "beaucoup de travail en effet",
+            "concept_words": {}
+        },
+        "33": {
+            "legacy index": "29b",
+            "cq": "Let's start today!",
+            "alternate_pivot": "",
+            "translation": "commen\u00e7ons d\u00e8s aujourd'hui",
+            "concept_words": {
+                "PP1INCDU": "",
+                "starting": "commen\u00e7ons",
+                "today": "aujourd...hui"
+            }
+        }
+    },
+    "interviewer": "Sebastien",
+    "interviewee": "Sebastien",
+    "recording_uid": "1719358814"
+}

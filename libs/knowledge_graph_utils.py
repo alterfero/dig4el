@@ -3,6 +3,8 @@ from os import listdir, mkdir
 from os.path import isfile, join
 import time
 from libs import utils, stats, graphs_utils as gu
+from collections import OrderedDict
+import pandas as pd
 
 delimiters = {
     "french": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
@@ -274,3 +276,20 @@ def get_sentences_with_word(knowledge_graph, word, language):
         if word in words:
             sentences_with_word.append(entry)
     return sentences_with_word
+
+def build_gloss_df(knowledge_graph, entry):
+    sentence_display_ordered_dict = OrderedDict()
+    language = knowledge_graph["0"]["language"]
+    w_list = stats.custom_split(knowledge_graph[entry]["recording_data"]["translation"], delimiters[language])
+    for wd in [w for w in w_list if w]:
+        if wd in knowledge_graph[entry]["recording_data"]["concept_words"].values():
+            concept_key = utils.get_key_by_value(knowledge_graph[entry]["recording_data"]["concept_words"], wd)
+            sentence_display_ordered_dict[wd] = concept_key
+            # TODO: of what is this concept a value?
+
+        else:
+            sentence_display_ordered_dict[wd] = ""
+
+
+    # build dataframe from ordered dict
+    return pd.DataFrame.from_dict(sentence_display_ordered_dict, orient="index", columns=["concept"]).T

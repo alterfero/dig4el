@@ -1,6 +1,6 @@
 import re
 import math
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, OrderedDict
 
 def calculate_entropy(prob_dict):
     entropy = 0.0

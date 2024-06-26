@@ -22,8 +22,8 @@
             "alternate_pivot": "Hm\u2026, j'ai d\u00e9j\u00e0 rencontr\u00e9 des gens de ta famille, mais je n'ai jamais vu tes photos.    ",
             "translation": "ua 'avei a'e nei au me to 'oe hua'a a'e 'a au i 'ite a'e nei to 'atou ata",
             "concept_words": {
-                "PP1SG": "au",
-                "PP2SG": "'oe",
+                "PP1SG": "",
+                "PP2SG": "",
                 "meeting": "",
                 "relatives": "hua'a",
                 "BUT": "'a",
@@ -645,5 +645,5 @@
     },
     "interviewer": "Marie Tearere TEIKITOHE",
     "interviewee": "Pierre TEIKITOHE",
-    "recording_uid": "1719091670"
+    "recording_uid": "1719422878"
 }

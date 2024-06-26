@@ -362,7 +362,6 @@ with colz.container():
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["trimmed_graph"] = {}
         st.rerun()
 
-
 #visualization of requirement graph
 if st.session_state["req_json"] != {}:
 

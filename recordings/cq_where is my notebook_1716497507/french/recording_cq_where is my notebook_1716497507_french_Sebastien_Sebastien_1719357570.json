@@ -1,0 +1,441 @@
+{
+    "target language": "french",
+    "pivot language": "english",
+    "cq_uid": "1716497507",
+    "data": {
+        "1": {
+            "legacy index": "",
+            "cq": "Brother, have you seen my notebook?",
+            "alternate_pivot": "",
+            "translation": "mon fr\u00e8re, tu as vu mon cahier",
+            "concept_words": {
+                "brother": "fr\u00e8re",
+                "seeing": "as...vu",
+                "notebook": "cahier",
+                "PP1SG": "mon"
+            }
+        },
+        "2": {
+            "legacy index": "2",
+            "cq": "I\u2019ve been looking for it everywhere, but I can\u2019t find it!",
+            "alternate_pivot": "",
+            "translation": "je l'ai cherch\u00e9 partout mais je ne le trouve pas",
+            "concept_words": {
+                "PP1SG": "je",
+                "searching": "ai...cherch\u00e9",
+                "object wildcard": "l",
+                "everywhere": "partout",
+                "BUT": "mais",
+                "being able to": "",
+                "finding": "trouve"
+            }
+        },
+        "3": {
+            "legacy index": "3a",
+            "cq": "I don\u2019t know, sister.",
+            "alternate_pivot": "",
+            "translation": "je ne sais pas ma soeur",
+            "concept_words": {
+                "knowing": "sais",
+                "PP1SG": "je",
+                "sister": "soeur"
+            }
+        },
+        "4": {
+            "legacy index": "3b",
+            "cq": "Which notebook?",
+            "alternate_pivot": "",
+            "translation": "quel cahier",
+            "concept_words": {
+                "notebook": "cahier"
+            }
+        },
+        "5": {
+            "legacy index": "4a",
+            "cq": "It\u2019s my math book.",
+            "alternate_pivot": "",
+            "translation": "c'est mon cahier de maths",
+            "concept_words": {
+                "object wildcard": "c",
+                "book": "cahier",
+                "math": "maths",
+                "equating": "est"
+            }
+        },
+        "6": {
+            "legacy index": "4b",
+            "cq": "It\u2019s a thick, blue one.",
+            "alternate_pivot": "",
+            "translation": "c'est un gros bleu",
+            "concept_words": {
+                "object wildcard": "c",
+                "being": "est",
+                "thick": "gros",
+                "blue": "bleu",
+                "AND": ""
+            }
+        },
+        "7": {
+            "legacy index": "5",
+            "cq": "You\u2019ve seen it already.",
+            "alternate_pivot": "",
+            "translation": "tu l'as d\u00e9j\u00e0 vu",
+            "concept_words": {
+                "PP2SG": "tu",
+                "seeing": "vu",
+                "object wildcard": "l",
+                "already": "d\u00e9j\u00e0"
+            }
+        },
+        "8": {
+            "legacy index": "6",
+            "cq": "I was doing my homework on it last night in the dining room.",
+            "alternate_pivot": "",
+            "translation": "je faisais mes devoirs dessus hier soir dans la salle \u00e0 manger",
+            "concept_words": {
+                "PP1SG": "je",
+                "doing": "faisais",
+                "homework": "devoirs",
+                "last night": "hier...soir",
+                "dining room": "salle...\u00e0...manger",
+                "object wildcard": ""
+            }
+        },
+        "9": {
+            "legacy index": "7",
+            "cq": "Well, you probably left it there, then!",
+            "alternate_pivot": "",
+            "translation": "eh bien tu l'as s\u00fbrement laiss\u00e9 l\u00e0 alors",
+            "concept_words": {
+                "PP2SG": "tu",
+                "leaving (transitive)": "as...laiss\u00e9",
+                "object wildcard": "l",
+                "spatial position wildcard": "l\u00e0",
+                "probably": "s\u00fbrement"
+            }
+        },
+        "10": {
+            "legacy index": "8a",
+            "cq": "No.",
+            "alternate_pivot": "",
+            "translation": "non",
+            "concept_words": {}
+        },
+        "11": {
+            "legacy index": "8b",
+            "cq": "I put it away in my schoolbag before I went to sleep.",
+            "alternate_pivot": "",
+            "translation": "je l'ai rang\u00e9 dans mon sac d'\u00e9cole avant d'aller me coucher",
+            "concept_words": {
+                "PP1SG": "je",
+                "putting": "ai...rang\u00e9",
+                "schoolbag": "sac...d...\u00e9cole",
+                "BEFORE X": "avant",
+                "going": "aller",
+                "sleeping": "coucher"
+            }
+        },
+        "12": {
+            "legacy index": "8c",
+            "cq": "I think.",
+            "alternate_pivot": "",
+            "translation": "je pense",
+            "concept_words": {
+                "thinking": "pense",
+                "PP1SG": "je"
+            }
+        },
+        "13": {
+            "legacy index": "9",
+            "cq": "Hm, did you look in your room, beside your bed?",
+            "alternate_pivot": "",
+            "translation": "hmn, tu as regard\u00e9 dans ta chambre, \u00e0 c\u00f4t\u00e9 de ton lit",
+            "concept_words": {
+                "PP2SG": "tu",
+                "searching": "",
+                "ZOOM IN": "",
+                "bedroom": "chambre",
+                "beside": "\u00e0...c\u00f4t\u00e9",
+                "bed": "lit"
+            }
+        },
+        "14": {
+            "legacy index": "10a",
+            "cq": "Yes I did.",
+            "alternate_pivot": "",
+            "translation": "oui",
+            "concept_words": {}
+        },
+        "15": {
+            "legacy index": "10b",
+            "cq": " It\u2019s not there.",
+            "alternate_pivot": "",
+            "translation": "il n'est pas l\u00e0",
+            "concept_words": {
+                "object wildcard": "il",
+                "spatial position wildcard": "l\u00e0",
+                "BEING LOCATED": "est"
+            }
+        },
+        "16": {
+            "legacy index": "11a",
+            "cq": "Or perhaps on Dad\u2019s desk?",
+            "alternate_pivot": "",
+            "translation": "ou peut-\u00eatre sur le bureau de papa",
+            "concept_words": {
+                "SPATIAL ON": "sur",
+                "dad": "papa",
+                "desk": "bureau"
+            }
+        },
+        "17": {
+            "legacy index": "11b",
+            "cq": "Maybe it\u2019s hidden under another book?",
+            "alternate_pivot": "",
+            "translation": "ou peut-\u00eatre il est cach\u00e9 sous un autre livre",
+            "concept_words": {
+                "object wildcard": "il",
+                "UNDER": "sous",
+                "ANOTHER": "autre",
+                "book": "livre",
+                "maybe": "peut-\u00eatre",
+                "being hidden": "est...cach\u00e9"
+            }
+        },
+        "18": {
+            "legacy index": "12a",
+            "cq": "Wait... no.",
+            "alternate_pivot": "",
+            "translation": "attends... non",
+            "concept_words": {}
+        },
+        "19": {
+            "legacy index": "12b",
+            "cq": "I can't find it.",
+            "alternate_pivot": "",
+            "translation": "je ne le trouve pas",
+            "concept_words": {
+                "PP1SG": "je",
+                "being able to": "",
+                "finding": "trouve",
+                "object wildcard": "le"
+            }
+        },
+        "20": {
+            "legacy index": "13a",
+            "cq": "Let me look in the kitchen...",
+            "alternate_pivot": "",
+            "translation": "attends je regarde dans la cuisine",
+            "concept_words": {
+                "PP1SG": "je",
+                "searching": "regarde",
+                "kitchen": "cuisine"
+            }
+        },
+        "21": {
+            "legacy index": "13b",
+            "cq": "Hm, not here.",
+            "alternate_pivot": "",
+            "translation": "hm, pas ici",
+            "concept_words": {
+                "CLOSE TO SPEAKER": "ici",
+                "BEING LOCATED": "",
+                "object wildcard": ""
+            }
+        },
+        "22": {
+            "legacy index": "14",
+            "cq": "But I need it for my math class today!",
+            "alternate_pivot": "",
+            "translation": "mais j'en ai besoin pour mon cours de maths aujourd'hui",
+            "concept_words": {
+                "BUT": "mais",
+                "PP1SG": "j",
+                "needing": "ai...besoin",
+                "object wildcard": "en",
+                "school class": "cours",
+                "today": "aujourd...hui"
+            }
+        },
+        "23": {
+            "legacy index": "15",
+            "cq": "The teacher will be quite angry if I don\u2019t have my notebook.",
+            "alternate_pivot": "",
+            "translation": "le prof va \u00eatre en col\u00e8re si je n'ai pas mon cahier",
+            "concept_words": {
+                "teacher": "prof",
+                "being": "\u00eatre",
+                "angry": "en...col\u00e8re",
+                "CONDITION": "si",
+                "PP1SG": "je",
+                "possessing": "ai",
+                "notebook": "cahier"
+            }
+        },
+        "24": {
+            "legacy index": "16",
+            "cq": "He will think I didn\u2019t do my homework.",
+            "alternate_pivot": "",
+            "translation": "il va penser que je n'ai pas fait mes devoirs",
+            "concept_words": {
+                "PP3SG": "il",
+                "thinking": "va...penser",
+                "PP1SG": "je",
+                "doing": "fait",
+                "homework": "devoirs"
+            }
+        },
+        "25": {
+            "legacy index": "17",
+            "cq": "Uh oh\u2026 I think I found it!",
+            "alternate_pivot": "",
+            "translation": "oh, je crois que je l'ai trouv\u00e9",
+            "concept_words": {
+                "PP1SG": "je",
+                "thinking": "crois",
+                "finding": "trouv\u00e9",
+                "object wildcard": "l"
+            }
+        },
+        "26": {
+            "legacy index": "18a",
+            "cq": "Really?!",
+            "alternate_pivot": "",
+            "translation": "ah oui",
+            "concept_words": {}
+        },
+        "27": {
+            "legacy index": "18b",
+            "cq": "Where?",
+            "alternate_pivot": "",
+            "translation": "o\u00f9",
+            "concept_words": {
+                "spatial position wildcard": "o\u00f9"
+            }
+        },
+        "28": {
+            "legacy index": "19",
+            "cq": "Look at our little brother out there in the garden.",
+            "alternate_pivot": "",
+            "translation": "regarde notre petit fr\u00e8re dans le jardin",
+            "concept_words": {
+                "PP2SG": "",
+                "looking": "regarde",
+                "PP1INCDU": "notre",
+                "little brother": "petit...fr\u00e8re",
+                "out there": "",
+                "garden": "jardin",
+                "ZOOM IN": "",
+                "DIRECTION": ""
+            }
+        },
+        "29": {
+            "legacy index": "20",
+            "cq": "What is he holding in his hands?",
+            "alternate_pivot": "",
+            "translation": "qu'est-ce qu'il tient dans ses mains",
+            "concept_words": {
+                "holding": "tient",
+                "object wildcard": "",
+                "PP3SG": "il",
+                "hands": "mains"
+            }
+        },
+        "30": {
+            "legacy index": "21",
+            "cq": "Isn\u2019t it your notebook?",
+            "alternate_pivot": "",
+            "translation": "ce n'est pas ton cahier",
+            "concept_words": {
+                "being": "est",
+                "object wildcard": "ce",
+                "notebook": "cahier",
+                "COMP-EQUAL": ""
+            }
+        },
+        "31": {
+            "legacy index": "22a",
+            "cq": "Oh my god, yes it is",
+            "alternate_pivot": "",
+            "translation": "oh oui",
+            "concept_words": {
+                "event wildcard": ""
+            }
+        },
+        "32": {
+            "legacy index": "22b",
+            "cq": "But he has shredded it into pieces!",
+            "alternate_pivot": "",
+            "translation": "mais il l'\u00e0 d\u00e9chir\u00e9 en mille morceaux",
+            "concept_words": {
+                "BUT": "mais",
+                "shredding": "d\u00e9chir\u00e9",
+                "PP3SG": "il",
+                "object wildcard": "l",
+                "pieces": "mille...morceaux"
+            }
+        },
+        "33": {
+            "legacy index": "23",
+            "cq": "It looks like he\u2019s been playing with it all morning.",
+            "alternate_pivot": "",
+            "translation": "on dirait qu'il a jou\u00e9 avec toute la matin\u00e9e",
+            "concept_words": {
+                "playing": "a...jou\u00e9",
+                "PP3SG": "il",
+                "object wildcard": "",
+                "morning": "matin\u00e9e"
+            }
+        },
+        "34": {
+            "legacy index": "24",
+            "cq": "Oh dear, what happened to my homework?!",
+            "alternate_pivot": "",
+            "translation": "oh la la, qu'est-ce qui est arriv\u00e9 \u00e0 mes devoirs !",
+            "concept_words": {
+                "happening": "est...arriv\u00e9",
+                "event wildcard": "qu",
+                "homework": "devoirs",
+                "PP1SG": "mes"
+            }
+        },
+        "35": {
+            "legacy index": "25",
+            "cq": "Now I need to buy a new notebook",
+            "alternate_pivot": "",
+            "translation": "maintenant il faut que j'ach\u00e8te un nouveau cahier",
+            "concept_words": {
+                "now": "maintenant",
+                "needing": "",
+                "buying": "ach\u00e8te",
+                "PP1SG": "j",
+                "notebook": "cahier",
+                "new": "nouveau"
+            }
+        },
+        "36": {
+            "legacy index": "26",
+            "cq": "and I need to start my work all over again.",
+            "alternate_pivot": "",
+            "translation": "et je dois refaire tous mes devoirs",
+            "concept_words": {
+                "PP1SG": "je",
+                "needing": "dois",
+                "starting": "",
+                "homework": "devoirs",
+                "again": "",
+                "all over": ""
+            }
+        },
+        "37": {
+            "legacy index": "27",
+            "cq": "poor me, what a disaster!",
+            "alternate_pivot": "",
+            "translation": "pauvre de moi, c'est une catastrophe",
+            "concept_words": {}
+        }
+    },
+    "interviewer": "Sebastien",
+    "interviewee": "Sebastien",
+    "recording_uid": "1719357570"
+}

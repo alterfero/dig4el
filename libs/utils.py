@@ -14,6 +14,8 @@ def add_field_to_concept_json(concept_json_file, field_name, field_value):
         json.dump(data, f, indent=4)
     print(f"Field {field_name} added to {concept_json_file}")
 
+def get_key_by_value(d, target_value):
+    return next((key for key, value in d.items() if value == target_value), None)
 
 def is_number(s):
     """Check if a string is a number."""
