@@ -279,7 +279,7 @@ def get_sentences_with_word(knowledge_graph, word, language):
 
 def build_gloss_df(knowledge_graph, entry):
     sentence_display_ordered_dict = OrderedDict()
-    language = knowledge_graph["0"]["language"]
+    language = knowledge_graph[0]["language"]
     w_list = stats.custom_split(knowledge_graph[entry]["recording_data"]["translation"], delimiters[language])
     for wd in [w for w in w_list if w]:
         if wd in knowledge_graph[entry]["recording_data"]["concept_words"].values():
@@ -293,3 +293,30 @@ def build_gloss_df(knowledge_graph, entry):
 
     # build dataframe from ordered dict
     return pd.DataFrame.from_dict(sentence_display_ordered_dict, orient="index", columns=["concept"]).T
+
+def get_kg_entry_signature(knowledge_graph, entry):
+    data = knowledge_graph[entry]
+
+    is_wildcard = False
+    for concept in data["sentence_data"]["concept"]:
+        if "wildcard" in concept:
+            is_wildcard = True
+
+    signature = []
+    # TODO: take all intents into account if multiple
+    if data["sentence_data"]["intent"] != []:
+        signature.append(data["sentence_data"]["intent"][0])
+    else:
+        signature.append("")
+    if data["sentence_data"]["predicate"] != []:
+        signature.append(data["sentence_data"]["predicate"][0])
+    else:
+        signature.append("")
+
+    if is_wildcard:
+        signature.append("is_wildcard")
+    else:
+        signature.append("no_wildcard")
+
+    return signature
+

@@ -9,12 +9,22 @@ delimiters = {
 }
 
 def analyze_word_order(knowledge_graph):
-    language = knowledge_graph["0"]["language"]
+    language = knowledge_graph[0]["language"]
     word_order_stats = defaultdict(list)
     info_dict = {
         "transitive": [],
         "intransitive": [],
         "index_lists_by_order":{
+            "ea_": [],
+            "ae_": [],
+            "eap": [],
+            "epa": [],
+            "pae": [],
+            "pea": [],
+            "ape": [],
+            "aep": []
+        },
+        "signature_list_by_order":{
             "ea_": [],
             "ae_": [],
             "eap": [],
@@ -138,9 +148,11 @@ def analyze_word_order(knowledge_graph):
                     if event_position < agent_position:
                         ord = "ea_"
                         info_dict["index_lists_by_order"]["ea_"].append(entry_index)
+                        info_dict["signature_list_by_order"]["ea_"].append(kgu.get_kg_entry_signature(knowledge_graph, entry_index))
                     else:
                         ord = "ae_"
                         info_dict["index_lists_by_order"]["ae_"].append(entry_index)
+                        info_dict["signature_list_by_order"]["ae_"].append(kgu.get_kg_entry_signature(knowledge_graph, entry_index))
                     info_dict["intransitive"].append(
                         {"entry": entry_index,
                          "event_position": event_position,
@@ -160,6 +172,7 @@ def analyze_word_order(knowledge_graph):
                     # Create the acronym
                     order = ''.join([item[0] for item in sorted_order])
                     info_dict["index_lists_by_order"][order].append(entry_index)
+                    info_dict["signature_list_by_order"][order].append(kgu.get_kg_entry_signature(knowledge_graph, entry_index))
 
                     info_dict["transitive"].append(
                         {"entry": entry_index,
@@ -201,7 +214,6 @@ def analyze_word_order(knowledge_graph):
     info_dict["stats"]["transitive_word_order"] = count_dict
 
     return info_dict
-
 
 
 
