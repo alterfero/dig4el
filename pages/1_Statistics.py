@@ -42,14 +42,10 @@ def build_gloss_df(entry):
 st.title("Statistics and exploration")
 
 concept_kson = json.load(open("./data/concepts.json"))
+delimiters = json.load(open("./data/delimiters.json"))
+available_target_languages = list(delimiters.keys())
 
-delimiters = {
-    "french": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
-    "english": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
-    "marquesan (Nuku Hiva)": [" ", ".", ",", ";", ":", "!", "?", "…"]
-}
-
-language = st.selectbox("Select a language", [ "marquesan (Nuku Hiva)", "english", "french"], index=0)
+language = st.selectbox("Select a language", available_target_languages, index=0)
 st.session_state["knowledge_graph"], unique_words, unique_words_frequency, total_target_word_count = (
     kgu.build_knowledge_graph(language))
 st.write("total_target_word_count: {}".format(total_target_word_count))

@@ -13,18 +13,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-delimiters = {
-    "french": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
-    "english": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
-    "marquesan (Nuku Hiva)": [" ", ".", ",", ";", ":", "!", "?", "…"]
-}
+delimiters = json.load(open("./data/delimiters.json"))
+available_target_languages = list(delimiters.keys())
 
 questionnaires_folder = "./questionnaires"
 # cq_list is the list of json files in the questionnaires folder
 cq_list = [f for f in listdir(questionnaires_folder) if isfile(join(questionnaires_folder, f)) and f.endswith(".json")]
 
 concepts_kson = json.load(open("./data/concepts.json"))
-available_target_languages = ["french", "marquesan (Nuku Hiva)"]
 available_pivot_languages = ["english", "french"]
 questionnaires_folder = "./questionnaires"
 
