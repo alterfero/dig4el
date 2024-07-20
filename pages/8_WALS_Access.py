@@ -98,9 +98,21 @@ with st.expander("Exploration by language and parameter"):
 
     colq, colw = st.columns(2)
     selected_families = colq.multiselect("language families", language_families)
+    selected_subfamilies = colq.multiselect("language subfamilies", language_subfamilies)
+    selected_genuses = colq.multiselect("language genuses", language_genuses)
     selected_macroareas = colq.multiselect("macroareas", language_macroareas)
     selected_language_names = colq.multiselect("languages", list(language_id_by_name.keys()))
     selected_param = colw.selectbox("Choose a parameter to observe", st.session_state["parameter_pk_by_name_lookup_table"].keys())
+    if selected_families==[] and selected_subfamilies==[] and selected_macroareas==[] and len(selected_language_names)==1:
+        colw.subheader("Language monography")
+        language_id = language_id_by_name[selected_language_names[0]]
+        colw.write("id: {}".format(language_id))
+        language_info = st.session_state["language_info_by_id_lookup_table"][language_id]
+        colw.write("Macro area: {}".format(language_info["macroarea"]))
+        colw.write("Family: {}".format(language_info["family"]))
+        colw.write("Subfamily: {}".format(language_info["subfamily"]))
+        colw.write("Genus: {}".format(language_info["genus"]))
+
 
     selected_language_ids = []
     for language_name in selected_language_names:
@@ -108,6 +120,12 @@ with st.expander("Exploration by language and parameter"):
     for k in st.session_state["language_info_by_id_lookup_table"]:
         v = st.session_state["language_info_by_id_lookup_table"][k]
         if v["family"] in selected_families:
+            if k not in selected_language_ids:
+                selected_language_ids.append(k)
+        if v["subfamily"] in selected_subfamilies:
+            if k not in selected_language_ids:
+                selected_language_ids.append(k)
+        if v["genus"] in selected_genuses:
             if k not in selected_language_ids:
                 selected_language_ids.append(k)
         if v["macroarea"] in selected_macroareas:
@@ -133,7 +151,7 @@ with st.expander("Exploration by language and parameter"):
     for k in result_dict.keys():
         stats_dict[k] = len(result_dict[k])
     stats_df = pd.DataFrame(stats_dict, index=["number of languages"]).T
-    st.bar_chart(stats_df, x_label="values of the parameter", y_label="number of languages",
+    st.bar_chart(stats_df, y_label="values of the parameter", x_label="number of languages",
                  horizontal=True)
 
 with st.expander("Exploration by parameter and value"):
@@ -179,7 +197,7 @@ with st.expander("Exploration by parameter and value"):
         selected_param_recap_dict[value["name"]] = len(value["languages"])
     selected_param_recap_df = pd.DataFrame.from_dict(selected_param_recap_dict, orient="index", columns=["value"])
     #st.dataframe(selected_param_recap_df)
-    st.bar_chart(selected_param_recap_df, x_label="values of the parameter", y_label="number of languages",
+    st.bar_chart(selected_param_recap_df, y_label="values of the parameter", x_label="number of languages",
                  horizontal=True)
     #st.write(params_dict[selected_param_pk]["param_values"])
     selected_value = st.selectbox("Choose a value", selected_param_recap_dict.keys())
