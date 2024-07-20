@@ -23,8 +23,8 @@ print("focus: {}".format(st.session_state["focus"]))
 
 
 
-# if st.button("SAVE"):
-#     json.dump(st.session_state["concepts_kson"], open("./data/concepts.json", "w"))
+if st.button("SAVE"):
+    json.dump(st.session_state["concepts_kson"], open("./data/concepts.json", "w"))
 
 def on_focus_change():
     print("callback says: focus changed to {}".format(st.session_state["focus"]))

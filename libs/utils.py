@@ -3,6 +3,13 @@ import os
 import json
 from os.path import isfile, join
 from os import listdir
+import pandas as pd
+
+
+def csv_to_dict(file_path):
+    df = pd.read_csv(file_path)
+    return df.to_dict(orient='records')
+
 
 def add_field_to_concept_json(concept_json_file, field_name, field_value):
     """Add a field to a concept json file."""
