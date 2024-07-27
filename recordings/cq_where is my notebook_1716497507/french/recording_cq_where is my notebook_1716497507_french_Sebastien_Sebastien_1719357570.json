@@ -23,7 +23,7 @@
             "concept_words": {
                 "PP1SG": "je",
                 "searching": "ai...cherch\u00e9",
-                "object wildcard": "l",
+                "Ref_1_object": "l",
                 "everywhere": "partout",
                 "BUT": "mais",
                 "being able to": "",
@@ -56,7 +56,7 @@
             "alternate_pivot": "",
             "translation": "c'est mon cahier de maths",
             "concept_words": {
-                "object wildcard": "c",
+                "Ref_1_object": "c",
                 "book": "cahier",
                 "math": "maths",
                 "equating": "est"
@@ -68,8 +68,8 @@
             "alternate_pivot": "",
             "translation": "c'est un gros bleu",
             "concept_words": {
-                "object wildcard": "c",
-                "being": "est",
+                "Ref_1_object": "c",
+                "exhibiting (an attribute)": "est",
                 "thick": "gros",
                 "blue": "bleu",
                 "AND": ""
@@ -83,7 +83,7 @@
             "concept_words": {
                 "PP2SG": "tu",
                 "seeing": "vu",
-                "object wildcard": "l",
+                "Ref_1_object": "l",
                 "already": "d\u00e9j\u00e0"
             }
         },
@@ -98,7 +98,7 @@
                 "homework": "devoirs",
                 "last night": "hier...soir",
                 "dining room": "salle...\u00e0...manger",
-                "object wildcard": ""
+                "Ref_1_object": ""
             }
         },
         "9": {
@@ -109,7 +109,7 @@
             "concept_words": {
                 "PP2SG": "tu",
                 "leaving (transitive)": "as...laiss\u00e9",
-                "object wildcard": "l",
+                "Ref_1_object": "l",
                 "spatial position wildcard": "l\u00e0",
                 "probably": "s\u00fbrement"
             }
@@ -172,7 +172,7 @@
             "alternate_pivot": "",
             "translation": "il n'est pas l\u00e0",
             "concept_words": {
-                "object wildcard": "il",
+                "Ref_1_object": "il",
                 "spatial position wildcard": "l\u00e0",
                 "BEING LOCATED": "est"
             }
@@ -194,7 +194,7 @@
             "alternate_pivot": "",
             "translation": "ou peut-\u00eatre il est cach\u00e9 sous un autre livre",
             "concept_words": {
-                "object wildcard": "il",
+                "Ref_1_object": "il",
                 "UNDER": "sous",
                 "ANOTHER": "autre",
                 "book": "livre",
@@ -218,7 +218,7 @@
                 "PP1SG": "je",
                 "being able to": "",
                 "finding": "trouve",
-                "object wildcard": "le"
+                "Ref_1_object": "le"
             }
         },
         "20": {
@@ -240,7 +240,7 @@
             "concept_words": {
                 "CLOSE TO SPEAKER": "ici",
                 "BEING LOCATED": "",
-                "object wildcard": ""
+                "Ref_1_object": ""
             }
         },
         "22": {
@@ -252,7 +252,7 @@
                 "BUT": "mais",
                 "PP1SG": "j",
                 "needing": "ai...besoin",
-                "object wildcard": "en",
+                "Ref_1_object": "en",
                 "school class": "cours",
                 "today": "aujourd...hui"
             }
@@ -264,7 +264,7 @@
             "translation": "le prof va \u00eatre en col\u00e8re si je n'ai pas mon cahier",
             "concept_words": {
                 "teacher": "prof",
-                "being": "\u00eatre",
+                "exhibiting (an attribute)": "\u00eatre",
                 "angry": "en...col\u00e8re",
                 "CONDITION": "si",
                 "PP1SG": "je",
@@ -294,7 +294,7 @@
                 "PP1SG": "je",
                 "thinking": "crois",
                 "finding": "trouv\u00e9",
-                "object wildcard": "l"
+                "Ref_1_object": "l"
             }
         },
         "26": {
@@ -347,10 +347,9 @@
             "alternate_pivot": "",
             "translation": "ce n'est pas ton cahier",
             "concept_words": {
-                "being": "est",
-                "object wildcard": "ce",
-                "notebook": "cahier",
-                "COMP-EQUAL": ""
+                "equating": "est",
+                "Ref_1_object": "ce",
+                "notebook": "cahier"
             }
         },
         "31": {
@@ -359,7 +358,7 @@
             "alternate_pivot": "",
             "translation": "oh oui",
             "concept_words": {
-                "event wildcard": ""
+                "Ref_1_object": ""
             }
         },
         "32": {
@@ -371,7 +370,7 @@
                 "BUT": "mais",
                 "shredding": "d\u00e9chir\u00e9",
                 "PP3SG": "il",
-                "object wildcard": "l",
+                "Ref_1_object": "l",
                 "pieces": "mille...morceaux"
             }
         },
@@ -383,7 +382,7 @@
             "concept_words": {
                 "playing": "a...jou\u00e9",
                 "PP3SG": "il",
-                "object wildcard": "",
+                "Ref_1_object": "",
                 "morning": "matin\u00e9e"
             }
         },

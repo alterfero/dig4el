@@ -112,8 +112,7 @@
                 "PP1PLU": "nos",
                 "leaders": "chefs",
                 "starting": "commenceront",
-                "welcome speech": "discours...de...bienvenue",
-                "event wildcard": ""
+                "welcome speech": "discours...de...bienvenue"
             }
         },
         "11": {
@@ -132,14 +131,14 @@
             "legacy index": "9",
             "cq": "After that, we\u2019ll all share lunch together.",
             "alternate_pivot": "",
-            "translation": "et apr\u00e8s nous partagerons un d\u00e9jeuner",
+            "translation": "et apr\u00e8s ça nous partagerons un d\u00e9jeuner",
             "concept_words": {
                 "AFTER X": "apr\u00e8s",
                 "sharing": "partagerons",
                 "lunch": "d\u00e9jeuner",
                 "together": "",
                 "PP1PLU": "nous",
-                "event wildcard": ""
+                "Ref_Event": "ça"
             }
         },
         "13": {
@@ -261,7 +260,7 @@
             "alternate_pivot": "",
             "translation": "ce sera la fin d'une journ\u00e9e de f\u00eate",
             "concept_words": {
-                "event wildcard": "ce",
+                "Ref_Event": "ce",
                 "equating": "sera",
                 "END OF X": "fin...de",
                 "day of celebration": "journ\u00e9e...de...f\u00eate"
@@ -376,7 +375,7 @@
             "alternate_pivot": "",
             "translation": "oh la la, \u00e7a va faire beaucoup de travail pour tout le monde",
             "concept_words": {
-                "event wildcard": "\u00e7a",
+                "Ref_Event": "\u00e7a",
                 "work": "travail",
                 "PP1PLU": "",
                 "equating": "va...faire"

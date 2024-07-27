@@ -192,7 +192,7 @@
                 "BUT": "mais",
                 "children": "enfants",
                 "eating": "ont...mang\u00e9",
-                "object wildcard": "",
+                "Ref_1_object": "",
                 "already": "d\u00e9j\u00e0"
             }
         },
@@ -288,7 +288,7 @@
             "concept_words": {
                 "PP3SG": "il",
                 "harvesting": "cueilli",
-                "object wildcard": "",
+                "Ref_many_objects": "qu",
                 "today": "",
                 "AND": "et",
                 "bringing": "ramen\u00e9",
@@ -307,7 +307,7 @@
                 "PP1EXCDU": "on",
                 "being able to": "peut",
                 "giving": "donner",
-                "object wildcard": "en"
+                "Ref_many_objects": "en"
             }
         },
         "29": {

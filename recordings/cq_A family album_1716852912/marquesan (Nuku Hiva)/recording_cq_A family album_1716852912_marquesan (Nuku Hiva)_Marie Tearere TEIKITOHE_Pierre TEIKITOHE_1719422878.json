@@ -54,7 +54,7 @@
             "translation": "'ai, 'a haka'ite mai a'e",
             "concept_words": {
                 "showing": "haka'ite",
-                "object wildcard": "",
+                "Ref_1_object": "",
                 "PP1SG": "",
                 "PP2SG": ""
             }
@@ -65,7 +65,7 @@
             "alternate_pivot": "Qui est-ce, sur la premi\u00e8re photo ? ",
             "translation": "o ai tenei io he ata tomua ana 'oa",
             "concept_words": {
-                "PERSONAL DEICTIC WILDCARD": "",
+                "PERSON wildcard": "",
                 "POINTED BY SPEAKER": "tenei",
                 "photo": "ata",
                 "first": "tomua",
@@ -78,7 +78,7 @@
             "alternate_pivot": "On voit qu\u2019elle date d\u2019il y a longtemps",
             "translation": "vai ana'e mea 'oa",
             "concept_words": {
-                "object wildcard": "",
+                "Ref_1_object": "",
                 "looking like": "",
                 "olden times": "'oa"
             }
@@ -89,7 +89,7 @@
             "alternate_pivot": "C'est en noir et blanc",
             "translation": "mea ke'eke'e tava'i'e",
             "concept_words": {
-                "object wildcard": "",
+                "Ref_1_object": "",
                 "exhibiting (an attribute)": "",
                 "black and white": ""
             }
@@ -114,7 +114,6 @@
             "translation": "o'oua, 'inei, i te keke a'e'a'e, pakahio i te keke oko",
             "concept_words": {
                 "POINTED BY SPEAKER": "'inei",
-                "being": "",
                 "grandpa": "",
                 "left": "",
                 "AND": "",
@@ -128,7 +127,7 @@
             "alternate_pivot": " Les personnes qui les entourent doivent \u00eatre leurs amis, ou d'autres gens de la famille. ",
             "translation": "te po'i ma to 'aua kaokao, ma'akau to 'aua tau hoa, ako'e'a e hua'a",
             "concept_words": {
-                "being": "",
+                "equating": "",
                 "people": "po'i",
                 "around": "kaokao",
                 "friends": "hoa",
@@ -171,9 +170,9 @@
             "concept_words": {
                 "PP3DU": "'aua",
                 "OLDER THAN X": "",
-                "being": "",
+                "exhibiting (an attribute)": "",
                 "wedding": "matiri'ia",
-                "POINTED BY SPEAKER": "tena"
+                "Ref_1_object": "tena"
             }
         },
         "14": {
@@ -182,8 +181,8 @@
             "alternate_pivot": "Ce devait \u00eatre le jour o\u00f9 ils se sont fianc\u00e9s.  ",
             "translation": "ma'akau e '\u0101 o to 'aua ha'ahei'ia no te tau po'i moni, tiketike anaiho te'ina, a'e he ha'ahei'ia no tahipito",
             "concept_words": {
-                "event wildcard": "",
-                "being": "",
+                "Ref_Event": "",
+                "equating": "",
                 "day": "",
                 "getting engaged": "",
                 "PP3DU": "'aua"
@@ -232,7 +231,7 @@
             "alternate_pivot": "Qui ? Mes grand-parents?  ",
             "translation": "o ai ? to'u mou koko'oua",
             "concept_words": {
-                "PERSONAL DEICTIC WILDCARD": "",
+                "PERSON wildcard": "",
                 "grandparents": "koko'oua",
                 "PP1SG": "to'u"
             }
@@ -292,7 +291,7 @@
             "alternate_pivot": "Et c\u2019est qui sur la deuxi\u00e8me photo ?",
             "translation": "o ai te mea he 'ua o te ata",
             "concept_words": {
-                "PERSONAL DEICTIC WILDCARD": "",
+                "PERSON wildcard": "",
                 "second": "'ua",
                 "photo": "ata",
                 "POINTED BY SPEAKER": "",
@@ -361,7 +360,7 @@
             "alternate_pivot": "Et le petit gar\u00e7on derri\u00e8re elle, qui est-ce ? ",
             "translation": "e te kaiu po'iti ma hope o \u012ba, o ai",
             "concept_words": {
-                "PERSONAL DEICTIC WILDCARD": "",
+                "PERSON wildcard": "",
                 "small": "kaiu",
                 "boy": "po'iti",
                 "BEHIND X": "",
@@ -425,7 +424,7 @@
             "alternate_pivot": "C\u2019\u00e9tait une ancienne \u00e9cole, qui n'existe plus aujourd\u2019hui.",
             "translation": "e ha'e hamani kakiu a'e he mea haka'ua i tenei",
             "concept_words": {
-                "object wildcard": "",
+                "Ref_1_object": "",
                 "old": "kakiu",
                 "school": "hamani",
                 "existing": "",
@@ -439,8 +438,8 @@
             "alternate_pivot": "Elle se trouvait en bas de la route, en direction du lac.",
             "translation": "ena ma 'a'o mai o te va'anui, i te ka'o'ia 'oumati",
             "concept_words": {
-                "object wildcard": "ena",
-                "being": "",
+                "Ref_1_object": "ena",
+                "BEING LOCATED": "",
                 "AND": "",
                 "down the road": "",
                 "TOWARD X": "",
@@ -490,7 +489,7 @@
                 "PP1SG": "au",
                 "thinking": "ma'akau",
                 "knowing": "'ite",
-                "PERSONAL DEICTIC WILDCARD": "",
+                "PERSON wildcard": "",
                 "children": "tama",
                 "POINTED BY SPEAKER": "tenei",
                 "equating": ""

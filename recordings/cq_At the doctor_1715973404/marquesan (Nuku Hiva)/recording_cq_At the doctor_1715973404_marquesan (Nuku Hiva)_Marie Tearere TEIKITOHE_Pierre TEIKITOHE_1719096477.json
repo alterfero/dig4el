@@ -352,7 +352,7 @@
             "translation": "oia ko'ina, a tahi nei a ma'akau",
             "concept_words": {
                 "PP1SG": "",
-                "event wildcard": ""
+                "Ref_Event": ""
             }
         },
         "33": {
@@ -390,7 +390,7 @@
             "alternate_pivot": "Vous avez go\u00fbt\u00e9 ?  ",
             "translation": "ua tamata'ia e 'oe",
             "concept_words": {
-                "event wildcard": "",
+                "Ref_Event": "",
                 "PP2SG": ""
             }
         },
@@ -400,7 +400,7 @@
             "alternate_pivot": "Oui j'ai go\u00fbt\u00e9.",
             "translation": "e e, ua tamata au",
             "concept_words": {
-                "event wildcard": "",
+                "Ref_Event": "",
                 "PP1SG": ""
             }
         },
@@ -434,7 +434,7 @@
             "concept_words": {
                 "PP1SG": "ta'u",
                 "eating": "kai",
-                "object wildcard": ""
+                "Ref_many_objects": ""
             }
         },
         "40": {
@@ -446,7 +446,7 @@
                 "becoming": "hemo",
                 "sick": "mate",
                 "after": "",
-                "event wildcard": "",
+                "Ref_Event": "",
                 "PP1SG": "au"
             }
         },
@@ -544,7 +544,7 @@
             "concept_words": {
                 "PP2SG": "",
                 "taking": "",
-                "object wildcard": "",
+                "Ref_1_object": "",
                 "twice a day": ""
             }
         },
@@ -605,8 +605,8 @@
             "alternate_pivot": "C'est un m\u00e9dicament efficace contre la fi\u00e8vre et les maux de ventre. ",
             "translation": "e haika meita'i no te fiva me te mamae kop\u016b",
             "concept_words": {
-                "object wildcard": "",
-                "being": "",
+                "Ref_1_object": "",
+                "equating": "",
                 "efficient": "meita'i",
                 "medicine": "haika",
                 "AND": "",

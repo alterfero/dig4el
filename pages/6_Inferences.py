@@ -2,7 +2,7 @@ import streamlit as st
 import json
 from exploration.evolutionary101 import Belief
 from exploration import simple_inferences as si
-from libs import knowledge_graph_utils as kgu
+from libs import knowledge_graph_utils as kgu, wals_utils as wu
 import pandas as pd
 
 st.set_page_config(

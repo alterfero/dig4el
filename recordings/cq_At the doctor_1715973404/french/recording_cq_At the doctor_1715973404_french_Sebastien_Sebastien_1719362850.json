@@ -390,7 +390,7 @@
             "alternate_pivot": "",
             "translation": "et vous l'avez fait",
             "concept_words": {
-                "event wildcard": "",
+                "Ref_Event": "l",
                 "PP2SG": "vous"
             }
         },
@@ -400,7 +400,7 @@
             "alternate_pivot": "",
             "translation": "oui",
             "concept_words": {
-                "event wildcard": "",
+                "Ref_Event": "",
                 "PP1SG": ""
             }
         },
@@ -434,7 +434,7 @@
             "concept_words": {
                 "PP1SG": "j",
                 "eating": "ai...mang\u00e9",
-                "object wildcard": "en"
+                "Ref_1_object": "en"
             }
         },
         "40": {
@@ -446,7 +446,7 @@
                 "becoming": "suis...tomb\u00e9",
                 "sick": "malade",
                 "after": "apr\u00e8s",
-                "event wildcard": "",
+                "Ref_Event": "",
                 "PP1SG": "je"
             }
         },
@@ -544,7 +544,7 @@
             "concept_words": {
                 "PP2SG": "",
                 "taking": "prenez",
-                "object wildcard": "les",
+                "Ref_1_object": "les",
                 "twice a day": "deux...fois...par...jour"
             }
         },
@@ -606,7 +606,7 @@
             "translation": "ce sont des m\u00e9dicament efficaces pour la fi\u00e8vre et le mal de ventre",
             "concept_words": {
                 "object wildcard": "ce",
-                "being": "sont",
+                "equating": "sont",
                 "efficient": "efficaces",
                 "medicine": "m\u00e9dicament",
                 "AND": "et",

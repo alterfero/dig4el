@@ -54,7 +54,7 @@
             "translation": "oh montre le moi",
             "concept_words": {
                 "showing": "montre",
-                "object wildcard": "le",
+                "Ref_1_object": "le",
                 "PP1SG": "moi",
                 "PP2SG": ""
             }
@@ -65,7 +65,7 @@
             "alternate_pivot": "",
             "translation": "qui est sur cette premi\u00e8re photo",
             "concept_words": {
-                "PERSONAL DEICTIC WILDCARD": "qui",
+                "PERSON wildcard": "qui",
                 "POINTED BY SPEAKER": "cette",
                 "photo": "photo",
                 "first": "premi\u00e8re",
@@ -78,7 +78,7 @@
             "alternate_pivot": "",
             "translation": "\u00e7a para\u00eet ancien",
             "concept_words": {
-                "object wildcard": "\u00e7a",
+                "Ref_1_object": "\u00e7a",
                 "looking like": "para\u00eet",
                 "olden times": "ancien"
             }
@@ -89,7 +89,7 @@
             "alternate_pivot": "",
             "translation": "c'est en noir et blanc",
             "concept_words": {
-                "object wildcard": "c",
+                "Ref_1_object": "c",
                 "exhibiting (an attribute)": "est",
                 "black and white": "noir...et...blanc"
             }
@@ -114,7 +114,6 @@
             "translation": "grand-p\u00e8re \u00e0 gauche, et grand-m\u00e8re \u00e0 droite",
             "concept_words": {
                 "POINTED BY SPEAKER": "",
-                "being": "",
                 "grandpa": "grand-p\u00e8re",
                 "left": "gauche",
                 "AND": "et",
@@ -128,7 +127,7 @@
             "alternate_pivot": "",
             "translation": "les gens autour doivent \u00eatre leurs amis ou de la famille",
             "concept_words": {
-                "being": "\u00eatre",
+                "equating": "\u00eatre",
                 "people": "gens",
                 "around": "autour",
                 "friends": "amis",
@@ -171,9 +170,9 @@
             "concept_words": {
                 "PP3DU": "ils",
                 "OLDER THAN X": "plus...vieux...que",
-                "being": "\u00e9taient",
+                "exhibiting (an attribute)": "\u00e9taient",
                 "wedding": "mariage",
-                "POINTED BY SPEAKER": "\u00e7a"
+                "Ref_1_object": "\u00e7a"
             }
         },
         "14": {
@@ -182,8 +181,8 @@
             "alternate_pivot": "",
             "translation": "ce doit \u00eatre le jour o\u00f9 ils se sont fianc\u00e9s",
             "concept_words": {
-                "event wildcard": "ce",
-                "being": "\u00eatre",
+                "Ref_Event": "ce",
+                "equating": "\u00eatre",
                 "day": "jour",
                 "getting engaged": "se...sont...fianc\u00e9s",
                 "PP3DU": "ils"
@@ -232,7 +231,7 @@
             "alternate_pivot": "",
             "translation": "qui ? mes grand-parents",
             "concept_words": {
-                "PERSONAL DEICTIC WILDCARD": "qui",
+                " PERSON wildcard": "qui",
                 "grandparents": "grand-parents",
                 "PP1SG": "mes"
             }
@@ -292,7 +291,7 @@
             "alternate_pivot": "",
             "translation": "et qui c'est sur la deuxi\u00e8me photo",
             "concept_words": {
-                "PERSONAL DEICTIC WILDCARD": "qui",
+                " PERSON wildcard": "qui",
                 "second": "deuxi\u00e8me",
                 "photo": "photo",
                 "POINTED BY SPEAKER": "c",
@@ -361,7 +360,7 @@
             "alternate_pivot": "",
             "translation": "et qui est le petit gar\u00e7on derri\u00e8re elle",
             "concept_words": {
-                "PERSONAL DEICTIC WILDCARD": "qui",
+                "PERSON wildcard": "qui",
                 "small": "petit",
                 "boy": "gar\u00e7on",
                 "BEHIND X": "derri\u00e8re",
@@ -415,7 +414,7 @@
                 "attending": "allaient",
                 "PP3DU": "ils",
                 "school": "\u00e9cole",
-                "object wildcard": "",
+                "object wildcard": "quelle",
                 "then (time)": "en...ce...temps"
             }
         },
@@ -425,7 +424,7 @@
             "alternate_pivot": "",
             "translation": "c'\u00e9tait une vieille \u00e9cole qui n'existe plus",
             "concept_words": {
-                "object wildcard": "c",
+                "Ref_1_object": "c",
                 "old": "vieille",
                 "school": "\u00e9cole",
                 "existing": "existe",
@@ -439,8 +438,8 @@
             "alternate_pivot": "",
             "translation": "elle \u00e9tait plus bas sur la route, vers le lac",
             "concept_words": {
-                "object wildcard": "elle",
-                "being": "\u00e9tait",
+                "Ref_1_object": "elle",
+                "BEING LOCATED": "\u00e9tait",
                 "AND": "",
                 "down the road": "plus...bas...sur...la...route",
                 "TOWARD X": "vers",

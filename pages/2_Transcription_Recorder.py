@@ -16,6 +16,7 @@ st.set_page_config(
 delimiters = json.load(open("./data/delimiters.json"))
 available_target_languages = list(delimiters.keys())
 
+
 questionnaires_folder = "./questionnaires"
 # cq_list is the list of json files in the questionnaires folder
 cq_list = [f for f in listdir(questionnaires_folder) if isfile(join(questionnaires_folder, f)) and f.endswith(".json")]

@@ -7,7 +7,6 @@ delimiters = {
     "english": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
     "marquesan (Nuku Hiva)": [" ", ".", ",", ";", ":", "!", "?", "…"]
 }
-
 def analyze_word_order(knowledge_graph):
     language = knowledge_graph[0]["language"]
     word_order_stats = defaultdict(list)
@@ -72,7 +71,7 @@ def analyze_word_order(knowledge_graph):
                                 #print("{} in target words {} ".format(event_target_pos_word, target_words))
                                 event_position = target_words.index(event_target_pos_word)
                             else:
-                                print("Simple Inference WARNING: entry: {}, event_target_pos_word {} not in target_words {}".format(entry_index, event_target_pos_word,target_words))
+                                print("Simple Inference TARGET POS WORD NOT IN TARGET WORDS: entry: {}, event_target_pos_word {} not in target_words {}".format(entry_index, event_target_pos_word,target_words))
                     except KeyError:
                         print("problem with concept {} in entry {}, not in concept_words {}".format(concept, entry_index, knowledge_graph[entry_index]["recording_data"]["concept_words"]))
 
@@ -105,7 +104,7 @@ def analyze_word_order(knowledge_graph):
                             agent_position = target_words.index(agent_target_pos_word)
                             #print("agent_position ",agent_position)
                         else:
-                            print("Simple Inference WARNING: agent_target {} not in target_words {}".format(agent_target_pos_word, target_words))
+                            print("Simple Inference AGENT_TARGET NOT IN TARGET_WORDS: agent_target {} not in target_words {}".format(agent_target_pos_word, target_words))
 
                 # checking now if this event has a patient
                 for option in graph[concept]["requires"]:
@@ -124,16 +123,19 @@ def analyze_word_order(knowledge_graph):
                     if patient_value != "":
                         is_active_patient = True
                         # is this active agent associated with a word in target language?
-                        patient_target = knowledge_graph[entry_index]["recording_data"]["concept_words"][patient_value]
-                        patient_target_list = patient_target.split("...")
-                        patient_target_pos_word = patient_target_list[0]
+                        if patient_value in knowledge_graph[entry_index]["recording_data"]["concept_words"] :
+                            patient_target = knowledge_graph[entry_index]["recording_data"]["concept_words"][patient_value]
+                            patient_target_list = patient_target.split("...")
+                            patient_target_pos_word = patient_target_list[0]
 
-                        if patient_target_pos_word != "":
-                            if patient_target_pos_word in target_words:
-                                patient_position = target_words.index(patient_target_pos_word)
-                            else:
-                                print("Simple Inference WARNING: patient_target {} not in target_words {}".format(
-                                    patient_target_pos_word, target_words))
+                            if patient_target_pos_word != "":
+                                if patient_target_pos_word in target_words:
+                                    patient_position = target_words.index(patient_target_pos_word)
+                                else:
+                                    print("Simple Inference PATIENT TARGET NOT IN TARGET WORDS: patient_target {} not in target_words {}".format(
+                                        patient_target_pos_word, target_words))
+                        else:
+                            print("Simple inference WARNING: patient_value {} not found in {}".format(patient_value, knowledge_graph[entry_index]["recording_data"]["concept_words"]))
 
                     # print("entry {}: event ({}) {} in pos {} has agent ({}) {} in pos {} and patient ({}) {} in pos {}".format(
                     #     entry_index,

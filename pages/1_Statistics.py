@@ -39,7 +39,7 @@ def build_gloss_df(entry):
     # build dataframe from ordered dict
     return pd.DataFrame.from_dict(sentence_display_ordered_dict, orient="index", columns=["concept"]).T
 
-st.title("Statistics and exploration")
+st.title("Statistics and exploration of CQ transcriptions")
 
 concept_kson = json.load(open("./data/concepts.json"))
 delimiters = json.load(open("./data/delimiters.json"))

@@ -71,13 +71,13 @@ def reset_current_dialog():
     st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["idiomaticity"] = 1
     print("reset_current_dialog executed")
 
-st.title("Conversational Questionnaire Editor")
 
 concepts_kson = json.load(open("./data/concepts.json"))
 intent_list = graphs_utils.get_leaves_from_node(concepts_kson, "INTENT")
 predicate_list = graphs_utils.get_leaves_from_node(concepts_kson, "PREDICATE")
 
-st.write("You can start a new questionnaire right away, or load an existing one")
+if not st.session_state["loaded_existing"]:
+    st.write("You can start a new questionnaire right away, or load an existing one")
 if not st.session_state["loaded_existing"]:
     with st.expander("Load CQ"):
             existing_cq = st.file_uploader("Load an existing questionnaire", type="json")
@@ -121,10 +121,8 @@ with st.expander("Header"):
         st.session_state["cq"]["speakers"]["B"]["gender"] = b_gender
         st.success("Header submitted")
 
-st.subheader("Dialog")
+st.subheader("Dialog - Sentence #{}/{}".format(str(st.session_state.counter), str(get_last_dialog_position())))
 colz, colx = st.columns(2)
-
-colz.subheader("Sentence #{}/{}".format(str(st.session_state.counter), str(get_last_dialog_position())))
 with colz.container():
     cola, cols, cold, cole = st.columns(4)
     if cola.button("Previous"):
@@ -211,25 +209,27 @@ else:
     default_g = {}
     default_tg = {}
 
-with colz.expander("sentence-wise descriptors", expanded=True):
-    lsi = st.text_input("legacy sentence index", default_legacy_index)
-    s = st.selectbox("Speaker", ["A", "B"], index=["A", "B"].index(default_s))
+colz.write(default_t)
+with colz.expander("sentence-wise descriptors", expanded=False):
+    colf, colg = st.columns(2)
+    lsi = colf.text_input("legacy sentence index", default_legacy_index)
+    s = colf.selectbox("Speaker", ["A", "B"], index=["A", "B"].index(default_s))
     s_name = st.session_state["cq"]["speakers"][s]["name"]
     t = st.text_input(s_name + " says", value=default_t)
 
     idio = st.slider("idiomaticity evaluation (1 = should not be idiomatic, 5 = is most probably idiomatic)", 1, 5, value=default_idiomaticity)
 
     try:
-        i = st.multiselect("Intents", intent_list, default=default_i)
+        i = colg.multiselect("Intents", intent_list, default=default_i)
     except:
-        i = st.multiselect("Intents", intent_list)
+        i = colg.multiselect("Intents", intent_list)
         #colz.write("Original intents not found in intents.json, please select from the list")
 
     try:
-        p = st.multiselect("Predicate", predicate_list, default=default_p)
+        p = colg.multiselect("Predicate", predicate_list, default=default_p)
     except:
-        p = st.multiselect("Predicate", predicate_list)
-        st.write("Original predicates not found, please select from the list")
+        p = colg.multiselect("Predicate", predicate_list)
+        colg.write("Original predicates not found, please select from the list")
 
 try:
     c = colz.multiselect("Concepts", list(concepts_kson.keys()), default=default_c)
@@ -322,10 +322,15 @@ if st.session_state["req_json"] != {}:
         #if the current node is not a terminal feature, ask the user to navigate the grammar graph to a terminal node with leaves being values, and choose a value.
         else:
             #colz.write("The current grammar node is not a terminal feature, navigate to a terminal feature to choose a value")
-            next_node = colz.selectbox("navigate to", current_node_children)
-            if colz.button("go to {}".format(next_node)):
-                st.session_state["current_concept_node"] = next_node
+            # currently not allowing direct inputs of deictic. They have to be conceps introduced in the sentence.
+            if current_node_children == ["ABSOLUTE REFERENCE", "DEICTIC"]:
+                st.session_state["current_concept_node"] = "ABSOLUTE REFERENCE"
                 st.rerun()
+            else:
+                next_node = colz.selectbox("navigate to", current_node_children)
+                if colz.button("go to {}".format(next_node)):
+                    st.session_state["current_concept_node"] = next_node
+                    st.rerun()
 
 with colz.container():
     colu, coli, colo = st.columns(3)
@@ -346,10 +351,10 @@ with colz.container():
         colu.success("validated sentence #{}".format(st.session_state["counter"]))
         #print(st.session_state["cq"]["dialog"][str(st.session_state["counter"])])
         st.rerun()
-    # if coli.button("Save questionnaire"):
-    #     cq_file_name = "cq_" + st.session_state["cq"]["title"] + "_" + st.session_state["uid"] + ".json"
-    #     json.dump(st.session_state["cq"], open("./questionnaires/" + cq_file_name, "w"))
-    #     colo.success("Saved questionnaire as {}".format(cq_file_name))
+    if coli.button("Save questionnaire"):
+        cq_file_name = "cq_" + st.session_state["cq"]["title"] + "_" + st.session_state["uid"] + ".json"
+        json.dump(st.session_state["cq"], open("./questionnaires/" + cq_file_name, "w"))
+        colo.success("Saved questionnaire as {}".format(cq_file_name))
     if colo.button("Reset sentence"):
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["legacy index"] = ""
         st.session_state["cq"]["dialog"][str(st.session_state["counter"])]["idiomaticity"] = 1

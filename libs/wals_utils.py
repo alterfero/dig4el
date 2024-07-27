@@ -11,6 +11,19 @@ from libs import utils as u
 #
 # language.csv contains all the languages with their pk, id, name and location
 
+def get_available_wals_languages_dict():
+    language_dict = {}
+    with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
+        language_by_pk_lookup_table = json.load(f)
+    for lpk in language_by_pk_lookup_table.keys():
+        language_dict[language_by_pk_lookup_table[lpk]["name"]] = {
+            "pk": lpk,
+            "id": language_by_pk_lookup_table[lpk]["id"]
+        }
+    return language_dict
+
+
+
 def get_language_data_by_id(language_id):
     with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
         language_by_pk_lookup_table = json.load(f)
@@ -206,3 +219,21 @@ def load_language_info_by_id_lookup_table():
     else:
         print("language_info_by_id_lookup_table not found in the file system, building it.")
         return build_language_info_by_id_lookup_table()
+
+def update_delimiter_file():
+    delimiters = {
+    "marquesan (Nuku Hiva)": [" ", ".", ",", ";", ":", "!", "?", "…"],
+    "rapa": [" ", ".", ",", ";", ":", "!", "?", "…"],
+    "paumotu": [" ", ".", ",", ";", ":", "!", "?", "…"],
+    "mangareva": [" ", ".", ",", ";", ":", "!", "?", "…"],
+    "tahitian": [" ", ".", ",", ";", ":", "!", "?", "…"],
+    "french": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
+    "english": [" ", ".", ",", ";", ":", "!", "?", "…", "'"]
+}
+    wals_language_dict = get_available_wals_languages_dict()
+    for language_name in wals_language_dict.keys():
+        if language_name not in delimiters.keys():
+            delimiters[language_name] = [" ", ".", ",", ";", ":", "!", "?", "…", "'"]
+    with open("./data/delimiters.json", "w") as f:
+        json.dump(delimiters, f)
+
