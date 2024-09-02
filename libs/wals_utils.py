@@ -13,10 +13,14 @@ import pandas as pd
 # language.csv contains all the languages with their pk, id, name and location
 
 # GLOBAL VARIABLES
+with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
+    parameter_pk_by_name = json.load(f)
 with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
     language_by_pk = json.load(f)
 with open("./external_data/wals_derived/domain_elements_by_language.json") as f:
     domain_elements_by_language = json.load(f)
+with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
+    domain_elements_pk_by_parameter_pk = json.load(f)
 with open("./external_data/wals_derived/language_pk_by_family.json") as f:
     language_pk_by_family = json.load(f)
 with open("./external_data/wals_derived/language_pk_by_subfamily.json") as f:
@@ -25,7 +29,62 @@ with open("./external_data/wals_derived/language_pk_by_genus.json") as f:
     language_pk_by_genus = json.load(f)
 with open("./external_data/wals_derived/language_pk_by_macroarea.json") as f:
     language_pk_by_macroarea = json.load(f)
+with open("./external_data/wals_derived/language_pk_id_by_name.json") as f:
+    language_pk_id_by_name = json.load(f)
+with open("./external_data/wals_derived/value_by_domain_element_pk_lookup_table.json") as f:
+    value_by_domain_element_pk = json.load(f)
+with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json") as f:
+    valueset_by_pk = json.load(f)
 
+
+
+def compute_param_distribution(parameter_pk, language_whitelist):
+    param_distribution = {}
+    total_count = 0
+    if str(parameter_pk) in domain_elements_pk_by_parameter_pk:
+        de_pks = domain_elements_pk_by_parameter_pk[str(parameter_pk)]
+        for de_pk in de_pks:
+            c = 0
+            if str(de_pk) in value_by_domain_element_pk:
+                for valueset in value_by_domain_element_pk[str(de_pk)]:
+                    valueset_pk = valueset["valueset_pk"]
+                    # increment counter only if language in whitelist
+                    if "language_pk" in valueset_by_pk[str(valueset_pk)]:
+                        if str(valueset_by_pk[str(valueset_pk)]["language_pk"]) in language_whitelist:
+                            c += 1
+                            total_count += 1
+                    else:
+                        print(" 'language pk' not in valueset_by_pk")
+            else:
+                print("de_pk {} not in value_by_domain_element_pk".format(de_pk))
+            param_distribution[str(de_pk)] = c
+        for de_pk in param_distribution.keys():
+            param_distribution[de_pk] = param_distribution[de_pk]/total_count
+    else:
+        print("Parameter pk {} not in domain_elements_pk_by_parameter_pk".format(parameter_pk))
+    return param_distribution
+
+def get_language_pks_by_family(family):
+    if family in language_pk_by_family:
+        return language_pk_by_family[family]
+    else:
+        print("Language family {} not in list of known families".format(family))
+def get_language_pks_by_subfamily(subfamily):
+    if subfamily in language_pk_by_subfamily:
+        return language_pk_by_subfamily[subfamily]
+    else:
+        print("Language subfamily {} not in list of known subfamilies".format(subfamily))
+def get_language_pks_by_genus(genus):
+    if genus in language_pk_by_genus:
+        return language_pk_by_genus[genus]
+    else:
+        print("Language genus {} not in list of known genuses".format(genus))
+
+def get_language_pks_by_macroarea(macroarea):
+    if macroarea in language_pk_by_macroarea:
+        return language_pk_by_macroarea[macroarea]
+    else:
+        print("Language macroarea {} not in list of known macroareas".format(macroarea))
 
 def build_domain_elements_by_language_and_languages_by_domain_element():
     with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
@@ -175,6 +234,13 @@ def build_conditional_probability_table(filtered_params=True, language_filter={}
     cpt.to_json(output_folder + output_filename)
     return cpt
 
+def build_conditional_probability_table_per_subfamily():
+    c = 0
+    for subfamily in language_pk_by_subfamily:
+        c += 1
+        print("Language subfamily {} with {} languages, {} subfamilies/{} completed".format(subfamily, len(language_pk_by_subfamily[subfamily]), c, len(language_pk_by_subfamily)))
+        build_conditional_probability_table(filtered_params=True, language_filter={"subfamily":[subfamily]})
+
 def get_available_wals_languages_dict():
     language_dict = {}
     with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
@@ -184,8 +250,9 @@ def get_available_wals_languages_dict():
             "pk": lpk,
             "id": language_by_pk_lookup_table[lpk]["id"]
         }
+    with open("./external_data/wals_derived/language_pk_id_by_name.json", "w") as f:
+        json.dump(language_dict, f)
     return language_dict
-
 
 
 def get_language_data_by_id(language_id):
@@ -238,10 +305,6 @@ def get_language_data_by_id(language_id):
     else:
         print("language pk with id {} not found".format(language_id))
         return {}
-
-
-
-
 
 def build_parameter_pk_by_name_lookup_table():
     print("build_parameter_pk_by_name_lookup_table")

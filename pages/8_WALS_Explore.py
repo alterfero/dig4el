@@ -219,6 +219,7 @@ with st.expander("Exploration by language and parameter"):
     stats_df = pd.DataFrame(stats_dict, index=["number of languages"]).T
     st.bar_chart(stats_df, y_label="values of the parameter", x_label="number of languages",
                  horizontal=True)
+    st.dataframe(stats_df)
     if st.checkbox("List languages"):
         for v in result_dict:
             st.subheader(v)
@@ -266,12 +267,19 @@ with st.expander("Exploration by parameter and value"):
     selected_param = st.selectbox("Choose a parameter", st.session_state["parameter_pk_by_name_lookup_table"].keys())
     selected_param_pk = st.session_state["parameter_pk_by_name_lookup_table"][selected_param]
     selected_param_recap_dict = {}
+    selected_param_proba_distribution = {}
+    total_languages = 0
     for value in params_dict[selected_param_pk]["param_values"]:
+        total_languages += len(value["languages"])
         selected_param_recap_dict[value["name"]] = len(value["languages"])
+    for value in selected_param_recap_dict:
+        selected_param_proba_distribution[value] = selected_param_recap_dict[value] / total_languages
     selected_param_recap_df = pd.DataFrame.from_dict(selected_param_recap_dict, orient="index", columns=["value"])
     #st.dataframe(selected_param_recap_df)
     st.bar_chart(selected_param_recap_df, y_label="values of the parameter", x_label="number of languages",
                  horizontal=True)
+    st.write("Probability distribution computed on {} languages:".format(total_languages))
+    st.write(selected_param_proba_distribution)
     #st.write(params_dict[selected_param_pk]["param_values"])
     selected_value = st.selectbox("Choose a value", selected_param_recap_dict.keys())
     selected_language_dict = {}

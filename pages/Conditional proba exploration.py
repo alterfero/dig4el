@@ -40,8 +40,17 @@ if "obs" not in st.session_state:
     st.session_state["obs"] = []
 if "obs_de_pk_list" not in st.session_state:
     st.session_state["obs_de_pk_list"] = []
+if "pk1_pk2_list" not in st.session_state:
+    st.session_state["pk1_pk2_list"] = []
 
 parameter_name_list_filtered = list(st.session_state["parameter_pk_by_name_filtered"].keys())
+
+# param blacklist to , to be automated and put in an external  file.
+param_pk_blacklist = ["180"]
+de_pk_blacklist = []
+for ppk in param_pk_blacklist:
+    for depk in st.session_state["domain_elements_pk_by_parameter_pk"][ppk]:
+        de_pk_blacklist.append(depk)
 
 with st.expander("Explore conditional probabilities associated with the values of a parameter"):
     st.write("These conditional probabilities are computed on all languages, from WALS data.")
@@ -52,7 +61,7 @@ with st.expander("Explore conditional probabilities associated with the values o
 
     selected_cpt = st.session_state["cpt"].loc[selected_param_de].sort_index()
 
-    threshold = st.slider("conditional probability threshold", min_value=0.5, max_value=1.0, step=0.05, value=0.7)
+    threshold = st.slider("conditional probability threshold", min_value=0.0, max_value=1.0, step=0.05, value=0.7)
     # put to zero all values below the threshold
     selected_cpt[selected_cpt < threshold] = 0
     # remove columns with only zeroes.
@@ -92,11 +101,77 @@ with st.expander("Explore conditional probabilities associated with the values o
     # Rename indexes (rows)
     selected_cpt = selected_cpt.rename(index=new_row_labels)
 
-    st.dataframe(selected_cpt.T, use_container_width=True)
+    selected_cpt_normalized = selected_cpt.div(selected_cpt.sum(axis=1), axis=0)
+    st.dataframe(selected_cpt_normalized.T, use_container_width=True)
 
     with st.popover("info"):
         st.write("Columns are the values of the chosen parameter.")
         st.write("Rows are the values from other parameters that are the most conditioned by the occurrence of the value of the chosen parameter. When there is no name for the value, the identifier is used")
+
+with st.expander("Show conditional probability tables between two parameters"):
+
+    p2 = st.selectbox("Show the conditional probability of ", parameter_name_list_filtered)
+    p2_pk = st.session_state["parameter_pk_by_name"][str(p2)]
+    p1 = st.selectbox("given", parameter_name_list_filtered)
+    p1_pk = st.session_state["parameter_pk_by_name"][str(p1)]
+
+    p1_de_pk_list = st.session_state["domain_elements_pk_by_parameter_pk"][str(p1_pk)]
+    p2_de_pk_list = st.session_state["domain_elements_pk_by_parameter_pk"][str(p2_pk)]
+
+    # keep only p1 on lines (primary)
+    filtered_cpt = st.session_state["cpt"].loc[p1_de_pk_list].sort_index()
+    # keep only p2 on columns (secondary)
+    filtered_cpt = filtered_cpt[p2_de_pk_list]
+
+    # renaming rows
+    new_p1_label = {}
+    for k in filtered_cpt.index:
+        if str(k) in st.session_state["parameter_pk_by_domain_element_pk"].keys():
+            pm_pk = st.session_state["parameter_pk_by_domain_element_pk"][str(k)]
+            if str(pm_pk) in st.session_state["parameter_name_by_pk"].keys():
+                pm_name = str(st.session_state["parameter_name_by_pk"][str(pm_pk)])
+            else:
+                pm_name = "param name unknown"
+        else:
+            pm_name = "param pk unknown"
+        if str(st.session_state["domain_element_by_pk"][str(k)]["name"]) != "nan":
+            new_label = str(st.session_state["domain_element_by_pk"][str(k)]["name"])
+        elif str(st.session_state["domain_element_by_pk"][str(k)]["description"]) != "nan":
+            new_label = str(st.session_state["domain_element_by_pk"][str(k)]["description"])
+        else:
+            new_label = pm_name + ": " + "pk " + str(k)
+        new_p1_label[k] = new_label
+
+    filtered_cpt = filtered_cpt.rename(index=new_p1_label)
+
+    # rename columns
+    new_p2_labels = {}
+    for k in filtered_cpt.columns:
+        if str(k) in st.session_state["parameter_pk_by_domain_element_pk"].keys():
+            pm_pk = st.session_state["parameter_pk_by_domain_element_pk"][str(k)]
+            if str(pm_pk) in st.session_state["parameter_name_by_pk"].keys():
+                pm_name = str(st.session_state["parameter_name_by_pk"][str(pm_pk)])
+            else:
+                pm_name = "param name unknown"
+        else:
+            pm_name = "param pk unknown"
+        if str(st.session_state["domain_element_by_pk"][str(k)]["name"]) != "nan":
+            new_label = str(st.session_state["domain_element_by_pk"][str(k)]["name"])
+        elif str(st.session_state["domain_element_by_pk"][str(k)]["description"]) != "nan":
+            new_label = str(st.session_state["domain_element_by_pk"][str(k)]["description"])
+        else:
+            new_label = pm_name + ": " + "pk " + str(k)
+        new_p2_labels[k] = new_label
+
+    # Rename columns
+    filtered_cpt = filtered_cpt.rename(columns=new_p2_labels)
+
+    # normalization: all the columns of each row (primary event) should sum up to 1
+    filtered_cpt_normalized = filtered_cpt.div(filtered_cpt.sum(axis=1), axis=0)
+
+    st.write("P( {} ) | {}: ".format(p2,p1))
+    st.dataframe(filtered_cpt_normalized.T)
+
 
 with st.expander("Explore joint conditional probabilities deriving from a combination of observations"):
     st.write("Enter below grammatical observations made on a language to see a list of the most probable other values associated with these observations")
@@ -131,11 +206,16 @@ with st.expander("Explore joint conditional probabilities deriving from a combin
         #remove columns that correspond to observed events
         st.session_state["current_cpt"] = st.session_state["cpt"].drop(columns=st.session_state["obs_de_pk_list"])
 
+        for blacklisted_de_pk in de_pk_blacklist:
+            if blacklisted_de_pk in list(st.session_state["cpt"].columns):
+                st.session_state["current_cpt"] = st.session_state["current_cpt"].drop(columns=[blacklisted_de_pk])
+            if blacklisted_de_pk in list(st.session_state["cpt"].index):
+                st.session_state["current_cpt"] = st.session_state["current_cpt"].drop(index=[blacklisted_de_pk])
+
         # Sum the probabilities for the observed events
         prob_sum_df = st.session_state["current_cpt"].loc[st.session_state["obs_de_pk_list"]].sum()
         # Normalize the summed probabilities
         normalized_prob_df = prob_sum_df / prob_sum_df.sum()
-
 
         #renaming rows
         new_i_label = {}
