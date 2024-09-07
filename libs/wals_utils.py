@@ -2,6 +2,9 @@ import os
 import json
 from libs import utils as u
 import pandas as pd
+import math
+import numpy as np
+import pickle
 
 # parameter.csv list parameters by pk and their names
 #
@@ -21,6 +24,8 @@ with open("./external_data/wals_derived/domain_elements_by_language.json") as f:
     domain_elements_by_language = json.load(f)
 with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
     domain_elements_pk_by_parameter_pk = json.load(f)
+with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+    domain_element_by_pk = json.load(f)
 with open("./external_data/wals_derived/language_pk_by_family.json") as f:
     language_pk_by_family = json.load(f)
 with open("./external_data/wals_derived/language_pk_by_subfamily.json") as f:
@@ -35,8 +40,72 @@ with open("./external_data/wals_derived/value_by_domain_element_pk_lookup_table.
     value_by_domain_element_pk = json.load(f)
 with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json") as f:
     valueset_by_pk = json.load(f)
+with open("./external_data/wals_derived/n_param_by_language_id.json") as f:
+    n_param_by_language_id = json.load(f)
+with open("./external_data/wals_derived/language_info_by_id_lookup_table.json") as f:
+    language_info_by_id = json.load(f)
+parameter_name_by_pk = {}
+for name, pk in parameter_pk_by_name.items():
+    parameter_name_by_pk[str(pk)] = name
 
+def get_careful_name_of_de_pk(depk):
+    info = domain_element_by_pk[str(depk)]
+    if "name" in info.keys():
+        if info["name"] != "":
+            return info["name"]
+    elif "description" in info.keys():
+        if info["description"] != "":
+            return info["description"]
+    else:
+        return(str(depk) + "_no_name")
 
+def compute_potential_function_from_general_data(ppk1, ppk2):
+    """ use geometric mean to compute potential function from conditional probabilities"""
+
+    # if rows of extracted cpt samples have only zeros, making impossible a normalization,
+    # the values of such rows are changed to uniform distributions, expressing the absence of information.
+
+    # storing potentials as pickles as new ones are created, as it takes time
+    potential_filename = str(ppk1) + "_" + str(ppk2) + ".pkl"
+    if potential_filename in os.listdir("./data/potentials/"):
+        with open("./data/potentials/"+potential_filename, "rb") as f:
+            return pickle.load(f)
+    else:
+        def normalize_row(row):
+            row_sum = row.sum()
+            if row_sum == 0:
+                # All values are 0, assign uniform distribution using Pandas
+                return pd.Series([1 / len(row)] * len(row), index=row.index)
+            else:
+                # Normalize the row
+                return row / row_sum
+
+        cpt = pd.read_json("./external_data/wals_derived/de_conditional_probability_df.json")
+        p1_de_pk_list = domain_elements_pk_by_parameter_pk[str(ppk1)]
+        p2_de_pk_list = domain_elements_pk_by_parameter_pk[str(ppk2)]
+
+        # P2 GIVEN P1 DF
+
+        # keep only p1 on lines (primary)
+        filtered_cpt_p2_given_p1 = cpt.loc[p1_de_pk_list]
+        # keep only p2 on columns (secondary)
+        filtered_cpt_p2_given_p1 = filtered_cpt_p2_given_p1[p2_de_pk_list]
+        # normalization: all the columns of each row (primary event) should sum up to 1
+        filtered_cpt_p2_given_p1_normalized = filtered_cpt_p2_given_p1.apply(normalize_row, axis=1)
+        # P1 GIVEN P2 DF
+        # keep only p2 on lines (primary)
+        filtered_cpt_p1_given_p2 = cpt.loc[p2_de_pk_list]
+        # keep only p1 on columns (secondary)
+        filtered_cpt_p1_given_p2 = filtered_cpt_p1_given_p2[p1_de_pk_list]
+        # normalization: all the columns of each row (primary event) should sum up to 1
+        filtered_cpt_p1_given_p2_normalized = filtered_cpt_p1_given_p2.apply(normalize_row, axis=1)
+
+        potential_function = np.sqrt(filtered_cpt_p2_given_p1_normalized * filtered_cpt_p1_given_p2_normalized.T)
+
+        with open("./data/potentials/"+potential_filename, "wb") as f:
+            pickle.dump(potential_function, f)
+
+        return potential_function
 
 def compute_param_distribution(parameter_pk, language_whitelist):
     param_distribution = {}
@@ -85,6 +154,22 @@ def get_language_pks_by_macroarea(macroarea):
         return language_pk_by_macroarea[macroarea]
     else:
         print("Language macroarea {} not in list of known macroareas".format(macroarea))
+
+def build_number_of_params_by_language_id():
+    out_dict = {}
+    available_languages_filtered = []
+    c = 0
+    n = len(language_pk_id_by_name)
+    for language in language_pk_id_by_name:
+        c += 1
+        id = language_pk_id_by_name[language]["id"]
+        n_param = len(get_language_data_by_id(id))
+        out_dict[id] = n_param
+        print("{} / {}".format(c, n))
+    with open("./external_data/wals_derived/n_param_by_language_id.json", "w") as f:
+        json.dump(out_dict, f)
+
+
 
 def build_domain_elements_by_language_and_languages_by_domain_element():
     with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
@@ -495,7 +580,6 @@ def build_domain_elements_pk_by_parameter_pk_lookup_table_filtered():
 
     with open("./external_data/wals_derived/domain_element_by_pk_lookup_table_filtered.json", "w") as f:
         json.dump(filtered_de, f)
-
 
 def build_language_pk_by_family_subfamily_genus_macroarea():
     with open("./external_data/wals_derived/language_info_by_id_lookup_table.json") as f:

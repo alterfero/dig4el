@@ -5,6 +5,13 @@ import os
 import json
 from streamlit_agraph import agraph, Node, Edge, Config
 
+st.set_page_config(
+    page_title="DIG4EL",
+    page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 wals_data_folder = "./external_data/wals-master/raw/"
 
 
