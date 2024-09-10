@@ -14,10 +14,9 @@ with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as 
 
 class LanguageParameter:
     #TODO check if the param in that language is known and lock it if it is
-    def __init__(self, parameter_name, target_language_name, priors_language_pk_list = [], verbose=True):
+    def __init__(self, parameter_name, priors_language_pk_list = [], verbose=True):
         self.verbose = verbose
         self.name = parameter_name
-        self.target_language_name = target_language_name
         self.target_language_in_wals = False
         self.priors_language_pk_list = priors_language_pk_list
         # a locked boolean is used for parameters with known value.
@@ -31,11 +30,6 @@ class LanguageParameter:
                 print("LanguageParameter {}: pk = {}".format(self.name, self.parameter_pk))
         else:
             self.parameter_pk = "none"
-        # target language in wals
-        if self.target_language_name in wu.language_pk_id_by_name.keys():
-            self.target_language_in_wals = True
-            if self.verbose:
-                print("Language Parameter {}: Target language {} is in WALS.".format(self.name, self.target_language_name))
         # values
         if self.parameter_pk in domain_elements_pk_by_parameter_pk:
             self.values = domain_elements_pk_by_parameter_pk[self.parameter_pk]
@@ -164,14 +158,12 @@ class GeneralAgent:
     """ A general agent looks at a set of parameters independently of constructions.
     by default, all parameters a general agent observe are considered as nodes of a non-directed,
     fully connected graph."""
-    def __init__(self, name, target_language_name, parameter_names=[], language_stat_filter={}, verbose=True):
+    def __init__(self, name, parameter_names=[], connection_map={}, language_stat_filter={}, verbose=True):
         self.verbose = verbose
         if self.verbose:
             print("General Agent {} initialization, verbose is on.".format(name))
         self.name = name
-        self.target_language = target_language_name
         self.language_stat_filters = language_stat_filter
-        self.target_language_in_wals = False
         self.language_pks_used_for_statistics = []
         # the different parameters the general agent is focusing on
         self.parameter_names = parameter_names
@@ -184,7 +176,7 @@ class GeneralAgent:
         # create and initialize instances of LanguageParameters objects
         for parameter_name in self.parameter_names:
             if parameter_name in wu.parameter_pk_by_name:
-                new_language_parameter = LanguageParameter(parameter_name, self.target_language, self.language_pks_used_for_statistics)
+                new_language_parameter = LanguageParameter(parameter_name, self.language_pks_used_for_statistics)
                 self.language_parameters[parameter_name] = new_language_parameter
                 new_language_parameter.initialize_beliefs_with_wals()
             else:
@@ -194,10 +186,15 @@ class GeneralAgent:
 
         # initialize graph
         #creating a unique graph name
-        self.graph_name = "ga_graph_" + self.target_language + "_" + str(len(self.language_pks_used_for_statistics)) + "_"
+        self.graph_name = "ga_graph_" + str(len(self.language_pks_used_for_statistics)) + "_"
         for p in self.language_parameters:
             self.graph_name += p[-3:] + "_"
         self.initialize_graph()
+
+    def reset_language_parameters_beliefs_with_wals(self):
+        for lp_name, lp in self.language_parameters.items():
+            lp.beliefs_history = []
+            lp.initialize_beliefs_with_wals()
 
     def initialize_graph(self, alternate_graph={}):
         """ creates the graph between parameters supporting interactions.

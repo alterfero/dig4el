@@ -10,7 +10,7 @@ from libs import agents
 # wu.build_conditional_probability_table_per_subfamily()
 
 def test_general_agent():
-    gawo = agents.GeneralAgent("gawo", "marquesan",
+    gawo = agents.GeneralAgent("gawo",
                                parameter_names=["Order of Subject, Object and Verb",
                                                 "Order of Genitive and Noun",
                                                 "Order of Demonstrative and Noun",
