@@ -18,10 +18,10 @@ if "current_ga" not in st.session_state:
 
 
 
-st.title("General Agent Gawo sandbox")
+st.title("General Agent Gawo example")
 
 if st.session_state["current_ga"] is None:
-    gawo = agents.GeneralAgent("gawo", "marquesan",
+    gawo = agents.GeneralAgent("gawo",
                                    parameter_names=["Order of Subject, Object and Verb",
                                                     "Order of Genitive and Noun",
                                                     "Order of Demonstrative and Noun",

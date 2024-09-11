@@ -17,7 +17,6 @@ class LanguageParameter:
     def __init__(self, parameter_name, priors_language_pk_list = [], verbose=True):
         self.verbose = verbose
         self.name = parameter_name
-        self.target_language_in_wals = False
         self.priors_language_pk_list = priors_language_pk_list
         # a locked boolean is used for parameters with known value.
         self.locked = False

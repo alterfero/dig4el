@@ -60,7 +60,8 @@ def get_careful_name_of_de_pk(depk):
         return(str(depk) + "_no_name")
 
 def compute_potential_function_from_general_data(ppk1, ppk2):
-    """ use geometric mean to compute potential function from conditional probabilities"""
+    """ use geometric mean to compute potential function from conditional probabilities.
+    potentials are considered uniform across all languages."""
 
     # if rows of extracted cpt samples have only zeros, making impossible a normalization,
     # the values of such rows are changed to uniform distributions, expressing the absence of information.
