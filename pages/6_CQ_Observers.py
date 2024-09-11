@@ -57,7 +57,7 @@ with st.expander("Load or compute a knowledge graph"):
         if st.session_state["knowledge_graph"] != {}:
             st.session_state["loaded_kg"] = True
 
-if st.session_state["loaded_kg"]:
+if st.session_state["loaded_kg"] and len(st.session_state["knowledge_graph"]) > 0:
 
     st.write("loaded Knowledge Graph with {} entries".format(len(st.session_state["knowledge_graph"])))
 
@@ -96,3 +96,5 @@ if st.session_state["loaded_kg"]:
         filename = ("word_order_stats.json")
         st.download_button(label="download word order statistics", data=json.dumps(word_order_stats, indent=4),
                            file_name=filename)
+else:
+    st.write("No data for this language yet.")

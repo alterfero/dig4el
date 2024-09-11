@@ -6,11 +6,7 @@ from libs import utils, stats, graphs_utils as gu
 from collections import OrderedDict
 import pandas as pd
 
-delimiters = {
-    "french": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
-    "english": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
-    "marquesan (Nuku Hiva)": [" ", ".", ",", ";", ":", "!", "?", "…"]
-}
+delimiters = json.load(open("./data/delimiters.json"))
 def build_knowledge_graph(language):
     # list all conversational questionnaires
     cq_folder = "./questionnaires"
@@ -74,6 +70,7 @@ def build_knowledge_graph(language):
             else:
                 speaker = "B"
                 listener = "A"
+
             try:
                 if cq["dialog"][item]["text"] == recording_json["data"][item]["cq"]:
                     knowledge_graph[index_counter] = {
@@ -99,7 +96,7 @@ def build_knowledge_graph(language):
                     print("BUILD KNOWLEDGE GRAPH: cq {} <========> recording {} don't match".format(
                         cq["dialog"][item]["text"], recording_json["data"][item]["cq"]))
             except KeyError:
-                    print("Warning: sentence #{}:{} of cq {} not found in recording".format(item, cq["dialog"][item]["text"], recording))
+                    print("Key Error: sentence #{}:{} of cq {} not found in recording".format(item, cq["dialog"][item]["text"], recording))
     # save knowledge graph
     with open("./data/knowledge/knowledge_graph" + language + ".json", "w") as f:
         json.dump(knowledge_graph, f)

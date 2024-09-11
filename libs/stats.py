@@ -72,7 +72,6 @@ def build_blind_word_stats_from_knowledge_graph(knowledge_graph, delimiters):
             'following': dict(data['following'].most_common(10)),
             'following_prob': dict(sorted(following_probs.items(), key=lambda item: item[1], reverse=True)[:10])
         }
-
     return word_statistics
 
 def compute_average_blind_entropy(word_statistics):

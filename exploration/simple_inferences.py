@@ -2,11 +2,7 @@ from collections import defaultdict
 import json
 from libs import knowledge_graph_utils as kgu, stats
 
-delimiters = {
-    "french": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
-    "english": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
-    "marquesan (Nuku Hiva)": [" ", ".", ",", ";", ":", "!", "?", "…"]
-}
+delimiters = json.load(open("./data/delimiters.json"))
 def analyze_word_order(knowledge_graph):
     language = knowledge_graph[0]["language"]
     word_order_stats = defaultdict(list)
