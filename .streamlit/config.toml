@@ -4,3 +4,6 @@ backgroundColor="#FFFFFF"
 secondaryBackgroundColor="#CCDDFF"
 textColor="#222222"
 font="sans serif"
+
+[client]
+showSidebarNavigation = false

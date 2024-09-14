@@ -63,7 +63,30 @@ def reset_all():
   st.session_state["current_ga"] = None
   st.session_state["language_family_filter"] = "ALL"
 
-st.title("Testing General Agents")
+
+with st.sidebar:
+  st.subheader("DIG4EL")
+  st.page_link("home.py", label="Home", icon=":material/home:")
+
+  st.write("**Base Features**")
+  st.page_link("pages/2_CQ_Transcription_Recorder.py", label="Record transcription", icon=":material/contract_edit:")
+
+  st.write("**Advanced features**")
+  st.page_link("pages/4_CQ Editor.py", label="Edit CQs", icon=":material/question_exchange:")
+
+  st.write("**Explore DIG4EL processes**")
+  st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
+
+colo, colp = st.columns(2)
+colo.title("Testing General Agents")
+with colp.popover("i"):
+  st.markdown("This page allows to test General Agents focusing on word order. Choose one or multiple languages, either by hand-picking them, "
+              "or making a random selection, within a language family or not.")
+  st.markdown(
+    "The testing process searches the common parameters known by WALS across these languages and simulates the observation of a portion of these parameters, "
+    "and the guessing of the others via a Markov Random Field consensus. Results presented take only into account the parameters simulated as unknown.")
+  st.markdown(
+    "The more languages tested at once, the less available common parameters there may be if they are not hand-picked carefully. ")
 
 if st.button("Reset all"):
   reset_all()
@@ -78,10 +101,7 @@ available_param_names_pk_by_name = {
   "Relationship between the Order of Object and Verb and the Order of Adposition and Noun Phrase": 95,
   "Relationship between the Order of Object and Verb and the Order of Relative Clause and Noun": 96,
   "Relationship between the Order of Object and Verb and the Order of Adjective and Noun": 97,
-  "The Position of Negative Morphemes in Object-Initial Languages": 145,
   "Languages with two Dominant Orders of Subject, Object, and Verb": 168,
-  "Verb-Initial with Negative that is Immediately Postverbal or between Subject and Object": 173,
-  "Languages with different word order in negative clauses": 178,
   "Order of Subject, Object and Verb": 81,
   "Order of Subject and Verb": 82,
   "Order of Object and Verb": 83,
@@ -93,9 +113,6 @@ available_param_names_pk_by_name = {
   "Position of Interrogative Phrases in Content Questions": 93,
   "Order of Person Markers on the Verb": 104,
   "Position of Negative Word With Respect to Subject, Object, and Verb": 152,
-  "The Position of Negative Morphemes in SVO Languages": 167,
-  "Preverbal Negative Morphemes": 169,
-  "Order of Negative Morpheme and Verb": 172
 }
 
 cq_observable_params_pk_by_name = {
@@ -110,10 +127,10 @@ cq_observable_params_pk_by_name = {
 
 cola, cols, cold = st.columns(3)
 nl = cola.slider("Number of languages tested", 1, 50, value=1, step=1)
-ngap = cols.slider("Maximum number of parameters by General Agent", 2, 100, value=15, step=1)
-pobs = cols.slider("Probability of the true value given observations", .5, 1.0, value=0.6, step=0.01)
+ngap = cols.slider("Maximum number of parameters by General Agent", 2, 100, value=50, step=1)
+pobs = cols.slider("Probability of the true value given observations", .5, 1.0, value=0.9, step=0.01)
 map = cola.slider("Minimum amount of known parameters in the target language", 10, 100, value=50, step=1)
-our = cold.slider("Number of parameters to guess for each parameter observed", 1, 5, value=1, step=1)
+our = cold.slider("Number of parameters to guess for each parameter observed", 1, 5, value=2, step=1)
 lff = cola.selectbox("Optional focus on a language family", ["ALL"] + list( wu.language_pk_by_family.keys()), index=0)
 fl = cols.multiselect("Choose languages instead of random selection", list(wu.language_pk_id_by_name.keys()), placeholder="Leave empty for a random language selection")
 
@@ -179,7 +196,7 @@ if not st.session_state["languages chosen by user"]:
   for ltid in st.session_state["languages_used_for_testing"]:
     tl.append(wu.language_info_by_id[ltid]["name"])
   comma_separated_string = ', '.join(tl)
-  st.write("Randomly sampled languages used for testing: {}".format(comma_separated_string))
+  st.write("Randomly sampled languages used for testing: {}".format("**"+comma_separated_string+"**"))
 else:
   tl = []
   for ltid in st.session_state["languages_used_for_testing"]:

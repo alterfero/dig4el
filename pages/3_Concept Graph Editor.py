@@ -21,8 +21,6 @@ if "concepts_kson" not in st.session_state:
 print("PAGE RELOAD")
 print("focus: {}".format(st.session_state["focus"]))
 
-
-
 # if st.button("SAVE"):
 #     json.dump(st.session_state["concepts_kson"], open("./data/concepts.json", "w"))
 
@@ -34,6 +32,10 @@ def is_agraph_node(id, node_list):
         if node.id == id:
             is_node = True
     return is_node
+
+with st.sidebar:
+    st.write("**Home**")
+    st.page_link("home.py", label="Home", icon=":material/home:")
 
 cola, colb, colc = st.columns(3)
 cola.subheader("Explore")

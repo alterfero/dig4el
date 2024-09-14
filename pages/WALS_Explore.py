@@ -60,6 +60,19 @@ if "language_info_by_id_lookup_table" not in st.session_state:
     st.session_state["language_info_by_id_lookup_table"] = wu.load_language_info_by_id_lookup_table()
     print("language_info_by_id_lookup_table loaded")
 
+with st.sidebar:
+    st.subheader("DIG4EL")
+    st.page_link("home.py", label="Home", icon=":material/home:")
+
+    st.write("**Base Features**")
+    st.page_link("pages/2_CQ_Transcription_Recorder.py", label="Record transcription", icon=":material/contract_edit:")
+
+    st.write("**Advanced features**")
+    st.page_link("pages/4_CQ Editor.py", label="Edit CQs", icon=":material/question_exchange:")
+
+    st.write("**Explore DIG4EL processes**")
+    st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
+
 st.header("Exploration of WALS data")
 with st.popover("Credits"):
     st.markdown("Dryer, Matthew S. & Haspelmath, Martin (eds.) 2013. The World Atlas of Language Structures Online. Leipzig: Max Planck Institute for Evolutionary Anthropology. (Available online at https://wals.info)")
@@ -67,6 +80,8 @@ with st.popover("Credits"):
     st.markdown("Dataset under Creative Commons licence CC BY 4.0 https://creativecommons.org/licenses/by/4.0/")
 
 with st.expander("Language monography"):
+    with st.popover("i"):
+        st.markdown("Select a language to see information available about it in WALS.")
     language_id_by_name = {}
     for language_id in st.session_state["language_info_by_id_lookup_table"].keys():
         language_info = st.session_state["language_info_by_id_lookup_table"][language_id]
@@ -89,6 +104,8 @@ with st.expander("Language monography"):
 
 
 with st.expander("Exploration by language and parameter"):
+    with st.popover("i"):
+        st.markdown("Select a group of languages (manually or by filtering by criteria) and a parameter to see how the values of this parameter are distributed across the selected languages. ")
     language_id_by_name = {}
     language_macroareas = []
     language_families = []
@@ -108,12 +125,15 @@ with st.expander("Exploration by language and parameter"):
             language_genuses.append(language_info["genus"])
 
     colq, colw = st.columns(2)
+    colq.markdown("**Select one or multiple languages**")
     selected_families = colq.multiselect("language families", language_families)
     selected_subfamilies = colq.multiselect("language subfamilies", language_subfamilies)
     selected_genuses = colq.multiselect("language genuses", language_genuses)
     selected_macroareas = colq.multiselect("macroareas", language_macroareas)
     selected_language_names = colq.multiselect("languages", list(language_id_by_name.keys()))
+    colw.markdown("**Select the parameter to observe across these languages.**")
     selected_param = colw.selectbox("Choose a parameter to observe", st.session_state["parameter_pk_by_name_lookup_table"].keys())
+
     if selected_families==[] and selected_subfamilies==[] and selected_macroareas==[] and len(selected_language_names)==1:
         colw.subheader("Language monography")
         language_id = language_id_by_name[selected_language_names[0]]
@@ -236,6 +256,8 @@ with st.expander("Exploration by language and parameter"):
 
 
 with st.expander("Exploration by parameter and value"):
+    with st.popover("i"):
+        st.markdown("Select a parameter to see its distribution across all languages. Selecting a value of this parameter lists all the languages using this value.")
     #for parameter in parameters:
     params_dict = {}
     for param in st.session_state["parameters"]:

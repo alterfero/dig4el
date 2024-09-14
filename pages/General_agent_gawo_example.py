@@ -16,9 +16,28 @@ if "ga_created" not in st.session_state:
 if "current_ga" not in st.session_state:
     st.session_state["current_ga"] = None
 
+with st.sidebar:
+    st.subheader("DIG4EL")
+    st.page_link("home.py", label="Home", icon=":material/home:")
 
+    st.write("**Base Features**")
+    st.page_link("pages/2_CQ_Transcription_Recorder.py", label="Record transcription", icon=":material/contract_edit:")
+
+    st.write("**Advanced features**")
+    st.page_link("pages/4_CQ Editor.py", label="Edit CQs", icon=":material/question_exchange:")
+
+    st.write("**Explore DIG4EL processes**")
+    st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
 st.title("General Agent Gawo example")
+
+with st.popover("i"):
+    st.markdown("This pages allows to replicate the 'Gawo' example. Gawo is a general agent focusing on "
+                "word order in Marquesan. Each parameter is presented as a pie chart showing Gawo's beliefs about the value of "
+                "each parameters. Initial beliefs are computed from WALS. The 'Inject observation' button shows the effect on beliefs of "
+                "having observed 8 VSO ans 2 SVO in Conversational Questionnaires. Then each press on the  'Run messaging cycle button' "
+                "triggers a Markov Random Field message exchange between all parameters, converging toward a consensus. Injecting, or not injecting observations "
+                "lead to different consensus.")
 
 if st.session_state["current_ga"] is None:
     gawo = agents.GeneralAgent("gawo",
@@ -47,8 +66,6 @@ if colw.button("Run messaging cycle"):
 if cole.button("Reset"):
     st.session_state["current_ga"] = None
     st.rerun()
-with colr.popover("i"):
-    st.write("This page displays 9 connected parameters pertaining to word order, with pie charts showing their beliefs. The left button allows to inject the observation on VSO order made on Marquesan at any cycle, while the center button runs a Random Markov Field messaging cycle between all parameters.")
 
 param_number = len(gawo.language_parameters)
 param_working_list = gawo.language_parameters

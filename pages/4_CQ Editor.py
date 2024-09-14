@@ -76,8 +76,21 @@ concepts_kson = json.load(open("./data/concepts.json"))
 intent_list = graphs_utils.get_leaves_from_node(concepts_kson, "INTENT")
 predicate_list = graphs_utils.get_leaves_from_node(concepts_kson, "PREDICATE")
 
+with st.sidebar:
+    st.subheader("DIG4EL")
+    st.page_link("home.py", label="Home", icon=":material/home:")
+
+    st.write("**Base Features**")
+    st.page_link("pages/2_CQ_Transcription_Recorder.py", label="Record transcription", icon=":material/contract_edit:")
+
+    st.write("**Advanced features**")
+    st.page_link("pages/4_CQ Editor.py", label="Edit CQs", icon=":material/question_exchange:")
+
+    st.write("**Explore DIG4EL processes**")
+    st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
+
 if not st.session_state["loaded_existing"]:
-    st.write("You can start a new questionnaire right away, or load an existing one")
+    st.write("You can start a new questionnaire, or load an existing one")
 if not st.session_state["loaded_existing"]:
     with st.expander("Load CQ"):
             existing_cq = st.file_uploader("Load an existing questionnaire", type="json")
@@ -210,7 +223,7 @@ else:
     default_tg = {}
 
 colz.write(default_t)
-with colz.expander("sentence-wise descriptors", expanded=False):
+with colz.expander("sentence descriptors", expanded=False):
     colf, colg = st.columns(2)
     lsi = colf.text_input("legacy sentence index", default_legacy_index)
     s = colf.selectbox("Speaker", ["A", "B"], index=["A", "B"].index(default_s))
