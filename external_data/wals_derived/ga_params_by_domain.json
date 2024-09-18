@@ -1,0 +1,276 @@
+{	
+"word order": {
+  "available_param_pk_by_name": {
+  "Order of Object, Oblique, and Verb": 84,
+  "Order of Adposition and Noun Phrase": 85,
+  "Order of Numeral and Noun": 89,
+  "Order of Relative Clause and Noun": 90,
+  "Order of Adverbial Subordinator and Clause": 94,
+  "Relationship between the Order of Object and Verb and the Order of Adposition and Noun Phrase": 95,
+  "Relationship between the Order of Object and Verb and the Order of Relative Clause and Noun": 96,
+  "Relationship between the Order of Object and Verb and the Order of Adjective and Noun": 97,
+  "Languages with two Dominant Orders of Subject, Object, and Verb": 168,
+  "Order of Subject, Object and Verb": 81,
+  "Order of Subject and Verb": 82,
+  "Order of Object and Verb": 83,
+  "Order of Genitive and Noun": 86,
+  "Order of Adjective and Noun": 87,
+  "Order of Demonstrative and Noun": 88,
+  "Order of Degree Word and Adjective": 91,
+  "Position of Polar Question Particles": 92,
+  "Position of Interrogative Phrases in Content Questions": 93,
+  "Order of Person Markers on the Verb": 104,
+  "Position of Negative Word With Respect to Subject, Object, and Verb": 152,
+  "Languages with different word order in negative clauses": 178,
+  "Position of negative words relative to beginning and end of clause and with respect to adjacency to verb": 163
+},
+  "observable_params_pk_by_name": {
+  "Order of Subject, Object and Verb": 81,
+  "Order of Adjective and Noun": 87,
+  "Order of Demonstrative and Noun": 88,
+  "Order of Degree Word and Adjective": 91,
+  "Position of Polar Question Particles": 92,
+  "Position of Interrogative Phrases in Content Questions": 93,
+  "Position of Negative Word With Respect to Subject, Object, and Verb": 152
+  }
+},
+"tense and aspect": {
+	"available_param_pk_by_name": {
+		"Suppletion According to Tense and Aspect": 79,
+		"The Past Tense": 66,
+	        "The Future Tense": 67,
+	        "The Perfect": 68,
+	        "Position of Tense-Aspect Affixes": 69,
+		"Perfective/Imperfective Aspect": 65	
+	},
+	"observable_params_pk_by_name": {
+		"The Past Tense": 66,
+	        "The Future Tense": 67,
+	        "Perfective/Imperfective Aspect": 65
+	}
+},
+"verbs": {
+	"available_param_pk_by_name": {
+	        "Suppletion According to Tense and Aspect": 79,
+	        "Verbal Number and Suppletion": 80,
+	        "Ditransitive Constructions: The Verb 'Give'": 105,
+		"Syncretism in Verbal Person/Number Marking": 29,
+		"Inclusive/Exclusive Distinction in Verbal Inflection": 40,
+	        "Perfective/Imperfective Aspect": 65,
+	        "The Past Tense": 66,
+	        "The Future Tense": 67,
+	        "The Perfect": 68,
+		"'Want' Complement Subjects": 124,
+		"Alignment of Verbal Person Marking": 100,
+	        "Verbal Person Marking": 102,
+	        "Third Person Zero of Verbal Person Marking": 103,
+	        "Order of Person Markers on the Verb": 104,
+		"Inclusive/Exclusive Distinction in Verbal Inflection": 40		
+	},
+	"observable_params_pk_by_name": {
+	        "Ditransitive Constructions: The Verb 'Give'": 105,
+		"Inclusive/Exclusive Distinction in Verbal Inflection": 40,
+	        "Perfective/Imperfective Aspect": 65,
+	        "The Past Tense": 66,
+	        "The Future Tense": 67,
+	        "The Perfect": 68,
+		"'Want' Complement Subjects": 124,
+		"Inclusive/Exclusive Distinction in Verbal Inflection": 40
+		
+	}
+},
+"nouns": {
+	"available_param_pk_by_name": {
+	        "Coding of Nominal Plurality": 33,
+	        "Occurrence of Nominal Plurality": 34,
+	        "Plurality in Independent Personal Pronouns": 35
+	},
+	"observable_params_pk_by_name": {
+	        "Coding of Nominal Plurality": 33,
+	        "Occurrence of Nominal Plurality": 34,
+	        "Plurality in Independent Personal Pronouns": 35
+	}
+},
+"pronouns": {
+	"available_param_pk_by_name": {
+		"Third Person Pronouns and Demonstratives": 43,
+	        "Politeness Distinctions in Pronouns": 45,
+	        "Indefinite Pronouns": 46,
+	        "Intensifiers and Reflexive Pronouns": 47,
+		"Gender Distinctions in Independent Personal Pronouns": 44,
+		"Inclusive/Exclusive Distinction in Independent Pronouns": 39
+	},
+	"observable_params_pk_by_name": {
+		"Gender Distinctions in Independent Personal Pronouns": 44,
+		"Inclusive/Exclusive Distinction in Independent Pronouns": 39,
+		"Third Person Pronouns and Demonstratives": 43
+	}
+},
+"negation": {
+	"available_param_pk_by_name": {
+		"Obligatory Double Negation": 158,
+	        "Negative Morphemes": 112,
+	        "Symmetric and Asymmetric Standard Negation": 113,
+		"Optional Double Negation": 170,
+		"Languages with different word order in negative clauses": 178,
+		"Optional Triple Negation": 181,
+		"Postverbal Negative Morphemes": 143,
+		"Position of Negative Word With Respect to Subject, Object, and Verb": 152,
+		"Position of negative words relative to beginning and end of clause and with respect to adjacency to verb": 163,
+	        "Preverbal Negative Morphemes": 169,
+	        "Order of Negative Morpheme and Verb": 172,
+		"Negative Morphemes": 112
+	},
+	"observable_params_pk_by_name": {
+		"Position of Negative Word With Respect to Subject, Object, and Verb": 152,
+		"Order of Negative Morpheme and Verb": 172,
+		"Negative Morphemes": 112,
+		"Obligatory Double Negation": 158,
+		"Optional Double Negation": 170
+	}
+},
+"gender": {
+	"available_param_pk_by_name": {
+	        "Number of Genders": 30,
+	        "Sex-based and Non-sex-based Gender Systems": 31,
+	        "Systems of Gender Assignment": 32,
+		"Gender Distinctions in Independent Personal Pronouns": 44
+		
+	},
+	"observable_params_pk_by_name": {
+		"Number of Genders": 30,
+		"Gender Distinctions in Independent Personal Pronouns": 44
+	}
+},
+"number": {
+	"available_param_pk_by_name": {
+		"Verbal Number and Suppletion": 80,
+	        "Coding of Nominal Plurality": 33,
+	        "Occurrence of Nominal Plurality": 34,
+	        "Plurality in Independent Personal Pronouns": 35,
+	        "The Associative Plural": 36,
+	        "Ordinal Numerals": 53,
+	        "Distributive Numerals": 54,
+	        "Numeral Classifiers": 55
+	},
+	"observable_params_pk_by_name": {
+		"Coding of Nominal Plurality": 33,
+		"Numeral Classifiers": 55
+	}
+},
+"marking": {
+	"available_param_pk_by_name": {
+		  "Inflectional Synthesis of the Verb": 22,
+		  "Locus of Marking in the Clause": 23,
+		  "Locus of Marking in Possessive Noun Phrases": 24,
+		  "Locus of Marking: Whole-language Typology": 25,
+		  "Prefixing vs. Suffixing in Inflectional Morphology": 26,
+		  "Case Syncretism": 28,
+		  "Syncretism in Verbal Person/Number Marking": 29,
+		  "Position of Tense-Aspect Affixes": 69,
+		  "Zero Marking of A and P Arguments": 187,
+		  "Person Marking on Adpositions": 48,
+		  "Number of Cases": 49,
+		  "Asymmetrical Case-Marking": 50,
+		  "Alignment of Verbal Person Marking": 100,
+		  "Verbal Person Marking": 102,
+		  "Third Person Zero of Verbal Person Marking": 103,
+		  "Order of Person Markers on the Verb": 104,
+		  "Alignment of Case Marking of Full Noun Phrases": 98,
+		  "Alignment of Case Marking of Pronouns": 99
+	},
+	"observable_params_pk_by_name": {
+		"Syncretism in Verbal Person/Number Marking": 29,
+		"Number of Cases": 49,
+		"Verbal Person Marking": 102,
+		"Third Person Zero of Verbal Person Marking": 103,
+		"Alignment of Case Marking of Pronouns": 99
+	}
+},
+"case": {
+	"available_param_pk_by_name": {
+		  "Number of Cases": 49,
+		  "Asymmetrical Case-Marking": 50,
+		  "Case Syncretism": 28
+	},
+	"observable_params_pk_by_name": {
+		"Number of Cases": 49
+	}
+},
+"determinant": {
+	"available_param_pk_by_name": {
+	        "Indefinite Articles": 38,
+	        "Inclusive/Exclusive Distinction in Independent Pronouns": 39,
+	        "Inclusive/Exclusive Distinction in Verbal Inflection": 40,
+		"Definite Articles": 37
+	},
+	"observable_params_pk_by_name": {
+	        "Indefinite Articles": 38,
+	        "Inclusive/Exclusive Distinction in Independent Pronouns": 39,
+	        "Inclusive/Exclusive Distinction in Verbal Inflection": 40,
+		"Definite Articles": 37
+	}
+},
+"demonstrative": {
+	"available_param_pk_by_name": {
+        "Distance Contrasts in Demonstratives": 41,
+        "Pronominal and Adnominal Demonstratives": 42,
+        "Third Person Pronouns and Demonstratives": 43
+	},
+	"observable_params_pk_by_name": {
+		"Distance Contrasts in Demonstratives": 41,
+		"Third Person Pronouns and Demonstratives": 43
+	}
+},
+"possession": {
+	"available_param_pk_by_name": {
+         "Possessive Classification": 59,
+	 "Number of Possessive Nouns": 191
+	},
+	"observable_params_pk_by_name": {
+                "Possessive Classification": 59,
+       	 "Number of Possessive Nouns": 191
+	}
+},
+"relativization": {
+	"available_param_pk_by_name": {
+        "Relativization on Subjects": 122,
+        "Relativization on Obliques": 123,
+	"Prenominal relative clauses": 144,
+        "Relativization on Subjects": 122,
+        "Relativization on Obliques": 123
+	},
+	"observable_params_pk_by_name": {
+		
+	}
+},
+"interrogation": {
+	"available_param_pk_by_name": {
+        "Position of Polar Question Particles": 92,
+        "Position of Interrogative Phrases in Content Questions": 93
+	},
+	"observable_params_pk_by_name": {
+	        "Position of Polar Question Particles": 92,
+	        "Position of Interrogative Phrases in Content Questions": 93
+	}
+},
+"intent": {
+	"available_param_pk_by_name": {
+        "Semantic Distinctions of Evidentiality": 77,
+        "Coding of Evidentiality": 78,
+        "The Morphological Imperative": 70,
+        "The Prohibitive": 71,
+        "Imperative-Hortative Systems": 72,
+        "Situational Possibility": 74,
+        "Epistemic Possibility": 75,
+	"The Optative": 73
+	},
+	"observable_params_pk_by_name": {
+		"Coding of Evidentiality": 78,
+	        "Situational Possibility": 74,
+	        "Epistemic Possibility": 75,
+		"The Optative": 73
+	}
+}
+
+}

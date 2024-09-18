@@ -56,8 +56,8 @@ if "cq_id_dict" not in st.session_state:
 st.title("Transcription Recorder")
 
 with st.popover("i"):
-    st.markdown("This page allows recording the transcription of a Conversational Questionnaire."
-                "You can either start a new transcription or continue working on one you have downloaded on your computer."
+    st.markdown("This page allows recording the transcription of a Conversational Questionnaire. "
+                "You can either start a new transcription or continue working on one you have downloaded on your computer. "
                 "The transcriptions you create will be stored on your computer, the only transcriptions on this server "
                 "are the ones explicitly shared with us. ")
 

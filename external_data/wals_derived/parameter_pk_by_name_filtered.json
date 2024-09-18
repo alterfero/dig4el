@@ -128,8 +128,6 @@
   "'When' Clauses": 126,
   "Reason Clauses": 127,
   "Utterance Complement Clauses": 128,
-  "M-T Pronouns": 136,
-  "N-M Pronouns": 137,
   "Postverbal Negative Morphemes": 143,
   "SVNegO Order": 148,
   "Position of Negative Word With Respect to Subject, Object, and Verb": 152,
@@ -140,7 +138,5 @@
   "Preverbal Negative Morphemes": 169,
   "Order of Negative Morpheme and Verb": 172,
   "NegSVO Order": 177,
-  "M in Second Person Singular": 183,
-  "M in First Person Singular": 184,
   "Number of Possessive Nouns": 191
 }

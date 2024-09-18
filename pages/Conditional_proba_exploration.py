@@ -1,6 +1,9 @@
 import streamlit as st
 import json
 import pandas as pd
+from libs import wals_utils as wu, prob_utils as pu
+from streamlit_agraph import agraph, Node, Edge, Config
+from pyvis.network import Network
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -18,6 +21,9 @@ if "current_cpt" not in st.session_state:
 if "parameter_pk_by_name_filtered" not in st.session_state:
     with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
         st.session_state["parameter_pk_by_name_filtered"] = json.load(f)
+if "param_de_tree" not in st.session_state:
+    with open("./external_data/wals_derived/param_de_tree.json") as f:
+        st.session_state["param_de_tree"] = json.load(f)
 if "parameter_pk_by_name" not in st.session_state:
     with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
         st.session_state["parameter_pk_by_name"] = json.load(f)
@@ -25,10 +31,11 @@ if "domain_elements_pk_by_parameter_pk" not in st.session_state:
     with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
         st.session_state["domain_elements_pk_by_parameter_pk"] = json.load(f)
 if "parameter_pk_by_domain_element_pk" not in st.session_state:
-    parameter_pk_by_domain_element_pk = {}
+    st.session_state["parameter_pk_by_domain_element_pk"] = {}
     for param_pk in st.session_state["domain_elements_pk_by_parameter_pk"]:
         for depk in st.session_state["domain_elements_pk_by_parameter_pk"][param_pk]:
-            parameter_pk_by_domain_element_pk[str(depk)] = str(param_pk)
+            st.session_state["parameter_pk_by_domain_element_pk"][str(depk)] = str(param_pk)
+
 if "domain_element_by_pk" not in st.session_state:
     with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
         st.session_state["domain_element_by_pk"] = json.load(f)
@@ -49,6 +56,19 @@ if "obs_de_pk_list" not in st.session_state:
     st.session_state["obs_de_pk_list"] = []
 if "pk1_pk2_list" not in st.session_state:
     st.session_state["pk1_pk2_list"] = []
+if "selected_values" not in st.session_state:
+    st.session_state["selected_values"] = []
+if "inference_graph" not in st.session_state:
+    st.session_state["inference_graph"] = {}
+if "beliefs" not in st.session_state:
+    st.session_state["beliefs"] = {}
+
+de_blacklist = [
+		1094,
+		1095,
+		1096,
+		1097
+	]
 
 parameter_name_list_filtered = list(st.session_state["parameter_pk_by_name_filtered"].keys())
 
@@ -74,68 +94,160 @@ with st.sidebar:
 
 st.subheader("Conditional probabilities between parameters.")
 
-with (st.expander("Explore the strongest conditional probabilities associated with the values of a given parameter")):
+with (st.expander("Explore chains of conditional probabilities associated with a set of values")):
     with st.popover("i"):
-        st.markdown("Choose a parameter to see a table showing how its values are connected to the value of all other parameters. ")
-        st.markdown(
-                    "The columns of the table are the values of the chosen parameter, and the rows the values of other parameters that are the most correlated."
-                    " The value in each cell is the conditional probability of having the value in the row, given the value in the column.")
-        st.markdown("**Clicking in each column "
-                    "rearranges values by increasing or decreasing order from that column.** This is useful to order by decreasing probability of the given value.")
-    st.write("These conditional probabilities are computed on all languages, from WALS data.")
-    selected_param = st.selectbox("Choose a parameter",parameter_name_list_filtered)
-    selected_param_pk = st.session_state["parameter_pk_by_name"][selected_param]
-    selected_param_de = st.session_state["domain_elements_pk_by_parameter_pk"][str(selected_param_pk)]
-    selected_param_de.sort()
+        st.markdown("Select parameters and their observed values along with a probability threshold to get all the other values associated "
+                    "with this selection through conditional probabilities. ")
 
-    selected_cpt = st.session_state["cpt"].loc[selected_param_de].sort_index()
+    # let user select a collection of values of parameters
+    thr = st.slider("conditional probability threshold", 0.3, 1.0, value=0.6, step=0.01)
+    if st.button("Reset"):
+        st.session_state["selected_values"] = []
+        st.session_state["inference_graph"] = {}
+    st.write("Add known value(s) observed in a language")
+    selected_param_name = st.selectbox("Select a parameter", st.session_state["parameter_pk_by_name_filtered"], key="sp"+str(len(st.session_state["selected_values"])))
+    selected_param_pk = st.session_state["parameter_pk_by_name_filtered"][selected_param_name]
+    available_de_pks = st.session_state["domain_elements_pk_by_parameter_pk"][str(selected_param_pk)]
+    available_de_names = [wu.get_careful_name_of_de_pk(depk) for depk in available_de_pks]
+    selected_value = st.selectbox("Choose a value", available_de_names)
+    if st.button("Add"):
+        if available_de_pks[available_de_names.index(selected_value)] not in st.session_state["selected_values"]:
+            st.session_state["selected_values"].append(available_de_pks[available_de_names.index(selected_value)])
+    st.write("Currently selected value(s): **{}**".format(", ".join([wu.get_careful_name_of_de_pk(depk) for depk in st.session_state["selected_values"]])))
+    if st.button("Show the belief propagation graph based on conditional propabilities with threshold {}".format(thr)):
+        st.session_state["inference_graph"], st.session_state["beliefs"] = pu.inference_graph_from_cpt_with_belief_propagation(st.session_state["cpt"],
+                                                                              st.session_state["selected_values"],
+                                                                              thr)
 
-    threshold = 0
-    # put to zero all values below the threshold
-    selected_cpt[selected_cpt < threshold] = 0
-    # remove columns with only zeroes.
-    selected_cpt = selected_cpt.loc[:, (selected_cpt != 0).any(axis=0)]
-    #Remove columns with the same names as the row indexes
-    selected_cpt = selected_cpt.drop(columns=[col for col in selected_cpt.columns if col in selected_cpt.index])
 
-    #create dictionaries to rename rows and columns:
-    new_row_labels = {}
-    for i in selected_cpt.index:
-        if str(st.session_state["domain_element_by_pk"][str(i)]["name"]) != "nan":
-            new_row_labels[i] = st.session_state["domain_element_by_pk"][str(i)]["name"]
-        else:
-            new_row_labels[i] = "pk " + str(i)
+    # GRAPH with agraph
+    def graph_with_agraph(beliefs, inference_graph):
+        if len(st.session_state["inference_graph"].keys()) > 0:
+            nodes = []
+            edges = []
+            # Create nodes with labels indicating the belief value
+            for node_id, belief_value in st.session_state["beliefs"].items():
+                if belief_value > 0 and str(wu.get_careful_name_of_de_pk(node_id)).lower() != "nan":
+                    if node_id in st.session_state["selected_values"]:
+                        s = 30
+                        c = "pink"
+                    else:
+                        s = 5 + 20 * belief_value
+                        c = "#ffcc00"
+                    param_name = st.session_state["parameter_name_by_pk"][st.session_state["parameter_pk_by_domain_element_pk"][str(node_id)]]
+                    node_name = param_name + "\n" + wu.get_careful_name_of_de_pk(node_id)
+                    nodes.append(Node(
+                        id=node_id,
+                        label=f"{wu.get_careful_name_of_de_pk(node_id)}",
+                        title = node_name + "\nBelief: " + str(round(belief_value, 2)),
+                        size=s ,
+                        color=c if belief_value > 0.5 else "#cccccc"
+                    ))
 
-    new_column_labels = {}
-    for k in selected_cpt.columns:
-        if str(k) in st.session_state["parameter_pk_by_domain_element_pk"].keys():
-            pm_pk = st.session_state["parameter_pk_by_domain_element_pk"][str(k)]
-            if str(pm_pk) in st.session_state["parameter_name_by_pk"].keys():
-                pm_name = str(st.session_state["parameter_name_by_pk"][str(pm_pk)])
-            else:
-                pm_name = "param name unknown"
-        else:
-            pm_name = "param pk unknown"
-        if str(st.session_state["domain_element_by_pk"][str(k)]["name"]) != "nan":
-            new_label = pm_name + ": " + str(st.session_state["domain_element_by_pk"][str(k)]["name"])
-        elif str(st.session_state["domain_element_by_pk"][str(k)]["description"]) != "nan":
-            new_label = pm_name + ": " + str(st.session_state["domain_element_by_pk"][str(k)]["description"])
-        else:
-            new_label = pm_name + ": " + "pk " + str(k)
-        new_column_labels[k] = new_label
+            # Create edges with labels indicating the probability
+            for from_node, to_nodes in st.session_state["inference_graph"].items():
+                for to_node, prob in to_nodes.items():
+                    edges.append(Edge(
+                        source=from_node,
+                        target=to_node,
+                        label=f"{prob:.2f}",
+                        color="#00ccff"
+                    ))
 
-    # Rename columns
-    selected_cpt = selected_cpt.rename(columns=new_column_labels)
+            config = Config(
+        width='100%',
+        height=800,
+        directed=True,
+        nodeHighlightBehavior=True,
+        highlightColor="#F7A7A6",
+        collapsible=False,
+        link={'labelProperty': 'label', 'renderLabel': True},
+        node={'labelProperty': 'label'},
+        physics=True,
+        **dict(panAndZoom=True)
+    )
 
-    # Rename indexes (rows)
-    selected_cpt = selected_cpt.rename(index=new_row_labels)
+            return_value = agraph(nodes=nodes, edges=edges, config=config)
 
-    selected_cpt_normalized = selected_cpt.div(selected_cpt.sum(axis=1), axis=0)
-    st.dataframe(selected_cpt_normalized.T, use_container_width=True)
+    #GRAPH with pyvis
+    def plot_inference_graph_pyvis(inference_graph, belief):
+        net = Network(height='800px', width='100%', directed=True)
+        net.barnes_hut()
 
-    with st.popover("info"):
-        st.write("Columns are the values of the chosen parameter.")
-        st.write("Rows are the values from other parameters that are the most conditioned by the occurrence of the value of the chosen parameter. When there is no name for the value, the identifier is used")
+        # Add nodes with belief values
+        for node_id, belief_value in belief.items():
+            if belief_value > 0 and node_id not in de_blacklist:
+                param_name = st.session_state["parameter_name_by_pk"][
+                    st.session_state["parameter_pk_by_domain_element_pk"][str(node_id)]]
+                net.add_node(
+                    n_id=node_id,
+                    label=f"{wu.get_careful_name_of_de_pk(node_id)}",
+                    title=f"{param_name}\n{wu.get_careful_name_of_de_pk(node_id)}",
+                    size=50 if node_id in st.session_state["selected_values"] else 5 + 45 * belief_value,
+                    color="pink" if node_id in st.session_state["selected_values"] else "#ffcc00"
+                )
+
+        # Add edges with probabilities
+        for from_node, to_nodes in inference_graph.items():
+            for to_node, prob in to_nodes.items():
+                try:
+                    net.add_edge(
+                        source=from_node,
+                        to=to_node,
+                        value=prob,
+                        title=f"Conditional Probability: {prob:.2f}",
+                        label=f"{prob:.2f}",
+                        color="#00ccff",
+                        arrows='to',
+                        physics=True
+                    )
+                except:
+                    print("no node")
+
+        # Customize physics options for better layout
+        net.set_options("""
+        var options = {
+          "nodes": {
+            "font": {
+              "size": 16
+            }
+          },
+          "edges": {
+            "color": {
+              "inherit": true
+            },
+            "smooth": true
+          },
+          "physics": {
+            "enabled": true,
+            "stabilization": {
+            "enabled": true,
+            "iterations": 1000,
+            "updateInterval": 25
+            },
+            "barnesHut": {
+              "gravitationalConstant": -8000,
+              "centralGravity": 0.3,
+              "springLength": 200,
+              "springConstant": 0.05,
+              "damping": 0.3,
+              "avoidOverlap": 1
+            },
+            "minVelocity": 0.75
+          }
+        }
+        """)
+
+        # Generate HTML representation of the graph
+        return net.generate_html()
+
+    # Generate the PyVis graph HTML
+    html_str = plot_inference_graph_pyvis(st.session_state["inference_graph"], st.session_state["beliefs"])
+
+    # Display the PyVis graph in Streamlit
+    st.subheader("Inference Graph")
+    st.components.v1.html(html_str, height=800, width=1000)
+
 
 with st.expander("Show conditional probability tables between two parameters"):
     with st.popover("i"):
