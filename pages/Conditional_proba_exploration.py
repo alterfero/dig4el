@@ -114,60 +114,10 @@ with (st.expander("Explore chains of conditional probabilities associated with a
         if available_de_pks[available_de_names.index(selected_value)] not in st.session_state["selected_values"]:
             st.session_state["selected_values"].append(available_de_pks[available_de_names.index(selected_value)])
     st.write("Currently selected value(s): **{}**".format(", ".join([wu.get_careful_name_of_de_pk(depk) for depk in st.session_state["selected_values"]])))
-    if st.button("Show the belief propagation graph based on conditional propabilities with threshold {}".format(thr)):
+    if st.button("Update the graph"):
         st.session_state["inference_graph"], st.session_state["beliefs"] = pu.inference_graph_from_cpt_with_belief_propagation(st.session_state["cpt"],
                                                                               st.session_state["selected_values"],
                                                                               thr)
-
-
-    # GRAPH with agraph
-    def graph_with_agraph(beliefs, inference_graph):
-        if len(st.session_state["inference_graph"].keys()) > 0:
-            nodes = []
-            edges = []
-            # Create nodes with labels indicating the belief value
-            for node_id, belief_value in st.session_state["beliefs"].items():
-                if belief_value > 0 and str(wu.get_careful_name_of_de_pk(node_id)).lower() != "nan":
-                    if node_id in st.session_state["selected_values"]:
-                        s = 30
-                        c = "pink"
-                    else:
-                        s = 5 + 20 * belief_value
-                        c = "#ffcc00"
-                    param_name = st.session_state["parameter_name_by_pk"][st.session_state["parameter_pk_by_domain_element_pk"][str(node_id)]]
-                    node_name = param_name + "\n" + wu.get_careful_name_of_de_pk(node_id)
-                    nodes.append(Node(
-                        id=node_id,
-                        label=f"{wu.get_careful_name_of_de_pk(node_id)}",
-                        title = node_name + "\nBelief: " + str(round(belief_value, 2)),
-                        size=s ,
-                        color=c if belief_value > 0.5 else "#cccccc"
-                    ))
-
-            # Create edges with labels indicating the probability
-            for from_node, to_nodes in st.session_state["inference_graph"].items():
-                for to_node, prob in to_nodes.items():
-                    edges.append(Edge(
-                        source=from_node,
-                        target=to_node,
-                        label=f"{prob:.2f}",
-                        color="#00ccff"
-                    ))
-
-            config = Config(
-        width='100%',
-        height=800,
-        directed=True,
-        nodeHighlightBehavior=True,
-        highlightColor="#F7A7A6",
-        collapsible=False,
-        link={'labelProperty': 'label', 'renderLabel': True},
-        node={'labelProperty': 'label'},
-        physics=True,
-        **dict(panAndZoom=True)
-    )
-
-            return_value = agraph(nodes=nodes, edges=edges, config=config)
 
     #GRAPH with pyvis
     def plot_inference_graph_pyvis(inference_graph, belief):
@@ -190,19 +140,20 @@ with (st.expander("Explore chains of conditional probabilities associated with a
         # Add edges with probabilities
         for from_node, to_nodes in inference_graph.items():
             for to_node, prob in to_nodes.items():
-                try:
-                    net.add_edge(
-                        source=from_node,
-                        to=to_node,
-                        value=prob,
-                        title=f"Conditional Probability: {prob:.2f}",
-                        label=f"{prob:.2f}",
-                        color="#00ccff",
-                        arrows='to',
-                        physics=True
-                    )
-                except:
-                    print("no node")
+                if from_node not in de_blacklist and to_node not in de_blacklist:
+                    try:
+                        net.add_edge(
+                            source=from_node,
+                            to=to_node,
+                            value=prob,
+                            title=f"Conditional Probability: {prob:.2f}",
+                            label=f"{prob:.2f}",
+                            color="#00ccff",
+                            arrows='to',
+                            physics=True
+                        )
+                    except:
+                        print("no node")
 
         # Customize physics options for better layout
         net.set_options("""
@@ -314,85 +265,6 @@ with st.expander("Show conditional probability tables between two parameters"):
 
     st.write("P( {} ) | {}: ".format(p2,p1))
     st.dataframe(filtered_cpt_normalized.T)
-
-# with st.expander("Explore joint conditional probabilities deriving from a combination of independent observations"):
-#     with st.popover("i"):
-#         st.markdown("This tool explores the result of the combination of multiple observations supposed independent, meaning each observation should not have a relationship with other observatiobns.")
-#     st.write("Enter below grammatical observations made on a language to see a list of the most probable other values associated with these observations")
-#
-#     if st.button("Reset observations"):
-#         st.session_state["obs"] = []
-#         st.session_state["obs_de_pk_list"] = []
-#         st.session_state["current_cpt"] = st.session_state["cpt"]
-#     if len(st.session_state["obs"]) < 6:
-#         new_pm_obs = st.selectbox("parameter "+str(len(st.session_state["obs"]) + 1), parameter_name_list_filtered, key="obs_pm"+str(len(st.session_state["obs"])))
-#         obs_pm_pk = st.session_state["parameter_pk_by_name"][str(new_pm_obs)]
-#         avail_values_pk = st.session_state["domain_elements_pk_by_parameter_pk"][str(obs_pm_pk)]
-#         avail_values_names = []
-#         for pk in avail_values_pk:
-#             avail_values_names.append(st.session_state["domain_element_by_pk"][str(pk)]["name"])
-#         obs_de_name = st.selectbox("select the observed value of that paramater", avail_values_names, key="obs_value"+str(len(st.session_state["obs"])))
-#         obs_de_index = avail_values_names.index(obs_de_name)
-#         obs_de_pk = avail_values_pk[obs_de_index]
-#         if st.button("add observation"):
-#             st.session_state["obs"].append({"param_pk":obs_pm_pk, "de_pk":obs_de_pk, "param_name":new_pm_obs, "de_name":obs_de_name})
-#             st.session_state["obs_de_pk_list"].append(obs_de_pk)
-#             st.session_state["current_cpt"] = st.session_state["cpt"]
-#     if st.session_state["obs"] != []:
-#         obsc = 0
-#         st.write("Current observations:")
-#         for item in st.session_state["obs"]:
-#             obsc += 1
-#             st.write("{}. {}: {}".format(obsc, item["param_name"], item["de_name"]))
-#
-#         # transform the cpt table to compute the joint conditional probability
-#
-#         #remove columns that correspond to observed events
-#         st.session_state["current_cpt"] = st.session_state["cpt"].drop(columns=st.session_state["obs_de_pk_list"])
-#
-#         for blacklisted_de_pk in de_pk_blacklist:
-#             if blacklisted_de_pk in list(st.session_state["cpt"].columns):
-#                 st.session_state["current_cpt"] = st.session_state["current_cpt"].drop(columns=[blacklisted_de_pk])
-#             if blacklisted_de_pk in list(st.session_state["cpt"].index):
-#                 st.session_state["current_cpt"] = st.session_state["current_cpt"].drop(index=[blacklisted_de_pk])
-#
-#         # Sum the probabilities for the observed events
-#         prob_sum_df = st.session_state["current_cpt"].loc[st.session_state["obs_de_pk_list"]].sum()
-#         # Normalize the summed probabilities
-#         normalized_prob_df = prob_sum_df / prob_sum_df.sum()
-#
-#         #renaming rows
-#         new_i_label = {}
-#         for k in normalized_prob_df.index:
-#             if str(k) in st.session_state["parameter_pk_by_domain_element_pk"].keys():
-#                 pm_pk = st.session_state["parameter_pk_by_domain_element_pk"][str(k)]
-#                 if str(pm_pk) in st.session_state["parameter_name_by_pk"].keys():
-#                     pm_name = str(st.session_state["parameter_name_by_pk"][str(pm_pk)])
-#                 else:
-#                     pm_name = "param name unknown"
-#             else:
-#                 pm_name = "param pk unknown"
-#             if str(st.session_state["domain_element_by_pk"][str(k)]["name"]) != "nan":
-#                 new_label = pm_name + ": " + str(st.session_state["domain_element_by_pk"][str(k)]["name"])
-#             elif str(st.session_state["domain_element_by_pk"][str(k)]["description"]) != "nan":
-#                 new_label = pm_name + ": " + str(st.session_state["domain_element_by_pk"][str(k)]["description"])
-#             else:
-#                 new_label = pm_name + ": " + "pk " + str(k)
-#             new_i_label[k] = new_label
-#
-#
-#         normalized_prob_df = normalized_prob_df.rename(index=new_i_label)
-#
-#         colq, colw = st.columns(2)
-#         percentile = colq.slider("probability percentile threshold", min_value=0.0, max_value=1.0, step=0.01, value=0.9)
-#         percentile_threshold = normalized_prob_df.quantile(percentile)
-#         colw.write("Probability threshold of percentile {}: {}".format(percentile, round(percentile_threshold,5)))
-#
-#         normalized_prob_df = normalized_prob_df[normalized_prob_df >= percentile_threshold]
-#
-#         normalized_prob_df = normalized_prob_df.sort_values(ascending=False)[:100]
-#
-#         st.dataframe(normalized_prob_df, use_container_width=True)
 
 
 

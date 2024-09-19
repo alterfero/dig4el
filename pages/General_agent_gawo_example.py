@@ -49,7 +49,7 @@ if st.session_state["current_ga"] is None:
                                                     "Order of Relative Clause and Noun",
                                                     "Order of Negative Morpheme and Verb",
                                                     "Order of Adposition and Noun Phrase",
-                                                    "SVNegO Order"],
+                                                    "Order of Adverbial Subordinator and Clause"],
                                    language_stat_filter={})
     # language_stat_filter={"family":["Austronesian"]}
     st.session_state["current_ga"] = gawo

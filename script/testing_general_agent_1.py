@@ -9,8 +9,7 @@ def test_general_agent():
                                                 "Order of Demonstrative and Noun",
                                                 "Order of Adjective and Noun",
                                                 "Order of Numeral and Noun",
-                                                "Order of Relative Clause and Noun",
-                                                "The Position of Negative Morphemes in SVO Languages"],
+                                                "Order of Relative Clause and Noun"],
                                language_stat_filter={})
     # parameter_name = "Order of Subject, Object and Verb"
     # observations = {'387': 0, '386': 0, '388': 0, '385': 8, '383': 2, '384': 0, '389': 0}
@@ -44,14 +43,14 @@ def test_general_agent():
     print("=========================================================================")
     print("               ")
     for parameter in gawo.language_parameters.keys():
-        print("Belief of {}: {}".format(parameter, gawo.language_parameters[parameter].beliefs_history))
+        print("Belief of {}: {}".format(parameter, gawo.language_parameters[parameter].beliefs))
         max_prob = 0
         max_value = ""
         for value in gawo.language_parameters[parameter].beliefs:
             if gawo.language_parameters[parameter].beliefs[value] > max_prob:
                 max_value = value
                 max_prob = gawo.language_parameters[parameter].beliefs[value]
-        print("Consensus: {} with proba {}".format(max_value, max_prob))
+        print("Consensus: {} with proba {}".format(wu.get_careful_name_of_de_pk(max_value), max_prob))
 
 
 

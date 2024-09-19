@@ -7,16 +7,10 @@ import math
 import pickle
 
 # GLOBAL VARIABLES
-try:
-    with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
-        domain_elements_pk_by_parameter_pk = json.load(f)
-    with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
-        parameter_pk_by_name_filtered = json.load(f)
-except FileNotFoundError:
-    with open("../external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
-        domain_elements_pk_by_parameter_pk = json.load(f)
-    with open("../external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
-        parameter_pk_by_name_filtered = json.load(f)
+with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
+    domain_elements_pk_by_parameter_pk = json.load(f)
+with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
+    parameter_pk_by_name_filtered = json.load(f)
 
 class LanguageParameter:
     #TODO check if the param in that language is known and lock it if it is
@@ -44,7 +38,7 @@ class LanguageParameter:
         self.beliefs = {}
         self.beliefs_history = []
         self.observations_inbox = []
-        self.message_inbox = {}
+        self.message_inbox = []
 
     def initialize_beliefs_with_wals(self):
         depks = domain_elements_pk_by_parameter_pk[self.parameter_pk]
@@ -79,7 +73,7 @@ class LanguageParameter:
             print(self.beliefs_history)
 
 
-    def update_beliefs_from_observations(self, influence_distribution = "uniform", observation_influence=0.9, autolock_threshold=0.99, verbose=True):
+    def update_beliefs_from_observations(self, influence_distribution = "uniform", observation_influence=0.6, autolock_threshold=0.99, verbose=True):
         """this function takes in the observation inbox a dict of observation counts of the values of the said parameter
         and uses it to update the corresponding uncertain variable.
         observations is of the form {value1: count1, value2: count2...}"""
@@ -210,6 +204,11 @@ class GeneralAgent:
             print("Agent {}: initializing graph.")
         if alternate_graph != {}:
             self.graph = alternate_graph
+        elif self.graph_name + ".pkl" in os.listdir("./data/general_agents_graphs/"):
+            if self.verbose:
+                print("Existing graph {} pickled, loading it.".format(self.graph_name + ".pkl"))
+            with open("./data/general_agents_graphs/" + self.graph_name + ".pkl", "rb") as f:
+                self.graph = pickle.load(f)
         else:
             if self.verbose:
                 print("No graph {} found, creating it".format(self.graph_name + ".pkl"))
@@ -217,11 +216,15 @@ class GeneralAgent:
                 self.graph[language_parameter_name] = {}
                 for lpn in self.language_parameters.keys():
                     if lpn != language_parameter_name:
-                        potential_function = wu.compute_CP_potential_function_from_general_data(
+                        potential_function = wu.compute_potential_function_from_general_data(
                             self.language_parameters[language_parameter_name].parameter_pk,
                             self.language_parameters[lpn].parameter_pk
                         )
                         self.graph[language_parameter_name][lpn] = potential_function
+            # with open("./data/general_agents_graphs/" + self.graph_name + ".pkl", "wb") as f:
+            #     pickle.dump(self.graph, f)
+            #     if self.verbose:
+            #         print("Graph pickled and saved as {}.".format("./data/general_agents_graphs/" + self.graph_name + ".pkl"))
         print("Agent {}: Graph initialized.".format(self.name))
 
     def initialize_list_of_language_pks_used_for_statistics(self):
@@ -263,10 +266,10 @@ class GeneralAgent:
             for recipient_name in path:
                 if recipient_name != sender_name:
                     message = self.generate_message(sender_name, recipient_name)
-                    self.language_parameters[recipient_name].message_inbox[sender_name] = message
+                    self.language_parameters[recipient_name].message_inbox.append(message)
                     messages[sender_name + "->" + recipient_name] = message
-                    # if self.verbose:
-                    #     print("Message {}->{}: {}".format(sender_name, recipient_name, message))
+                    if self.verbose:
+                        print("Message {}->{}: {}".format(sender_name, recipient_name, message))
 
     def create_random_propagation_path(self):
         """ List of parameters indicating the order in which the belief propagation is executed."""
@@ -283,145 +286,53 @@ class GeneralAgent:
         if parameter_name in self.language_parameters.keys():
             self.language_parameters[parameter_name].observations_inbox.append(observations)
 
-    def update_beliefs_from_messages_received(self, parameter_name, verbose=True):
-        """
-        Updates the beliefs of a parameter based on messages received from neighbors.
-
-        Parameters:
-        - parameter_name: Name of the parameter (node) to update.
-
-        Returns:
-        - None (the function updates the beliefs in place).
-        """
-        if verbose:
-            print("Agent {}: update_beliefs_from_messages_received({})".format(self.name, parameter_name))
-            print("Initial belief: {}".format(self.language_parameters[parameter_name].beliefs))
-        # Retrieve the parameter object
-        P = self.language_parameters[parameter_name]
-
-        # update beliefs only if the parameter is not locked
-        if P.locked is False:
-
-            # Get the messages from neighbors
-            message_inbox = P.message_inbox  # {neighbor_name: message_dict}
-
-            # Initialize new beliefs
-            new_beliefs = {}
-
-            # Get the possible values of x_i
-            x_i_values = P.beliefs.keys()
-
-            for x_i in x_i_values:
-                # Start with local evidence
-                belief = P.beliefs.get(x_i, 1.0)  # Default to 1.0 if local evidence is missing
-
-                # Multiply by messages from all neighbors
-                for neighbor_name, message in message_inbox.items():
-                    m_neighbor_to_P = message  # {x_i: probability}
-                    m_value = m_neighbor_to_P.get(x_i, 1.0)  # Default to 1.0 if message value is missing
-                    belief *= m_value
-
-                new_beliefs[x_i] = belief
-
-            # Normalize the beliefs
-            total_belief = sum(new_beliefs.values())
-            if total_belief > 0:
-                for x_i in x_i_values:
-                    new_beliefs[x_i] /= total_belief
-            else:
-                # Handle zero total by assigning uniform probabilities
-                num_values = len(x_i_values)
-                if num_values > 0:
-                    uniform_prob = 1.0 / num_values
-                    for x_i in x_i_values:
-                        new_beliefs[x_i] = uniform_prob
-
-            # Update the beliefs in the parameter object
-            P.beliefs = new_beliefs
-            P.beliefs_history.append(new_beliefs)
-            if verbose:
-                print("Agent {}: belief of parameter {} updated)".format(self.name, parameter_name))
-                print("New belief: {}".format(self.language_parameters[parameter_name].beliefs))
-
+    def update_beliefs_from_messages_received(self, parameter_name):
+        # messages are dicts where keys are the recipient's values and values the neighbor's belief about it.
+        if self.language_parameters[parameter_name].locked:
+            if self.verbose:
+                print("General Agent {}: Parameter {} is locked: not updating its beliefs from messages.".format(self.name, parameter_name))
         else:
-            if verbose:
-                print("Agent {}: parameter {} is locked and will not be updated by messages.".format(self.name, parameter_name))
+            if self.verbose:
+                print("General Agent {}: Updating beliefs of parameter {} based on {} messages from neighbors. Old beliefs = {}".format(self.name, parameter_name, len(self.language_parameters[parameter_name].message_inbox), self.language_parameters[parameter_name].beliefs))
+            sum = 0
+            for value in self.language_parameters[parameter_name].beliefs.keys():
+                for message in self.language_parameters[parameter_name].message_inbox:
+                    if value in message.keys():
+                        self.language_parameters[parameter_name].beliefs[value] *= message[value]
+                sum += self.language_parameters[parameter_name].beliefs[value]
+            for value in self.language_parameters[parameter_name].beliefs.keys():
+                self.language_parameters[parameter_name].beliefs[value] = self.language_parameters[parameter_name].beliefs[value] / sum
+            self.language_parameters[parameter_name].beliefs_history.append(copy.deepcopy(self.language_parameters[parameter_name].beliefs))
+            if self.verbose:
+                print("General Agent {}: beliefs_history of LanguageParameter {} updated by update_beliefs_from_messages_received, length {}.".format(self.name, parameter_name, len(self.language_parameters[parameter_name].beliefs_history)))
+                print(self.language_parameters[parameter_name].beliefs_history)
+            self.language_parameters[parameter_name].message_inbox = []
+            if self.verbose:
+                print("Agent {}: Beliefs of parameter {} updated by neighbors messages. New beliefs: {}".format(self.name, parameter_name, self.language_parameters[parameter_name].beliefs))
+
+    def generate_message(self, p1_name, p2_name):
+        """ message from parameter p1 to parameter p2.
+        The message is a dict of dimension the number of values of the receiving parameter."""
+        p1 = self.language_parameters[p1_name]
+        p2 = self.language_parameters[p2_name]
+        message = {}
+        potential = self.graph[p1.name][p2.name]
+        sum = 0
+        for v2 in p2.values:
+            message[str(v2)] = 0
+            for v1 in p1.values:
+                try:
+                    message[str(v2)] += potential.at[v1, v2] * p1.beliefs[str(v1)]
+                except KeyError:
+                    print("Issue generating part of a message from {} to {}, values v1={}, v2={}. Term ignored".format(p1_name, p2_name, v1, v2))
+            sum += message[str(v2)]
+        for v2 in p2.values:
+            if sum != 0:
+                message[str(v2)] = message[str(v2)] / sum
+        return message
 
 
-    def generate_message(self, Pi_name, Pj_name, verbose=True):
-        """
-        Generates the message from parameter Pi to parameter Pj using belief propagation.
 
-        Parameters:
-        - Pi_name: Name of the sender parameter (node).
-        - Pj_name: Name of the recipient parameter (node).
-
-        Returns:
-        - A dictionary representing the message {pj_value_code: probability}.
-        """
-        if verbose:
-            print("Agent {}: Generate message {} ---> {}".format(self.name, Pi_name, Pj_name))
-
-        # Retrieve the parameter objects
-        Pi = self.language_parameters[Pi_name]
-        Pj = self.language_parameters[Pj_name]
-
-        # Get the potential function between Pi and Pj
-        potential = self.graph[Pi_name][Pj_name]  # DataFrame with rows x_i, columns x_j
-
-        # Get the local evidence (beliefs) at node Pi
-        phi_i = Pi.beliefs  # {x_i: probability}
-
-        # Get neighbors of Pi excluding Pj
-        neighbors_i = self.graph[Pi_name].keys()
-        neighbors_except_j = [k for k in neighbors_i if k != Pj_name]
-
-        # Initialize the product of incoming messages for each x_i
-        x_i_values = phi_i.keys()  # Possible values of Pi
-        product_messages = {x_i: 1.0 for x_i in x_i_values}
-
-        # Multiply messages from all neighbors except Pj
-        for neighbor_name in neighbors_except_j:
-            # Get the message from neighbor to Pi
-            m_neighbor_to_Pi = Pi.message_inbox.get(neighbor_name, {})
-            for x_i in x_i_values:
-                # Get the message value, defaulting to 1.0 if not present
-                m_value = m_neighbor_to_Pi.get(x_i, 1.0)
-                product_messages[x_i] *= m_value
-
-        # Compute the message from Pi to Pj
-        x_j_values = Pj.beliefs.keys()  # Possible values of Pj
-        message_Pi_to_Pj = {x_j: 0.0 for x_j in x_j_values}
-
-        for x_j in x_j_values:
-            total = 0.0
-            for x_i in x_i_values:
-                # Retrieve values
-                phi_i_xi = phi_i.get(x_i, 0.0)
-                psi_ij = potential.at[int(x_i), int(x_j)]  # Potential value between x_i and x_j
-                prod_msg_xi = product_messages.get(x_i, 1.0)
-                # Compute the term
-                term = phi_i_xi * psi_ij * prod_msg_xi
-                total += term
-            message_Pi_to_Pj[x_j] = total
-
-        # Normalize the message
-        total_message = sum(message_Pi_to_Pj.values())
-        if total_message > 0:
-            for x_j in x_j_values:
-                message_Pi_to_Pj[x_j] /= total_message
-        else:
-            # Handle zero total by assigning uniform probabilities or keeping zeros
-            num_values = len(x_j_values)
-            if num_values > 0:
-                uniform_prob = 1.0 / num_values
-                for x_j in x_j_values:
-                    message_Pi_to_Pj[x_j] = uniform_prob
-
-        if verbose:
-            print("Agent {}: Generated message {} ---> {}: {}".format(self.name, Pi_name, Pj_name, message_Pi_to_Pj))
-        # Return the computed message
-        return message_Pi_to_Pj
 
 
 

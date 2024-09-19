@@ -143,8 +143,8 @@ def inference_graph_from_cpt_with_belief_propagation(df, starting_vars, threshol
                 mi_j = belief[vi] * prob
                 #print("belief[vi] {} * prob {} = mi_j {}".format(belief[vi], prob, mi_j))
                 if mi_j >= threshold and mi_j > belief.get(vj, 0):
-                    print("vi={}, vj={}".format(vi, vj))
-                    print("belief[vi] {} * prob {} = mi_j {}".format(belief[vi], prob, mi_j))
+                    #print("vi={}, vj={}".format(vi, vj))
+                    #print("belief[vi] {} * prob {} = mi_j {}".format(belief[vi], prob, mi_j))
                     belief[vj] = mi_j
                     inference_graph[vi][vj] = mi_j
                     queue.append(vj)

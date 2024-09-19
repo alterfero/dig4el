@@ -45,6 +45,7 @@ try:
         n_param_by_language_id = json.load(f)
     with open("./external_data/wals_derived/language_info_by_id_lookup_table.json") as f:
         language_info_by_id = json.load(f)
+    cpt = pd.read_json("./external_data/wals_derived/de_conditional_probability_df.json")
 except FileNotFoundError:
     with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
         parameter_pk_by_name = json.load(f)
@@ -74,6 +75,8 @@ except FileNotFoundError:
         n_param_by_language_id = json.load(f)
     with open("../external_data/wals_derived/language_info_by_id_lookup_table.json") as f:
         language_info_by_id = json.load(f)
+    cpt = pd.read_json("../external_data/wals_derived/de_conditional_probability_df.json")
+
 parameter_name_by_pk = {}
 for name, pk in parameter_pk_by_name.items():
     parameter_name_by_pk[str(pk)] = name
@@ -89,7 +92,36 @@ def get_careful_name_of_de_pk(depk):
     else:
         return(str(depk))
 
-def compute_potential_function_from_general_data(ppk1, ppk2):
+def compute_CP_potential_function_from_general_data(ppk1, ppk2):
+    """ creates the conditional probability matrix P(ppk2 | ppk1) and returns it as  df"""
+
+    # if rows of extracted cpt samples have only zeros, making impossible a normalization,
+    # the values of such rows are changed to uniform distributions, expressing the absence of information.
+
+    def normalize_row(row):
+        row_sum = row.sum()
+        if row_sum == 0:
+            # All values are 0, assign uniform distribution using Pandas
+            return pd.Series([1 / len(row)] * len(row), index=row.index)
+        else:
+            # Normalize the row
+            return row / row_sum
+
+    p1_de_pk_list = domain_elements_pk_by_parameter_pk[str(ppk1)]
+    p2_de_pk_list = domain_elements_pk_by_parameter_pk[str(ppk2)]
+
+    # P2 GIVEN P1 DF
+
+    # keep only p1 on lines (primary)
+    filtered_cpt_p2_given_p1 = cpt.loc[p1_de_pk_list]
+    # keep only p2 on columns (secondary)
+    filtered_cpt_p2_given_p1 = filtered_cpt_p2_given_p1[p2_de_pk_list]
+    # normalization: all the columns of each row (primary event) should sum up to 1
+    filtered_cpt_p2_given_p1_normalized = filtered_cpt_p2_given_p1.apply(normalize_row, axis=1)
+
+    return filtered_cpt_p2_given_p1_normalized
+
+def compute_MRF_potential_function_from_general_data(ppk1, ppk2):
     """ use geometric mean to compute potential function from conditional probabilities.
     potentials are considered uniform across all languages."""
 
@@ -372,15 +404,26 @@ def get_available_wals_languages_dict():
 
 
 def get_language_data_by_id(language_id):
-    with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
-        language_by_pk_lookup_table = json.load(f)
-    with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json") as f:
-        valueset_by_pk_lookup_table = json.load(f)
-    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
-        domainelement_by_pk_lookup_table = json.load(f)
-    with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
-        parameter_pk_by_name = json.load(f)
-    values = u.csv_to_dict("./external_data/wals-master/raw/value.csv")
+    try:
+        with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
+            language_by_pk_lookup_table = json.load(f)
+        with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json") as f:
+            valueset_by_pk_lookup_table = json.load(f)
+        with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+            domainelement_by_pk_lookup_table = json.load(f)
+        with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
+            parameter_pk_by_name = json.load(f)
+        values = u.csv_to_dict("./external_data/wals-master/raw/value.csv")
+    except FileNotFoundError:
+        with open("../external_data/wals_derived/language_by_pk_lookup_table.json") as f:
+            language_by_pk_lookup_table = json.load(f)
+        with open("../external_data/wals_derived/valueset_by_pk_lookup_table.json") as f:
+            valueset_by_pk_lookup_table = json.load(f)
+        with open("../external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+            domainelement_by_pk_lookup_table = json.load(f)
+        with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
+            parameter_pk_by_name = json.load(f)
+        values = u.csv_to_dict("../external_data/wals-master/raw/value.csv")
 
     language_pk_found = False
     for pk in language_by_pk_lookup_table.keys():
