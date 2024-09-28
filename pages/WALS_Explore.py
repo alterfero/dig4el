@@ -1,3 +1,5 @@
+import copy
+
 import streamlit as st
 import pandas as pd
 from libs import utils as u, wals_utils as wu
@@ -24,6 +26,47 @@ wals_data_folder = "./external_data/wals-master/raw/"
 #
 # language.csv contains all the languages with their pk, id, name and location
 
+def filter_differing_parameters(languages_data):
+    languages_dict = {}
+    for language in languages_data:
+        languages_dict[language] = {}
+        for index in languages_data[language]:
+            item = languages_data[language][index]
+            languages_dict[language][item["parameter"]] = item["value"]
+
+    # Get the set of all parameters for all languages
+    all_params_list = []
+    for language in languages_dict.values():
+        all_params_list += language.keys()
+    all_params_set = set(all_params_list)
+
+    # Find common parameters that are present in all languages
+    common_params = copy.deepcopy(set(all_params_set))
+    for language in languages_dict.values():
+        common_params.intersection_update(language.keys())
+
+    # Filter out parameters that have the same value across all languages
+    differing_params = set()
+    for param in common_params:
+        try:
+            values = set(params.get(param) for params in languages_dict.values())
+            if len(values) > 1:  # If there are different values for this parameter
+                differing_params.add(param)
+        except:
+            print("issue with param {}".format(param))
+
+    # Filter languages' dictionaries to keep only differing parameters
+    filtered_languages = {}
+    for language, params in languages_dict.items():
+        filtered_languages[language] = {param: value for param, value in params.items() if param in differing_params}
+
+    diff_dict = {}
+    for param in differing_params:
+        diff_dict[param] = {}
+        for l in filtered_languages.keys():
+            diff_dict[param][l] = filtered_languages[l][param]
+
+    return pd.DataFrame(diff_dict).T.sort_index()
 
 #load the different WALS data and derived lookup tables
 if "parameters" not in st.session_state:
@@ -101,6 +144,26 @@ with st.expander("Language monography"):
     st.write("{} parameters with a value for {}.".format(len(result_dict), selected_language_name))
     result_df = pd.DataFrame(result_dict).T
     st.dataframe(result_df)
+
+with st.expander("Language Diff"):
+    with st.popover("i"):
+        st.markdown("See differences between two languages")
+    language_id_by_name = {}
+    for language_id in st.session_state["language_info_by_id_lookup_table"].keys():
+        language_info = st.session_state["language_info_by_id_lookup_table"][language_id]
+        language_id_by_name[language_info["name"]] = language_id
+    selected_languages_name = st.multiselect("languages", list(language_id_by_name.keys()), key="sln")
+    #selected_language_id = language_id_by_name[selected_language_name]
+    selected_languages_id = [language_id_by_name[ln] for ln in selected_languages_name]
+
+    st.write("ids: {}".format(" ,".join(selected_languages_id)))
+
+    languages_dict = {}
+    for lid in selected_languages_id:
+        languages_dict[lid] = wu.get_language_data_by_id(lid)
+    #st.write(languages_dict)
+    filtered_languages_dict = filter_differing_parameters(languages_dict)
+    st.dataframe(filtered_languages_dict, use_container_width=True)
 
 
 with st.expander("Exploration by language and parameter"):

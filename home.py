@@ -30,7 +30,7 @@ with st.popover("References", use_container_width=True):
     st.markdown("**Conversational Questionnaires**")
     st.markdown("François, A.A proposal for conversational questionnaires(2019) In Lahaussois A., Vuillermet M.Methodological Tools for Linguistic Description and Typology, 16, , pp.155-196, 2019, Language Documentation & Conservation Special Publications, 978-0-9973295-5-1. ffhal-02061237f. https://hal.science / hal - 02061237 / document")
     st.link_button("Read the paper online", "https://hal.science/hal-02061237/document")
-    st.markdown("**Didactic grammars for endangered languages")
+    st.markdown("**Didactic grammars of endangered languages**")
     st.markdown("Vernaudon J. (2013). L’enseignement des langues kanak en Nouvelle-Calédonie. Hermès. n° 65. , [ p.]. 10.4267/2042/51507 or Vernaudon, Jacques. (2018). Les métalangues du tahitien à l'école, https://www.researchgate.net/publication/333261526_Les_metalangues_du_tahitien_a_l'ecole")
     st.markdown("**Algorithms and development**")
     st.markdown("DIG4EL is the fruit of the collaboration of Christian Sebastien, PhD student at the University of French Polynesia, "

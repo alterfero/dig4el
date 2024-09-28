@@ -104,15 +104,18 @@ with (st.expander("Explore chains of conditional probabilities associated with a
     if st.button("Reset"):
         st.session_state["selected_values"] = []
         st.session_state["inference_graph"] = {}
-    st.write("Add known value(s) observed in a language")
+    st.write("Add value(s)")
     selected_param_name = st.selectbox("Select a parameter", st.session_state["parameter_pk_by_name_filtered"], key="sp"+str(len(st.session_state["selected_values"])))
     selected_param_pk = st.session_state["parameter_pk_by_name_filtered"][selected_param_name]
     available_de_pks = st.session_state["domain_elements_pk_by_parameter_pk"][str(selected_param_pk)]
-    available_de_names = [wu.get_careful_name_of_de_pk(depk) for depk in available_de_pks]
+    available_de_names = ["ALL"] + [wu.get_careful_name_of_de_pk(depk) for depk in available_de_pks]
     selected_value = st.selectbox("Choose a value", available_de_names)
     if st.button("Add"):
-        if available_de_pks[available_de_names.index(selected_value)] not in st.session_state["selected_values"]:
-            st.session_state["selected_values"].append(available_de_pks[available_de_names.index(selected_value)])
+        if selected_value == "ALL":
+            st.session_state["selected_values"] = list(set(st.session_state["selected_values"] + available_de_pks))
+        else:
+            if available_de_pks[available_de_names.index(selected_value)] not in st.session_state["selected_values"]:
+                st.session_state["selected_values"].append(available_de_pks[available_de_names.index(selected_value)])
     st.write("Currently selected value(s): **{}**".format(", ".join([wu.get_careful_name_of_de_pk(depk) for depk in st.session_state["selected_values"]])))
     if st.button("Update the graph"):
         st.session_state["inference_graph"], st.session_state["beliefs"] = pu.inference_graph_from_cpt_with_belief_propagation(st.session_state["cpt"],
