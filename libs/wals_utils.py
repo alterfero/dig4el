@@ -45,6 +45,12 @@ try:
         n_param_by_language_id = json.load(f)
     with open("./external_data/wals_derived/language_info_by_id_lookup_table.json") as f:
         language_info_by_id = json.load(f)
+    with open("./external_data/wals_derived/param_pk_by_de_pk.json") as f:
+        param_pk_by_de_pk = json.load(f)
+    with open("./external_data/wals_derived/params_pk_by_language_pk.json") as f:
+        params_pk_by_language_pk = json.load(f)
+    with open("./external_data/wals_derived/language_pk_by_id.json") as f:
+        language_pk_by_id = json.load(f)
     cpt = pd.read_json("./external_data/wals_derived/de_conditional_probability_df.json")
 except FileNotFoundError:
     with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
@@ -71,15 +77,55 @@ except FileNotFoundError:
         value_by_domain_element_pk = json.load(f)
     with open("../external_data/wals_derived/valueset_by_pk_lookup_table.json") as f:
         valueset_by_pk = json.load(f)
-    with open("../external_data/wals_derived/n_param_by_language_id.json") as f:
-        n_param_by_language_id = json.load(f)
     with open("../external_data/wals_derived/language_info_by_id_lookup_table.json") as f:
         language_info_by_id = json.load(f)
+    with open("../external_data/wals_derived/param_pk_by_de_pk.json") as f:
+        param_pk_by_de_pk = json.load(f)
+    with open("../external_data/wals_derived/params_pk_by_language_pk.json") as f:
+        params_pk_by_language_pk = json.load(f)
+    with open("../external_data/wals_derived/language_pk_by_id.json") as f:
+        language_pk_by_id = json.load(f)
     cpt = pd.read_json("../external_data/wals_derived/de_conditional_probability_df.json")
 
 parameter_name_by_pk = {}
 for name, pk in parameter_pk_by_name.items():
     parameter_name_by_pk[str(pk)] = name
+
+def build_language_pk_by_id():
+    language_pk_by_id = {}
+    for lpk in language_by_pk:
+        try:
+            language_pk_by_id[language_by_pk[lpk]["id"]] = lpk
+        except KeyError:
+            print("no id field in language pk {}".format(lpk))
+    with open("../external_data/wals_derived/language_pk_by_id.json", "w") as f:
+        json.dump(language_pk_by_id, f, indent=4)
+
+
+def build_param_pk_by_de_pk():
+    param_pk_by_de_pk = {}
+    for ppk in domain_elements_pk_by_parameter_pk:
+        depks =  domain_elements_pk_by_parameter_pk[ppk]
+        for depk in depks:
+            if depk not in param_pk_by_de_pk.keys():
+                param_pk_by_de_pk[depk] = ppk
+    with open("../external_data/wals_derived/param_pk_by_de_pk.json", "w") as f:
+        json.dump(param_pk_by_de_pk, f, indent=4)
+
+def build_params_pk_by_language_pk():
+    params_pk_by_language_pk = {}
+    for language_pk in domain_elements_by_language:
+        params_pk_by_language_pk[language_pk] = []
+        for depk in domain_elements_by_language[language_pk]:
+            if str(depk) in param_pk_by_de_pk.keys():
+                ppk = param_pk_by_de_pk[str(depk)]
+                if ppk not in params_pk_by_language_pk[language_pk]:
+                    params_pk_by_language_pk[language_pk].append(ppk)
+            else:
+                print("build_params_pk_by_language_pk: {} not in param_pk_by_de_pk".format(depk))
+    with open("../external_data/wals_derived/params_pk_by_language_pk.json", "w") as f:
+        json.dump(params_pk_by_language_pk, f, indent=4)
+
 
 def get_careful_name_of_de_pk(depk):
     info = domain_element_by_pk[str(depk)]

@@ -248,13 +248,12 @@ class GeneralAgent:
 
     def run_belief_update_cycle(self):
         path = self.create_random_propagation_path()
+        # run messaging round
+        self.run_message_round()
         # update each parameter's beliefs from observations and neighbors messages
         for p_name in path:
             self.language_parameters[p_name].update_beliefs_from_observations()
             self.update_beliefs_from_messages_received(p_name)
-        # run messaging round
-        self.run_message_round()
-
 
     def run_message_round(self):
         messages = {}

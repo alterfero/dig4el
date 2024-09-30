@@ -21,9 +21,6 @@ if "current_cpt" not in st.session_state:
 if "parameter_pk_by_name_filtered" not in st.session_state:
     with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
         st.session_state["parameter_pk_by_name_filtered"] = json.load(f)
-if "param_de_tree" not in st.session_state:
-    with open("./external_data/wals_derived/param_de_tree.json") as f:
-        st.session_state["param_de_tree"] = json.load(f)
 if "parameter_pk_by_name" not in st.session_state:
     with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
         st.session_state["parameter_pk_by_name"] = json.load(f)
@@ -126,7 +123,6 @@ with (st.expander("Explore chains of conditional probabilities associated with a
     def plot_inference_graph_pyvis(inference_graph, belief):
         net = Network(height='800px', width='100%', directed=True)
         net.barnes_hut()
-
         # Add nodes with belief values
         for node_id, belief_value in belief.items():
             if belief_value > 0 and node_id not in de_blacklist:
@@ -199,7 +195,7 @@ with (st.expander("Explore chains of conditional probabilities associated with a
     html_str = plot_inference_graph_pyvis(st.session_state["inference_graph"], st.session_state["beliefs"])
 
     # Display the PyVis graph in Streamlit
-    st.subheader("Inference Graph")
+    st.subheader("Conditional Probability Graph")
     st.components.v1.html(html_str, height=800, width=1000)
 
 
