@@ -2,8 +2,7 @@ from collections import defaultdict
 import json
 from libs import knowledge_graph_utils as kgu, stats
 
-delimiters = json.load(open("./data/delimiters.json"))
-def analyze_word_order(knowledge_graph):
+def analyze_word_order(knowledge_graph, delimiters):
     language = knowledge_graph[0]["language"]
     word_order_stats = defaultdict(list)
     info_dict = {
@@ -35,7 +34,7 @@ def analyze_word_order(knowledge_graph):
         sentence_data = entry_data.get('sentence_data', {})
         graph = sentence_data.get('graph', {})
         # build a list of the target words for position reference
-        target_words = stats.custom_split(knowledge_graph[entry_index]["recording_data"]["translation"], delimiters[language])
+        target_words = stats.custom_split(knowledge_graph[entry_index]["recording_data"]["translation"], delimiters)
         for concept in graph:
             is_event = False
             is_agent_required = False

@@ -19,6 +19,8 @@ import pickle
 try:
     with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
         parameter_pk_by_name = json.load(f)
+    with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
+        parameter_pk_by_name_filtered = json.load(f)
     with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
         language_by_pk = json.load(f)
     with open("./external_data/wals_derived/domain_elements_by_language.json") as f:
@@ -55,6 +57,8 @@ try:
 except FileNotFoundError:
     with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
         parameter_pk_by_name = json.load(f)
+    with open("../external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
+        parameter_pk_by_name_filtered = json.load(f)
     with open("../external_data/wals_derived/language_by_pk_lookup_table.json") as f:
         language_by_pk = json.load(f)
     with open("../external_data/wals_derived/domain_elements_by_language.json") as f:
