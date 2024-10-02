@@ -2,7 +2,9 @@ import streamlit as st
 import pandas as pd
 from libs import utils as u, wals_utils as wu, agents
 from libs import knowledge_graph_utils as kgu
+from libs import cq_observers as obs
 from exploration import simple_inferences as si
+from libs import agents
 import json
 
 st.set_page_config(
@@ -28,13 +30,19 @@ if "cq_transcriptions" not in st.session_state:
     st.session_state["cq_transcriptions"] = []
 if "consolidated_transcriptions" not in st.session_state:
     st.session_state["consolidated_transcriptions"] = {}
-
 if "tl_knowledge" not in st.session_state:
     st.session_state["tl_knowledge"] = {
         "known":{},
+        "known_pk":{},
         "observed":{},
         "inferred":{}
     }
+if "ga" not in st.session_state:
+    st.session_state["ga"] = None
+if "known_processed" not in st.session_state:
+    st.session_state["known_processed"] = False
+if "observations_processed" not in st.session_state:
+    st.session_state["observations_processed"] = False
 
 topics = {"Canonical word orders": {
 "obs": {
@@ -63,48 +71,70 @@ with st.sidebar:
     st.subheader("DIG4EL")
     st.page_link("home.py", label="Home", icon=":material/home:")
 
-    st.write("**Base Features**")
+    st.write("**Base features**")
     st.page_link("pages/2_CQ_Transcription_Recorder.py", label="Record transcription", icon=":material/contract_edit:")
+    st.page_link("pages/Grammatical_Description.py", label="Generate Grammars", icon=":material/menu_book:")
 
-    st.write("**Advanced features**")
+    st.write("**Expert features**")
     st.page_link("pages/4_CQ Editor.py", label="Edit CQs", icon=":material/question_exchange:")
+    st.page_link("pages/Concept_graph_editor.py", label="Edit Concept Graph", icon=":material/device_hub:")
 
     st.write("**Explore DIG4EL processes**")
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
 st.title("Generate grammatical descriptions")
-st.subheader("Topic")
+st.markdown("#### Early prototype of inferential output.")
+with st.expander("Inputs"):
+    if st.button("reset"):
+            st.session_state["tl_name"] = ""
+            st.session_state["tl_pk"] = ""
+            st.session_state["tl_id"] = ""
+            st.session_state["delimiters"] = []
+            st.session_state["selected_topics"] = []
+            st.session_state["loaded_existing"] = ""
+            st.session_state["cq_transcriptions"] = []
+            st.session_state["consolidated_transcriptions"] = {}
+            st.session_state["tl_knowledge"] = {
+                "known": {},
+                "known_pk": {},
+                "observed": {},
+                "inferred": {}
+            }
+            st.session_state["ga"] = None
+            st.session_state["known_processed"] = False
+            st.session_state["observations_processed"] = False
+            st.rerun()
+    # TOPICS AND LANGUAGE
+    st.session_state["selected_topics"] = st.multiselect("Choose topics", topics.keys())
+    tl = st.selectbox("Language name?", ["not in the list"] + list(wu.language_pk_id_by_name.keys()))
+    if tl == "not in the list":
+        st.session_state["tl_name"] = st.text_input("If the language is not in the list: Language name?")
+        st.session_state["tl_pk"] = None
+        st.session_state["tl_id"] = None
+        st.session_state["delimiters"] = default_delimiters
+    else:
+        st.session_state["tl_name"] = tl
+        st.session_state["tl_pk"] = wu.language_pk_id_by_name[tl]["pk"]
+        st.session_state["tl_id"] = wu.language_pk_id_by_name[tl]["id"]
+        with open ("./data/delimiters.json", "r") as f:
+            delimiters_dict = json.load(f)
+            if tl in delimiters_dict.keys():
+                st.session_state["delimiters"] = delimiters_dict[tl]
+                #st.write("Delimiters found for {}: {}".format(tl, st.session_state["delimiters"]))
+            else:
+                st.session_state["delimiters"] = default_delimiters
+                #st.write("Using default delimiters: {}".format(st.session_state["delimiters"]))
 
-# TOPICS AND LANGUAGE
-st.session_state["selected_topics"] = st.selectbox("Choose topics", topics.keys())
-tl = st.selectbox("Language name?", ["not in the list"] + list(wu.language_pk_id_by_name.keys()))
-if tl == "not in the list":
-    st.session_state["tl_name"] = st.text_input("Language name?")
-    st.session_state["tl_pk"] = None
-    st.session_state["tl_id"] = None
-    st.session_state["delimiters"] = default_delimiters
-else:
-    st.session_state["tl_name"] = tl
-    st.session_state["tl_pk"] = wu.language_pk_id_by_name[tl]["pk"]
-    st.session_state["tl_id"] = wu.language_pk_id_by_name[tl]["id"]
-    with open ("./data/delimiters.json", "r") as f:
-        delimiters_dict = json.load(f)
-        if tl in delimiters_dict.keys():
-            st.session_state["delimiters"] = delimiters_dict[tl]
-            st.write("Delimiters found for {}: {}".format(tl, st.session_state["delimiters"]))
-        else:
-            st.session_state["delimiters"] = default_delimiters
-            st.write("Using default delimiters: {}".format(st.session_state["delimiters"]))
-
-# LOADING CQ TRANSCRIPTIONS
-cqs = st.file_uploader("Load Conversational Questionnaires' transcriptions", type="json", accept_multiple_files=True)
-if cqs is not None:
-    st.session_state["cq_transcriptions"] = []
-    for cq in cqs:
-        new_cq = json.load(cq)
-        st.session_state["cq_transcriptions"].append(new_cq)
-    st.session_state["loaded_existing"] = True
-    st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
+    # LOADING CQ TRANSCRIPTIONS
+    cqs = st.file_uploader("Load Conversational Questionnaires' transcriptions", type="json", accept_multiple_files=True)
+    if cqs is not None:
+        st.session_state["cq_transcriptions"] = []
+        for cq in cqs:
+            new_cq = json.load(cq)
+            st.session_state["cq_transcriptions"].append(new_cq)
+        st.session_state["loaded_existing"] = True
+        st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
+    show_details = st.toggle("Show details")
 
 # RETRIEVING TOPICAL DATA FROM WALS
 if st.session_state["tl_name"] != "":
@@ -117,74 +147,109 @@ if st.session_state["tl_name"] != "":
                     p_name = wu.parameter_name_by_pk[wu.param_pk_by_de_pk[str(known_value)]]
                     de_name = wu.domain_element_by_pk[str(known_value)]["name"]
                     st.session_state["tl_knowledge"]["known"][p_name] = de_name
-    if len(st.session_state["tl_knowledge"]["known"]) != 0:
-        st.write("{} known parameters of interest in {}.".format(len(st.session_state["tl_knowledge"]["known"]), st.session_state["tl_name"]))
-        if st.checkbox("See known parameters of interest"):
-            st.write(st.session_state["tl_knowledge"])
+                    st.session_state["tl_knowledge"]["known_pk"][p_name] = str(known_value)
+    if len(st.session_state["tl_knowledge"]["known"]) != 0 and show_details:
+        st.markdown("#### Retrieving **known** information")
+        st.markdown("**{}** is documented in WALS with {} parameters pertaining to {}".format(st.session_state["tl_name"],
+                                                                                            len(st.session_state[
+                                                                                                    "tl_knowledge"][
+                                                                                                    "known"]),
+                                                                                            "& ".join(st.session_state["selected_topics"])))
+        show_params = st.toggle("Show known parameters")
+        if show_params:
+            st.write(st.session_state["tl_knowledge"]["known"])
+    st.session_state["known_processed"] = True
 
-# PROCESSING TRANSCRIPTIONS
+# PROCESSING OBSERVATIONS
+if show_details:
+    st.markdown("#### Retrieving **observed** information in Conversational Questionnaires")
+    show_observed_details = st.toggle("Show details about observations")
 if st.session_state["cq_transcriptions"] != []:
     # Consolidating transcriptions
     st.session_state["consolidated_transcriptions"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
                                         st.session_state["cq_transcriptions"],
                                         st.session_state["tl_name"],
                                         st.session_state["delimiters"])
-    # computing word order stats
-    word_order_stats = si.analyze_word_order(st.session_state["consolidated_transcriptions"], st.session_state["delimiters"])
+    # oberving svo word order
+    svo_obs = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
+                                                        st.session_state["tl_name"],
+                                                        st.session_state["delimiters"])
+    if show_details and show_observed_details:
+        for de_name, details in svo_obs["observations"].items():
+            if details["count"] != 0:
+                st.write("---------------------------------------------")
+                st.write("**{}** in ".format(de_name))
+                for occurrence_index, context in details["details"].items():
+                    st.markdown("- ***{}***".format(st.session_state["consolidated_transcriptions"][occurrence_index]["recording_data"]["translation"]))
+                    st.write(st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"])
+                    st.write("context: {}".format(", ".join(context)))
+        st.markdown("-------------------------------------")
+    st.session_state["tl_knowledge"]["observed"]["Order of Subject, Object and Verb"] = svo_obs["agent-ready observation"]
+    st.session_state["observations_processed"] = True
 
-    # displaying details
-    with st.expander("Detailed observations on word order of transcriptions"):
-        colc, colv = st.columns(2)
-        colc.subheader("Order of the Subject, Object and Verb")
-        colc.write("Intransitive events")
-        colc.write(
-            "Distribution of {} intransitive events with known target representations in the knowledge graph:".format(
-                len(word_order_stats["intransitive"])))
-        iwo_df = pd.DataFrame.from_dict(word_order_stats["stats"]["intransitive_word_order"], orient="index",
-                                        columns=["count"]).sort_values(
-            by="count", ascending=False).T
-        colc.dataframe(iwo_df)
+if st.session_state["known_processed"] and st.session_state["observations_processed"]:
+    # RUNNING INFERENCES
+    infospot = st.empty()
+    if show_details:
+        infospot.write("Launching inferential engine")
+    ga_param_name_list = list(topics["Canonical word orders"]["obs"].keys()) + list(topics["Canonical word orders"]["nobs"].keys())
+    st.session_state["ga"] = agents.GeneralAgent("canonical word order",
+                                         parameter_names=ga_param_name_list,
+                                         language_stat_filter={})
+    if show_details:
+        infospot.write("Agent created with {} parameters".format(len(st.session_state["ga"].language_parameters)))
+        infospot.write("Injecting Observations")
+    for observed_param_name in st.session_state["tl_knowledge"]["observed"]:
+        st.session_state["ga"].add_observations(observed_param_name,
+                                                st.session_state["tl_knowledge"]["observed"][observed_param_name])
+    if show_details:
+        infospot.write("Injecting known information")
+    for known_p_name in st.session_state["tl_knowledge"]["known_pk"].keys():
+        depk = st.session_state["tl_knowledge"]["known_pk"][known_p_name]
+        st.session_state["ga"].language_parameters[known_p_name].inject_peak_belief(str(depk), 1, locked=True)
+    if show_details:
+        infospot.write("Running inferences...")
+    for i in range(5):
+        st.session_state["ga"].run_belief_update_cycle()
 
-        colv.write("Transitive events")
-        colv.write(
-            "Distribution of {} transitive events with known target representations in the semantic graph:".format(
-                len(word_order_stats["transitive"])))
-        two_df = pd.DataFrame.from_dict(word_order_stats["stats"]["transitive_word_order"], orient="index",
-                                        columns=["count"]).sort_values(by="count", ascending=False).T
-        colv.dataframe(two_df)
+    if show_details:
+        infospot.markdown("#### Beliefs of the General Agent")
+        beliefs = st.session_state["ga"].get_beliefs()
+        for pname in beliefs.keys():
+            max_depk = max(beliefs[pname], key=beliefs[pname].get)
+            depk_name = wu.get_careful_name_of_de_pk(max_depk)
+            st.write("{}: {}".format(pname, depk_name))
 
-        s = st.selectbox("select order", list(word_order_stats["index_lists_by_order"].keys()))
-        for index in word_order_stats["index_lists_by_order"][s]:
-            df = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], index, st.session_state["delimiters"])
-            st.dataframe(df)
-
-if st.session_state["tl_name"] == "Marquesan":
-    if st.checkbox("Show example of output on the order of words, with a focus on the order of subject, object and verb. "):
-        m1 = """
-        #### The order of words in Marquesan
+    if st.session_state["tl_name"] == "Marquesan":
+        if st.checkbox("Show example of formatted output on the order of words, with a focus on the order of subject, object and verb. "):
+            m1 = """
+            -----------------------------
+            #### The order of words in Marquesan
+            -----------------------------
+            
+            In Marquesan, the order of words is a little different from what you might expect in English. 
+            For example, 
+            - when talking about **possession**, Marquesan places the thing being owned before the owner. 
+            - When describing something with a **relative clause** (like 'the house that Jack built'), 
+            the noun comes first, followed by the description, so you’d say 'the house' before adding the details. 
+            - **Numbers** come before nouns, so you’d say 'two dogs' and adjectives follow the noun, like 'dog big' instead of 'big dog'. 
+            - The language uses **prepositions**, just like in English, so words like 'in' or 'on' come before the noun. 
+            - When forming sentences, the **verb** usually comes first, followed by the subject and then the object (this is called VSO order). 
+            For example, you might say 'ate he fish' instead of 'he ate fish'
+            """
+            m2 = """
+            #### Let's look at some examples:
         
-        In Marquesan, the order of words is a little different from what you might expect in English. 
-        For example, when talking about **possession**, Marquesan places the thing being owned before the owner. 
-        When describing something with a **relative clause** (like 'the house that Jack built'), 
-        the noun comes first, followed by the description, so you’d say 'the house' before adding the details. 
-        **Numbers** come before nouns, so you’d say 'two dogs' and adjectives follow the noun, like 'dog big' instead of 'big dog'. 
-        The language uses **prepositions**, just like in English, so words like 'in' or 'on' come before the noun. 
-        When forming sentences, the **verb** usually comes first, followed by the subject and then the object (this is called VSO order). 
-        For example, you might say 'ate he fish' instead of 'he ate fish'
-        """
-        m2 = """
-        #### Let's look at some examples:
-    
-        1. **Marquesan: ua 'ite 'oe i te ata o to'u hua'a**  (Have you seen pictures of my family?)
-           In this sentence the word for "seeing" (*ua 'ite*) comes first, followed by the subject "you" (*'oe*), and then the object "pictures of my family" (*te ata o to'u hua'a*). Marquesan also uses prepositions like "of" (*o*) before the noun they describe.
-    
-        2. **Marquesan: ua 'ite 'oe ia 'aua**  (I have met them)
-           In this sentence the verb "meeting" (*ua 'ite*) comes first, followed by "you" (*'oe*) and then "them" (*'aua*).
-    
-        3. **Marquesan: ua 'ite au i to 'oe mata me katakata**  
-           In the sentence "I recognized your eyes and your smile," the same pattern holds: the verb "recognizing" (*ua 'ite*) comes first, the subject "I" (*au*) follows, adjectives come after nouns, and "and" (*me*) connects two things ("your eyes" and "your smile").
-    
-        This shows how Marquesan sentences are structured with the verb first and other words following in a set order.
-        """
-        st.markdown(m1)
-        st.markdown(m2)
+            1. **Marquesan: ua 'ite 'oe i te ata o to'u hua'a**  (Have you seen pictures of my family?)
+               In this sentence the word for "seeing" (*ua 'ite*) comes first, followed by the subject "you" (*'oe*), and then the object "pictures of my family" (*te ata o to'u hua'a*). Marquesan also uses prepositions like "of" (*o*) before the noun they describe.
+        
+            2. **Marquesan: ua 'ite 'oe ia 'aua**  (I have met them)
+               In this sentence the verb "meeting" (*ua 'ite*) comes first, followed by "you" (*'oe*) and then "them" (*'aua*).
+        
+            3. **Marquesan: ua 'ite au i to 'oe mata me katakata**  
+               In the sentence "I recognized your eyes and your smile," the same pattern holds: the verb "recognizing" (*ua 'ite*) comes first, the subject "I" (*au*) follows, adjectives come after nouns, and "and" (*me*) connects two things ("your eyes" and "your smile").
+        
+            This shows how Marquesan sentences are structured in canonical situations with the verb first.
+            """
+            st.markdown(m1)
+            st.markdown(m2)

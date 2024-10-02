@@ -65,18 +65,19 @@ class LanguageParameter:
         p_not = (1 - probability)/(len(self.values) - 1)
         beliefs = {}
         for value in self.values:
-            if value == depk:
+            print(type(value), type(depk))
+            if str(value) == str(depk):
                 beliefs[str(value)] = p_yes
             else:
                 beliefs[str(value)] = p_not
         self.beliefs = beliefs
         if locked:
             self.locked = True
-        print(self.beliefs)
+        #print("updated belief after injection", self.beliefs)
         self.beliefs_history.append(copy.deepcopy(self.beliefs))
-        if self.verbose:
-            print("LanguageParameter {}: beliefs_history updated by inject_peak_belief, length {}.".format(self.name, len(self.beliefs_history)))
-            print(self.beliefs_history)
+        # if self.verbose:
+        #     print("LanguageParameter {}: beliefs_history updated by inject_peak_belief, length {}.".format(self.name, len(self.beliefs_history)))
+        #     print(self.beliefs_history)
 
 
     def update_beliefs_from_observations(self, influence_distribution = "uniform", observation_influence=0.9, autolock_threshold=0.99, verbose=True):
@@ -196,6 +197,12 @@ class GeneralAgent:
             self.graph_name += p[-3:] + "_"
         self.initialize_graph()
 
+    def get_beliefs(self):
+        beliefs = {}
+        for lpn in self.language_parameters.keys():
+            beliefs[lpn] = self.language_parameters[lpn].beliefs
+        return beliefs
+
     def reset_language_parameters_beliefs_with_wals(self):
         for lp_name, lp in self.language_parameters.items():
             lp.beliefs_history = []
@@ -276,7 +283,11 @@ class GeneralAgent:
         return path
 
     def add_observations(self, parameter_name, observations):
-        """ add observations to a LanguageParameter observation inbox."""
+        """ add observations to a LanguageParameter observation inbox.
+        Observations are {'depk':number of occurrences}
+        example:
+        observations = {'387': 0, '386': 0, '388': 0, '385': 8, '383': 2, '384': 0, '389': 0}
+        gawo.add_observations("Order of Subject, Object and Verb", observations)"""
         if self.verbose:
             print("Agent {}: adding observation {} to LanguageParameter {}.".format(self.name, observations, parameter_name))
         if parameter_name in self.language_parameters.keys():

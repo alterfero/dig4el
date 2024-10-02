@@ -13,11 +13,13 @@ with st.sidebar:
     st.subheader("DIG4EL")
     st.page_link("home.py", label="Home", icon=":material/home:")
 
-    st.write("**Base Features**")
+    st.write("**Base features**")
     st.page_link("pages/2_CQ_Transcription_Recorder.py", label="Record transcription", icon=":material/contract_edit:")
+    st.page_link("pages/Grammatical_Description.py", label="Generate Grammars", icon=":material/menu_book:")
 
-    st.write("**Advanced features**")
+    st.write("**Expert features**")
     st.page_link("pages/4_CQ Editor.py", label="Edit CQs", icon=":material/question_exchange:")
+    st.page_link("pages/Concept_graph_editor.py", label="Edit Concept Graph", icon=":material/device_hub:")
 
     st.write("**Explore DIG4EL processes**")
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
