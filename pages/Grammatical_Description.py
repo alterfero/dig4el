@@ -224,7 +224,7 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
         if st.checkbox("Show example of formatted output on the order of words, with a focus on the order of subject, object and verb. "):
             m1 = """
             -----------------------------
-            #### The order of words in Marquesan
+            ### The order of words in Marquesan
             -----------------------------
             
             In Marquesan, the order of words is a little different from what you might expect in English. 
