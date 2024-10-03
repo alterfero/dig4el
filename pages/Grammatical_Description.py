@@ -52,6 +52,8 @@ if "prompt_content" not in st.session_state:
     }
 if "redacted" not in st.session_state:
     st.session_state["redacted"] = ""
+if "svo_obs" not in st.session_state:
+    st.session_state["svo_obs"] = {}
 
 topics = {"Canonical word orders": {
 "obs": {
@@ -182,14 +184,14 @@ if st.session_state["cq_transcriptions"] != []:
                                         st.session_state["delimiters"])
 
     # oberving svo word order
-    svo_obs = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
+    st.session_state["svo_obs"] = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
                                                         st.session_state["tl_name"],
                                                         st.session_state["delimiters"])
 
 
 
     if show_details and show_observed_details:
-        for de_name, details in svo_obs["observations"].items():
+        for de_name, details in st.session_state["svo_obs"]["observations"].items():
             if details["count"] != 0:
                 st.write("---------------------------------------------")
                 st.write("**{}** in ".format(de_name))
@@ -200,7 +202,9 @@ if st.session_state["cq_transcriptions"] != []:
                     st.dataframe(gdf)
                     st.write("context: {}".format(", ".join(context)))
         st.markdown("-------------------------------------")
-    st.session_state["tl_knowledge"]["observed"]["Order of Subject, Object and Verb"] = svo_obs["agent-ready observation"]
+    st.session_state["tl_knowledge"]["observed"]["Order of Subject, Object and Verb"] = st.session_state["svo_obs"]["agent-ready observation"]
+    st.session_state["observations_processed"] = True
+else:
     st.session_state["observations_processed"] = True
 
 if st.session_state["known_processed"] and st.session_state["observations_processed"]:
@@ -230,11 +234,13 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
 
     if show_details:
         infospot.markdown("#### Beliefs of the General Agent")
-        beliefs = st.session_state["ga"].get_beliefs()
-        for pname in beliefs.keys():
-            max_depk = max(beliefs[pname], key=beliefs[pname].get)
-            depk_name = wu.get_careful_name_of_de_pk(max_depk)
-            st.write("{}: {}".format(pname, depk_name))
+        show_beliefs = st.toggle("Show the inferred beliefs of the general agent")
+        if show_beliefs:
+            beliefs = st.session_state["ga"].get_beliefs()
+            for pname in beliefs.keys():
+                max_depk = max(beliefs[pname], key=beliefs[pname].get)
+                depk_name = wu.get_careful_name_of_de_pk(max_depk)
+                st.write("{}: {}".format(pname, depk_name))
 
     # building prompt
     # st.session_state["prompt_content"] = {
@@ -249,8 +255,9 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
         depk_name = wu.get_careful_name_of_de_pk(max_depk)
         st.session_state["prompt_content"]["canonical word order"]["grammatical features"][pname] = depk_name
     #observed
-    try:
-        for de_name, details in svo_obs["observations"].items():
+
+    if st.session_state["cq_transcriptions"] != []:
+        for de_name, details in st.session_state["svo_obs"]["observations"].items():
             if details["count"] != 0:
                 for occurrence_index, context in details["details"].items():
                     gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index,
@@ -263,51 +270,53 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                         "gloss": gdf.to_dict(),
                         "context": context
                     }
-        prompt = "Create a short, engaging, well-organized grammar lesson about canonical word order in " + st.session_state["tl_name"] + " to a group of adult second-language learners."
-        prompt += "No jargon, the readers are not use to reading grammar lessons."
-        prompt += "Use only on the material provided. Do not use or infer any additional information, examples, or rules beyond what I give. If something is unclear or missing from the input, don't fill the gaps. Focus on explaining the rules and providing examples from the material I supply."
-        prompt += "Use all the examples provided. When a gloss is available, use it."
-        prompt += "Here are the information about the word order in this language (use only this information): "
-        prompt += str(st.session_state["prompt_content"]["canonical word order"]["grammatical features"]) + "."
-        prompt += "And here are examples to use: "
-        prompt += str(st.session_state["prompt_content"]["canonical word order"]["examples"]) + "."
-        prompt += "Don't add encouragement or personal comment."
-        prompt += "Your lesson should be formatted with the github-flavored markdown as a string to display with Streamlit."
-        prompt += "the output should be correctly displayed when using the streamlit.markdown() function."
-        prompt += "Don't put the '''markdown''' in the output."
+    else:
+        st.session_state["prompt_content"]["canonical word order"]["examples"] = {}
 
-        if st.button("Create a grammar lesson from these inferences and examples"):
-            openai.api_key = st.secrets["openai_key"]
-            response = openai.chat.completions.create(
-                model="gpt-4o",
-                messages = [
-                    {
-                        "role": "system",
-                        "content": [
-                            {
-                                "type": "text",
-                                "text": "You are an assistant that creates language learning grammar lessons. Use only the information provided by the user. Use all the examples provided by the user. Do not introduce any additional material, even if it seems relevant. If the user-provided material is incomplete or ambiguous, ommit content. "
-                            }
-                        ]
-                    },
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "text",
-                                "text": prompt
-                            }
-                        ]
-                    }
-                ])
-            st.session_state["redacted"] = response.choices[0].message.content
-            st.markdown(response.choices[0].message.content)
-            print(response.choices[0].message.content)
+    prompt = "Create a short, engaging, well-organized grammar lesson about canonical word order in " + st.session_state["tl_name"] + " to a group of adult second-language learners."
+    prompt += "No jargon, the readers are not use to reading grammar lessons."
+    prompt += "Use only on the material provided. Do not use or infer any additional information, examples, or rules beyond what I give. If something is unclear or missing from the input, don't fill the gaps. Focus on explaining the rules and providing examples from the material I supply."
+    prompt += "Use all the examples provided. When a gloss is available, use it."
+    prompt += "Here are the information about the word order in this language (use only this information): "
+    prompt += str(st.session_state["prompt_content"]["canonical word order"]["grammatical features"]) + "."
+    prompt += "And here are examples to use: "
+    prompt += str(st.session_state["prompt_content"]["canonical word order"]["examples"]) + "."
+    prompt += "Don't add encouragement or personal comment."
+    prompt += "Your lesson should be formatted with the github-flavored markdown as a string to display with Streamlit."
+    prompt += "the output should be correctly displayed when using the streamlit.markdown() function."
+    prompt += "Don't put the '''markdown''' in the output."
+
+    if st.button("Create a grammar lesson from these inferences and examples"):
+        openai.api_key = st.secrets["openai_key"]
+        response = openai.chat.completions.create(
+            model="gpt-4o",
+            messages = [
+                {
+                    "role": "system",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "You are an assistant that creates language learning grammar lessons. Use only the information provided by the user. Use all the examples provided by the user. Do not introduce any additional material, even if it seems relevant. If the user-provided material is incomplete or ambiguous, ommit content. "
+                        }
+                    ]
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": prompt
+                        }
+                    ]
+                }
+            ])
+        st.session_state["redacted"] = response.choices[0].message.content
+        st.markdown(response.choices[0].message.content)
+        print(response.choices[0].message.content)
 
 
-            st.download_button("Download lesson", st.session_state["redacted"], file_name="generated_grammar_lesson.txt")
-    except:
-        print("manage svo_obs!")
+        st.download_button("Download lesson", st.session_state["redacted"], file_name="generated_grammar_lesson.txt")
+
 
 
 

@@ -76,9 +76,8 @@ with st.sidebar:
     st.write("**Explore DIG4EL processes**")
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
-st.write("You can start a new recording right away, or load an existing one to edit it")
 if not st.session_state["loaded_existing"]:
-    with st.expander("Load an existing transcription"):
+    with st.expander("Load an existing DIG4EL transcription"):
         existing_recording = st.file_uploader("Load an existing recording", type="json")
         if existing_recording is not None:
             st.session_state["recording"] = json.load(existing_recording)
