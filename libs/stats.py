@@ -10,6 +10,7 @@ def calculate_entropy(prob_dict):
     return entropy
 
 def custom_split(text, delimiters):
+    #print("XXXXXXXXXXXX splitting {} with {}".format(text, delimiters))
     punctuation = [".", ",", ":", ";", "?", "!", "(", ")"]
     # Create a regular expression pattern using the provided delimiters
     pattern = '|'.join(map(re.escape, delimiters))
@@ -21,6 +22,7 @@ def custom_split(text, delimiters):
     split_text = [word for word in split_text if word]
     # remove spaces around each word
     split_text = [word.strip() for word in split_text]
+    #print("XXXXXXXXXXXX split text: {}".format(split_text))
     return split_text
 
     return re.split(pattern, text)

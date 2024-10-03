@@ -151,7 +151,7 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters):
                                     print("PATIENT TARGET NOT IN TARGET WORDS: patient_target {} not in target_words {}".format(
                                         patient_target_pos_word, target_words))
                         else:
-                            print("CQ SVO ORDER OBSERVER WARNING: patient_value {} not found in {}".format(patient_value, knowledge_graph[entry_index]["recording_data"]["concept_words"]))
+                            print("CQ SVO ORDER OBSERVER WARNING: patient_value {} not found".format(patient_value))
 
             if is_event:
                 # intransitive event with known positions
