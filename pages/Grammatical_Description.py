@@ -180,11 +180,11 @@ if st.session_state["cq_transcriptions"] != []:
                                         st.session_state["cq_transcriptions"],
                                         st.session_state["tl_name"],
                                         st.session_state["delimiters"])
+
     # oberving svo word order
     svo_obs = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
                                                         st.session_state["tl_name"],
                                                         st.session_state["delimiters"])
-
 
 
 
@@ -235,42 +235,6 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
             max_depk = max(beliefs[pname], key=beliefs[pname].get)
             depk_name = wu.get_careful_name_of_de_pk(max_depk)
             st.write("{}: {}".format(pname, depk_name))
-
-
-
-    if st.session_state["tl_name"] == "Marquesan":
-        if st.checkbox("Show example of formatted output on the order of words, with a focus on the order of subject, object and verb. "):
-            m1 = """
-            -----------------------------
-            ### The order of words in Marquesan
-            -----------------------------
-            
-            In Marquesan, the order of words is a little different from what you might expect in English. 
-            For example, 
-            - when talking about **possession**, Marquesan places the thing being owned before the owner. 
-            - When describing something with a **relative clause** (like 'the house that Jack built'), 
-            the noun comes first, followed by the description, so you’d say 'the house' before adding the details. 
-            - **Numbers** come before nouns, so you’d say 'two dogs' and adjectives follow the noun, like 'dog big' instead of 'big dog'. 
-            - The language uses **prepositions**, just like in English, so words like 'in' or 'on' come before the noun. 
-            - When forming sentences, the **verb** usually comes first, followed by the subject and then the object (this is called VSO order). 
-            For example, you might say 'ate he fish' instead of 'he ate fish'
-            """
-            m2 = """
-            #### Let's look at some examples:
-        
-            1. **Marquesan: ua 'ite 'oe i te ata o to'u hua'a**  (Have you seen pictures of my family?)
-               In this sentence the word for "seeing" (*ua 'ite*) comes first, followed by the subject "you" (*'oe*), and then the object "pictures of my family" (*te ata o to'u hua'a*). Marquesan also uses prepositions like "of" (*o*) before the noun they describe.
-        
-            2. **Marquesan: ua 'ite 'oe ia 'aua**  (I have met them)
-               In this sentence the verb "meeting" (*ua 'ite*) comes first, followed by "you" (*'oe*) and then "them" (*'aua*).
-        
-            3. **Marquesan: ua 'ite au i to 'oe mata me katakata**  
-               In the sentence "I recognized your eyes and your smile," the same pattern holds: the verb "recognizing" (*ua 'ite*) comes first, the subject "I" (*au*) follows, adjectives come after nouns, and "and" (*me*) connects two things ("your eyes" and "your smile").
-        
-            This shows how Marquesan sentences are structured in canonical situations with the verb first.
-            """
-            st.markdown(m1)
-            st.markdown(m2)
 
     # building prompt
     # st.session_state["prompt_content"] = {

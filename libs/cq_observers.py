@@ -71,7 +71,7 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters):
                 if option[-5:] == "AGENT":
                     is_event = True
                     is_agent_required = True
-                    #print("{} is an event".format(concept))
+                    print("{} is an event".format(concept))
 
                     # is there a target word associated with this event?
                     try:
@@ -82,9 +82,9 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters):
                             # TODO: implement smarter word order logic
                             event_target_list = event_target.split("...")
                             event_target_pos_word = event_target_list[0]
-                            #print("event_target_pos_word ",event_target_pos_word)
+                            print("event_target_pos_word ",event_target_pos_word)
                             if event_target_pos_word in target_words:
-                                #print("{} in target words {} ".format(event_target_pos_word, target_words))
+                                print("{} in target words {} ".format(event_target_pos_word, target_words))
                                 event_position = target_words.index(event_target_pos_word)
                             else:
                                 print("Simple Inference TARGET POS WORD NOT IN TARGET WORDS: entry: {}, event_target_pos_word {} not in target_words {}".format(entry_index, event_target_pos_word,target_words))
@@ -94,7 +94,7 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters):
             if is_event:
                 # search for an active agent and potential target word(s)
                 agent_key = concept + " AGENT"
-                #print("agent_key ",agent_key)
+                print("agent_key ",agent_key)
                 # retrieving the agent requires to pass through the AGENT REFERENCE TO CONCEPT node.
                 # TODO: make that more failproof
                 try:
@@ -109,7 +109,7 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters):
                     try:
                         agent_target =  transcriptions[entry_index]["recording_data"]["concept_words"][agent_value]
                     except:
-                        print("problem retrieving agent target for concept {}, kg entry {}".format(concept, entry_index))
+                        #print("problem retrieving agent target for concept {}, kg entry {}".format(concept, entry_index))
                         agent_target = ""
                     agent_target_list = agent_target.split("...")
                     agent_target_pos_word = agent_target_list[0]
