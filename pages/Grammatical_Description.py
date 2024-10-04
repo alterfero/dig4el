@@ -273,6 +273,18 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
     else:
         st.session_state["prompt_content"]["canonical word order"]["examples"] = {}
 
+    lesson_title = "## The order of words in " + st.session_state["tl_name"]
+    lesson_intro = """
+    The order of words in a sentence carries part of its meaning. 
+    Here, we will focus on word order in the simplest situation: sentences where someone states something 
+    in a positive form and active voice, using the names of people and objects without replacing them with pronouns. 
+    This straightforward situation, known as canonical, will serve as a foundation for understanding the basics of 
+    word order in """ + st.session_state["tl_name"] + "."
+
+    st.markdown(lesson_title)
+    st.markdown(lesson_intro)
+
+
     prompt = "Create a short, engaging, well-organized grammar lesson about canonical word order in " + st.session_state["tl_name"] + " to a group of adult second-language learners."
     prompt += "No jargon, the readers are not use to reading grammar lessons."
     prompt += "Use only on the material provided. Do not use or infer any additional information, examples, or rules beyond what I give. If something is unclear or missing from the input, don't fill the gaps. Focus on explaining the rules and providing examples from the material I supply."
