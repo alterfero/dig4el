@@ -20,7 +20,7 @@ except FileNotFoundError:
 
 class LanguageParameter:
     #TODO check if the param in that language is known and lock it if it is
-    def __init__(self, parameter_name, priors_language_pk_list = [], verbose=True):
+    def __init__(self, parameter_name, priors_language_pk_list = [], verbose=False):
         self.verbose = verbose
         self.name = parameter_name
         self.priors_language_pk_list = priors_language_pk_list
@@ -65,7 +65,6 @@ class LanguageParameter:
         p_not = (1 - probability)/(len(self.values) - 1)
         beliefs = {}
         for value in self.values:
-            print(type(value), type(depk))
             if str(value) == str(depk):
                 beliefs[str(value)] = p_yes
             else:
@@ -80,7 +79,7 @@ class LanguageParameter:
         #     print(self.beliefs_history)
 
 
-    def update_beliefs_from_observations(self, influence_distribution = "uniform", observation_influence=0.9, autolock_threshold=0.99, verbose=True):
+    def update_beliefs_from_observations(self, influence_distribution = "uniform", observation_influence=0.9, autolock_threshold=0.99, verbose=False):
         """this function takes in the observation inbox a dict of observation counts of the values of the said parameter
         and uses it to update the corresponding uncertain variable.
         observations is of the form {value1: count1, value2: count2...}"""
@@ -88,7 +87,7 @@ class LanguageParameter:
         # check if the observations given include all the values
         if verbose:
             print("LanguageParameter {}: Updating current beliefs with {} observations".format(self.name, len(self.observations_inbox)))
-        if self.locked:
+        if verbose and self.locked:
             print("Language Parameter {}: value locked. Observations not taken into account.".format(self.name))
         else:
             for observations in self.observations_inbox:
@@ -164,7 +163,7 @@ class GeneralAgent:
     """ A general agent looks at a set of parameters independently of constructions.
     by default, all parameters a general agent observe are considered as nodes of a non-directed,
     fully connected graph."""
-    def __init__(self, name, parameter_names=[], connection_map={}, language_stat_filter={}, verbose=True):
+    def __init__(self, name, parameter_names=[], connection_map={}, language_stat_filter={}, verbose=False):
         self.verbose = verbose
         if self.verbose:
             print("General Agent {} initialization, verbose is on.".format(name))
@@ -229,7 +228,8 @@ class GeneralAgent:
                             self.language_parameters[lpn].parameter_pk
                         )
                         self.graph[language_parameter_name][lpn] = potential_function
-        print("Agent {}: Graph initialized.".format(self.name))
+        if self.verbose:
+            print("Agent {}: Graph initialized.".format(self.name))
 
     def initialize_list_of_language_pks_used_for_statistics(self):
         if self.verbose:
@@ -293,7 +293,7 @@ class GeneralAgent:
         if parameter_name in self.language_parameters.keys():
             self.language_parameters[parameter_name].observations_inbox.append(observations)
 
-    def update_beliefs_from_messages_received(self, parameter_name, verbose=True):
+    def update_beliefs_from_messages_received(self, parameter_name, verbose=False):
         """
         Updates the beliefs of a parameter based on messages received from neighbors.
 
@@ -358,7 +358,7 @@ class GeneralAgent:
                 print("Agent {}: parameter {} is locked and will not be updated by messages.".format(self.name, parameter_name))
 
 
-    def generate_message(self, Pi_name, Pj_name, verbose=True):
+    def generate_message(self, Pi_name, Pj_name, verbose=False):
         """
         Generates the message from parameter Pi to parameter Pj using belief propagation.
 

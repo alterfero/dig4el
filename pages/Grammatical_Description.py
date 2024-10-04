@@ -1,3 +1,5 @@
+import copy
+
 import streamlit as st
 import pandas as pd
 from libs import utils as u, wals_utils as wu, agents
@@ -47,8 +49,7 @@ if "observations_processed" not in st.session_state:
 if "prompt_content" not in st.session_state:
     st.session_state["prompt_content"] = {
         "canonical word order":
-            {"grammatical features": {},
-             "examples": {}}
+            {"grammatical features": {}}
     }
 if "redacted" not in st.session_state:
     st.session_state["redacted"] = ""
@@ -172,7 +173,7 @@ if st.session_state["tl_name"] != "":
             st.write(st.session_state["tl_knowledge"]["known"])
     st.session_state["known_processed"] = True
 
-# PROCESSING OBSERVATIONS
+# PROCESSING TRANSCRIPTIONS
 if show_details:
     st.markdown("#### Retrieving **observed** information in Conversational Questionnaires")
     show_observed_details = st.toggle("Show details about observations")
@@ -182,12 +183,25 @@ if st.session_state["cq_transcriptions"] != []:
                                         st.session_state["cq_transcriptions"],
                                         st.session_state["tl_name"],
                                         st.session_state["delimiters"])
+    st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(len(st.session_state["cq_transcriptions"]),len(st.session_state["consolidated_transcriptions"]), total_target_word_count, len(unique_words)))
 
     # oberving svo word order
     st.session_state["svo_obs"] = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
                                                         st.session_state["tl_name"],
                                                         st.session_state["delimiters"])
 
+    # Keep only canonical sentences
+    # TODO: This should be refactored somewhere else
+    canonical_obs = copy.deepcopy(st.session_state["svo_obs"])
+    for p in canonical_obs["observations"].keys():
+        for k,d in canonical_obs["observations"][p]["details"].items():
+            if d[0] != "ASSERT":
+                del(st.session_state["svo_obs"]["observations"][p]["details"][k])
+    for order in st.session_state["svo_obs"]["observations"].keys():
+        depk = st.session_state["svo_obs"]["observations"][order]["depk"]
+        count = len(st.session_state["svo_obs"]["observations"][order]["details"])
+        st.session_state["svo_obs"]["agent-ready observation"][depk] = count
+    #st.write(st.session_state["svo_obs"])
 
 
     if show_details and show_observed_details:
@@ -211,29 +225,29 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
     # RUNNING INFERENCES
     infospot = st.empty()
     if show_details:
-        infospot.write("Launching inferential engine")
+        st.write("Launching inferential engine")
     ga_param_name_list = list(topics["Canonical word orders"]["obs"].keys()) + list(topics["Canonical word orders"]["nobs"].keys())
     st.session_state["ga"] = agents.GeneralAgent("canonical word order",
                                          parameter_names=ga_param_name_list,
                                          language_stat_filter={})
     if show_details:
-        infospot.write("Agent created with {} parameters".format(len(st.session_state["ga"].language_parameters)))
-        infospot.write("Injecting Observations")
+        st.write("Agent created with {} parameters".format(len(st.session_state["ga"].language_parameters)))
+        st.write("Injecting Observations")
     for observed_param_name in st.session_state["tl_knowledge"]["observed"]:
         st.session_state["ga"].add_observations(observed_param_name,
                                                 st.session_state["tl_knowledge"]["observed"][observed_param_name])
     if show_details:
-        infospot.write("Injecting known information")
+        st.write("Injecting known information")
     for known_p_name in st.session_state["tl_knowledge"]["known_pk"].keys():
         depk = st.session_state["tl_knowledge"]["known_pk"][known_p_name]
         st.session_state["ga"].language_parameters[known_p_name].inject_peak_belief(str(depk), 1, locked=True)
     if show_details:
-        infospot.write("Running inferences...")
+        st.write("Running inferences...")
     for i in range(5):
         st.session_state["ga"].run_belief_update_cycle()
 
     if show_details:
-        infospot.markdown("#### Beliefs of the General Agent")
+        st.markdown("#### Beliefs of the General Agent")
         show_beliefs = st.toggle("Show the inferred beliefs of the general agent")
         if show_beliefs:
             beliefs = st.session_state["ga"].get_beliefs()
@@ -245,45 +259,69 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
     # building prompt
     # st.session_state["prompt_content"] = {
     #     "canonical word order":
-    #         {"grammatical features": {},
-    #          "examples": {}}
+    #         {"grammatical features": {
+    #         "main value":value,
+    #         "examples by value":{examples}
+    #         }
     # }
+
     #known
     beliefs = st.session_state["ga"].get_beliefs()
     for pname in beliefs.keys():
         max_depk = max(beliefs[pname], key=beliefs[pname].get)
         depk_name = wu.get_careful_name_of_de_pk(max_depk)
-        st.session_state["prompt_content"]["canonical word order"]["grammatical features"][pname] = depk_name
-    #observed
+        st.session_state["prompt_content"]["canonical word order"]["grammatical features"][pname] = {
+            "main value":depk_name,
+            "examples by value": {}
+        }
 
-    if st.session_state["cq_transcriptions"] != []:
-        for de_name, details in st.session_state["svo_obs"]["observations"].items():
-            if details["count"] != 0:
-                for occurrence_index, context in details["details"].items():
-                    gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index,
-                                             st.session_state["delimiters"])
-                    st.session_state["prompt_content"]["canonical word order"]["examples"][de_name] = {
-                        "english sentence":
-                            st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"],
-                        "translation": st.session_state["consolidated_transcriptions"][occurrence_index]["recording_data"][
-                            "translation"],
-                        "gloss": gdf.to_dict(),
-                        "context": context
-                    }
-    else:
-        st.session_state["prompt_content"]["canonical word order"]["examples"] = {}
+    #observed
+    for pname in beliefs.keys():
+        if st.session_state["cq_transcriptions"] != []:
+            # TODO: REMOVE IF CLAUSE AND GENERALIZE ONCE MULTIPLE OBSERVERS IN PLACE
+            if pname == "Order of Subject, Object and Verb":
+                for de_name, details in st.session_state["svo_obs"]["observations"].items():
+                    st.session_state["prompt_content"]["canonical word order"]["grammatical features"][pname][
+                        "examples by value"][de_name] = []
+                    if details["count"] != 0:
+                        for occurrence_index, context in details["details"].items():
+                            gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index,
+                                                     st.session_state["delimiters"])
+                            st.session_state["prompt_content"]["canonical word order"]["grammatical features"][pname]["examples by value"][de_name].append({
+                                "english sentence":
+                                    st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"],
+                                "translation": st.session_state["consolidated_transcriptions"][occurrence_index]["recording_data"][
+                                    "translation"],
+                                "gloss": gdf.to_dict(),
+                                "context": context
+                            })
+        else:
+            st.session_state["prompt_content"]["canonical word order"]["grammatical features"][pname]["examples by value"] = {}
+
+    #st.write(st.session_state["svo_obs"])
+    #st.write(st.session_state["prompt_content"])
 
     lesson_title = "## The order of words in " + st.session_state["tl_name"]
     lesson_intro = """
-    The order of words in a sentence carries part of its meaning. 
-    Here, we will focus on word order in the simplest situation: sentences where someone states something 
-    in a positive form and active voice, using the names of people and objects without replacing them with pronouns. 
-    This straightforward situation, known as canonical, will serve as a foundation for understanding the basics of 
+    The order of words in a sentence carries part of its meaning.
+    Here, we will focus on the order of words in the simplest situation: sentences where someone states something
+    in a positive form and active voice.
+    This straightforward situation, known as canonical, will serve as a foundation for understanding the basics of
     word order in """ + st.session_state["tl_name"] + "."
+
+    lesson_svo = """Let's look at the order of the **subject, object and verb**.
+    
+    """
+    main_order = st.session_state["prompt_content"]["canonical word order"]["grammatical features"]["Order of Subject, Object and Verb"]["main value"]
+    if main_order in st.session_state["prompt_content"]["canonical word order"]["grammatical features"]["Order of Subject, Object and Verb"]["examples by value"].keys():
+        lesson_svo_example = st.session_state["prompt_content"]["canonical word order"]["grammatical features"][
+            "Order of Subject, Object and Verb"]["examples by value"][main_order][0]
+        lesson_svo += """Here is an example: 
+        """
+        lesson_svo += str(lesson_svo_example)
 
     st.markdown(lesson_title)
     st.markdown(lesson_intro)
-
 
     prompt = "Create a short, engaging, well-organized grammar lesson about canonical word order in " + st.session_state["tl_name"] + " to a group of adult second-language learners."
     prompt += "No jargon, the readers are not use to reading grammar lessons."
@@ -291,8 +329,6 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
     prompt += "Use all the examples provided. When a gloss is available, use it."
     prompt += "Here are the information about the word order in this language (use only this information): "
     prompt += str(st.session_state["prompt_content"]["canonical word order"]["grammatical features"]) + "."
-    prompt += "And here are examples to use: "
-    prompt += str(st.session_state["prompt_content"]["canonical word order"]["examples"]) + "."
     prompt += "Don't add encouragement or personal comment."
     prompt += "Your lesson should be formatted with the github-flavored markdown as a string to display with Streamlit."
     prompt += "the output should be correctly displayed when using the streamlit.markdown() function."

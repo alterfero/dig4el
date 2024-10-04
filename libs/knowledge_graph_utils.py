@@ -1,3 +1,4 @@
+import copy
 import json
 import stat
 from os import listdir, mkdir
@@ -10,6 +11,9 @@ import pandas as pd
 # delimiters = json.load(open("./data/delimiters.json"))
 
 def consolidate_cq_transcriptions(transcriptions_list, language, delimiters):
+    print("XXX consolidate_cq_transcriptions")
+    print("{} transcriptions".format(len(transcriptions_list)))
+
     cq_folder = "./questionnaires"
     cq_json_list = [f for f in listdir(cq_folder) if isfile(join(cq_folder, f)) and f.endswith(".json")]
     cq_id_dict = {}
@@ -22,60 +26,61 @@ def consolidate_cq_transcriptions(transcriptions_list, language, delimiters):
         cq_id_dict[uid] = {"filename": cq, "content": cq_content}
     # filtering out transcriptions that don't have a known cq_uid
     filtered_recordings = {}
-    for recording in transcriptions_list:
-        cq_uid = recording["cq_uid"]
-        # print("cq_uid: ", cq_uid)
+
+    for r in transcriptions_list:
+        cq_uid = r["cq_uid"]
+        #print("cq_uid: ", cq_uid)
         if cq_uid in cq_id_dict.keys():
-            filtered_recordings[cq_uid] = recording
-            # print("recording {} has a corresponding questionnaire".format(recording))
+            filtered_recordings[cq_uid] = copy.deepcopy(r)
+            #print("transcription {} has a corresponding questionnaire".format(cq_uid))
         else:
-            print("recording {} has no corresponding questionnaire".format(cq_uid))
+            print("transcription {} has no corresponding questionnaire".format(cq_uid))
 
     # build and save knowledge graph ======================================================================================
-        knowledge_graph = {}
-        unique_words = []
-        unique_words_frequency = {}
-        total_target_word_count = 0
-        index_counter = 0
-        for recording_cq_uid, recording in filtered_recordings.items():
-            # open corresponding cq
-            cq = cq_id_dict[recording_cq_uid]["content"]
-            for item in cq["dialog"]:
-                if cq["dialog"][item]["speaker"] == "A":
-                    speaker = "A"
-                    listener = "B"
+    knowledge_graph = {}
+    unique_words = []
+    unique_words_frequency = {}
+    total_target_word_count = 0
+    index_counter = 0
+    for recording_cq_uid, recording in filtered_recordings.items():
+        # open corresponding cq
+        cq = cq_id_dict[recording_cq_uid]["content"]
+        for item in cq["dialog"]:
+            if cq["dialog"][item]["speaker"] == "A":
+                speaker = "A"
+                listener = "B"
+            else:
+                speaker = "B"
+                listener = "A"
+
+            try:
+                if cq["dialog"][item]["text"] == recording["data"][item]["cq"]:
+                    knowledge_graph[index_counter] = {
+                        "speaker_gender": cq["speakers"][speaker]["gender"],
+                        "speaker_age": cq["speakers"][speaker]["age"],
+                        "listener_gender": cq["speakers"][listener]["gender"],
+                        "listener_age": cq["speakers"][listener]["age"],
+                        "sentence_data": cq["dialog"][item],
+                        "recording_data": recording["data"][item],
+                        "language": language
+                    }
+                    index_counter += 1
+                    words = stats.custom_split(recording["data"][item]["translation"], delimiters)
+                    total_target_word_count += len(words)
+                    for word in words:
+                        if word in unique_words_frequency:
+                            unique_words_frequency[word] += 1000 / total_target_word_count
+                        else:
+                            unique_words_frequency[word] = 1000 / total_target_word_count
+                            unique_words.append(word)
+
                 else:
-                    speaker = "B"
-                    listener = "A"
+                    print("BUILD KNOWLEDGE GRAPH: cq {} <========> recording {} don't match".format(
+                        cq["dialog"][item]["text"], recording["data"][item]["cq"]))
+            except KeyError:
+                    print("Key Error: sentence #{}:{} not found in recording".format(item, cq["dialog"][item]["text"]))
 
-                try:
-                    if cq["dialog"][item]["text"] == recording["data"][item]["cq"]:
-                        knowledge_graph[index_counter] = {
-                            "speaker_gender": cq["speakers"][speaker]["gender"],
-                            "speaker_age": cq["speakers"][speaker]["age"],
-                            "listener_gender": cq["speakers"][listener]["gender"],
-                            "listener_age": cq["speakers"][listener]["age"],
-                            "sentence_data": cq["dialog"][item],
-                            "recording_data": recording["data"][item],
-                            "language": language
-                        }
-                        index_counter += 1
-                        words = stats.custom_split(recording["data"][item]["translation"], delimiters)
-                        total_target_word_count += len(words)
-                        for word in words:
-                            if word in unique_words_frequency:
-                                unique_words_frequency[word] += 1000 / total_target_word_count
-                            else:
-                                unique_words_frequency[word] = 1000 / total_target_word_count
-                                unique_words.append(word)
-
-                    else:
-                        print("BUILD KNOWLEDGE GRAPH: cq {} <========> recording {} don't match".format(
-                            cq["dialog"][item]["text"], recording["data"][item]["cq"]))
-                except KeyError:
-                        print("Key Error: sentence #{}:{} not found in recording".format(item, cq["dialog"][item]["text"]))
-
-        return knowledge_graph, unique_words, unique_words_frequency, total_target_word_count
+    return knowledge_graph, unique_words, unique_words_frequency, total_target_word_count
 
 
 def build_knowledge_graph_from_local_file_system(language):
@@ -169,7 +174,6 @@ def build_knowledge_graph_from_local_file_system(language):
             except KeyError:
                     print("Key Error: sentence #{}:{} not found in recording".format(item, cq["dialog"][item]["text"]))
     return knowledge_graph, unique_words, unique_words_frequency, total_target_word_count
-
 
 def get_value_loc_dict(knowledge_graph, concept_kson, selected_f, delimiters):
     """ value_loc_dict provide statistics on values in the full knowledge graph.
