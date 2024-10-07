@@ -95,7 +95,8 @@ with st.sidebar:
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
 st.title("Generate grammatical descriptions")
-st.markdown("#### Early prototype of inferential output.")
+with st.popover("i"):
+    st.write("This is an early prototype of inferential outputs, enabled for testing purposes. Outputs are meant to be reviewed by a speaker of the language.")
 with st.expander("Inputs"):
     if st.button("reset"):
             st.session_state["tl_name"] = ""

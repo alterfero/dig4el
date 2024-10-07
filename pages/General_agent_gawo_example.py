@@ -33,14 +33,6 @@ with st.sidebar:
 
 st.title("General Agent Gawo example")
 
-with st.popover("i"):
-    st.markdown("This pages allows to replicate the 'Gawo' example. Gawo is a general agent focusing on "
-                "word order in Marquesan. Each parameter is presented as a pie chart showing Gawo's beliefs about the value of "
-                "each parameters. Initial beliefs are computed from WALS. The 'Inject observation' button shows the effect on beliefs of "
-                "having observed 8 VSO ans 2 SVO in Conversational Questionnaires. Then each press on the  'Run messaging cycle button' "
-                "triggers a Markov Random Field message exchange between all parameters, converging toward a consensus. Injecting, or not injecting observations "
-                "lead to different consensus.")
-
 if st.session_state["current_ga"] is None:
     gawo = agents.GeneralAgent("gawo",
                                    parameter_names=["Order of Subject, Object and Verb",
