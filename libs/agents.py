@@ -18,8 +18,8 @@ except FileNotFoundError:
     with open("../external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
         parameter_pk_by_name_filtered = json.load(f)
 
+# CLASSES
 class LanguageParameter:
-    #TODO check if the param in that language is known and lock it if it is
     def __init__(self, parameter_name, priors_language_pk_list = [], verbose=False):
         self.verbose = verbose
         self.name = parameter_name

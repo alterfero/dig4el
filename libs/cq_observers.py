@@ -1,6 +1,7 @@
 from collections import defaultdict
 import json
 from libs import knowledge_graph_utils as kgu, stats, wals_utils as wu
+import copy
 
 delimiters = {
     "french": [" ", ".", ",", ";", ":", "!", "?", "…", "'"],
@@ -8,7 +9,7 @@ delimiters = {
     "marquesan (Nuku Hiva)": [" ", ".", ",", ";", ":", "!", "?", "…"]
 }
 
-def observer_order_of_subject_object_verb(transcriptions, language, delimiters):
+def observer_order_of_subject_object_verb(transcriptions, language, delimiters, canonical=False):
     output_dict = {
         "ppk": "81",
         "agent-ready observation": {},
@@ -193,6 +194,19 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters):
     for order in output_dict["observations"].keys():
         agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
     output_dict["agent-ready observation"] = agent_obs
+
+    if canonical:
+        # Keep only canonical sentences
+        canonical_output = copy.deepcopy(output_dict)
+        for p in output_dict["observations"].keys():
+            for k, d in output_dict["observations"][p]["details"].items():
+                if d[0] != "ASSERT":
+                    del (canonical_output["observations"][p]["details"][k])
+        for order in canonical_output["observations"].keys():
+            depk = canonical_output["observations"][order]["depk"]
+            count = len(canonical_output["observations"][order]["details"])
+            canonical_output["agent-ready observation"][depk] = count
+        output_dict = canonical_output
 
     return output_dict
 

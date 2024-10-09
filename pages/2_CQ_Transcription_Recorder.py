@@ -177,7 +177,6 @@ with st.expander("Start a new transcription or edit the header of an existing on
     interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee")
     st.session_state["recording"]["interviewee"] = interviewee
 
-    st.write("tl: {}".format(st.session_state["target_language"]))
     tl = st.selectbox("Choose a target language", ["not in the list"] + st.session_state["available_target_languages"],
                       index=st.session_state["available_target_languages"].index(st.session_state["target_language"])+1)
     if tl != st.session_state["target_language"]:

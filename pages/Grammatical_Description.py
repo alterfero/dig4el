@@ -77,6 +77,44 @@ topics = {"Canonical word orders": {
     }
 ppks_of_interest = list(topics["Canonical word orders"]["obs"].values()) + list(topics["Canonical word orders"]["nobs"].values())
 
+delimiters_bank = [
+    " ",  # Space
+    ".",  # Period or dot
+    "?",  # Interrogation mark
+    "!",  # Exclamation mark
+    ",",  # Comma
+    "·",  # Middle dot (interpunct)
+    "‧",  # Small interpunct (used in some East Asian scripts)
+    "․",  # Armenian full stop
+    "-",  # Hyphen or dash (used in compound words or some languages)
+    "_",  # Underscore (used in some digital texts and programming)
+    "‿",  # Tironian sign (used in Old Irish)
+    "、",  # Japanese comma
+    "。",  # Japanese/Chinese full stop
+    "።",  # Ge'ez (Ethiopian script) word separator
+    ":",  # Colon
+    ";",  # Semicolon
+    "؟",  # Arabic question mark
+    "٬",  # Arabic comma
+    "؛",  # Arabic semicolon
+    "۔",  # Urdu full stop
+    "।",  # Devanagari danda (used in Hindi and other Indic languages)
+    "॥",  # Double danda (used in Sanskrit and other Indic texts)
+    "𐩖",  # South Arabian word divider
+    "𐑀",  # Old Hungarian word separator
+    "་",  # Tibetan Tsheg (used in Tibetan script)
+    "᭞",  # Sundanese word separator
+    "᠂",  # Mongolian comma
+    "᠃",  # Mongolian full stop
+    " ",  # Ogham space mark (used in ancient Irish writing)
+    "꓿",  # Lisu word separator
+    "፡",  # Ge'ez word separator
+    "'",  # Apostrophe (used for contractions and possessives)
+    "…",  # Ellipsis
+    "–",  # En dash
+    "—",  # Em dash
+]
+
 default_delimiters = [ " ", ".",",",";",":","!","?","\u2026","'"]
 
 with st.sidebar:
@@ -119,27 +157,10 @@ with st.expander("Inputs"):
             st.rerun()
     # TOPICS AND LANGUAGE
     st.session_state["selected_topics"] = st.multiselect("Choose topics", topics.keys())
-    tl = st.selectbox("Language name?", ["not in the list"] + list(wu.language_pk_id_by_name.keys()))
-    if tl == "not in the list":
-        st.session_state["tl_name"] = st.text_input("If the language is not in the list: Language name?")
-        st.session_state["tl_pk"] = None
-        st.session_state["tl_id"] = None
-        st.session_state["delimiters"] = default_delimiters
-    else:
-        st.session_state["tl_name"] = tl
-        st.session_state["tl_pk"] = wu.language_pk_id_by_name[tl]["pk"]
-        st.session_state["tl_id"] = wu.language_pk_id_by_name[tl]["id"]
-        with open ("./data/delimiters.json", "r") as f:
-            delimiters_dict = json.load(f)
-            if tl in delimiters_dict.keys():
-                st.session_state["delimiters"] = delimiters_dict[tl]
-                #st.write("Delimiters found for {}: {}".format(tl, st.session_state["delimiters"]))
-            else:
-                st.session_state["delimiters"] = default_delimiters
-                #st.write("Using default delimiters: {}".format(st.session_state["delimiters"]))
 
     # LOADING CQ TRANSCRIPTIONS
-    cqs = st.file_uploader("Load Conversational Questionnaires' transcriptions", type="json", accept_multiple_files=True)
+    cqs = st.file_uploader("Load Conversational Questionnaires' transcriptions (all at once for multiple transcriptions)", type="json",
+                           accept_multiple_files=True)
     if cqs is not None:
         st.session_state["cq_transcriptions"] = []
         for cq in cqs:
@@ -147,6 +168,41 @@ with st.expander("Inputs"):
             st.session_state["cq_transcriptions"].append(new_cq)
         st.session_state["loaded_existing"] = True
         st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
+
+    if st.session_state["loaded_existing"]:
+        if st.session_state["cq_transcriptions"] != []:
+            # Consolidating transcriptions
+            st.session_state[
+                "consolidated_transcriptions"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
+                st.session_state["cq_transcriptions"],
+                st.session_state["tl_name"],
+                st.session_state["delimiters"])
+            st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
+                len(st.session_state["cq_transcriptions"]), len(st.session_state["consolidated_transcriptions"]),
+                total_target_word_count, len(unique_words)))
+            # managing language input
+            st.session_state["tl_name"] = st.session_state["cq_transcriptions"][0]["target language"]
+            if st.session_state["tl_name"] in wu.language_pk_id_by_name.keys():
+                st.write("{} has data in WALS".format(st.session_state["tl_name"]))
+                st.session_state["tl_pk"] = wu.language_pk_id_by_name[st.session_state["tl_name"]]["pk"]
+                st.session_state["tl_id"] = wu.language_pk_id_by_name[st.session_state["tl_name"]]["id"]
+            else:
+                st.write("{} is not in WALS".format(st.session_state["tl_name"]))
+                st.session_state["tl_pk"] = None
+                st.session_state["tl_id"] = None
+            # managing delimiters
+            if "delimiters" in st.session_state["cq_transcriptions"][0].keys():
+                st.session_state["delimiters"] = st.session_state["cq_transcriptions"][0]["delimiters"]
+                print("Word separators have been explicitly entered in the transcription.")
+            elif st.session_state["tl_name"] in wu.language_pk_id_by_name.keys():
+                with open("./data/delimiters.json", "r") as f:
+                    delimiters_dict = json.load(f)
+                    st.session_state["delimiters"] = delimiters_dict[st.session_state["tl_name"]]
+                    print("Word separators are retrieved from the .")
+            else:
+                st.session_state["delimiters"] = default_delimiters
+            st.multiselect("Edit word separators if needed", delimiters_bank, default=st.session_state["delimiters"])
+
     show_details = st.toggle("Show details")
 
 # RETRIEVING TOPICAL DATA FROM WALS
@@ -175,58 +231,41 @@ if st.session_state["tl_name"] != "":
     st.session_state["known_processed"] = True
 
 # PROCESSING TRANSCRIPTIONS
-if show_details:
-    st.markdown("#### Retrieving **observed** information in Conversational Questionnaires")
-    show_observed_details = st.toggle("Show details about observations")
-if st.session_state["cq_transcriptions"] != []:
-    # Consolidating transcriptions
-    st.session_state["consolidated_transcriptions"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
-                                        st.session_state["cq_transcriptions"],
-                                        st.session_state["tl_name"],
-                                        st.session_state["delimiters"])
-    st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(len(st.session_state["cq_transcriptions"]),len(st.session_state["consolidated_transcriptions"]), total_target_word_count, len(unique_words)))
 
+if st.session_state["consolidated_transcriptions"] != {}:
     # oberving svo word order
     st.session_state["svo_obs"] = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
                                                         st.session_state["tl_name"],
-                                                        st.session_state["delimiters"])
-
-    # Keep only canonical sentences
-    # TODO: This should be refactored somewhere else
-    canonical_obs = copy.deepcopy(st.session_state["svo_obs"])
-    for p in canonical_obs["observations"].keys():
-        for k,d in canonical_obs["observations"][p]["details"].items():
-            if d[0] != "ASSERT":
-                del(st.session_state["svo_obs"]["observations"][p]["details"][k])
-    for order in st.session_state["svo_obs"]["observations"].keys():
-        depk = st.session_state["svo_obs"]["observations"][order]["depk"]
-        count = len(st.session_state["svo_obs"]["observations"][order]["details"])
-        st.session_state["svo_obs"]["agent-ready observation"][depk] = count
-    #st.write(st.session_state["svo_obs"])
-
-
-    if show_details and show_observed_details:
-        for de_name, details in st.session_state["svo_obs"]["observations"].items():
-            if details["count"] != 0:
-                st.write("---------------------------------------------")
-                st.write("**{}** in ".format(de_name))
-                for occurrence_index, context in details["details"].items():
-                    st.markdown("- ***{}***".format(st.session_state["consolidated_transcriptions"][occurrence_index]["recording_data"]["translation"]))
-                    st.write(st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"])
-                    gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index, st.session_state["delimiters"])
-                    st.dataframe(gdf)
-                    st.write("context: {}".format(", ".join(context)))
-        st.markdown("-------------------------------------")
-    st.session_state["tl_knowledge"]["observed"]["Order of Subject, Object and Verb"] = st.session_state["svo_obs"]["agent-ready observation"]
+                                                        st.session_state["delimiters"],
+                                                        canonical=True)
+    st.session_state["tl_knowledge"]["observed"]["Order of Subject, Object and Verb"] = st.session_state["svo_obs"][
+        "agent-ready observation"]
     st.session_state["observations_processed"] = True
-else:
-    st.session_state["observations_processed"] = True
+
+    if show_details:
+        st.markdown("#### Retrieving **observed** information in Conversational Questionnaires")
+        show_observed_details = st.toggle("Show details about observations")
+
+        if show_details and show_observed_details:
+            for de_name, details in st.session_state["svo_obs"]["observations"].items():
+                if details["count"] != 0:
+                    st.write("---------------------------------------------")
+                    st.write("**{}** in ".format(de_name))
+                    for occurrence_index, context in details["details"].items():
+                        st.markdown("- ***{}***".format(st.session_state["consolidated_transcriptions"][occurrence_index]["recording_data"]["translation"]))
+                        st.write(st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"])
+                        gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index, st.session_state["delimiters"])
+                        st.dataframe(gdf)
+                        st.write("context: {}".format(", ".join(context)))
+            st.markdown("-------------------------------------")
+
 
 if st.session_state["known_processed"] and st.session_state["observations_processed"]:
     # RUNNING INFERENCES
     infospot = st.empty()
     if show_details:
         st.write("Launching inferential engine")
+        st.write("Prior knowledge is based on statistics over all languages.")
     ga_param_name_list = list(topics["Canonical word orders"]["obs"].keys()) + list(topics["Canonical word orders"]["nobs"].keys())
     st.session_state["ga"] = agents.GeneralAgent("canonical word order",
                                          parameter_names=ga_param_name_list,
@@ -256,15 +295,6 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                 max_depk = max(beliefs[pname], key=beliefs[pname].get)
                 depk_name = wu.get_careful_name_of_de_pk(max_depk)
                 st.write("{}: {}".format(pname, depk_name))
-
-    # building prompt
-    # st.session_state["prompt_content"] = {
-    #     "canonical word order":
-    #         {"grammatical features": {
-    #         "main value":value,
-    #         "examples by value":{examples}
-    #         }
-    # }
 
     #known
     beliefs = st.session_state["ga"].get_beliefs()
