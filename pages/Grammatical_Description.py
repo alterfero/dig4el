@@ -55,6 +55,8 @@ if "redacted" not in st.session_state:
     st.session_state["redacted"] = ""
 if "svo_obs" not in st.session_state:
     st.session_state["svo_obs"] = {}
+if "obs" not in st.session_state:
+    st.session_state["obs"] = {}
 
 topics = {"Canonical word orders": {
 "obs": {
@@ -238,33 +240,47 @@ if st.session_state["consolidated_transcriptions"] != {}:
                                                         st.session_state["tl_name"],
                                                         st.session_state["delimiters"],
                                                         canonical=True)
-    st.session_state["tl_knowledge"]["observed"]["Order of Subject, Object and Verb"] = st.session_state["svo_obs"][
-        "agent-ready observation"]
+    st.session_state["obs"]["Order of Subjet, Object and Verb"] = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
+                                                        st.session_state["tl_name"],
+                                                        st.session_state["delimiters"],
+                                                        canonical=True)
+    st.session_state["obs"]["Order of Subjet and Verb"] = obs.observer_order_of_subject_and_verb(st.session_state["consolidated_transcriptions"],
+                                                        st.session_state["tl_name"],
+                                                        st.session_state["delimiters"],
+                                                        canonical=True)
+
+    st.session_state["tl_knowledge"]["observed"]["Order of Subject, Object and Verb"] = st.session_state["obs"]["Order of Subjet, Object and Verb"]["agent-ready observation"]
+    st.session_state["tl_knowledge"]["observed"]["Order of Subject and Verb"] = st.session_state["obs"]["Order of Subjet and Verb"]["agent-ready observation"]
     st.session_state["observations_processed"] = True
+    # st.write(st.session_state["tl_knowledge"])
+    # st.write(st.session_state["obs"])
 
     if show_details:
         st.markdown("#### Retrieving **observed** information in Conversational Questionnaires")
         show_observed_details = st.toggle("Show details about observations")
 
         if show_details and show_observed_details:
-            for de_name, details in st.session_state["svo_obs"]["observations"].items():
-                if details["count"] != 0:
-                    st.write("---------------------------------------------")
-                    st.write("**{}** in ".format(de_name))
-                    for occurrence_index, context in details["details"].items():
-                        st.markdown("- ***{}***".format(st.session_state["consolidated_transcriptions"][occurrence_index]["recording_data"]["translation"]))
-                        st.write(st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"])
-                        gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index, st.session_state["delimiters"])
-                        st.dataframe(gdf)
-                        st.write("context: {}".format(", ".join(context)))
-            st.markdown("-------------------------------------")
+            for pobs in st.session_state["obs"]:
+                if len(st.session_state["obs"][pobs]["observations"]) != 0:
+                    st.markdown("#### {}".format(pobs))
+                    for de_name, details in st.session_state["obs"][pobs]["observations"].items():
+                        if details["count"] != 0:
+                            st.write("---------------------------------------------")
+                            st.write("**{}** in ".format(de_name))
+                            for occurrence_index, context in details["details"].items():
+                                st.markdown("- ***{}***".format(st.session_state["consolidated_transcriptions"][occurrence_index]["recording_data"]["translation"]))
+                                st.write(st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"])
+                                gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index, st.session_state["delimiters"])
+                                st.dataframe(gdf)
+                                st.write("context: {}".format(", ".join(context)))
+                    st.markdown("-------------------------------------")
 
 
 if st.session_state["known_processed"] and st.session_state["observations_processed"]:
     # RUNNING INFERENCES
     infospot = st.empty()
     if show_details:
-        st.write("Launching inferential engine")
+        st.write("Launching inferential engine: General Agent")
         st.write("Prior knowledge is based on statistics over all languages.")
     ga_param_name_list = list(topics["Canonical word orders"]["obs"].keys()) + list(topics["Canonical word orders"]["nobs"].keys())
     st.session_state["ga"] = agents.GeneralAgent("canonical word order",
@@ -272,6 +288,8 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                                          language_stat_filter={})
     if show_details:
         st.write("Agent created with {} parameters".format(len(st.session_state["ga"].language_parameters)))
+        st.write("{} parameters will be locked as known: {}".format(len(st.session_state["tl_knowledge"]["known"]), st.session_state["tl_knowledge"]["known"]))
+        st.write("{} parameters have been observed: {}".format(len(st.session_state["tl_knowledge"]["observed"]), st.session_state["tl_knowledge"]["observed"]))
         st.write("Injecting Observations")
     for observed_param_name in st.session_state["tl_knowledge"]["observed"]:
         st.session_state["ga"].add_observations(observed_param_name,

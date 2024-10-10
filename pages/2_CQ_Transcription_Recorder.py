@@ -221,20 +221,25 @@ if st.session_state["cq_is_chosen"]:
     st.title("{}".format(cq["title"]))
     st.write("Context: ", cq["context"])
 
+    col1, col2 = st.columns(2)
+    col1.subheader("Counter: {}".format(str(st.session_state.counter)))
+    if "legacy index" in cq["dialog"][str(st.session_state["counter"])]:
+        if cq["dialog"][str(st.session_state["counter"])]["legacy index"] != "":
+            col2.subheader("Legacy index: {}".format(cq["dialog"][str(st.session_state["counter"])]["legacy index"]))
     colq, colw, cole, colr = st.columns(4)
     if colq.button("Previous"):
         if st.session_state["counter"] > 1:
             st.session_state["counter"] = st.session_state["counter"] - 1
             st.rerun()
-    colw.subheader("Counter: {}".format(str(st.session_state.counter)))
-    if "legacy index" in cq["dialog"][str(st.session_state["counter"])]:
-        cole.subheader("Index: {}".format(cq["dialog"][str(st.session_state["counter"])]["legacy index"]))
-    else:
-        cole.write("No legacy index")
-    if colr.button("Next"):
+    if colw.button("Next"):
         if st.session_state["counter"] < number_of_sentences - 1:
             st.session_state["counter"] = st.session_state["counter"] + 1
             st.rerun()
+    jump_to = colq.slider("jump to", 1, number_of_sentences, value=st.session_state["counter"])
+    if jump_to != st.session_state["counter"]:
+        st.session_state["counter"] = jump_to
+        st.rerun()
+
 
     st.subheader(cq["dialog"][str(st.session_state["counter"])]["speaker"] + " : " + cq["dialog"][str(st.session_state["counter"])]["text"])
 
@@ -289,7 +294,8 @@ if st.session_state["cq_is_chosen"]:
             concept_words[concept] = "...".join(concept_translation_list)
         else:
             st.write("Concept {} not found in the concept graph".format(concept))
-    comment = st.text_area("Comments/Notes", value=default_comment)
+    st.write("Default comment: ",default_comment)
+    comment = st.text_input("Comments/Notes", value=default_comment)
 
     if st.button("Validate sentence"):
         st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
