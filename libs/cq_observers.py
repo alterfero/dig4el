@@ -70,7 +70,6 @@ def observer_order_of_subject_and_verb(transcriptions, language, delimiters, can
             if is_event:
                 # search for an active agent and potential target word(s)
                 agent_key = concept + " AGENT"
-                # print("agent_key ",agent_key)
                 # retrieving the agent requires to pass through the AGENT REFERENCE TO CONCEPT node.
                 # TODO: make that more failproof
                 try:
@@ -79,7 +78,6 @@ def observer_order_of_subject_and_verb(transcriptions, language, delimiters, can
                     agent_value = ""
                     print("exception caught in determining agent_value in analyze_word_order in entry {}".format(
                         entry_index))
-                # print("agent value ",agent_value)
                 if agent_value != "":
                     # is this active agent associated with a word in target language?
                     try:
@@ -89,12 +87,10 @@ def observer_order_of_subject_and_verb(transcriptions, language, delimiters, can
                         agent_target = ""
                     agent_target_list = agent_target.split("...")
                     agent_target_pos_word = agent_target_list[0]
-                    # print("agent_target_pos_word ",agent_target_pos_word)
 
                     if agent_target_pos_word != "":
                         if agent_target_pos_word in target_words:
                             agent_position = target_words.index(agent_target_pos_word)
-                            # print("agent_position ",agent_position)
                         else:
                             print("AGENT_TARGET NOT IN TARGET_WORDS: agent_target {} not in target_words {}".format(
                                 agent_target_pos_word, target_words))
@@ -124,10 +120,10 @@ def observer_order_of_subject_and_verb(transcriptions, language, delimiters, can
     if canonical:
         # Keep only canonical sentences
         canonical_output = copy.deepcopy(output_dict)
-        for p in output_dict["observations"].keys():
-            for k, d in output_dict["observations"][p]["details"].items():
-                if d[0] != "ASSERT":
-                    del (canonical_output["observations"][p]["details"][k])
+        for de in output_dict["observations"].keys():
+            for k, d in output_dict["observations"][de]["details"].items():
+                if "ASSERT" not in d["intent"]:
+                    del (canonical_output["observations"][de]["details"][k])
         for order in canonical_output["observations"].keys():
             depk = canonical_output["observations"][order]["depk"]
             count = len(canonical_output["observations"][order]["details"])
@@ -135,6 +131,7 @@ def observer_order_of_subject_and_verb(transcriptions, language, delimiters, can
         output_dict = canonical_output
 
     return output_dict
+
 
 
 def observer_order_of_subject_object_verb(transcriptions, language, delimiters, canonical=False):
@@ -200,8 +197,6 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
                 if option[-5:] == "AGENT":
                     is_event = True
                     is_agent_required = True
-                    #print("{} is an event".format(concept))
-
                     # is there a target word associated with this event?
                     try:
                         event_target = transcriptions[entry_index]["recording_data"]["concept_words"][concept]
@@ -211,9 +206,7 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
                             # TODO: implement smarter word order logic
                             event_target_list = event_target.split("...")
                             event_target_pos_word = event_target_list[0]
-                            #print("event_target_pos_word ",event_target_pos_word)
                             if event_target_pos_word in target_words:
-                                #print("{} in target words {} ".format(event_target_pos_word, target_words))
                                 event_position = target_words.index(event_target_pos_word)
                             else:
                                 print("Simple Inference TARGET POS WORD NOT IN TARGET WORDS: entry: {}, event_target_pos_word {} not in target_words {}".format(entry_index, event_target_pos_word,target_words))
@@ -223,7 +216,6 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
             if is_event:
                 # search for an active agent and potential target word(s)
                 agent_key = concept + " AGENT"
-                #print("agent_key ",agent_key)
                 # retrieving the agent requires to pass through the AGENT REFERENCE TO CONCEPT node.
                 # TODO: make that more failproof
                 try:
@@ -231,7 +223,6 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
                 except:
                     agent_value = ""
                     print("exception caught in determining agent_value in analyze_word_order in entry {}".format(entry_index))
-                #print("agent value ",agent_value)
                 if agent_value != "":
                     is_active_agent = True
                     # is this active agent associated with a word in target language?
@@ -242,12 +233,10 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
                         agent_target = ""
                     agent_target_list = agent_target.split("...")
                     agent_target_pos_word = agent_target_list[0]
-                    #print("agent_target_pos_word ",agent_target_pos_word)
 
                     if agent_target_pos_word != "":
                         if agent_target_pos_word in target_words:
                             agent_position = target_words.index(agent_target_pos_word)
-                            #print("agent_position ",agent_position)
                         else:
                             print("AGENT_TARGET NOT IN TARGET_WORDS: agent_target {} not in target_words {}".format(agent_target_pos_word, target_words))
 
@@ -259,10 +248,8 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
                 if is_patient_required:
                     # is there an active patient in this sentence?
                     patient_key = concept + " PATIENT"
-                    #print("patient_key ",patient_key)
                     try:
                         patient_value = graph[graph[patient_key]["requires"][0]]["value"]
-                        #print("patient_value ",patient_value)
                     except:
                         print("exception caught in determining patient_value in analyze_word_order, entry {}".format(entry_index))
                     if patient_value != "":
@@ -308,10 +295,106 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
     if canonical:
         # Keep only canonical sentences
         canonical_output = copy.deepcopy(output_dict)
-        for p in output_dict["observations"].keys():
-            for k, d in output_dict["observations"][p]["details"].items():
-                if d[0] != "ASSERT":
-                    del (canonical_output["observations"][p]["details"][k])
+        for de in output_dict["observations"].keys():
+            for k, d in output_dict["observations"][de]["details"].items():
+                if "ASSERT" not in d["intent"]:
+                    del (canonical_output["observations"][de]["details"][k])
+        for order in canonical_output["observations"].keys():
+            depk = canonical_output["observations"][order]["depk"]
+            count = len(canonical_output["observations"][order]["details"])
+            canonical_output["agent-ready observation"][depk] = count
+            canonical_output["observations"][order]["count"] = count
+        output_dict = canonical_output
+
+    return output_dict
+
+
+
+def observer_order_of_adjective_and_noun(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "87",
+        "agent-ready observation": {},
+        "observations": {
+            "Adjective-Noun": {
+                "depk": "410",
+                "count": 0,
+                "details": {}
+            },
+            "Noun-Adjective": {
+                "depk": "411",
+                "count": 0,
+                "details": {}
+            },
+            "No dominant order": {
+                "depk": "412",
+                "count": 0,
+                "details": {}
+            },
+            "Only internally-headed relative clauses": {
+                "depk": "413",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    for entry_index, entry_data in knowledge_graph.items():
+        sentence_data = entry_data.get('sentence_data', {})
+        sentence_graph = sentence_data.get('graph', {})
+        # build a list of the target words for position reference
+        target_words = stats.custom_split(knowledge_graph[entry_index]["recording_data"]["translation"], delimiters)
+
+        for concept in sentence_graph:
+            if concept + " DEFINITENESS" in sentence_graph[concept]["requires"]:
+                # this concept is a noun
+                try:
+                    if sentence_graph[concept + " QUALIFIER REFERENCE TO CONCEPT"]["value"] != "":
+                        # this noun has a non-empty qualifier, are there target words linked?
+                        noun_pos = -1
+                        adj_pos = -1
+                        concept_word_pos = kgu.get_concept_word_pos(knowledge_graph, entry_index, delimiters)
+                        if concept in concept_word_pos.keys():
+                            noun_pos = concept_word_pos[concept]["pos"]
+                        if sentence_graph[concept + " QUALIFIER REFERENCE TO CONCEPT"]["value"] in concept_word_pos.keys():
+                            adj_pos = concept_word_pos[sentence_graph[concept + " QUALIFIER REFERENCE TO CONCEPT"]["value"]]["pos"]
+                        if noun_pos != -1 and adj_pos != -1:
+                            if adj_pos < noun_pos:
+                                output_dict["observations"]["Adjective-Noun"]["details"][entry_index] = kgu.get_kg_entry_signature(
+                                knowledge_graph, entry_index)
+                            if noun_pos < adj_pos:
+                                output_dict["observations"]["Noun-Adjective"]["details"][
+                                    entry_index] = kgu.get_kg_entry_signature(
+                                    knowledge_graph, entry_index)
+                except KeyError:
+                    print("Key Error, {} not in sentence graph for concept {}".format(concept + " QUALIFIER REFERENCE TO CONCEPT", concept))
+
+        for order in output_dict["observations"].keys():
+            output_dict["observations"][order]["count"] = len(output_dict["observations"][order]["details"].keys())
+        # creating agent-ready observation
+        agent_obs = {}
+        for order in output_dict["observations"].keys():
+            agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+        output_dict["agent-ready observation"] = agent_obs
+
+        if canonical:
+            # Keep only canonical sentences
+            canonical_output = copy.deepcopy(output_dict)
+            for de in output_dict["observations"].keys():
+                for k, d in output_dict["observations"][de]["details"].items():
+                    if "ASSERT" not in d["intent"]:
+                        del (canonical_output["observations"][de]["details"][k])
+            for order in canonical_output["observations"].keys():
+                depk = canonical_output["observations"][order]["depk"]
+                count = len(canonical_output["observations"][order]["details"])
+                canonical_output["agent-ready observation"][depk] = count
+            output_dict = canonical_output
+
+    if canonical:
+        # Keep only canonical sentences
+        canonical_output = copy.deepcopy(output_dict)
+        for de in output_dict["observations"].keys():
+            for k, d in output_dict["observations"][de]["details"].items():
+                if "ASSERT" not in d["intent"]:
+                    del (canonical_output["observations"][de]["details"][k])
         for order in canonical_output["observations"].keys():
             depk = canonical_output["observations"][order]["depk"]
             count = len(canonical_output["observations"][order]["details"])
@@ -319,4 +402,8 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
         output_dict = canonical_output
 
     return output_dict
+
+
+
+
 

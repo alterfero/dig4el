@@ -48,13 +48,10 @@ if "observations_processed" not in st.session_state:
     st.session_state["observations_processed"] = False
 if "prompt_content" not in st.session_state:
     st.session_state["prompt_content"] = {
-        "canonical word order":
-            {"grammatical features": {}}
+        "canonical word order": {}
     }
 if "redacted" not in st.session_state:
     st.session_state["redacted"] = ""
-if "svo_obs" not in st.session_state:
-    st.session_state["svo_obs"] = {}
 if "obs" not in st.session_state:
     st.session_state["obs"] = {}
 
@@ -236,24 +233,26 @@ if st.session_state["tl_name"] != "":
 
 if st.session_state["consolidated_transcriptions"] != {}:
     # oberving svo word order
-    st.session_state["svo_obs"] = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
+    st.session_state["obs"]["Order of Subject, Object and Verb"] = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
                                                         st.session_state["tl_name"],
                                                         st.session_state["delimiters"],
                                                         canonical=True)
-    st.session_state["obs"]["Order of Subjet, Object and Verb"] = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
+    st.session_state["obs"]["Order of Subject and Verb"] = obs.observer_order_of_subject_and_verb(st.session_state["consolidated_transcriptions"],
                                                         st.session_state["tl_name"],
                                                         st.session_state["delimiters"],
                                                         canonical=True)
-    st.session_state["obs"]["Order of Subjet and Verb"] = obs.observer_order_of_subject_and_verb(st.session_state["consolidated_transcriptions"],
+    st.session_state["obs"]["Order of Adjective and Noun"] = obs.observer_order_of_adjective_and_noun(
+                                                        st.session_state["consolidated_transcriptions"],
                                                         st.session_state["tl_name"],
                                                         st.session_state["delimiters"],
-                                                        canonical=True)
+                                                        canonical=False)
 
-    st.session_state["tl_knowledge"]["observed"]["Order of Subject, Object and Verb"] = st.session_state["obs"]["Order of Subjet, Object and Verb"]["agent-ready observation"]
-    st.session_state["tl_knowledge"]["observed"]["Order of Subject and Verb"] = st.session_state["obs"]["Order of Subjet and Verb"]["agent-ready observation"]
+    st.session_state["tl_knowledge"]["observed"]["Order of Subject, Object and Verb"] = st.session_state["obs"]["Order of Subject, Object and Verb"]["agent-ready observation"]
+    st.session_state["tl_knowledge"]["observed"]["Order of Subject and Verb"] = st.session_state["obs"]["Order of Subject and Verb"]["agent-ready observation"]
+    st.session_state["tl_knowledge"]["observed"]["Order of Adjective and Noun"] = st.session_state["obs"]["Order of Adjective and Noun"]["agent-ready observation"]
     st.session_state["observations_processed"] = True
-    # st.write(st.session_state["tl_knowledge"])
-    # st.write(st.session_state["obs"])
+    #st.write(st.session_state["tl_knowledge"])
+    #st.write(st.session_state["obs"])
 
     if show_details:
         st.markdown("#### Retrieving **observed** information in Conversational Questionnaires")
@@ -314,70 +313,68 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                 depk_name = wu.get_careful_name_of_de_pk(max_depk)
                 st.write("{}: {}".format(pname, depk_name))
 
+    # LESSSON CONTENT AND PROMPT
+
     #known
     beliefs = st.session_state["ga"].get_beliefs()
     for pname in beliefs.keys():
         max_depk = max(beliefs[pname], key=beliefs[pname].get)
         depk_name = wu.get_careful_name_of_de_pk(max_depk)
-        st.session_state["prompt_content"]["canonical word order"]["grammatical features"][pname] = {
+        st.session_state["prompt_content"]["canonical word order"][pname] = {
             "main value":depk_name,
             "examples by value": {}
         }
 
-    #observed
-    for pname in beliefs.keys():
-        if st.session_state["cq_transcriptions"] != []:
-            # TODO: REMOVE IF CLAUSE AND GENERALIZE ONCE MULTIPLE OBSERVERS IN PLACE
-            if pname == "Order of Subject, Object and Verb":
-                for de_name, details in st.session_state["svo_obs"]["observations"].items():
-                    st.session_state["prompt_content"]["canonical word order"]["grammatical features"][pname][
-                        "examples by value"][de_name] = []
-                    if details["count"] != 0:
-                        for occurrence_index, context in details["details"].items():
-                            gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index,
-                                                     st.session_state["delimiters"])
-                            st.session_state["prompt_content"]["canonical word order"]["grammatical features"][pname]["examples by value"][de_name].append({
-                                "english sentence":
-                                    st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"],
-                                "translation": st.session_state["consolidated_transcriptions"][occurrence_index]["recording_data"][
-                                    "translation"],
-                                "gloss": gdf.to_dict(),
-                                "context": context
-                            })
+    #examples from observations
+    for p_name in beliefs.keys():
+        if p_name in st.session_state["obs"].keys():
+            for de_name, details in st.session_state["obs"][p_name]["observations"].items():
+                st.session_state["prompt_content"]["canonical word order"][p_name]["examples by value"][de_name] = []
+                if details["count"] != 0:
+                    for occurrence_index, context in details["details"].items():
+                        gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index,
+                                                 st.session_state["delimiters"])
+                        st.session_state["prompt_content"]["canonical word order"][p_name]["examples by value"][de_name].append({
+                            "english sentence":
+                                st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"],
+                            "translation": st.session_state["consolidated_transcriptions"][occurrence_index]["recording_data"][
+                                "translation"],
+                            "gloss": gdf.to_dict(),
+                            "context": context
+                        })
         else:
-            st.session_state["prompt_content"]["canonical word order"]["grammatical features"][pname]["examples by value"] = {}
+            st.session_state["prompt_content"]["canonical word order"][pname]["examples by value"] = {}
 
-    #st.write(st.session_state["svo_obs"])
     #st.write(st.session_state["prompt_content"])
 
     lesson_title = "## The order of words in " + st.session_state["tl_name"]
     lesson_intro = """
-    The order of words in a sentence carries part of its meaning.
+    The order of words in a sentence carries meaning.
     Here, we will focus on the order of words in the simplest situation: sentences where someone states something
     in a positive form and active voice.
     This straightforward situation, known as canonical, will serve as a foundation for understanding the basics of
     word order in """ + st.session_state["tl_name"] + "."
 
     lesson_svo = """Let's look at the order of the **subject, object and verb**.
-    
+
     """
-    main_order = st.session_state["prompt_content"]["canonical word order"]["grammatical features"]["Order of Subject, Object and Verb"]["main value"]
-    if main_order in st.session_state["prompt_content"]["canonical word order"]["grammatical features"]["Order of Subject, Object and Verb"]["examples by value"].keys():
-        lesson_svo_example = st.session_state["prompt_content"]["canonical word order"]["grammatical features"][
-            "Order of Subject, Object and Verb"]["examples by value"][main_order][0]
-        lesson_svo += """Here is an example: 
+    main_order = st.session_state["prompt_content"]["canonical word order"]["Order of Subject, Object and Verb"]["main value"]
+    if main_order in st.session_state["prompt_content"]["canonical word order"]["Order of Subject, Object and Verb"]["examples by value"].keys():
+        lesson_svo_example = st.session_state["prompt_content"]["canonical word order"]["Order of Subject, Object and Verb"]["examples by value"][main_order][0]
+        lesson_svo += """Here is an example:
         """
         lesson_svo += str(lesson_svo_example)
 
     st.markdown(lesson_title)
     st.markdown(lesson_intro)
 
-    prompt = "Create a short, engaging, well-organized grammar lesson about canonical word order in " + st.session_state["tl_name"] + " to a group of adult second-language learners."
-    prompt += "No jargon, the readers are not use to reading grammar lessons."
+    prompt = "Create a short, engaging, well-organized grammar chapter about canonical word order in " + st.session_state["tl_name"] + " that adults will use to learn grammar."
+    prompt += "Don't use jargon or complicated words: he readers are not use to reading grammar lessons. Use simple, non-technical words. Don't use acronyms."
     prompt += "Use only on the material provided. Do not use or infer any additional information, examples, or rules beyond what I give. If something is unclear or missing from the input, don't fill the gaps. Focus on explaining the rules and providing examples from the material I supply."
-    prompt += "Use all the examples provided. When a gloss is available, use it."
+    prompt += "Use all the examples provided. Use the gloss information to explain which word in target language means what."
+    prompt += "If several word orders coexist, mention them all by order of importance."
     prompt += "Here are the information about the word order in this language (use only this information): "
-    prompt += str(st.session_state["prompt_content"]["canonical word order"]["grammatical features"]) + "."
+    prompt += str(st.session_state["prompt_content"]["canonical word order"]) + "."
     prompt += "Don't add encouragement or personal comment."
     prompt += "Your lesson should be formatted with the github-flavored markdown as a string to display with Streamlit."
     prompt += "the output should be correctly displayed when using the streamlit.markdown() function."
@@ -385,15 +382,16 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
 
     if st.button("Create a grammar lesson from these inferences and examples"):
         openai.api_key = st.secrets["openai_key"]
+        #print(openai.models.list())
         response = openai.chat.completions.create(
-            model="gpt-4o",
+            model="chatgpt-4o-latest",
             messages = [
                 {
                     "role": "system",
                     "content": [
                         {
                             "type": "text",
-                            "text": "You are an assistant that creates language learning grammar lessons. Use only the information provided by the user. Use all the examples provided by the user. Do not introduce any additional material, even if it seems relevant. If the user-provided material is incomplete or ambiguous, ommit content. "
+                            "text": "You are an assistant that writes grammar book chapters. Use only the information provided by the user. Use all the examples provided by the user. Do not introduce any additional material, even if it seems relevant. If the user-provided material is incomplete or ambiguous, ommit content. "
                         }
                     ]
                 },
@@ -411,9 +409,8 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
         st.markdown(response.choices[0].message.content)
         print(response.choices[0].message.content)
 
-
         st.download_button("Download lesson", st.session_state["redacted"], file_name="generated_grammar_lesson.txt")
 
 
-
+    #st.write(st.session_state["prompt_content"])
 

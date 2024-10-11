@@ -11,9 +11,6 @@ import pandas as pd
 # delimiters = json.load(open("./data/delimiters.json"))
 
 def consolidate_cq_transcriptions(transcriptions_list, language, delimiters):
-    print("XXX consolidate_cq_transcriptions")
-    print("{} transcriptions".format(len(transcriptions_list)))
-
     cq_folder = "./questionnaires"
     cq_json_list = [f for f in listdir(cq_folder) if isfile(join(cq_folder, f)) and f.endswith(".json")]
     cq_id_dict = {}
@@ -360,29 +357,43 @@ def build_gloss_df(knowledge_graph, entry, delimiters):
     # build dataframe from ordered dict
     return pd.DataFrame.from_dict(sentence_display_ordered_dict, orient="index", columns=["concept"]).T
 
-def get_kg_entry_signature(knowledge_graph, entry):
-    data = knowledge_graph[entry]
-
+def get_kg_entry_signature(knowledge_graph, entry_index):
+    is_positive_polarity = True
     is_wildcard = False
-    for concept in data["sentence_data"]["concept"]:
+    is_ref = False
+    for concept in knowledge_graph[entry_index]["sentence_data"]["concept"]:
         if "wildcard" in concept:
             is_wildcard = True
+        if concept[:3] == "Ref":
+            is_ref = True
+    for concept in knowledge_graph[entry_index]["sentence_data"]["graph"].keys():
+        if concept[:-8] == "POLARITY":
+            if knowledge_graph[entry_index]["sentence_data"]["graph"][concept]["value"] == "NEGATIVE":
+                is_positive_polarity = False
 
-    signature = []
-    # TODO: take all intents into account if multiple
-    if data["sentence_data"]["intent"] != []:
-        signature.append(data["sentence_data"]["intent"][0])
-    else:
-        signature.append("")
-    if data["sentence_data"]["predicate"] != []:
-        signature.append(data["sentence_data"]["predicate"][0])
-    else:
-        signature.append("")
-
-    if is_wildcard:
-        signature.append("is_wildcard")
-    else:
-        signature.append("no_wildcard")
+    signature = {}
+    signature["intent"] = knowledge_graph[entry_index]["sentence_data"]["intent"]
+    signature["predicate"] =  knowledge_graph[entry_index]["sentence_data"]["predicate"]
+    signature["polarity"] = is_positive_polarity
+    signature["is_wildcard"] = is_wildcard
+    signature["is_ref"] = is_ref
 
     return signature
 
+def get_concept_word_pos(kg, entry_index, delimiters):
+    target_words = stats.custom_split(kg[entry_index]["recording_data"]["translation"], delimiters)
+    concept_words_dict = kg[entry_index]["recording_data"]["concept_words"]
+    concept_word_pos = {}
+    for concept, target_expression in concept_words_dict.items():
+        word_list = target_expression.split("...")
+        # if multiple words contribute to the concept, the position of the first word is used
+        target_word = word_list[0]
+        if target_word in target_words:
+            concept_word_pos[concept] = {
+                "concept": concept,
+                "target_word": target_word,
+                "pos": target_words.index(target_word)
+            }
+        else:
+            print("target word {} not in {}".format(target_word, target_words))
+    return concept_word_pos
