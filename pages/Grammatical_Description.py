@@ -359,11 +359,6 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
 
     """
     main_order = st.session_state["prompt_content"]["canonical word order"]["Order of Subject, Object and Verb"]["main value"]
-    if main_order in st.session_state["prompt_content"]["canonical word order"]["Order of Subject, Object and Verb"]["examples by value"].keys():
-        lesson_svo_example = st.session_state["prompt_content"]["canonical word order"]["Order of Subject, Object and Verb"]["examples by value"][main_order][0]
-        lesson_svo += """Here is an example:
-        """
-        lesson_svo += str(lesson_svo_example)
 
     st.markdown(lesson_title)
     st.markdown(lesson_intro)

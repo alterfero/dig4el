@@ -189,6 +189,7 @@ with st.expander("Start a new transcription or edit the header of an existing on
                 print("Target language changed to {}".format(st.session_state["target_language"]))
         else:
             st.session_state["target_language"] = tl
+            st.session_state["recording"]["target language"] = tl
         st.session_state["cq_is_chosen"] = False
 
     st.session_state["recording"]["delimiters"] = st.multiselect("verify and edit word separators if needed", delimiters_bank, default=default_delimiters)
@@ -294,7 +295,6 @@ if st.session_state["cq_is_chosen"]:
             concept_words[concept] = "...".join(concept_translation_list)
         else:
             st.write("Concept {} not found in the concept graph".format(concept))
-    st.write("Default comment: ",default_comment)
     comment = st.text_input("Comments/Notes", value=default_comment)
 
     if st.button("Validate sentence"):
@@ -308,6 +308,7 @@ if st.session_state["cq_is_chosen"]:
         }
         if st.session_state["counter"] < number_of_sentences:
             st.session_state["counter"] = st.session_state["counter"] + 1
+            default_comment = ""
         st.rerun()
 
     #st.write(st.session_state["recording"])
