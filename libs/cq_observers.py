@@ -309,7 +309,6 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
     return output_dict
 
 
-
 def observer_order_of_adjective_and_noun(knowledge_graph, language, delimiters, canonical=False):
     output_dict = {
         "ppk": "87",
@@ -404,6 +403,80 @@ def observer_order_of_adjective_and_noun(knowledge_graph, language, delimiters, 
     return output_dict
 
 
+def observer_order_of_demonstrative_and_noun(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "88",
+        "agent-ready observation": {},
+        "observations": {
+            "Demonstrative-Noun": {
+                "depk": "648",
+                "count": 0,
+                "details": {}
+            },
+            "Noun-Demonstrative": {
+                "depk": "649",
+                "count": 0,
+                "details": {}
+            },
+            "Demonstrative prefix": {
+                "depk": "650",
+                "count": 0,
+                "details": {}
+            },
+            "Demonstrative suffix": {
+                "depk": "651",
+                "count": 0,
+                "details": {}
+            },
+            "Demonstrative before and after Noun": {
+                "depk": "652",
+                "count": 0,
+                "details": {}
+            },
+            "Mixed": {
+                "depk": "653",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    # retrieve KG items with demonstrative and noun
+    key_data = [
+        {"pivot_sentence": "Who’s this on that first photo?",
+         "demonstrative_concept": "POINTED BY SPEAKER",
+         "noun_concept": "photo"},
+        {"pivot_sentence": "Let me see this other photo.",
+         "demonstrative_concept": "POINTED BY SPEAKER",
+         "noun_concept": "picture"},
+        {"pivot_sentence": "This woman is surely your mother again, carrying a child on her back.",
+         "demonstrative_concept": "POINTED BY SPEAKER",
+         "noun_concept": "women"},
+        {"pivot_sentence": "Oh, I think I know who this child is.",
+         "demonstrative_concept": "POINTED BY SPEAKER",
+         "noun_concept": "children"}
+    ]
 
+    for item in key_data:
+        kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, item["pivot_sentence"])
+        if kg_data != {}:
+            concept_words_pos = kgu.get_concept_word_pos(knowledge_graph, kg_data["entry_index"], delimiters)
+            if item["demonstrative_concept"] in concept_words_pos.keys() and item["noun_concept"] in concept_words_pos.keys():
+                pos_dem = concept_words_pos[item["demonstrative_concept"]]["pos"]
+                pos_noun = concept_words_pos[item["noun_concept"]]["pos"]
+                if pos_dem < pos_noun:
+                    output_dict["observations"]["Demonstrative-Noun"]["details"][kg_data["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, kg_data["entry_index"])
+                    output_dict["observations"]["Demonstrative-Noun"]["count"] +=1
+                    output_dict["agent-ready observation"]
+                elif pos_dem > pos_noun:
+                    output_dict["observations"]["Noun-Demonstrative"]["details"][kg_data["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, kg_data["entry_index"])
+                    output_dict["observations"]["Noun-Demonstrative"]["count"] += 1
+
+    # creating agent-ready observation
+    agent_obs = {}
+    for order in output_dict["observations"].keys():
+        agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+    output_dict["agent-ready observation"] = agent_obs
+
+    return output_dict
 
 

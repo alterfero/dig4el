@@ -236,7 +236,7 @@ if st.session_state["cq_is_chosen"]:
         if st.session_state["counter"] < number_of_sentences - 1:
             st.session_state["counter"] = st.session_state["counter"] + 1
             st.rerun()
-    jump_to = colq.slider("jump to", 1, number_of_sentences, value=st.session_state["counter"])
+    jump_to = colq.slider("jump to", 1, number_of_sentences-1, value=st.session_state["counter"])
     if jump_to != st.session_state["counter"]:
         st.session_state["counter"] = jump_to
         st.rerun()

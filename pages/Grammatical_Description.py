@@ -246,10 +246,16 @@ if st.session_state["consolidated_transcriptions"] != {}:
                                                         st.session_state["tl_name"],
                                                         st.session_state["delimiters"],
                                                         canonical=False)
+    st.session_state["obs"]["Order of Demonstrative and Noun"] = obs.observer_order_of_demonstrative_and_noun(
+                                                        st.session_state["consolidated_transcriptions"],
+                                                        st.session_state["tl_name"],
+                                                        st.session_state["delimiters"],
+                                                        canonical=False)
 
     st.session_state["tl_knowledge"]["observed"]["Order of Subject, Object and Verb"] = st.session_state["obs"]["Order of Subject, Object and Verb"]["agent-ready observation"]
     st.session_state["tl_knowledge"]["observed"]["Order of Subject and Verb"] = st.session_state["obs"]["Order of Subject and Verb"]["agent-ready observation"]
     st.session_state["tl_knowledge"]["observed"]["Order of Adjective and Noun"] = st.session_state["obs"]["Order of Adjective and Noun"]["agent-ready observation"]
+    st.session_state["tl_knowledge"]["observed"]["Order of Demonstrative and Noun"] = st.session_state["obs"]["Order of Demonstrative and Noun"]["agent-ready observation"]
     st.session_state["observations_processed"] = True
     #st.write(st.session_state["tl_knowledge"])
     #st.write(st.session_state["obs"])
@@ -271,7 +277,7 @@ if st.session_state["consolidated_transcriptions"] != {}:
                                 st.write(st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"])
                                 gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index, st.session_state["delimiters"])
                                 st.dataframe(gdf)
-                                st.write("context: {}".format(", ".join(context)))
+                                st.write("context: {}".format(context))
                     st.markdown("-------------------------------------")
 
 

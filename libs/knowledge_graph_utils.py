@@ -250,6 +250,7 @@ def get_value_loc_dict(knowledge_graph, concept_kson, selected_f, delimiters):
                             value_loc_dict["neutral"].append(entry_key)
     return value_loc_dict
 
+
 def get_concepts_associated_to_word_by_human(knowledge_graph, word, language):
     """ build a dict with all the concepts connected to a word in the target language
     the dict is word: {'concept':"", 'count':n}"""
@@ -364,7 +365,7 @@ def get_kg_entry_signature(knowledge_graph, entry_index):
     for concept in knowledge_graph[entry_index]["sentence_data"]["concept"]:
         if "wildcard" in concept:
             is_wildcard = True
-        if concept[:3] == "Ref":
+        if concept[:3] == "Ref" or concept[:2] == "PP":
             is_ref = True
     for concept in knowledge_graph[entry_index]["sentence_data"]["graph"].keys():
         if concept[:-8] == "POLARITY":
@@ -397,3 +398,14 @@ def get_concept_word_pos(kg, entry_index, delimiters):
         else:
             print("target word {} not in {}".format(target_word, target_words))
     return concept_word_pos
+
+
+def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):
+    output = {}
+    for entry_index, data in kg.items():
+        if data["sentence_data"]["text"] == pivot_sentence:
+            output = {
+                "entry_index": entry_index,
+                "data": data
+            }
+    return output
