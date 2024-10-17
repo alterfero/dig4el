@@ -144,7 +144,6 @@ def get_careful_name_of_de_pk(depk):
 
 def compute_CP_potential_function_from_general_data(ppk1, ppk2):
     """ creates the conditional probability matrix P(ppk2 | ppk1) and returns it as  df"""
-
     # if rows of extracted cpt samples have only zeros, making impossible a normalization,
     # the values of such rows are changed to uniform distributions, expressing the absence of information.
 
@@ -157,19 +156,24 @@ def compute_CP_potential_function_from_general_data(ppk1, ppk2):
             # Normalize the row
             return row / row_sum
 
-    p1_de_pk_list = domain_elements_pk_by_parameter_pk[str(ppk1)]
-    p2_de_pk_list = domain_elements_pk_by_parameter_pk[str(ppk2)]
+    if str(ppk1) in domain_elements_pk_by_parameter_pk and str(ppk2) in domain_elements_pk_by_parameter_pk:
 
-    # P2 GIVEN P1 DF
+        p1_de_pk_list = domain_elements_pk_by_parameter_pk[str(ppk1)]
+        p2_de_pk_list = domain_elements_pk_by_parameter_pk[str(ppk2)]
 
-    # keep only p1 on lines (primary)
-    filtered_cpt_p2_given_p1 = cpt.loc[p1_de_pk_list]
-    # keep only p2 on columns (secondary)
-    filtered_cpt_p2_given_p1 = filtered_cpt_p2_given_p1[p2_de_pk_list]
-    # normalization: all the columns of each row (primary event) should sum up to 1
-    filtered_cpt_p2_given_p1_normalized = filtered_cpt_p2_given_p1.apply(normalize_row, axis=1)
+        # P2 GIVEN P1 DF
 
-    return filtered_cpt_p2_given_p1_normalized
+        # keep only p1 on lines (primary)
+        filtered_cpt_p2_given_p1 = cpt.loc[p1_de_pk_list]
+        # keep only p2 on columns (secondary)
+        filtered_cpt_p2_given_p1 = filtered_cpt_p2_given_p1[p2_de_pk_list]
+        # normalization: all the columns of each row (primary event) should sum up to 1
+        filtered_cpt_p2_given_p1_normalized = filtered_cpt_p2_given_p1.apply(normalize_row, axis=1)
+
+        return filtered_cpt_p2_given_p1_normalized
+    else:
+        # either wrong or not wals ppk
+        return None
 
 def compute_MRF_potential_function_from_general_data(ppk1, ppk2):
     """ use geometric mean to compute potential function from conditional probabilities.
@@ -220,7 +224,7 @@ def compute_MRF_potential_function_from_general_data(ppk1, ppk2):
 
         return potential_function
 
-def compute_param_distribution(parameter_pk, language_whitelist):
+def compute_wals_param_distribution(parameter_pk, language_whitelist):
     param_distribution = {}
     total_count = 0
     if str(parameter_pk) in domain_elements_pk_by_parameter_pk:
@@ -327,7 +331,6 @@ def compute_conditional_de_proba(domain_element_a_pk, domain_element_b_pk, filte
         language_id = language_by_pk[language_pk]["id"]
         a = False
         b = False
-        a_and_b = False
         if int(domain_element_a_pk) in domain_elements_by_language[str(language_pk)]:
             a = True
             a_count += 1

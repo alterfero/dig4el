@@ -79,99 +79,6 @@ def consolidate_cq_transcriptions(transcriptions_list, language, delimiters):
 
     return knowledge_graph, unique_words, unique_words_frequency, total_target_word_count
 
-
-def build_knowledge_graph_from_local_file_system(language):
-    # list all conversational questionnaires
-    cq_folder = "./questionnaires"
-    cq_json_list = [f for f in listdir(cq_folder) if isfile(join(cq_folder, f)) and f.endswith(".json")]
-    cq_id_dict = {}
-    # {uid: {
-    #       "filename": cq filename,
-    #       "content": cq content
-    #       }
-    # }
-    recordings_list_dict = {}
-
-    for cq in cq_json_list:
-        # load the cq json file
-        cq_json = json.load(open(join(cq_folder, cq)))
-        uid = cq_json["uid"]
-        cq_content = json.load(open(join(cq_folder, cq)))
-        cq_id_dict[uid] = {"filename": cq, "content": cq_content}
-
-    # list all the available recordings in that language
-    recordings_folder = "./recordings"
-    # list cq folders in recordings_folder
-    cq_folders = listdir(recordings_folder)
-    if ".DS_Store" in cq_folders:
-        cq_folders.remove(".DS_Store")
-    # in each cq folder, if the language is available, list the recordings in that language with
-    # associated cd uid.
-
-    for cq in cq_folders:
-        if language in listdir(join(recordings_folder, cq)):
-            recordings = listdir(join(recordings_folder, cq, language))
-            if ".DS_Store" in recordings:
-                recordings.remove(".DS_Store")
-            # check if recording has an associated questionnaire using uid
-            for recording in recordings:
-                recording_json = json.load(open(join(recordings_folder, cq, language, recording)))
-                cq_uid = recording_json["cq_uid"]
-                # print("cq_uid: ", cq_uid)
-                if cq_uid in cq_id_dict.keys():
-                    recordings_list_dict[recording] = recording_json["cq_uid"]
-                    # print("recording {} has a corresponding questionnaire".format(recording))
-                else:
-                    print("recording {} has no corresponding questionnaire".format(recording))
-
-    # build and save knowledge graph ======================================================================================
-    knowledge_graph = {}
-    unique_words = []
-    unique_words_frequency = {}
-    total_target_word_count = 0
-    index_counter = 0
-    for recording in recordings_list_dict.keys():
-        corresponding_cq_uid = recordings_list_dict[recording]
-        corresponding_cq_file = cq_id_dict[corresponding_cq_uid]["filename"]
-        recording_json = json.load(open(join(recordings_folder, corresponding_cq_file[:-5], language, recording)))
-        # open corresponding cq
-        cq = cq_id_dict[corresponding_cq_uid]["content"]
-        for item in cq["dialog"]:
-            if cq["dialog"][item]["speaker"] == "A":
-                speaker = "A"
-                listener = "B"
-            else:
-                speaker = "B"
-                listener = "A"
-
-            try:
-                if cq["dialog"][item]["text"] == recording_json["data"][item]["cq"]:
-                    knowledge_graph[index_counter] = {
-                        "speaker_gender": cq["speakers"][speaker]["gender"],
-                        "speaker_age": cq["speakers"][speaker]["age"],
-                        "listener_gender": cq["speakers"][listener]["gender"],
-                        "listener_age": cq["speakers"][listener]["age"],
-                        "sentence_data": cq["dialog"][item],
-                        "recording_data": recording_json["data"][item],
-                        "language": language
-                    }
-                    index_counter += 1
-                    words = stats.custom_split(recording_json["data"][item]["translation"], delimiters[language])
-                    total_target_word_count += len(words)
-                    for word in words:
-                        if word in unique_words_frequency:
-                            unique_words_frequency[word] += 1000 / total_target_word_count
-                        else:
-                            unique_words_frequency[word] = 1000 / total_target_word_count
-                            unique_words.append(word)
-
-                else:
-                    print("BUILD KNOWLEDGE GRAPH: cq {} <========> recording {} don't match".format(
-                        cq["dialog"][item]["text"], recording_json["data"][item]["cq"]))
-            except KeyError:
-                    print("Key Error: sentence #{}:{} not found in recording".format(item, cq["dialog"][item]["text"]))
-    return knowledge_graph, unique_words, unique_words_frequency, total_target_word_count
-
 def get_value_loc_dict(knowledge_graph, concept_kson, selected_f, delimiters):
     """ value_loc_dict provide statistics on values in the full knowledge graph.
     {'INCLUSIVE PREDICATE': [6, 12, 21], 'ATTRIBUTIVE PREDICATE': [25, 33, 42]}"""
@@ -274,7 +181,6 @@ def get_concepts_associated_to_word_by_human(knowledge_graph, word, language):
             else:
                 word_concept_connection_dict["none"] = {"concept": "none", "count": 1, "entry_list": [entry]}
     return word_concept_connection_dict
-
 
 def get_diff_word_statistics_with_value_loc_dict(knowledge_graph, value_loc_dict, v_focus, total_target_word_count, delimiters):
     v_focus_sentences = value_loc_dict[v_focus]
@@ -399,7 +305,6 @@ def get_concept_word_pos(kg, entry_index, delimiters):
             print("target word {} not in {}".format(target_word, target_words))
     return concept_word_pos
 
-
 def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):
     output = {}
     for entry_index, data in kg.items():
@@ -409,3 +314,4 @@ def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):
                 "data": data
             }
     return output
+

@@ -1,0 +1,3162 @@
+{
+    "GB020": {
+        "pid": "GB020",
+        "pname": "Are there definite or specific articles?",
+        "pvalues": {
+            "GB020-0": {
+                "vid": "GB020-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB020-1": {
+                "vid": "GB020-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB021": {
+        "pid": "GB021",
+        "pname": "Do indefinite nominals commonly have indefinite articles?",
+        "pvalues": {
+            "GB021-0": {
+                "vid": "GB021-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB021-1": {
+                "vid": "GB021-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB022": {
+        "pid": "GB022",
+        "pname": "Are there prenominal articles?",
+        "pvalues": {
+            "GB022-0": {
+                "vid": "GB022-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB022-1": {
+                "vid": "GB022-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB023": {
+        "pid": "GB023",
+        "pname": "Are there postnominal articles?",
+        "pvalues": {
+            "GB023-0": {
+                "vid": "GB023-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB023-1": {
+                "vid": "GB023-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB024": {
+        "pid": "GB024",
+        "pname": "What is the order of numeral and noun in the NP?",
+        "pvalues": {
+            "GB024-1": {
+                "vid": "GB024-1",
+                "vcode": "1",
+                "vname": "Num-N"
+            },
+            "GB024-2": {
+                "vid": "GB024-2",
+                "vcode": "2",
+                "vname": "N-Num"
+            },
+            "GB024-3": {
+                "vid": "GB024-3",
+                "vcode": "3",
+                "vname": "both."
+            }
+        }
+    },
+    "GB025": {
+        "pid": "GB025",
+        "pname": "What is the order of adnominal demonstrative and noun?",
+        "pvalues": {
+            "GB025-1": {
+                "vid": "GB025-1",
+                "vcode": "1",
+                "vname": "Dem-N"
+            },
+            "GB025-2": {
+                "vid": "GB025-2",
+                "vcode": "2",
+                "vname": "N-Dem"
+            },
+            "GB025-3": {
+                "vid": "GB025-3",
+                "vcode": "3",
+                "vname": "both."
+            }
+        }
+    },
+    "GB026": {
+        "pid": "GB026",
+        "pname": "Can adnominal property words occur discontinuously?",
+        "pvalues": {
+            "GB026-0": {
+                "vid": "GB026-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB026-1": {
+                "vid": "GB026-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB027": {
+        "pid": "GB027",
+        "pname": "Are nominal conjunction and comitative expressed by different elements?",
+        "pvalues": {
+            "GB027-0": {
+                "vid": "GB027-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB027-1": {
+                "vid": "GB027-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB028": {
+        "pid": "GB028",
+        "pname": "Is there a distinction between inclusive and exclusive?",
+        "pvalues": {
+            "GB028-0": {
+                "vid": "GB028-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB028-1": {
+                "vid": "GB028-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB030": {
+        "pid": "GB030",
+        "pname": "Is there a gender distinction in independent 3rd person pronouns?",
+        "pvalues": {
+            "GB030-0": {
+                "vid": "GB030-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB030-1": {
+                "vid": "GB030-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB031": {
+        "pid": "GB031",
+        "pname": "Is there a dual or unit augmented form (in addition to plural or augmented) for all person categories in the pronoun system?",
+        "pvalues": {
+            "GB031-0": {
+                "vid": "GB031-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB031-1": {
+                "vid": "GB031-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB035": {
+        "pid": "GB035",
+        "pname": "Are there three or more distance contrasts in demonstratives?",
+        "pvalues": {
+            "GB035-0": {
+                "vid": "GB035-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB035-1": {
+                "vid": "GB035-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB036": {
+        "pid": "GB036",
+        "pname": "Do demonstratives show an elevation distinction?",
+        "pvalues": {
+            "GB036-0": {
+                "vid": "GB036-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB036-1": {
+                "vid": "GB036-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB037": {
+        "pid": "GB037",
+        "pname": "Do demonstratives show a visible-nonvisible distinction?",
+        "pvalues": {
+            "GB037-0": {
+                "vid": "GB037-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB037-1": {
+                "vid": "GB037-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB038": {
+        "pid": "GB038",
+        "pname": "Are there demonstrative classifiers?",
+        "pvalues": {
+            "GB038-0": {
+                "vid": "GB038-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB038-1": {
+                "vid": "GB038-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB039": {
+        "pid": "GB039",
+        "pname": "Is there nonphonological allomorphy of noun number markers?",
+        "pvalues": {
+            "GB039-0": {
+                "vid": "GB039-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB039-1": {
+                "vid": "GB039-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB041": {
+        "pid": "GB041",
+        "pname": "Are there several nouns (more than three) which are suppletive for number?",
+        "pvalues": {
+            "GB041-0": {
+                "vid": "GB041-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB041-1": {
+                "vid": "GB041-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB042": {
+        "pid": "GB042",
+        "pname": "Is there productive overt morphological singular marking on nouns?",
+        "pvalues": {
+            "GB042-0": {
+                "vid": "GB042-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB042-1": {
+                "vid": "GB042-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB043": {
+        "pid": "GB043",
+        "pname": "Is there productive morphological dual marking on nouns?",
+        "pvalues": {
+            "GB043-0": {
+                "vid": "GB043-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB043-1": {
+                "vid": "GB043-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB044": {
+        "pid": "GB044",
+        "pname": "Is there productive morphological plural marking on nouns?",
+        "pvalues": {
+            "GB044-0": {
+                "vid": "GB044-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB044-1": {
+                "vid": "GB044-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB046": {
+        "pid": "GB046",
+        "pname": "Is there an associative plural marker for nouns?",
+        "pvalues": {
+            "GB046-0": {
+                "vid": "GB046-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB046-1": {
+                "vid": "GB046-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB047": {
+        "pid": "GB047",
+        "pname": "Is there a productive morphological pattern for deriving an action/state noun from a verb?",
+        "pvalues": {
+            "GB047-0": {
+                "vid": "GB047-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB047-1": {
+                "vid": "GB047-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB048": {
+        "pid": "GB048",
+        "pname": "Is there a productive morphological pattern for deriving an agent noun from a verb?",
+        "pvalues": {
+            "GB048-0": {
+                "vid": "GB048-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB048-1": {
+                "vid": "GB048-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB049": {
+        "pid": "GB049",
+        "pname": "Is there a productive morphological pattern for deriving an object noun from a verb?",
+        "pvalues": {
+            "GB049-0": {
+                "vid": "GB049-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB049-1": {
+                "vid": "GB049-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB051": {
+        "pid": "GB051",
+        "pname": "Is there a gender/noun class system where sex is a factor in class assignment?",
+        "pvalues": {
+            "GB051-0": {
+                "vid": "GB051-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB051-1": {
+                "vid": "GB051-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB052": {
+        "pid": "GB052",
+        "pname": "Is there a gender/noun class system where shape is a factor in class assignment?",
+        "pvalues": {
+            "GB052-0": {
+                "vid": "GB052-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB052-1": {
+                "vid": "GB052-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB053": {
+        "pid": "GB053",
+        "pname": "Is there a gender/noun class system where animacy is a factor in class assignment?",
+        "pvalues": {
+            "GB053-0": {
+                "vid": "GB053-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB053-1": {
+                "vid": "GB053-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB054": {
+        "pid": "GB054",
+        "pname": "Is there a gender/noun class system where plant status is a factor in class assignment?",
+        "pvalues": {
+            "GB054-0": {
+                "vid": "GB054-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB054-1": {
+                "vid": "GB054-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB057": {
+        "pid": "GB057",
+        "pname": "Are there numeral classifiers?",
+        "pvalues": {
+            "GB057-0": {
+                "vid": "GB057-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB057-1": {
+                "vid": "GB057-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB058": {
+        "pid": "GB058",
+        "pname": "Are there possessive classifiers?",
+        "pvalues": {
+            "GB058-0": {
+                "vid": "GB058-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB058-1": {
+                "vid": "GB058-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB059": {
+        "pid": "GB059",
+        "pname": "Is the adnominal possessive construction different for alienable and inalienable nouns?",
+        "pvalues": {
+            "GB059-0": {
+                "vid": "GB059-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB059-1": {
+                "vid": "GB059-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB065": {
+        "pid": "GB065",
+        "pname": "What is the pragmatically unmarked order of adnominal possessor noun and possessed noun?",
+        "pvalues": {
+            "GB065-1": {
+                "vid": "GB065-1",
+                "vcode": "1",
+                "vname": "Possessor-Possessed"
+            },
+            "GB065-2": {
+                "vid": "GB065-2",
+                "vcode": "2",
+                "vname": "Possessed-Possessor"
+            },
+            "GB065-3": {
+                "vid": "GB065-3",
+                "vcode": "3",
+                "vname": "both"
+            }
+        }
+    },
+    "GB068": {
+        "pid": "GB068",
+        "pname": "Do core adjectives (defined semantically as property concepts such as value, shape, age, dimension) act like verbs in predicative position?",
+        "pvalues": {
+            "GB068-0": {
+                "vid": "GB068-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB068-1": {
+                "vid": "GB068-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB069": {
+        "pid": "GB069",
+        "pname": "Do core adjectives (defined semantically as property concepts; value, shape, age, dimension) used attributively require the same morphological treatment as verbs?",
+        "pvalues": {
+            "GB069-0": {
+                "vid": "GB069-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB069-1": {
+                "vid": "GB069-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB070": {
+        "pid": "GB070",
+        "pname": "Are there morphological cases for non-pronominal core arguments (i.e. S/A/P)?",
+        "pvalues": {
+            "GB070-0": {
+                "vid": "GB070-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB070-1": {
+                "vid": "GB070-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB071": {
+        "pid": "GB071",
+        "pname": "Are there morphological cases for pronominal core arguments (i.e. S/A/P)?",
+        "pvalues": {
+            "GB071-0": {
+                "vid": "GB071-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB071-1": {
+                "vid": "GB071-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB072": {
+        "pid": "GB072",
+        "pname": "Are there morphological cases for oblique non-pronominal NPs (i.e. not S/A/P)?",
+        "pvalues": {
+            "GB072-0": {
+                "vid": "GB072-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB072-1": {
+                "vid": "GB072-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB073": {
+        "pid": "GB073",
+        "pname": "Are there morphological cases for independent oblique personal pronominal arguments (i.e. not S/A/P)?",
+        "pvalues": {
+            "GB073-0": {
+                "vid": "GB073-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB073-1": {
+                "vid": "GB073-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB074": {
+        "pid": "GB074",
+        "pname": "Are there prepositions?",
+        "pvalues": {
+            "GB074-0": {
+                "vid": "GB074-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB074-1": {
+                "vid": "GB074-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB075": {
+        "pid": "GB075",
+        "pname": "Are there postpositions?",
+        "pvalues": {
+            "GB075-0": {
+                "vid": "GB075-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB075-1": {
+                "vid": "GB075-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB079": {
+        "pid": "GB079",
+        "pname": "Do verbs have prefixes/proclitics, other than those that only mark A, S or P (do include portmanteau: A & S + TAM)?",
+        "pvalues": {
+            "GB079-0": {
+                "vid": "GB079-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB079-1": {
+                "vid": "GB079-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB080": {
+        "pid": "GB080",
+        "pname": "Do verbs have suffixes/enclitics, other than those that only mark A, S or P (do include portmanteau: A & S + TAM)?",
+        "pvalues": {
+            "GB080-0": {
+                "vid": "GB080-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB080-1": {
+                "vid": "GB080-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB081": {
+        "pid": "GB081",
+        "pname": "Is there productive infixation in verbs?",
+        "pvalues": {
+            "GB081-0": {
+                "vid": "GB081-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB081-1": {
+                "vid": "GB081-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB082": {
+        "pid": "GB082",
+        "pname": "Is there overt morphological marking of present tense on verbs?",
+        "pvalues": {
+            "GB082-0": {
+                "vid": "GB082-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB082-1": {
+                "vid": "GB082-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB083": {
+        "pid": "GB083",
+        "pname": "Is there overt morphological marking on the verb dedicated to past tense?",
+        "pvalues": {
+            "GB083-0": {
+                "vid": "GB083-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB083-1": {
+                "vid": "GB083-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB084": {
+        "pid": "GB084",
+        "pname": "Is there overt morphological marking on the verb dedicated to future tense?",
+        "pvalues": {
+            "GB084-0": {
+                "vid": "GB084-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB084-1": {
+                "vid": "GB084-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB086": {
+        "pid": "GB086",
+        "pname": "Is a morphological distinction between perfective and imperfective aspect available on verbs?",
+        "pvalues": {
+            "GB086-0": {
+                "vid": "GB086-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB086-1": {
+                "vid": "GB086-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB089": {
+        "pid": "GB089",
+        "pname": "Can the S argument be indexed by a suffix/enclitic on the verb in the simple main clause?",
+        "pvalues": {
+            "GB089-0": {
+                "vid": "GB089-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB089-1": {
+                "vid": "GB089-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB090": {
+        "pid": "GB090",
+        "pname": "Can the S argument be indexed by a prefix/proclitic on the verb in the simple main clause?",
+        "pvalues": {
+            "GB090-0": {
+                "vid": "GB090-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB090-1": {
+                "vid": "GB090-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB091": {
+        "pid": "GB091",
+        "pname": "Can the A argument be indexed by a suffix/enclitic on the verb in the simple main clause?",
+        "pvalues": {
+            "GB091-0": {
+                "vid": "GB091-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB091-1": {
+                "vid": "GB091-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB092": {
+        "pid": "GB092",
+        "pname": "Can the A argument be indexed by a prefix/proclitic on the verb in the simple main clause?",
+        "pvalues": {
+            "GB092-0": {
+                "vid": "GB092-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB092-1": {
+                "vid": "GB092-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB093": {
+        "pid": "GB093",
+        "pname": "Can the P argument be indexed by a suffix/enclitic on the verb in the simple main clause?",
+        "pvalues": {
+            "GB093-0": {
+                "vid": "GB093-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB093-1": {
+                "vid": "GB093-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB094": {
+        "pid": "GB094",
+        "pname": "Can the P argument be indexed by a prefix/proclitic on the verb in the simple main clause?",
+        "pvalues": {
+            "GB094-0": {
+                "vid": "GB094-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB094-1": {
+                "vid": "GB094-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB095": {
+        "pid": "GB095",
+        "pname": "Are variations in marking strategies of core participants based on TAM distinctions?",
+        "pvalues": {
+            "GB095-0": {
+                "vid": "GB095-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB095-1": {
+                "vid": "GB095-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB096": {
+        "pid": "GB096",
+        "pname": "Are variations in marking strategies of core participants based on verb classes?",
+        "pvalues": {
+            "GB096-0": {
+                "vid": "GB096-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB096-1": {
+                "vid": "GB096-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB098": {
+        "pid": "GB098",
+        "pname": "Are variations in marking strategies of core participants based on person distinctions?",
+        "pvalues": {
+            "GB098-0": {
+                "vid": "GB098-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB098-1": {
+                "vid": "GB098-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB099": {
+        "pid": "GB099",
+        "pname": "Can verb stems alter according to the person of a core participant?",
+        "pvalues": {
+            "GB099-0": {
+                "vid": "GB099-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB099-1": {
+                "vid": "GB099-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB103": {
+        "pid": "GB103",
+        "pname": "Is there a benefactive applicative marker on the verb (including indexing)?",
+        "pvalues": {
+            "GB103-0": {
+                "vid": "GB103-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB103-1": {
+                "vid": "GB103-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB104": {
+        "pid": "GB104",
+        "pname": "Is there an instrumental applicative marker on the verb (including indexing)?",
+        "pvalues": {
+            "GB104-0": {
+                "vid": "GB104-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB104-1": {
+                "vid": "GB104-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB105": {
+        "pid": "GB105",
+        "pname": "Can the recipient in a ditransitive construction be marked like the monotransitive patient?",
+        "pvalues": {
+            "GB105-0": {
+                "vid": "GB105-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB105-1": {
+                "vid": "GB105-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB107": {
+        "pid": "GB107",
+        "pname": "Can standard negation be marked by an affix, clitic or modification of the verb?",
+        "pvalues": {
+            "GB107-0": {
+                "vid": "GB107-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB107-1": {
+                "vid": "GB107-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB108": {
+        "pid": "GB108",
+        "pname": "Is there directional or locative morphological marking on verbs?",
+        "pvalues": {
+            "GB108-0": {
+                "vid": "GB108-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB108-1": {
+                "vid": "GB108-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB109": {
+        "pid": "GB109",
+        "pname": "Is there verb suppletion for participant number?",
+        "pvalues": {
+            "GB109-0": {
+                "vid": "GB109-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB109-1": {
+                "vid": "GB109-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB110": {
+        "pid": "GB110",
+        "pname": "Is there verb suppletion for tense or aspect?",
+        "pvalues": {
+            "GB110-0": {
+                "vid": "GB110-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB110-1": {
+                "vid": "GB110-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB111": {
+        "pid": "GB111",
+        "pname": "Are there conjugation classes?",
+        "pvalues": {
+            "GB111-0": {
+                "vid": "GB111-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB111-1": {
+                "vid": "GB111-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB113": {
+        "pid": "GB113",
+        "pname": "Are there verbal affixes or clitics that turn intransitive verbs into transitive ones?",
+        "pvalues": {
+            "GB113-0": {
+                "vid": "GB113-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB113-1": {
+                "vid": "GB113-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB114": {
+        "pid": "GB114",
+        "pname": "Is there a phonologically bound reflexive marker on the verb?",
+        "pvalues": {
+            "GB114-0": {
+                "vid": "GB114-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB114-1": {
+                "vid": "GB114-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB115": {
+        "pid": "GB115",
+        "pname": "Is there a phonologically bound reciprocal marker on the verb?",
+        "pvalues": {
+            "GB115-0": {
+                "vid": "GB115-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB115-1": {
+                "vid": "GB115-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB116": {
+        "pid": "GB116",
+        "pname": "Do verbs classify the shape, size or consistency of absolutive arguments by means of incorporated nouns, verbal affixes or suppletive verb stems?",
+        "pvalues": {
+            "GB116-0": {
+                "vid": "GB116-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB116-1": {
+                "vid": "GB116-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB117": {
+        "pid": "GB117",
+        "pname": "Is there a copula for predicate nominals?",
+        "pvalues": {
+            "GB117-0": {
+                "vid": "GB117-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB117-1": {
+                "vid": "GB117-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB118": {
+        "pid": "GB118",
+        "pname": "Are there serial verb constructions?",
+        "pvalues": {
+            "GB118-0": {
+                "vid": "GB118-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB118-1": {
+                "vid": "GB118-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB119": {
+        "pid": "GB119",
+        "pname": "Can mood be marked by an inflecting word (\"auxiliary verb\")?",
+        "pvalues": {
+            "GB119-0": {
+                "vid": "GB119-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB119-1": {
+                "vid": "GB119-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB120": {
+        "pid": "GB120",
+        "pname": "Can aspect be marked by an inflecting word (\"auxiliary verb\")?",
+        "pvalues": {
+            "GB120-0": {
+                "vid": "GB120-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB120-1": {
+                "vid": "GB120-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB121": {
+        "pid": "GB121",
+        "pname": "Can tense be marked by an inflecting word (\"auxiliary verb\")?",
+        "pvalues": {
+            "GB121-0": {
+                "vid": "GB121-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB121-1": {
+                "vid": "GB121-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB122": {
+        "pid": "GB122",
+        "pname": "Is verb compounding a regular process?",
+        "pvalues": {
+            "GB122-0": {
+                "vid": "GB122-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB122-1": {
+                "vid": "GB122-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB123": {
+        "pid": "GB123",
+        "pname": "Are there verb-adjunct (aka light-verb) constructions?",
+        "pvalues": {
+            "GB123-0": {
+                "vid": "GB123-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB123-1": {
+                "vid": "GB123-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB124": {
+        "pid": "GB124",
+        "pname": "Is incorporation of nouns into verbs a productive intransitivizing process?",
+        "pvalues": {
+            "GB124-0": {
+                "vid": "GB124-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB124-1": {
+                "vid": "GB124-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB126": {
+        "pid": "GB126",
+        "pname": "Is there an existential verb?",
+        "pvalues": {
+            "GB126-0": {
+                "vid": "GB126-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB126-1": {
+                "vid": "GB126-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB127": {
+        "pid": "GB127",
+        "pname": "Are different posture verbs used obligatorily depending on an inanimate locatum's shape or position (e.g. 'to lie' vs. 'to stand')?",
+        "pvalues": {
+            "GB127-0": {
+                "vid": "GB127-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB127-1": {
+                "vid": "GB127-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB129": {
+        "pid": "GB129",
+        "pname": "Is there a notably small number, i.e. about 100 or less, of verb roots in the language?",
+        "pvalues": {
+            "GB129-0": {
+                "vid": "GB129-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB129-1": {
+                "vid": "GB129-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB130": {
+        "pid": "GB130",
+        "pname": "What is the pragmatically unmarked order of S and V in intransitive clauses?",
+        "pvalues": {
+            "GB130-1": {
+                "vid": "GB130-1",
+                "vcode": "1",
+                "vname": "SV"
+            },
+            "GB130-2": {
+                "vid": "GB130-2",
+                "vcode": "2",
+                "vname": "VS"
+            },
+            "GB130-3": {
+                "vid": "GB130-3",
+                "vcode": "3",
+                "vname": "both"
+            }
+        }
+    },
+    "GB131": {
+        "pid": "GB131",
+        "pname": "Is a pragmatically unmarked constituent order verb-initial for transitive clauses?",
+        "pvalues": {
+            "GB131-0": {
+                "vid": "GB131-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB131-1": {
+                "vid": "GB131-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB132": {
+        "pid": "GB132",
+        "pname": "Is a pragmatically unmarked constituent order verb-medial for transitive clauses?",
+        "pvalues": {
+            "GB132-0": {
+                "vid": "GB132-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB132-1": {
+                "vid": "GB132-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB133": {
+        "pid": "GB133",
+        "pname": "Is a pragmatically unmarked constituent order verb-final for transitive clauses?",
+        "pvalues": {
+            "GB133-0": {
+                "vid": "GB133-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB133-1": {
+                "vid": "GB133-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB134": {
+        "pid": "GB134",
+        "pname": "Is the order of constituents the same in main and subordinate clauses?",
+        "pvalues": {
+            "GB134-0": {
+                "vid": "GB134-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB134-1": {
+                "vid": "GB134-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB135": {
+        "pid": "GB135",
+        "pname": "Do clausal objects usually occur in the same position as nominal objects?",
+        "pvalues": {
+            "GB135-0": {
+                "vid": "GB135-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB135-1": {
+                "vid": "GB135-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB136": {
+        "pid": "GB136",
+        "pname": "Is the order of core argument (i.e. S/A/P) constituents fixed?",
+        "pvalues": {
+            "GB136-0": {
+                "vid": "GB136-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB136-1": {
+                "vid": "GB136-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB137": {
+        "pid": "GB137",
+        "pname": "Can standard negation be marked clause-finally?",
+        "pvalues": {
+            "GB137-0": {
+                "vid": "GB137-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB137-1": {
+                "vid": "GB137-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB138": {
+        "pid": "GB138",
+        "pname": "Can standard negation be marked clause-initially?",
+        "pvalues": {
+            "GB138-0": {
+                "vid": "GB138-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB138-1": {
+                "vid": "GB138-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB139": {
+        "pid": "GB139",
+        "pname": "Is there a difference between imperative (prohibitive) and declarative negation constructions?",
+        "pvalues": {
+            "GB139-0": {
+                "vid": "GB139-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB139-1": {
+                "vid": "GB139-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB140": {
+        "pid": "GB140",
+        "pname": "Is verbal predication marked by the same negator as all of the following types of predication: locational, existential and nominal?",
+        "pvalues": {
+            "GB140-0": {
+                "vid": "GB140-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB140-1": {
+                "vid": "GB140-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB146": {
+        "pid": "GB146",
+        "pname": "Is there a morpho-syntactic distinction between predicates expressing controlled versus uncontrolled events or states?",
+        "pvalues": {
+            "GB146-0": {
+                "vid": "GB146-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB146-1": {
+                "vid": "GB146-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB147": {
+        "pid": "GB147",
+        "pname": "Is there a morphological passive marked on the lexical verb?",
+        "pvalues": {
+            "GB147-0": {
+                "vid": "GB147-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB147-1": {
+                "vid": "GB147-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB148": {
+        "pid": "GB148",
+        "pname": "Is there a morphological antipassive marked on the lexical verb?",
+        "pvalues": {
+            "GB148-0": {
+                "vid": "GB148-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB148-1": {
+                "vid": "GB148-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB149": {
+        "pid": "GB149",
+        "pname": "Is there a morphologically marked inverse on verbs?",
+        "pvalues": {
+            "GB149-0": {
+                "vid": "GB149-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB149-1": {
+                "vid": "GB149-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB150": {
+        "pid": "GB150",
+        "pname": "Is there clause chaining?",
+        "pvalues": {
+            "GB150-0": {
+                "vid": "GB150-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB150-1": {
+                "vid": "GB150-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB151": {
+        "pid": "GB151",
+        "pname": "Is there an overt verb marker dedicated to signalling coreference or noncoreference between the subject of one clause and an argument of an adjacent clause (\"switch reference\")?",
+        "pvalues": {
+            "GB151-0": {
+                "vid": "GB151-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB151-1": {
+                "vid": "GB151-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB152": {
+        "pid": "GB152",
+        "pname": "Is there a morphologically marked distinction between simultaneous and sequential clauses?",
+        "pvalues": {
+            "GB152-0": {
+                "vid": "GB152-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB152-1": {
+                "vid": "GB152-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB155": {
+        "pid": "GB155",
+        "pname": "Are causatives formed by affixes or clitics on verbs?",
+        "pvalues": {
+            "GB155-0": {
+                "vid": "GB155-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB155-1": {
+                "vid": "GB155-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB156": {
+        "pid": "GB156",
+        "pname": "Is there a causative construction involving an element that is unmistakably grammaticalized from a verb for 'to say'?",
+        "pvalues": {
+            "GB156-0": {
+                "vid": "GB156-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB156-1": {
+                "vid": "GB156-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB158": {
+        "pid": "GB158",
+        "pname": "Are verbs reduplicated?",
+        "pvalues": {
+            "GB158-0": {
+                "vid": "GB158-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB158-1": {
+                "vid": "GB158-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB159": {
+        "pid": "GB159",
+        "pname": "Are nouns reduplicated?",
+        "pvalues": {
+            "GB159-0": {
+                "vid": "GB159-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB159-1": {
+                "vid": "GB159-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB160": {
+        "pid": "GB160",
+        "pname": "Are elements apart from verbs or nouns reduplicated?",
+        "pvalues": {
+            "GB160-0": {
+                "vid": "GB160-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB160-1": {
+                "vid": "GB160-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB165": {
+        "pid": "GB165",
+        "pname": "Is there productive morphological trial marking on nouns?",
+        "pvalues": {
+            "GB165-0": {
+                "vid": "GB165-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB165-1": {
+                "vid": "GB165-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB166": {
+        "pid": "GB166",
+        "pname": "Is there productive morphological paucal marking on nouns?",
+        "pvalues": {
+            "GB166-0": {
+                "vid": "GB166-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB166-1": {
+                "vid": "GB166-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB167": {
+        "pid": "GB167",
+        "pname": "Is there a logophoric pronoun?",
+        "pvalues": {
+            "GB167-0": {
+                "vid": "GB167-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB167-1": {
+                "vid": "GB167-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB170": {
+        "pid": "GB170",
+        "pname": "Can an adnominal property word agree with the noun in gender/noun class?",
+        "pvalues": {
+            "GB170-0": {
+                "vid": "GB170-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB170-1": {
+                "vid": "GB170-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB171": {
+        "pid": "GB171",
+        "pname": "Can an adnominal demonstrative agree with the noun in gender/noun class?",
+        "pvalues": {
+            "GB171-0": {
+                "vid": "GB171-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB171-1": {
+                "vid": "GB171-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB172": {
+        "pid": "GB172",
+        "pname": "Can an article agree with the noun in gender/noun class?",
+        "pvalues": {
+            "GB172-0": {
+                "vid": "GB172-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB172-1": {
+                "vid": "GB172-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB177": {
+        "pid": "GB177",
+        "pname": "Can the verb carry a marker of animacy of argument, unrelated to any gender/noun class of the argument visible in the NP domain?",
+        "pvalues": {
+            "GB177-0": {
+                "vid": "GB177-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB177-1": {
+                "vid": "GB177-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB184": {
+        "pid": "GB184",
+        "pname": "Can an adnominal property word agree with the noun in number?",
+        "pvalues": {
+            "GB184-0": {
+                "vid": "GB184-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB184-1": {
+                "vid": "GB184-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB185": {
+        "pid": "GB185",
+        "pname": "Can an adnominal demonstrative agree with the noun in number?",
+        "pvalues": {
+            "GB185-0": {
+                "vid": "GB185-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB185-1": {
+                "vid": "GB185-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB186": {
+        "pid": "GB186",
+        "pname": "Can an article agree with the noun in number?",
+        "pvalues": {
+            "GB186-0": {
+                "vid": "GB186-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB186-1": {
+                "vid": "GB186-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB187": {
+        "pid": "GB187",
+        "pname": "Is there any productive diminutive marking on the noun (exclude marking by system of nominal classification only)?",
+        "pvalues": {
+            "GB187-0": {
+                "vid": "GB187-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB187-1": {
+                "vid": "GB187-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB188": {
+        "pid": "GB188",
+        "pname": "Is there any productive augmentative marking on the noun (exclude marking by system of nominal classification only)?",
+        "pvalues": {
+            "GB188-0": {
+                "vid": "GB188-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB188-1": {
+                "vid": "GB188-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB192": {
+        "pid": "GB192",
+        "pname": "Is there a gender system where a noun's phonological properties are a factor in class assignment?",
+        "pvalues": {
+            "GB192-0": {
+                "vid": "GB192-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB192-1": {
+                "vid": "GB192-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB193": {
+        "pid": "GB193",
+        "pname": "What is the order of adnominal property word and noun?",
+        "pvalues": {
+            "GB193-0": {
+                "vid": "GB193-0",
+                "vcode": "0",
+                "vname": "they cannot be used attributively"
+            },
+            "GB193-1": {
+                "vid": "GB193-1",
+                "vcode": "1",
+                "vname": "ANM - N"
+            },
+            "GB193-2": {
+                "vid": "GB193-2",
+                "vcode": "2",
+                "vname": "N - ANM"
+            },
+            "GB193-3": {
+                "vid": "GB193-3",
+                "vcode": "3",
+                "vname": "both"
+            }
+        }
+    },
+    "GB196": {
+        "pid": "GB196",
+        "pname": "Is there a male/female distinction in 2nd person independent pronouns?",
+        "pvalues": {
+            "GB196-0": {
+                "vid": "GB196-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB196-1": {
+                "vid": "GB196-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB197": {
+        "pid": "GB197",
+        "pname": "Is there a male/female distinction in 1st person independent pronouns?",
+        "pvalues": {
+            "GB197-0": {
+                "vid": "GB197-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB197-1": {
+                "vid": "GB197-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB198": {
+        "pid": "GB198",
+        "pname": "Can an adnominal numeral agree with the noun in gender/noun class?",
+        "pvalues": {
+            "GB198-0": {
+                "vid": "GB198-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB198-1": {
+                "vid": "GB198-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB203": {
+        "pid": "GB203",
+        "pname": "What is the order of the adnominal collective universal quantifier ('all') and the noun?",
+        "pvalues": {
+            "GB203-0": {
+                "vid": "GB203-0",
+                "vcode": "0",
+                "vname": "no UQ"
+            },
+            "GB203-1": {
+                "vid": "GB203-1",
+                "vcode": "1",
+                "vname": "UQ-N"
+            },
+            "GB203-2": {
+                "vid": "GB203-2",
+                "vcode": "2",
+                "vname": "N-UQ"
+            },
+            "GB203-3": {
+                "vid": "GB203-3",
+                "vcode": "3",
+                "vname": "both"
+            }
+        }
+    },
+    "GB204": {
+        "pid": "GB204",
+        "pname": "Do collective ('all') and distributive ('every') universal quantifiers differ in their forms or their syntactic positions?",
+        "pvalues": {
+            "GB204-0": {
+                "vid": "GB204-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB204-1": {
+                "vid": "GB204-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB250": {
+        "pid": "GB250",
+        "pname": "Can predicative possession be expressed with a transitive 'habeo' verb?",
+        "pvalues": {
+            "GB250-0": {
+                "vid": "GB250-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB250-1": {
+                "vid": "GB250-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB252": {
+        "pid": "GB252",
+        "pname": "Can predicative possession be expressed with an S-like possessum and a locative-coded possessor?",
+        "pvalues": {
+            "GB252-0": {
+                "vid": "GB252-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB252-1": {
+                "vid": "GB252-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB253": {
+        "pid": "GB253",
+        "pname": "Can predicative possession be expressed with an S-like possessum and a dative-coded possessor?",
+        "pvalues": {
+            "GB253-0": {
+                "vid": "GB253-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB253-1": {
+                "vid": "GB253-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB254": {
+        "pid": "GB254",
+        "pname": "Can predicative possession be expressed with an S-like possessum and a possessor that is coded like an adnominal possessor?",
+        "pvalues": {
+            "GB254-0": {
+                "vid": "GB254-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB254-1": {
+                "vid": "GB254-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB256": {
+        "pid": "GB256",
+        "pname": "Can predicative possession be expressed with an S-like possessor and a possessum that is coded like a comitative argument?",
+        "pvalues": {
+            "GB256-0": {
+                "vid": "GB256-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB256-1": {
+                "vid": "GB256-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB257": {
+        "pid": "GB257",
+        "pname": "Can polar interrogation be marked by intonation only?",
+        "pvalues": {
+            "GB257-0": {
+                "vid": "GB257-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB257-1": {
+                "vid": "GB257-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB260": {
+        "pid": "GB260",
+        "pname": "Can polar interrogation be indicated by a special word order?",
+        "pvalues": {
+            "GB260-0": {
+                "vid": "GB260-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB260-1": {
+                "vid": "GB260-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB262": {
+        "pid": "GB262",
+        "pname": "Is there a clause-initial polar interrogative particle?",
+        "pvalues": {
+            "GB262-0": {
+                "vid": "GB262-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB262-1": {
+                "vid": "GB262-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB263": {
+        "pid": "GB263",
+        "pname": "Is there a clause-final polar interrogative particle?",
+        "pvalues": {
+            "GB263-0": {
+                "vid": "GB263-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB263-1": {
+                "vid": "GB263-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB264": {
+        "pid": "GB264",
+        "pname": "Is there a polar interrogative particle that most commonly occurs neither clause-initially nor clause-finally?",
+        "pvalues": {
+            "GB264-0": {
+                "vid": "GB264-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB264-1": {
+                "vid": "GB264-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB265": {
+        "pid": "GB265",
+        "pname": "Is there a comparative construction that includes a form that elsewhere means 'surpass, exceed'?",
+        "pvalues": {
+            "GB265-0": {
+                "vid": "GB265-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB265-1": {
+                "vid": "GB265-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB266": {
+        "pid": "GB266",
+        "pname": "Is there a comparative construction that employs a marker of the standard which elsewhere has a locational meaning?",
+        "pvalues": {
+            "GB266-0": {
+                "vid": "GB266-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB266-1": {
+                "vid": "GB266-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB270": {
+        "pid": "GB270",
+        "pname": "Can comparatives be expressed using two conjoined clauses?",
+        "pvalues": {
+            "GB270-0": {
+                "vid": "GB270-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB270-1": {
+                "vid": "GB270-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB273": {
+        "pid": "GB273",
+        "pname": "Is there a comparative construction with a standard marker that elsewhere has neither a locational meaning nor a 'surpass/exceed' meaning?",
+        "pvalues": {
+            "GB273-0": {
+                "vid": "GB273-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB273-1": {
+                "vid": "GB273-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB275": {
+        "pid": "GB275",
+        "pname": "Is there a bound comparative degree marker on the property word in a comparative construction?",
+        "pvalues": {
+            "GB275-0": {
+                "vid": "GB275-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB275-1": {
+                "vid": "GB275-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB276": {
+        "pid": "GB276",
+        "pname": "Is there a non-bound comparative degree marker modifying the property word in a comparative construction?",
+        "pvalues": {
+            "GB276-0": {
+                "vid": "GB276-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB276-1": {
+                "vid": "GB276-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB285": {
+        "pid": "GB285",
+        "pname": "Can polar interrogation be marked by a question particle and verbal morphology?",
+        "pvalues": {
+            "GB285-0": {
+                "vid": "GB285-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB285-1": {
+                "vid": "GB285-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB286": {
+        "pid": "GB286",
+        "pname": "Can polar interrogation be indicated by overt verbal morphology only?",
+        "pvalues": {
+            "GB286-0": {
+                "vid": "GB286-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB286-1": {
+                "vid": "GB286-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB291": {
+        "pid": "GB291",
+        "pname": "Can polar interrogation be marked by tone?",
+        "pvalues": {
+            "GB291-0": {
+                "vid": "GB291-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB291-1": {
+                "vid": "GB291-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB296": {
+        "pid": "GB296",
+        "pname": "Is there a phonologically or morphosyntactically definable class of ideophones that includes ideophones depicting imagery beyond sound?",
+        "pvalues": {
+            "GB296-0": {
+                "vid": "GB296-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB296-1": {
+                "vid": "GB296-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB297": {
+        "pid": "GB297",
+        "pname": "Can polar interrogation be indicated by a V-not-V construction?",
+        "pvalues": {
+            "GB297-0": {
+                "vid": "GB297-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB297-1": {
+                "vid": "GB297-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB298": {
+        "pid": "GB298",
+        "pname": "Can standard negation be marked by an inflecting word (\"auxiliary verb\")?",
+        "pvalues": {
+            "GB298-0": {
+                "vid": "GB298-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB298-1": {
+                "vid": "GB298-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB299": {
+        "pid": "GB299",
+        "pname": "Can standard negation be marked by a non-inflecting word (\"auxiliary particle\")?",
+        "pvalues": {
+            "GB299-0": {
+                "vid": "GB299-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB299-1": {
+                "vid": "GB299-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB300": {
+        "pid": "GB300",
+        "pname": "Does the verb for 'give' have suppletive verb forms?",
+        "pvalues": {
+            "GB300-0": {
+                "vid": "GB300-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB300-1": {
+                "vid": "GB300-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB301": {
+        "pid": "GB301",
+        "pname": "Is there an inclusory construction?",
+        "pvalues": {
+            "GB301-0": {
+                "vid": "GB301-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB301-1": {
+                "vid": "GB301-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB302": {
+        "pid": "GB302",
+        "pname": "Is there a phonologically free passive marker (\"particle\" or \"auxiliary\")?",
+        "pvalues": {
+            "GB302-0": {
+                "vid": "GB302-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB302-1": {
+                "vid": "GB302-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB303": {
+        "pid": "GB303",
+        "pname": "Is there a phonologically free antipassive marker (\"particle\" or \"auxiliary\")?",
+        "pvalues": {
+            "GB303-0": {
+                "vid": "GB303-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB303-1": {
+                "vid": "GB303-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB304": {
+        "pid": "GB304",
+        "pname": "Can the agent be expressed overtly in a passive clause?",
+        "pvalues": {
+            "GB304-0": {
+                "vid": "GB304-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB304-1": {
+                "vid": "GB304-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB305": {
+        "pid": "GB305",
+        "pname": "Is there a phonologically independent reflexive pronoun?",
+        "pvalues": {
+            "GB305-0": {
+                "vid": "GB305-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB305-1": {
+                "vid": "GB305-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB306": {
+        "pid": "GB306",
+        "pname": "Is there a phonologically independent non-bipartite reciprocal pronoun?",
+        "pvalues": {
+            "GB306-0": {
+                "vid": "GB306-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB306-1": {
+                "vid": "GB306-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB309": {
+        "pid": "GB309",
+        "pname": "Are there multiple past or multiple future tenses, distinguishing distance from Time of Reference?",
+        "pvalues": {
+            "GB309-0": {
+                "vid": "GB309-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB309-1": {
+                "vid": "GB309-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB312": {
+        "pid": "GB312",
+        "pname": "Is there overt morphological marking on the verb dedicated to mood?",
+        "pvalues": {
+            "GB312-0": {
+                "vid": "GB312-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB312-1": {
+                "vid": "GB312-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB313": {
+        "pid": "GB313",
+        "pname": "Are there special adnominal possessive pronouns that are not formed by an otherwise regular process?",
+        "pvalues": {
+            "GB313-0": {
+                "vid": "GB313-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB313-1": {
+                "vid": "GB313-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB314": {
+        "pid": "GB314",
+        "pname": "Can augmentative meaning be expressed productively by a shift of gender/noun class?",
+        "pvalues": {
+            "GB314-0": {
+                "vid": "GB314-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB314-1": {
+                "vid": "GB314-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB315": {
+        "pid": "GB315",
+        "pname": "Can diminutive meaning be expressed productively by a shift of gender/noun class?",
+        "pvalues": {
+            "GB315-0": {
+                "vid": "GB315-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB315-1": {
+                "vid": "GB315-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB316": {
+        "pid": "GB316",
+        "pname": "Is singular number regularly marked in the noun phrase by a dedicated phonologically free element?",
+        "pvalues": {
+            "GB316-0": {
+                "vid": "GB316-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB316-1": {
+                "vid": "GB316-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB317": {
+        "pid": "GB317",
+        "pname": "Is dual number regularly marked in the noun phrase by a dedicated phonologically free element?",
+        "pvalues": {
+            "GB317-0": {
+                "vid": "GB317-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB317-1": {
+                "vid": "GB317-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB318": {
+        "pid": "GB318",
+        "pname": "Is plural number regularly marked in the noun phrase by a dedicated phonologically free element?",
+        "pvalues": {
+            "GB318-0": {
+                "vid": "GB318-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB318-1": {
+                "vid": "GB318-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB319": {
+        "pid": "GB319",
+        "pname": "Is trial number regularly marked in the noun phrase by a dedicated phonologically free element?",
+        "pvalues": {
+            "GB319-0": {
+                "vid": "GB319-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB319-1": {
+                "vid": "GB319-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB320": {
+        "pid": "GB320",
+        "pname": "Is paucal number regularly marked in the noun phrase by a dedicated phonologically free element?",
+        "pvalues": {
+            "GB320-0": {
+                "vid": "GB320-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB320-1": {
+                "vid": "GB320-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB321": {
+        "pid": "GB321",
+        "pname": "Is there a large class of nouns whose gender/noun class is not phonologically or semantically predictable?",
+        "pvalues": {
+            "GB321-0": {
+                "vid": "GB321-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB321-1": {
+                "vid": "GB321-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB322": {
+        "pid": "GB322",
+        "pname": "Is there grammatical marking of direct evidence (perceived with the senses)?",
+        "pvalues": {
+            "GB322-0": {
+                "vid": "GB322-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB322-1": {
+                "vid": "GB322-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB323": {
+        "pid": "GB323",
+        "pname": "Is there grammatical marking of indirect evidence (hearsay, inference, etc.)?",
+        "pvalues": {
+            "GB323-0": {
+                "vid": "GB323-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB323-1": {
+                "vid": "GB323-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB324": {
+        "pid": "GB324",
+        "pname": "Is there an interrogative verb for content interrogatives (who?, what?, etc.)?",
+        "pvalues": {
+            "GB324-0": {
+                "vid": "GB324-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB324-1": {
+                "vid": "GB324-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB325": {
+        "pid": "GB325",
+        "pname": "Is there a count/mass distinction in interrogative quantifiers?",
+        "pvalues": {
+            "GB325-0": {
+                "vid": "GB325-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB325-1": {
+                "vid": "GB325-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB326": {
+        "pid": "GB326",
+        "pname": "Do (nominal) content interrogatives normally or frequently occur in situ?",
+        "pvalues": {
+            "GB326-0": {
+                "vid": "GB326-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB326-1": {
+                "vid": "GB326-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB327": {
+        "pid": "GB327",
+        "pname": "Can the relative clause follow the noun?",
+        "pvalues": {
+            "GB327-0": {
+                "vid": "GB327-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB327-1": {
+                "vid": "GB327-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB328": {
+        "pid": "GB328",
+        "pname": "Can the relative clause precede the noun?",
+        "pvalues": {
+            "GB328-0": {
+                "vid": "GB328-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB328-1": {
+                "vid": "GB328-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB329": {
+        "pid": "GB329",
+        "pname": "Are there internally-headed relative clauses?",
+        "pvalues": {
+            "GB329-0": {
+                "vid": "GB329-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB329-1": {
+                "vid": "GB329-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB330": {
+        "pid": "GB330",
+        "pname": "Are there correlative relative clauses?",
+        "pvalues": {
+            "GB330-0": {
+                "vid": "GB330-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB330-1": {
+                "vid": "GB330-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB331": {
+        "pid": "GB331",
+        "pname": "Are there non-adjacent relative clauses?",
+        "pvalues": {
+            "GB331-0": {
+                "vid": "GB331-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB331-1": {
+                "vid": "GB331-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB333": {
+        "pid": "GB333",
+        "pname": "Is there a decimal numeral system?",
+        "pvalues": {
+            "GB333-0": {
+                "vid": "GB333-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB333-1": {
+                "vid": "GB333-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB334": {
+        "pid": "GB334",
+        "pname": "Is there synchronic evidence for any element of a quinary numeral system?",
+        "pvalues": {
+            "GB334-0": {
+                "vid": "GB334-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB334-1": {
+                "vid": "GB334-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB335": {
+        "pid": "GB335",
+        "pname": "Is there synchronic evidence for any element of a vigesimal numeral system?",
+        "pvalues": {
+            "GB335-0": {
+                "vid": "GB335-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB335-1": {
+                "vid": "GB335-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB336": {
+        "pid": "GB336",
+        "pname": "Is there a body-part tallying system?",
+        "pvalues": {
+            "GB336-0": {
+                "vid": "GB336-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB336-1": {
+                "vid": "GB336-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB400": {
+        "pid": "GB400",
+        "pname": "Are all person categories neutralized in some voice, tense, aspect, mood and/or negation?",
+        "pvalues": {
+            "GB400-0": {
+                "vid": "GB400-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB400-1": {
+                "vid": "GB400-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB401": {
+        "pid": "GB401",
+        "pname": "Is there a class of patient-labile verbs?",
+        "pvalues": {
+            "GB401-0": {
+                "vid": "GB401-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB401-1": {
+                "vid": "GB401-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB402": {
+        "pid": "GB402",
+        "pname": "Does the verb for 'see' have suppletive verb forms?",
+        "pvalues": {
+            "GB402-0": {
+                "vid": "GB402-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB402-1": {
+                "vid": "GB402-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB403": {
+        "pid": "GB403",
+        "pname": "Does the verb for 'come' have suppletive verb forms?",
+        "pvalues": {
+            "GB403-0": {
+                "vid": "GB403-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB403-1": {
+                "vid": "GB403-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB408": {
+        "pid": "GB408",
+        "pname": "Is there any accusative alignment of flagging?",
+        "pvalues": {
+            "GB408-0": {
+                "vid": "GB408-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB408-1": {
+                "vid": "GB408-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB409": {
+        "pid": "GB409",
+        "pname": "Is there any ergative alignment of flagging?",
+        "pvalues": {
+            "GB409-0": {
+                "vid": "GB409-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB409-1": {
+                "vid": "GB409-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB410": {
+        "pid": "GB410",
+        "pname": "Is there any neutral alignment of flagging?",
+        "pvalues": {
+            "GB410-0": {
+                "vid": "GB410-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB410-1": {
+                "vid": "GB410-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB415": {
+        "pid": "GB415",
+        "pname": "Is there a politeness distinction in 2nd person forms?",
+        "pvalues": {
+            "GB415-0": {
+                "vid": "GB415-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB415-1": {
+                "vid": "GB415-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB421": {
+        "pid": "GB421",
+        "pname": "Is there a preposed complementizer in complements of verbs of thinking and/or knowing?",
+        "pvalues": {
+            "GB421-0": {
+                "vid": "GB421-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB421-1": {
+                "vid": "GB421-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB422": {
+        "pid": "GB422",
+        "pname": "Is there a postposed complementizer in complements of verbs of thinking and/or knowing?",
+        "pvalues": {
+            "GB422-0": {
+                "vid": "GB422-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB422-1": {
+                "vid": "GB422-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB430": {
+        "pid": "GB430",
+        "pname": "Can adnominal possession be marked by a prefix on the possessor?",
+        "pvalues": {
+            "GB430-0": {
+                "vid": "GB430-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB430-1": {
+                "vid": "GB430-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB431": {
+        "pid": "GB431",
+        "pname": "Can adnominal possession be marked by a prefix on the possessed noun?",
+        "pvalues": {
+            "GB431-0": {
+                "vid": "GB431-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB431-1": {
+                "vid": "GB431-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB432": {
+        "pid": "GB432",
+        "pname": "Can adnominal possession be marked by a suffix on the possessor?",
+        "pvalues": {
+            "GB432-0": {
+                "vid": "GB432-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB432-1": {
+                "vid": "GB432-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB433": {
+        "pid": "GB433",
+        "pname": "Can adnominal possession be marked by a suffix on the possessed noun?",
+        "pvalues": {
+            "GB433-0": {
+                "vid": "GB433-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB433-1": {
+                "vid": "GB433-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB519": {
+        "pid": "GB519",
+        "pname": "Can mood be marked by a non-inflecting word (\"auxiliary particle\")?",
+        "pvalues": {
+            "GB519-0": {
+                "vid": "GB519-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB519-1": {
+                "vid": "GB519-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB520": {
+        "pid": "GB520",
+        "pname": "Can aspect be marked by a non-inflecting word (\"auxiliary particle\")?",
+        "pvalues": {
+            "GB520-0": {
+                "vid": "GB520-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB520-1": {
+                "vid": "GB520-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB521": {
+        "pid": "GB521",
+        "pname": "Can tense be marked by a non-inflecting word (\"auxiliary particle\")?",
+        "pvalues": {
+            "GB521-0": {
+                "vid": "GB521-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB521-1": {
+                "vid": "GB521-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    },
+    "GB522": {
+        "pid": "GB522",
+        "pname": "Can the S or A argument be omitted from a pragmatically unmarked clause when the referent is inferrable from context (\"pro-drop\" or \"null anaphora\")?",
+        "pvalues": {
+            "GB522-0": {
+                "vid": "GB522-0",
+                "vcode": "0",
+                "vname": "absent"
+            },
+            "GB522-1": {
+                "vid": "GB522-1",
+                "vcode": "1",
+                "vname": "present"
+            }
+        }
+    }
+}

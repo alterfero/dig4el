@@ -2,7 +2,7 @@ import json
 import os
 import copy
 import random
-from libs import wals_utils as wu
+from libs import wals_utils as wu, grambank_utils as gu
 import math
 import pickle
 
@@ -19,44 +19,77 @@ except FileNotFoundError:
         parameter_pk_by_name_filtered = json.load(f)
 
 # CLASSES
+
+class ConstructionAgent:
+    """ A concstruction agent focuses on a semantic-to-syntaxic process, as determining how a reference to a known object is made,
+    how aspect or negation are expressed. The CA starts from a collection of concepts, that are assembled as being part of the
+    same semantic group, and searches the mechanisms of expression of these concepts."""
+
+
 class LanguageParameter:
-    def __init__(self, parameter_name, priors_language_pk_list = [], verbose=False):
+    def __init__(self, parameter_name, origin="wals", priors_language_pk_list = [], verbose=False):
         self.verbose = verbose
         self.name = parameter_name
+        self.origin = origin
         self.priors_language_pk_list = priors_language_pk_list
         # a locked boolean is used for parameters with known value.
         self.locked = False
         if self.verbose:
             print("Language Parameter {} initialization, verbose is on.".format(self.name))
         # param pk
-        if parameter_name in wu.parameter_pk_by_name:
-            self.parameter_pk = str(wu.parameter_pk_by_name[parameter_name])
-            if verbose:
-                print("LanguageParameter {}: pk = {}".format(self.name, self.parameter_pk))
-        else:
-            self.parameter_pk = "none"
-        # values
-        if self.parameter_pk in domain_elements_pk_by_parameter_pk:
-            self.values = domain_elements_pk_by_parameter_pk[self.parameter_pk]
-        else:
-            self.values = []
+        if self.origin == "wals":
+            if parameter_name in wu.parameter_pk_by_name:
+                self.parameter_pk = str(wu.parameter_pk_by_name[parameter_name])
+                if verbose:
+                    print("WALS LanguageParameter {}: pk = {}".format(self.name, self.parameter_pk))
+            else:
+                self.parameter_pk = "none"
+            # values
+            if self.parameter_pk in domain_elements_pk_by_parameter_pk:
+                self.values = domain_elements_pk_by_parameter_pk[self.parameter_pk]
+                if verbose:
+                    print("WALS LanguageParameter {}: values = {}".format(self.name, self.values))
+            else:
+                self.values = []
+        elif self.origin == "grambank":
+            if parameter_name in gu.grambank_pid_by_pname:
+                self.parameter_pk = str(gu.grambank_pid_by_pname[parameter_name])
+                if verbose:
+                    print("Grambank LanguageParameter {}: pk = {}".format(self.name, self.parameter_pk))
+                # values
+                if self.parameter_pk in gu.grambank_param_value_dict[self.parameter_pk]["pvalues"]:
+                    self.values = list(gu.grambank_param_value_dict[self.parameter_pk]["pvalues"].keys())
+                    if verbose:
+                        print("Grambank LanguageParameter {}: values = {}".format(self.name, self.values))
+            else:
+                parameter_name = None
+                self.values = []
+
         # beliefs
         self.beliefs = {}
         self.beliefs_history = []
         self.observations_inbox = []
         self.message_inbox = {}
 
+    def initialize_beliefs_with_grambank(self):
+        pvalues = gu.grambank_param_value_dict[self.parameter_pk]["pvalues"].keys()
+        #TODO: placeholder here, implement when grambank stats available
+        placeholder_grambank_beliefs = {}
+        pvalues_count = len(pvalues)
+        for pvalue in pvalues:
+            placeholder_grambank_beliefs[pvalue] = 1/pvalues_count
+        self.beliefs = placeholder_grambank_beliefs
+        self.beliefs_history.append(copy.deepcopy(self.beliefs))
+        if self.verbose:
+            print("LanguageParameter {}: Beliefs initialized with Grambank: {}".format(self.name, self.beliefs))
+
     def initialize_beliefs_with_wals(self):
         depks = domain_elements_pk_by_parameter_pk[self.parameter_pk]
         # initialize with statistical priors
-        self.beliefs = wu.compute_param_distribution(self.parameter_pk,
-                                                            self.priors_language_pk_list)
+        self.beliefs = wu.compute_wals_param_distribution(self.parameter_pk, self.priors_language_pk_list)
         self.beliefs_history.append(copy.deepcopy(self.beliefs))
         if self.verbose:
             print("LanguageParameter {}: Beliefs initialized with WALS: {}".format(self.name, self.beliefs))
-            print("beliefs_history of LanguageParameter {} updated by initialize_beliefs_with_wals, length {}".format(self.name, len(self.beliefs_history)))
-            print(self.beliefs_history)
-
 
     def inject_peak_belief(self, depk, probability, locked=False):
         if self.verbose:
@@ -163,35 +196,42 @@ class GeneralAgent:
     """ A general agent looks at a set of parameters independently of constructions.
     by default, all parameters a general agent observe are considered as nodes of a non-directed,
     fully connected graph."""
-    def __init__(self, name, parameter_names=[], connection_map={}, language_stat_filter={}, verbose=False):
+    def __init__(self, name, parameter_names=[], language_stat_filter={}, verbose=False):
         self.verbose = verbose
         if self.verbose:
-            print("General Agent {} initialization, verbose is on.".format(name))
+            print("General Agent {} initialization, verbose is {}.".format(name, verbose))
         self.name = name
         self.language_stat_filters = language_stat_filter
-        self.language_pks_used_for_statistics = []
         # the different parameters the general agent is focusing on
         self.parameter_names = parameter_names
         self.language_parameters = {}
         self.graph = {}
 
-        # populate language_pks_used_for_statistics
-        self.initialize_list_of_language_pks_used_for_statistics()
+        # create language_pks_used_for_statistics
+        self.wals_languages_used_for_statistics = self.initialize_wals_list_of_language_pks_used_for_statistics()
+        self.grambank_languages_used_for_statistics = self.initialize_grambank_list_of_language_pks_used_for_statistics()
 
         # create and initialize instances of LanguageParameters objects
         for parameter_name in self.parameter_names:
             if parameter_name in wu.parameter_pk_by_name:
-                new_language_parameter = LanguageParameter(parameter_name, self.language_pks_used_for_statistics)
+                # This is a WALS parameter
+                new_language_parameter = LanguageParameter(parameter_name, origin="wals", priors_language_pk_list=self.wals_languages_used_for_statistics, verbose=self.verbose)
                 self.language_parameters[parameter_name] = new_language_parameter
                 new_language_parameter.initialize_beliefs_with_wals()
+            elif parameter_name in gu.grambank_pid_by_pname:
+                # This is a Grambank parameter
+                new_language_parameter = LanguageParameter(parameter_name, origin="grambank", priors_language_pk_list=self.grambank_languages_used_for_statistics, verbose=self.verbose)
+                self.language_parameters[parameter_name] = new_language_parameter
+                new_language_parameter.initialize_beliefs_with_grambank()
             else:
+                # unknown/custom parameter, ignored.
+                # TODO: enable custom parameters
                 print("General Agent {}: parameter name {} not in parameter_pk_by_name, discarding.".format(self.name, parameter_name))
-        if verbose:
+        if self.verbose:
             print("General Agent {}: {} instances of LanguageParameter objects initialized.".format(self.name, len(self.language_parameters)))
 
         # initialize graph
-        #creating a unique graph name
-        self.graph_name = "ga_graph_" + str(len(self.language_pks_used_for_statistics)) + "_"
+        self.graph_name = "ga_graph_"
         for p in self.language_parameters:
             self.graph_name += p[-3:] + "_"
         self.initialize_graph()
@@ -217,8 +257,6 @@ class GeneralAgent:
         if alternate_graph != {}:
             self.graph = alternate_graph
         else:
-            if self.verbose:
-                print("No graph {} found, creating it".format(self.graph_name + ".pkl"))
             for language_parameter_name in self.language_parameters.keys():
                 self.graph[language_parameter_name] = {}
                 for lpn in self.language_parameters.keys():
@@ -231,27 +269,36 @@ class GeneralAgent:
         if self.verbose:
             print("Agent {}: Graph initialized.".format(self.name))
 
-    def initialize_list_of_language_pks_used_for_statistics(self):
+    def initialize_grambank_list_of_language_pks_used_for_statistics(self):
+        language_pks_used_for_statistics = []
+        # TODO: Handle language family filter
+        language_pks_used_for_statistics = list(gu.grambank_language_by_lid.keys())
         if self.verbose:
-            print("Agent {}: build_language_pks_used_for_statistics...".format(self.name))
+            print("Agent {}: {} grambank languages used for statistics.".format(self.name,
+                                                                       len(language_pks_used_for_statistics)))
+        return language_pks_used_for_statistics
+
+    def initialize_wals_list_of_language_pks_used_for_statistics(self):
+        language_pks_used_for_statistics = []
         if self.language_stat_filters != {}:
             if "family" in self.language_stat_filters.keys():
                 for f in self.language_stat_filters["family"]:
-                    self.language_pks_used_for_statistics += wu.get_language_pks_by_family(f)
+                    language_pks_used_for_statistics += wu.get_language_pks_by_family(f)
             if "subfamily" in self.language_stat_filters.keys():
                 for f in self.language_stat_filters["subfamily"]:
-                    self.language_pks_used_for_statistics +=  wu.get_language_pks_by_subfamily(f)
+                    language_pks_used_for_statistics +=  wu.get_language_pks_by_subfamily(f)
             if "genus" in self.language_stat_filters.keys():
                 for f in self.language_stat_filters["genus"]:
-                    self.language_pks_used_for_statistics += wu.get_language_pks_by_genus(f)
+                    language_pks_used_for_statistics += wu.get_language_pks_by_genus(f)
             if "macroarea" in self.language_stat_filters.keys():
                 for f in self.language_stat_filters["macroarea"]:
-                    self.language_pks_used_for_statistics += wu.get_language_pks_by_macroarea(f)
-            self.language_pks_used_for_statistics = list(set(self.language_pks_used_for_statistics))
+                    language_pks_used_for_statistics += wu.get_language_pks_by_macroarea(f)
+            language_pks_used_for_statistics = list(set(language_pks_used_for_statistics))
         else:
-            self.language_pks_used_for_statistics = list(wu.language_by_pk.keys())
+            language_pks_used_for_statistics = list(wu.language_by_pk.keys())
         if self.verbose:
-            print("Agent {}: {} languages used for statistics.".format(self.name, len(self.language_pks_used_for_statistics)))
+            print("Agent {}: {} wals languages used for statistics.".format(self.name, len(language_pks_used_for_statistics)))
+        return language_pks_used_for_statistics
 
     def run_belief_update_cycle(self):
         path = self.create_random_propagation_path()
