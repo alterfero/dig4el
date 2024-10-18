@@ -50,6 +50,7 @@ class LanguageParameter:
                 if verbose:
                     print("WALS LanguageParameter {}: values = {}".format(self.name, self.values))
             else:
+                print("parameter origin is supposedly wals but {} not found in wals".format(parameter_name))
                 self.values = []
         elif self.origin == "grambank":
             if parameter_name in gu.grambank_pid_by_pname:
@@ -57,13 +58,16 @@ class LanguageParameter:
                 if verbose:
                     print("Grambank LanguageParameter {}: pk = {}".format(self.name, self.parameter_pk))
                 # values
-                if self.parameter_pk in gu.grambank_param_value_dict[self.parameter_pk]["pvalues"]:
+                if self.parameter_pk in gu.grambank_param_value_dict:
                     self.values = list(gu.grambank_param_value_dict[self.parameter_pk]["pvalues"].keys())
                     if verbose:
                         print("Grambank LanguageParameter {}: values = {}".format(self.name, self.values))
             else:
-                parameter_name = None
+                print("parameter origin is supposedly grambank but {} not found in grambank_pid_by_pname".format(parameter_name))
                 self.values = []
+        else:
+            print("Parameter {} origin undefined, values can't be set.".format(parameter_name))
+            self.values = []
 
         # beliefs
         self.beliefs = {}
@@ -73,12 +77,7 @@ class LanguageParameter:
 
     def initialize_beliefs_with_grambank(self):
         pvalues = gu.grambank_param_value_dict[self.parameter_pk]["pvalues"].keys()
-        #TODO: placeholder here, implement when grambank stats available
-        placeholder_grambank_beliefs = {}
-        pvalues_count = len(pvalues)
-        for pvalue in pvalues:
-            placeholder_grambank_beliefs[pvalue] = 1/pvalues_count
-        self.beliefs = placeholder_grambank_beliefs
+        self.beliefs = gu.compute_grambank_param_distribution(self.parameter_pk, self.priors_language_pk_list)
         self.beliefs_history.append(copy.deepcopy(self.beliefs))
         if self.verbose:
             print("LanguageParameter {}: Beliefs initialized with Grambank: {}".format(self.name, self.beliefs))
@@ -257,15 +256,22 @@ class GeneralAgent:
         if alternate_graph != {}:
             self.graph = alternate_graph
         else:
-            for language_parameter_name in self.language_parameters.keys():
-                self.graph[language_parameter_name] = {}
-                for lpn in self.language_parameters.keys():
-                    if lpn != language_parameter_name:
-                        potential_function = wu.compute_CP_potential_function_from_general_data(
-                            self.language_parameters[language_parameter_name].parameter_pk,
-                            self.language_parameters[lpn].parameter_pk
+            for lpn1 in self.language_parameters.keys():
+                self.graph[lpn1] = {}
+                for lpn2 in self.language_parameters.keys():
+                    # compute only if both wals or grambank
+                    if lpn1 in wu.parameter_pk_by_name.keys() and lpn2 in wu.parameter_pk_by_name.keys() and lpn2 != lpn1:
+                        cp_matrix = wu.compute_wals_cp_matrix_from_general_data(
+                            self.language_parameters[lpn1].parameter_pk,
+                            self.language_parameters[lpn2].parameter_pk
                         )
-                        self.graph[language_parameter_name][lpn] = potential_function
+                        self.graph[lpn1][lpn2] = cp_matrix
+                    elif lpn1 in gu.grambank_pid_by_pname.keys() and lpn2 in gu.grambank_pid_by_pname.keys() and lpn2 != lpn1:
+                        cp_matrix = gu.compute_grambank_cp_matrix_from_general_data(
+                            self.language_parameters[lpn1].parameter_pk,
+                            self.language_parameters[lpn2].parameter_pk
+                        )
+                        self.graph[lpn1][lpn2] = cp_matrix
         if self.verbose:
             print("Agent {}: Graph initialized.".format(self.name))
 
@@ -300,6 +306,12 @@ class GeneralAgent:
             print("Agent {}: {} wals languages used for statistics.".format(self.name, len(language_pks_used_for_statistics)))
         return language_pks_used_for_statistics
 
+    def run_belief_update_from_observations(self):
+        path = self.create_random_propagation_path()
+        # update each parameter's beliefs from observations and neighbors messages
+        for p_name in path:
+            self.language_parameters[p_name].update_beliefs_from_observations()
+
     def run_belief_update_cycle(self):
         path = self.create_random_propagation_path()
         # run messaging round
@@ -313,14 +325,12 @@ class GeneralAgent:
         messages = {}
         path = self.create_random_propagation_path()
         for sender_name in path:
-            for recipient_name in path:
-                if recipient_name != sender_name:
-                    message = self.generate_message(sender_name, recipient_name)
-                    self.language_parameters[recipient_name].message_inbox[sender_name] = message
-                    messages[sender_name + "->" + recipient_name] = message
-                    # if self.verbose:
-                    #     print("Message {}->{}: {}".format(sender_name, recipient_name, message))
-
+            for recipient_name in self.graph[sender_name].keys():
+                message = self.generate_message(sender_name, recipient_name)
+                self.language_parameters[recipient_name].message_inbox[sender_name] = message
+                messages[sender_name + "->" + recipient_name] = message
+                # if self.verbose:
+                #     print("Message {}->{}: {}".format(sender_name, recipient_name, message))
     def create_random_propagation_path(self):
         """ List of parameters indicating the order in which the belief propagation is executed."""
         path = self.parameter_names.copy()
@@ -455,7 +465,7 @@ class GeneralAgent:
             for x_i in x_i_values:
                 # Retrieve values
                 phi_i_xi = phi_i.get(x_i, 0.0)
-                psi_ij = potential.at[int(x_i), int(x_j)]  # Potential value between x_i and x_j
+                psi_ij = potential.at[x_i, x_j]  # Potential value between x_i and x_j
                 prod_msg_xi = product_messages.get(x_i, 1.0)
                 # Compute the term
                 term = phi_i_xi * psi_ij * prod_msg_xi

@@ -14,10 +14,8 @@ st.set_page_config(
 
 # cpt is a dataframe that contains all conditional probabilities between domain_elements (values of parameters).
 
-if "cpt" not in st.session_state:
-    st.session_state["cpt"] =  pd.read_json("./external_data/wals_derived/de_conditional_probability_df.json")
 if "current_cpt" not in st.session_state:
-    st.session_state["current_cpt"] = st.session_state["cpt"]
+    st.session_state["current_cpt"] = wu.cpt
 if "parameter_pk_by_name_filtered" not in st.session_state:
     with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
         st.session_state["parameter_pk_by_name_filtered"] = json.load(f)
@@ -117,7 +115,7 @@ with (st.expander("Explore chains of conditional probabilities associated with a
                 st.session_state["selected_values"].append(available_de_pks[available_de_names.index(selected_value)])
     st.write("Currently selected value(s): **{}**".format(", ".join([wu.get_careful_name_of_de_pk(depk) for depk in st.session_state["selected_values"]])))
     if st.button("Update the graph"):
-        st.session_state["inference_graph"], st.session_state["beliefs"] = pu.inference_graph_from_cpt_with_belief_propagation(st.session_state["cpt"],
+        st.session_state["inference_graph"], st.session_state["beliefs"] = pu.inference_graph_from_cpt_with_belief_propagation(wu.cpt,
                                                                               st.session_state["selected_values"],
                                                                               thr)
 
@@ -214,7 +212,7 @@ with st.expander("Show conditional probability tables between two parameters"):
     p2_de_pk_list = st.session_state["domain_elements_pk_by_parameter_pk"][str(p2_pk)]
 
     # keep only p1 on lines (primary)
-    filtered_cpt = st.session_state["cpt"].loc[p1_de_pk_list]
+    filtered_cpt = wu.cpt.loc[p1_de_pk_list]
     # keep only p2 on columns (secondary)
     filtered_cpt = filtered_cpt[p2_de_pk_list]
 

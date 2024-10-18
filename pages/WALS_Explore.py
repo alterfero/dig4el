@@ -74,34 +74,18 @@ if "parameters" not in st.session_state:
     st.session_state["parameters"] = parameters
     #print("{} parameters: {}".format(len(parameters), parameters[10]))
 
-
-if "parameter_pk_by_name_lookup_table" not in st.session_state:
-    st.session_state["parameter_pk_by_name_lookup_table"] = wu.load_parameter_pk_by_name_lookup_table()
-    print("parameter_pk_by_name_lookup_table loaded")
-
 if "value_by_domain_element_pk_lookup_table" not in st.session_state:
     st.session_state["value_by_domain_element_pk_lookup_table"] = wu.load_value_by_domain_element_pk_lookup_table()
-    print("value_by_domain_element_pk_lookup_table loaded")
-
 if "valueset_by_pk_lookup_table" not in st.session_state:
     st.session_state["valueset_by_pk_lookup_table"] = wu.load_valueset_by_pk_lookup_table()
-    print("valueset_by_pk_lookup_table loaded")
-
 if "language_by_pk_lookup_table" not in st.session_state:
     st.session_state["language_by_pk_lookup_table"] = wu.load_language_by_pk_lookup_table()
-    print("language_by_pk_lookup_table loaded")
-
 if "domain_elements_pk_by_parameter_pk_lookup_table" not in st.session_state:
-    st.session_state["domain_elements_pk_by_parameter_pk_lookup_table"] = wu.build_domain_elements_pk_by_parameter_pk_lookup_table()
-    print("domain_elements_pk_by_parameter_pk_lookup_table loaded")
-
+    st.session_state["domain_elements_pk_by_parameter_pk_lookup_table"] = wu.domain_elements_pk_by_parameter_pk
 if "domain_elements_by_pk_lookup_table" not in st.session_state:
     st.session_state["domain_elements_by_pk_lookup_table"] = wu.load_domain_element_by_pk_lookup_table()
-    print("domain_elements_by_pk_lookup_table loaded")
-
 if "language_info_by_id_lookup_table" not in st.session_state:
     st.session_state["language_info_by_id_lookup_table"] = wu.load_language_info_by_id_lookup_table()
-    print("language_info_by_id_lookup_table loaded")
 
 with st.sidebar:
     st.subheader("DIG4EL")
@@ -142,7 +126,7 @@ with st.expander("Language monography"):
     st.write("Genus: {}".format(language_info["genus"]))
 
     # retrieving language_pk
-    result_dict = wu.get_language_data_by_id(selected_language_id)
+    result_dict = wu.get_wals_language_data_by_id_or_name(selected_language_id)
     st.write("{} parameters with a value for {}.".format(len(result_dict), selected_language_name))
     result_df = pd.DataFrame(result_dict).T
     st.dataframe(result_df)
@@ -162,7 +146,7 @@ with st.expander("Language Diff"):
 
     languages_dict = {}
     for lid in selected_languages_id:
-        languages_dict[lid] = wu.get_language_data_by_id(lid)
+        languages_dict[lid] = wu.get_wals_language_data_by_id_or_name(lid)
     #st.write(languages_dict)
     filtered_languages_dict = filter_differing_parameters(languages_dict)
     st.dataframe(filtered_languages_dict, use_container_width=True)
@@ -197,7 +181,7 @@ with st.expander("Exploration by language and parameter"):
     selected_macroareas = colq.multiselect("macroareas", language_macroareas)
     selected_language_names = colq.multiselect("languages", list(language_id_by_name.keys()))
     colw.markdown("**Select the parameter to observe across these languages.**")
-    selected_param = colw.selectbox("Choose a parameter to observe", st.session_state["parameter_pk_by_name_lookup_table"].keys())
+    selected_param = colw.selectbox("Choose a parameter to observe", wu.parameter_pk_by_name.keys())
 
     if selected_families==[] and selected_subfamilies==[] and selected_macroareas==[] and len(selected_language_names)==1:
         colw.subheader("Language monography")
@@ -231,12 +215,12 @@ with st.expander("Exploration by language and parameter"):
     for l in selected_language_ids:
         current_languages.append(st.session_state["language_info_by_id_lookup_table"][l]["name"])
 
-    param_pk = st.session_state["parameter_pk_by_name_lookup_table"][selected_param]
-    selected_param_domain_element_pks = st.session_state["domain_elements_pk_by_parameter_pk_lookup_table"][param_pk]
+    param_pk = str(wu.parameter_pk_by_name[selected_param])
+    selected_param_domain_element_pks = wu.domain_elements_pk_by_parameter_pk[param_pk]
     result_dict = {}
     # for each domain element, access all existing languages in the selected languages that match this value
     for de_pk in selected_param_domain_element_pks:
-        if str(de_pk) in st.session_state["domain_elements_by_pk_lookup_table"]:
+        if str(de_pk) in wu.domain_element_by_pk:
             de_name = st.session_state["domain_elements_by_pk_lookup_table"][str(de_pk)]["name"]
             result_dict[de_name] = []
             values_pk = [v["pk"] for v in st.session_state["value_by_domain_element_pk_lookup_table"][str(de_pk)]]
@@ -328,9 +312,9 @@ with st.expander("Exploration by parameter and value"):
     for param in st.session_state["parameters"]:
         param_values = []
         #browse values for that parameter
-        for domain_element_pk in st.session_state["domain_elements_pk_by_parameter_pk_lookup_table"][param["pk"]]:
-            if str(domain_element_pk) in st.session_state["domain_elements_by_pk_lookup_table"]:
-                domain_element = st.session_state["domain_elements_by_pk_lookup_table"][str(domain_element_pk)]
+        for domain_element_pk in wu.domain_elements_pk_by_parameter_pk[str(param["pk"])]:
+            if str(domain_element_pk) in wu.domain_element_by_pk:
+                domain_element = wu.domain_element_by_pk[str(domain_element_pk)]
                 corresponding_value_pks = []
                 if str(domain_element_pk) in st.session_state["value_by_domain_element_pk_lookup_table"]:
                     for valueset in st.session_state["value_by_domain_element_pk_lookup_table"][str(domain_element_pk)]:
@@ -358,8 +342,8 @@ with st.expander("Exploration by parameter and value"):
                     domain_element_pk))
         params_dict[param["pk"]] = {"name": param["name"], "param_values": param_values}
 
-    selected_param = st.selectbox("Choose a parameter", st.session_state["parameter_pk_by_name_lookup_table"].keys())
-    selected_param_pk = st.session_state["parameter_pk_by_name_lookup_table"][selected_param]
+    selected_param = st.selectbox("Choose a parameter", wu.parameter_pk_by_name.keys())
+    selected_param_pk = wu.parameter_pk_by_name[selected_param]
     selected_param_recap_dict = {}
     selected_param_proba_distribution = {}
     total_languages = 0

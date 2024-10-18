@@ -54,6 +54,8 @@ try:
     with open("./external_data/wals_derived/language_pk_by_id.json") as f:
         language_pk_by_id = json.load(f)
     cpt = pd.read_json("./external_data/wals_derived/de_conditional_probability_df.json")
+    cpt.index = cpt.index.astype(str)
+    cpt.columns = cpt.columns.astype(str)
 except FileNotFoundError:
     with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
         parameter_pk_by_name = json.load(f)
@@ -90,6 +92,8 @@ except FileNotFoundError:
     with open("../external_data/wals_derived/language_pk_by_id.json") as f:
         language_pk_by_id = json.load(f)
     cpt = pd.read_json("../external_data/wals_derived/de_conditional_probability_df.json")
+    cpt.index = cpt.index.astype(str)
+    cpt.columns = cpt.columns.astype(str)
 
 parameter_name_by_pk = {}
 for name, pk in parameter_pk_by_name.items():
@@ -142,7 +146,7 @@ def get_careful_name_of_de_pk(depk):
     else:
         return(str(depk))
 
-def compute_CP_potential_function_from_general_data(ppk1, ppk2):
+def compute_wals_cp_matrix_from_general_data(ppk1, ppk2):
     """ creates the conditional probability matrix P(ppk2 | ppk1) and returns it as  df"""
     # if rows of extracted cpt samples have only zeros, making impossible a normalization,
     # the values of such rows are changed to uniform distributions, expressing the absence of information.
@@ -158,15 +162,15 @@ def compute_CP_potential_function_from_general_data(ppk1, ppk2):
 
     if str(ppk1) in domain_elements_pk_by_parameter_pk and str(ppk2) in domain_elements_pk_by_parameter_pk:
 
-        p1_de_pk_list = domain_elements_pk_by_parameter_pk[str(ppk1)]
-        p2_de_pk_list = domain_elements_pk_by_parameter_pk[str(ppk2)]
+        p1_de_pk_list = domain_elements_pk_by_parameter_pk[ppk1]
+        p2_de_pk_list = domain_elements_pk_by_parameter_pk[ppk2]
 
         # P2 GIVEN P1 DF
 
         # keep only p1 on lines (primary)
-        filtered_cpt_p2_given_p1 = cpt.loc[p1_de_pk_list]
+        filtered_cpt_p1 = cpt.loc[p1_de_pk_list]
         # keep only p2 on columns (secondary)
-        filtered_cpt_p2_given_p1 = filtered_cpt_p2_given_p1[p2_de_pk_list]
+        filtered_cpt_p2_given_p1 = filtered_cpt_p1[p2_de_pk_list]
         # normalization: all the columns of each row (primary event) should sum up to 1
         filtered_cpt_p2_given_p1_normalized = filtered_cpt_p2_given_p1.apply(normalize_row, axis=1)
 
@@ -456,7 +460,7 @@ def get_available_wals_languages_dict():
     return language_dict
 
 
-def get_language_data_by_id(language_id):
+def get_wals_language_data_by_id_or_name(language_id, language_name=None):
     try:
         with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
             language_by_pk_lookup_table = json.load(f)
@@ -478,12 +482,20 @@ def get_language_data_by_id(language_id):
             parameter_pk_by_name = json.load(f)
         values = u.csv_to_dict("../external_data/wals-master/raw/value.csv")
 
-    language_pk_found = False
-    for pk in language_by_pk_lookup_table.keys():
-        if language_by_pk_lookup_table[pk]["id"] == language_id:
-            selected_language_pk = pk
-            language_pk_found = True
-            break
+    if language_id == None and language_name != None:
+        language_pk_found = False
+        for pk in language_by_pk_lookup_table.keys():
+            if language_by_pk_lookup_table[pk]["name"] == language_name:
+                selected_language_pk = pk
+                language_pk_found = True
+                break
+    else:
+        language_pk_found = False
+        for pk in language_by_pk_lookup_table.keys():
+            if language_by_pk_lookup_table[pk]["id"] == language_id:
+                selected_language_pk = pk
+                language_pk_found = True
+                break
     if language_pk_found:
         valueset_list = []
         vpks = []
@@ -538,16 +550,16 @@ def load_parameter_pk_by_name_lookup_table():
         return build_parameter_pk_by_name_lookup_table()
 
 def build_domain_elements_pk_by_parameter_pk_lookup_table():
-    print("build_domain_element_by_parameter_pk_lookup_table")
-    domain_element = u.csv_to_dict("./external_data/wals-master/raw/domainelement.csv")
+    print("build_domain_element_pk_by_parameter_pk_lookup_table")
+    domain_element = u.csv_to_dict("../external_data/wals-master/raw/domainelement.csv")
     domain_elements_pk_by_parameter_pk_lookup_table = {}
     for entry in domain_element:
         if entry["parameter_pk"] not in domain_elements_pk_by_parameter_pk_lookup_table:
-            domain_elements_pk_by_parameter_pk_lookup_table[entry["parameter_pk"]] = [entry["pk"]]
+            domain_elements_pk_by_parameter_pk_lookup_table[entry["parameter_pk"]] = [str(entry["pk"])]
         else:
-            domain_elements_pk_by_parameter_pk_lookup_table[entry["parameter_pk"]].append(entry["pk"])
+            domain_elements_pk_by_parameter_pk_lookup_table[entry["parameter_pk"]].append(str(entry["pk"]))
     # store the lookup table in a file
-    with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", "w") as f:
+    with open("../external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", "w") as f:
         json.dump(domain_elements_pk_by_parameter_pk_lookup_table, f)
     return domain_elements_pk_by_parameter_pk_lookup_table
 

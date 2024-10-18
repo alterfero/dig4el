@@ -18,6 +18,7 @@ try:
         grambank_pvalues_by_language = json.load(f)
     with open("../external_data/grambank_derived/parameter_id_by_value_id.json", "r") as f:
         parameter_id_by_value_id = json.load(f)
+    cpt = pd.read_json("../external_data/grambank_derived/grambank_vid_conditional_probability.json")
 except FileNotFoundError:
     with open("./external_data/grambank_derived/grambank_pname_by_pid.json", "r") as f:
         grambank_pname_by_pid = json.load(f)
@@ -31,7 +32,82 @@ except FileNotFoundError:
         grambank_pvalues_by_language = json.load(f)
     with open("./external_data/grambank_derived/parameter_id_by_value_id.json", "r") as f:
         parameter_id_by_value_id = json.load(f)
-        
+    cpt = pd.read_json("./external_data/grambank_derived/grambank_vid_conditional_probability.json")
+
+
+def get_grambank_language_data_by_id_or_name(language_id, language_name=None):
+
+    language_id_found = False
+    if language_id is None and language_name is not None:
+        # check if lname is in grambank
+        selected_language_id, language_id_found = next(((lid, True) for lid in grambank_language_by_lid if grambank_language_by_lid[lid]["name"] == language_name), (None, False))
+    elif language_id is not None and language_name is None:
+        language_id_found = language_id in grambank_language_by_lid
+        selected_language_id = language_id
+    if language_id_found:
+        result_dict = {}
+        pvalues = grambank_pvalues_by_language[selected_language_id]
+        for pvalue in pvalues:
+            result_dict[pvalue[:5]] = {
+                "parameter": grambank_pname_by_pid[pvalue[:5]],
+                "value": pvalue,
+                "vid": pvalue,
+            }
+        return result_dict
+    else:
+        print("language id {} not found".format(language_id))
+        return {}
+
+def compute_grambank_cp_matrix_from_general_data(pid1, pid2):
+    """ creates the conditional probability matrix P(ppk2 | ppk1) and returns it as  df"""
+    # if rows of extracted cpt samples have only zeros, making impossible a normalization,
+    # the values of such rows are changed to uniform distributions, expressing the absence of information.
+    def normalize_row(row):
+        row_sum = row.sum()
+        if row_sum == 0:
+            # All values are 0, assign uniform distribution using Pandas
+            return pd.Series([1 / len(row)] * len(row), index=row.index)
+        else:
+            # Normalize the row
+            return row / row_sum
+
+    if pid1 in grambank_param_value_dict and pid2 in grambank_param_value_dict:
+
+        pid1_list = list(grambank_param_value_dict[pid1]["pvalues"].keys())
+        pid2_list = list(grambank_param_value_dict[pid2]["pvalues"].keys())
+
+        # P2 GIVEN P1 DF
+        # keep only p1 on lines (primary)
+        filtered_cpt_p2_given_p1 = cpt.loc[pid1_list]
+        # keep only p2 on columns (secondary)
+        filtered_cpt_p2_given_p1 = filtered_cpt_p2_given_p1[pid2_list]
+        # normalization: all the columns of each row (primary event) should sum up to 1
+        filtered_cpt_p2_given_p1_normalized = filtered_cpt_p2_given_p1.apply(normalize_row, axis=1)
+
+        return filtered_cpt_p2_given_p1_normalized
+    else:
+        # not grambank pids
+        return None
+
+
+def compute_grambank_param_distribution(pid, lids_list=["ALL"]):
+    if lids_list == ["ALL"]:
+        available_lids = list(grambank_language_by_lid.keys())
+    else:
+        available_lids = lids_list
+    vids = list(grambank_param_value_dict[pid]["pvalues"].keys())
+    param_distribution = {key: 0 for key in vids}
+    for lid, pvalues in grambank_pvalues_by_language.items():
+        if lid in available_lids:
+            for pvalue in pvalues:
+                if pvalue in param_distribution.keys():
+                    param_distribution[pvalue] += 1
+    total_count = sum(param_distribution.values())
+    for vid in param_distribution.keys():
+        param_distribution[vid] = param_distribution[vid]/total_count
+    return param_distribution
+
+
         
 def compute_grambank_conditional_de_proba(vid_a, vid_b, filtered_language_lid=[]):
     """
@@ -231,3 +307,16 @@ def build_pid_by_vid():
     with open("../external_data/grambank_derived/parameter_id_by_value_id.json", "w") as f:
         json.dump(pid_by_vid, f, indent=4)
 
+
+def build_vids_by_lid():
+    vids_by_lid = {}
+    with open("../external_data/grambank-1.0.3/cldf/values.csv", "r") as f:
+        dict_reader = csv.DictReader(f)
+        items = [row for row in dict_reader]
+    for item in items:
+        if item["Language_ID"] in vids_by_lid.keys():
+            vids_by_lid[item["Language_ID"]].append(item["Code_ID"])
+        else:
+            vids_by_lid[item["Language_ID"]] = [item["Code_ID"]]
+    with open("../external_data/grambank_derived/pvalue_ids_by_language_id.json", "w") as f:
+        json.dump(vids_by_lid, f, indent=4)
