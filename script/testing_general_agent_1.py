@@ -1,16 +1,16 @@
 from libs import wals_utils as wu
-from libs import agents
+from libs import general_agents
 
 
 def test_general_agent():
-    gawo = agents.GeneralAgent("gawo",
-                               parameter_names=["Order of Subject, Object and Verb",
+    gawo = general_agents.GeneralAgent("gawo",
+                                       parameter_names=["Order of Subject, Object and Verb",
                                                 "Order of Genitive and Noun",
                                                 "Order of Demonstrative and Noun",
                                                 "Order of Adjective and Noun",
                                                 "Order of Numeral and Noun",
                                                 "Order of Relative Clause and Noun"],
-                               language_stat_filter={})
+                                       language_stat_filter={})
     # parameter_name = "Order of Subject, Object and Verb"
     # observations = {'387': 0, '386': 0, '388': 0, '385': 8, '383': 2, '384': 0, '389': 0}
     # gawo.add_observations(parameter_name, observations)

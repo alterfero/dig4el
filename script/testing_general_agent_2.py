@@ -1,5 +1,5 @@
 from libs import wals_utils as wu, grambank_utils as gu
-from libs import agents
+from libs import general_agents
 
 
 gamix = agents.GeneralAgent("gamix",

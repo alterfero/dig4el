@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from libs import utils as u, wals_utils as wu, agents
+from libs import utils as u, wals_utils as wu, general_agents
 import json
 import altair as alt
 
@@ -34,8 +34,8 @@ with st.sidebar:
 st.title("General Agent Gawo example")
 
 if st.session_state["current_ga"] is None:
-    gawo = agents.GeneralAgent("gawo",
-                                   parameter_names=["Order of Subject, Object and Verb",
+    gawo = general_agents.GeneralAgent("gawo",
+                                       parameter_names=["Order of Subject, Object and Verb",
                                                     "Order of Genitive and Noun",
                                                     "Order of Demonstrative and Noun",
                                                     "Order of Adjective and Noun",
@@ -44,7 +44,7 @@ if st.session_state["current_ga"] is None:
                                                     "Order of Negative Morpheme and Verb",
                                                     "Order of Adposition and Noun Phrase",
                                                     "Order of Adverbial Subordinator and Clause"],
-                                   language_stat_filter={})
+                                       language_stat_filter={})
     # language_stat_filter={"family":["Austronesian"]}
     st.session_state["current_ga"] = gawo
 else:

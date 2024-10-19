@@ -16,12 +16,5 @@ import pandas as pd
 # plt.savefig("../tmp_heatmap.png", format="png")
 # plt.show()
 
-def wals_grambank_language_stats():
-    wals_languages = list(wu.language_pk_id_by_name.keys())
-    grambank_languages = [gu.grambank_language_by_lid[k]["name"] for k in gu.grambank_language_by_lid.keys()]
-    full_list = (wals_languages + grambank_languages)
-    lset = set(full_list)
-    print(len(wals_languages), len(grambank_languages), len(lset))
-    print(lset)
 
-wals_grambank_language_stats()
+gu.build_grambank_language_id_by_vid()

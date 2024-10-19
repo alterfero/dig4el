@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from libs import utils as u, wals_utils as wu, agents
+from libs import utils as u, wals_utils as wu, general_agents
 import json
 import random
 import time

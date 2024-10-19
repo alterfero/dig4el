@@ -183,16 +183,6 @@ with st.expander("Exploration by language and parameter"):
     colw.markdown("**Select the parameter to observe across these languages.**")
     selected_param = colw.selectbox("Choose a parameter to observe", wu.parameter_pk_by_name.keys())
 
-    if selected_families==[] and selected_subfamilies==[] and selected_macroareas==[] and len(selected_language_names)==1:
-        colw.subheader("Language monography")
-        language_id = language_id_by_name[selected_language_names[0]]
-        colw.write("id: {}".format(language_id))
-        language_info = st.session_state["language_info_by_id_lookup_table"][language_id]
-        colw.write("Macro area: {}".format(language_info["macroarea"]))
-        colw.write("Family: {}".format(language_info["family"]))
-        colw.write("Subfamily: {}".format(language_info["subfamily"]))
-        colw.write("Genus: {}".format(language_info["genus"]))
-
     selected_language_ids = []
     for language_name in selected_language_names:
         selected_language_ids.append(language_id_by_name[language_name])

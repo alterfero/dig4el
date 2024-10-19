@@ -2,11 +2,11 @@ import copy
 
 import streamlit as st
 import pandas as pd
-from libs import utils as u, wals_utils as wu, agents
+from libs import utils as u, wals_utils as wu, general_agents
 from libs import knowledge_graph_utils as kgu
 from libs import cq_observers as obs
 from exploration import simple_inferences as si
-from libs import agents
+from libs import general_agents
 import json
 import openai
 
@@ -288,9 +288,9 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
         st.write("Launching inferential engine: General Agent")
         st.write("Prior knowledge is based on statistics over all languages.")
     ga_param_name_list = list(topics["Canonical word orders"]["obs"].keys()) + list(topics["Canonical word orders"]["nobs"].keys())
-    st.session_state["ga"] = agents.GeneralAgent("canonical word order",
-                                         parameter_names=ga_param_name_list,
-                                         language_stat_filter={})
+    st.session_state["ga"] = general_agents.GeneralAgent("canonical word order",
+                                                         parameter_names=ga_param_name_list,
+                                                         language_stat_filter={})
     if show_details:
         st.write("Agent created with {} parameters".format(len(st.session_state["ga"].language_parameters)))
         st.write("{} parameters will be locked as known: {}".format(len(st.session_state["tl_knowledge"]["known"]), st.session_state["tl_knowledge"]["known"]))

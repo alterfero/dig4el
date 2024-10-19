@@ -26,6 +26,8 @@ with st.sidebar:
 
 st.page_link("pages/WALS_Explore.py", label="WALS Data", icon=":material/database:")
 
+st.page_link("pages/Grambank_Explore.py", label="Grambank Data", icon=":material/database:")
+
 st.page_link("pages/Conditional_proba_exploration.py", label="Conditional Probabilies", icon=":material/casino:")
 
 st.page_link("pages/General_agent_gawo_example.py", label="General Agent Gawo Example",

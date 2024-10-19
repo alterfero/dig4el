@@ -29,6 +29,45 @@ with st.sidebar:
     st.write("**Explore DIG4EL processes**")
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
+def create_difference_dataframe(languages, use_value=False, all_different=False):
+    """
+    Creates a DataFrame that presents differences between languages.
+    Retains only the parameters that are identical across the languages but with different values.
+
+    Parameters:
+    - languages: list of tuples (language_name, lang_dict)
+    - use_value: if True, use 'value' instead of 'vid' in the DataFrame
+
+    Returns:
+    - A pandas DataFrame showing differing parameters across languages.
+    """
+    # Collect the set of parameter IDs in each language
+    parameter_ids_per_language = [set(lang_dict.keys()) for (lang_name, lang_dict) in languages]
+
+    # Find the set of parameter IDs common to all languages
+    common_parameter_ids = set.intersection(*parameter_ids_per_language)
+
+    # For each common parameter ID, check if the 'vid's differ across languages
+    differing_parameters = []
+    for pid in common_parameter_ids:
+        vids = [lang_dict[pid]['vid'] for (lang_name, lang_dict) in languages]
+        if all_different and len(set(vids)) == len(vids):
+            differing_parameters.append(pid)
+        elif len(set(vids)) > 1:
+            differing_parameters.append(pid)
+
+
+    # Build the DataFrame
+    data = {}
+    for (lang_name, lang_dict) in languages:
+        data[lang_name] = {}
+        for pid in differing_parameters:
+            param_name = lang_dict[pid]['parameter']
+            data[lang_name][param_name] = gu.grambank_vname_by_vid.get(lang_dict[pid]['value'], "")
+
+    df = pd.DataFrame(data)
+    return df
+
 
 st.header("Exploration of Grambank data")
 with st.popover("Credits"):
@@ -61,3 +100,26 @@ with st.expander("Language monography"):
         display_dict[info["parameter"]] = gu.grambank_param_value_dict[pid]["pvalues"][info["value"]]["vname"]
     result_df = pd.DataFrame(display_dict, index=["value"]).T
     st.dataframe(result_df)
+
+with st.expander("Language Diff"):
+    with st.popover("i"):
+        st.markdown("See differences between two languages")
+    selected_languages = st.multiselect("select languages to compare", list(gu.grambank_language_by_lid[lid]["name"] for lid in gu.grambank_language_by_lid.keys()))
+    language_and_data_list = []
+    if len(selected_languages) > 1:
+        for language in selected_languages:
+            result_dict = gu.get_grambank_language_data_by_id_or_name(language_id=None, language_name=language)
+            language_and_data_list.append((language, result_dict))
+        ddf = create_difference_dataframe(language_and_data_list)
+        st.write(ddf)
+
+with st.expander("Browse Grambank parameters and values"):
+    pname_list = list(gu.grambank_pid_by_pname)
+    selected_pname = st.selectbox("Choose a parameter", pname_list)
+    if selected_pname != "":
+        vname_count = []
+        vids = list(gu.grambank_param_value_dict[gu.grambank_pid_by_pname[selected_pname]]["pvalues"].keys())
+        for vid in vids:
+            vname_count.append({"value": gu.grambank_vname_by_vid[vid], "count": len(gu.grambank_language_id_by_vid[vid])})
+        vname_count_df = pd.DataFrame(vname_count)
+        st.dataframe(vname_count_df)
