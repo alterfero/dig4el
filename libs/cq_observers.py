@@ -133,7 +133,6 @@ def observer_order_of_subject_and_verb(transcriptions, language, delimiters, can
     return output_dict
 
 
-
 def observer_order_of_subject_object_verb(transcriptions, language, delimiters, canonical=False):
     output_dict = {
         "ppk": "81",
@@ -466,7 +465,6 @@ def observer_order_of_demonstrative_and_noun(knowledge_graph, language, delimite
                 if pos_dem < pos_noun:
                     output_dict["observations"]["Demonstrative-Noun"]["details"][kg_data["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, kg_data["entry_index"])
                     output_dict["observations"]["Demonstrative-Noun"]["count"] +=1
-                    output_dict["agent-ready observation"]
                 elif pos_dem > pos_noun:
                     output_dict["observations"]["Noun-Demonstrative"]["details"][kg_data["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, kg_data["entry_index"])
                     output_dict["observations"]["Noun-Demonstrative"]["count"] += 1
@@ -479,4 +477,85 @@ def observer_order_of_demonstrative_and_noun(knowledge_graph, language, delimite
 
     return output_dict
 
+
+def observer_order_of_relative_clause_and_noun(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "90",
+        "agent-ready observation": {},
+        "observations": {
+            "Noun-Relative clause": {
+                "depk": "418",
+                "count": 0,
+                "details": {}
+            },
+            "Relative clause-Noun": {
+                "depk": "419",
+                "count": 0,
+                "details": {}
+            },
+            "Internally headed": {
+                "depk": "420",
+                "count": 0,
+                "details": {}
+            },
+            "Correlative": {
+                "depk": "421",
+                "count": 0,
+                "details": {}
+            },
+            "Adjoined": {
+                "depk": "422",
+                "count": 0,
+                "details": {}
+            },
+            "Doubly headed": {
+                "depk": "423",
+                "count": 0,
+                "details": {}
+            },
+            "Mixed": {
+                "depk": "424",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    # retrieve KG items with noun and relative clause
+    key_data = [
+        {"pivot_sentence": "That was an old school that doesn’t exist anymore.",
+         "relative_marker": "Ref_1_object",
+         "head": "school"},
+        {"pivot_sentence": "Here is an old photo album I just found in my parents’ room.",
+         "relative_marker": "PP1SG",
+         "head": "photo album"},
+        {"pivot_sentence": "Last week, my child came back from the forest with some strange fruit I had never seen.",
+         "relative_marker": "PP1SG",
+         "head": "fruit"},
+        {"pivot_sentence": "It must have been these fruits that made you sick.",
+         "relative_marker": "Ref_many_objects",
+         "head": "fruit"}
+    ]
+
+    for item in key_data:
+        kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, item["pivot_sentence"])
+        if kg_data != {}:
+            concept_words_pos = kgu.get_concept_word_pos(knowledge_graph, kg_data["entry_index"], delimiters)
+            print(concept_words_pos)
+            if item["relative_marker"] in concept_words_pos.keys() and item["head"] in concept_words_pos.keys():
+                pos_rel = concept_words_pos[item["relative_marker"]]["pos"]
+                pos_head = concept_words_pos[item["head"]]["pos"]
+                if pos_head < pos_rel:
+                    output_dict["observations"]["Noun-Relative clause"]["details"][kg_data["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, kg_data["entry_index"])
+                    output_dict["observations"]["Noun-Relative clause"]["count"] +=1
+                elif pos_rel > pos_head:
+                    output_dict["observations"]["Relative clause-Noun"]["details"][kg_data["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, kg_data["entry_index"])
+                    output_dict["observations"]["Relative clause-Noun"]["count"] += 1
+
+    # creating agent-ready observation
+    agent_obs = {}
+    for order in output_dict["observations"].keys():
+        agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+    output_dict["agent-ready observation"] = agent_obs
+
+    return output_dict
 

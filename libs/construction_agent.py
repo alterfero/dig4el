@@ -21,3 +21,4 @@ class ConstructionAgent:
         self.concepts = concepts
         self.wals_parameter_names = wals_parameter_names
         self.grambank_parameter_names = grambank_parameter_names
+

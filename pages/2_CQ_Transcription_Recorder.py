@@ -193,6 +193,8 @@ with st.expander("Start a new transcription or edit the header of an existing on
         st.session_state["cq_is_chosen"] = False
 
     st.session_state["recording"]["delimiters"] = st.multiselect("verify and edit word separators if needed", delimiters_bank, default=default_delimiters)
+    st.session_state["delimiters"] = st.session_state["recording"]["delimiters"]
+    st.write("Active delimiters: {}".format(st.session_state["recording"]["delimiters"]))
 
     pl = st.selectbox("Choose a pivot language", available_pivot_languages,
                       index=available_pivot_languages.index(default_pivot_language))
@@ -272,7 +274,7 @@ if st.session_state["cq_is_chosen"]:
     translation_raw = st.text_input("Equivalent in {}".format(st.session_state["target_language"]),
                                 value=translation_default, key=str(st.session_state["counter"]))
     translation = utils.normalize_sentence(translation_raw)
-    segmented_target_sentence = stats.custom_split(translation, st.session_state["delimiters"])
+    segmented_target_sentence = stats.custom_split(translation, st.session_state["recording"]["delimiters"])
 
     # for each base concept, display a multiselect tool to select the word(s) that express (part of) this concept in the target language
     # the word(s) are stored as strings in the json, separated by "...", but must be a list for the multiselect tool to work.

@@ -187,7 +187,6 @@ with (st.expander("Explore chains of conditional probabilities associated with a
           }
         }
         """)
-
         # Generate HTML representation of the graph
         return net.generate_html()
 

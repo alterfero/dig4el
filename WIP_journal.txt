@@ -1,11 +1,4 @@
 TODO
 
-General
-- Create an output that looks like an introduction chapter to key global language parameters,
-as word order and isolative vs agglutinative.
-
-Details
-- Connect available DIG4EL languages with WALS languages.
-- Create a list of grammatical WALS parameters to work with in a file.
-- Use this file to remove all unneeded features when processing WALS data.
+- Connect WALS and Grambank values with a conditional probability table
 

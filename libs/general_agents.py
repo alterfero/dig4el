@@ -253,7 +253,7 @@ class GeneralAgent:
             for lpn1 in self.language_parameters.keys():
                 self.graph[lpn1] = {}
                 for lpn2 in self.language_parameters.keys():
-                    # compute only if both wals or grambank
+                    # add edge and compute only if both wals or grambank
                     if lpn1 in wu.parameter_pk_by_name.keys() and lpn2 in wu.parameter_pk_by_name.keys() and lpn2 != lpn1:
                         cp_matrix = wu.compute_wals_cp_matrix_from_general_data(
                             self.language_parameters[lpn1].parameter_pk,
