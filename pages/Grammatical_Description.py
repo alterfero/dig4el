@@ -372,12 +372,29 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                 net.barnes_hut()
                 # Add nodes with belief values
                 for param_name in ga.graph.keys():
+                    if param_name in st.session_state["tl_knowledge"]["known_wals"]:
+                        col = "blue"
+                        s = 75
+                        prefix = "KNOWN (WALS)"
+                    elif param_name in st.session_state["tl_knowledge"]["known_grambank"]:
+                        col = "pink"
+                        s = 75
+                        prefix = "KNOWN (Grambank)"
+                    elif param_name in st.session_state["tl_knowledge"]["observed"]:
+                        col = "yellow"
+                        s = 50
+                        prefix = "OBSERVED"
+                    else:
+                        col = "grey"
+                        s = 30
+                        prefix = "Inferred"
+
                     net.add_node(
                             n_id=param_name,
-                            label=param_name,
-                            title=gwu.get_palue_name_from_value_code(max(beliefs[param_name], key=beliefs[param_name].get)),
-                            size=50,
-                            color="pink"
+                            label=prefix + "\n" + param_name + "\n" + gwu.get_palue_name_from_value_code(max(beliefs[param_name], key=beliefs[param_name].get)),
+                            title=prefix + "\n" + param_name + "\n" + gwu.get_palue_name_from_value_code(max(beliefs[param_name], key=beliefs[param_name].get)),
+                            size=s,
+                            color=col
                         )
                 # Add edges with probabilities
                 for from_node in ga.graph.keys():
@@ -389,8 +406,8 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                                 value=ga.graph[from_node][to_node].max().max(),
                                 title=ga.graph[from_node][to_node].max().max(),
                                 label=ga.graph[from_node][to_node].max().max(),
-                                color="#00ccff",
-                                arrows='to',
+                                color="#eeeeee",
+                                arrows="",
                                 physics=True
                                 )
                         except:
@@ -414,15 +431,15 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                     "enabled": true,
                     "stabilization": {
                     "enabled": true,
-                    "iterations": 1000,
+                    "iterations": 100,
                     "updateInterval": 25
                     },
                     "barnesHut": {
-                      "gravitationalConstant": -18000,
-                      "centralGravity": 0.7,
-                      "springLength": 1000,
+                      "gravitationalConstant": -8000,
+                      "centralGravity": 0.9,
+                      "springLength": 500,
                       "springConstant": 0.05,
-                      "damping": 0.9,
+                      "damping": 0.5,
                       "avoidOverlap": 1
                     },
                     "minVelocity": 0.75

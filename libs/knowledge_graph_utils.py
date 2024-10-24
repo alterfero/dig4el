@@ -302,7 +302,8 @@ def get_concept_word_pos(kg, entry_index, delimiters):
                 "pos": target_words.index(target_word)
             }
         else:
-            print("target word {} not in {}".format(target_word, target_words))
+            if target_word != "":
+                print("target word {} not in {}".format(target_word, target_words))
     return concept_word_pos
 
 def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):

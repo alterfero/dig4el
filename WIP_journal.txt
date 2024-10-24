@@ -1,4 +1,7 @@
 TODO
 
 - Connect WALS and Grambank values with a conditional probability table
+- Negation words in transcriptions
+- Inteerogative words in transcriptions
+- etc: doubt, likelihood etc.
 

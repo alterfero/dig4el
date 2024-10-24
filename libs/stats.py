@@ -22,10 +22,17 @@ def custom_split(text, delimiters):
     split_text = [word for word in split_text if word]
     # remove spaces around each word
     split_text = [word.strip() for word in split_text]
-    #print("XXXXXXXXXXXX split text: {}".format(split_text))
-    return split_text
-
-    return re.split(pattern, text)
+    # deal with homographs
+    word_counts = defaultdict(int)
+    # Create a new list with unique identifiers
+    unique_words = []
+    for word in split_text:
+        word_counts[word] += 1
+        if word_counts[word] > 1:
+            unique_words.append(f"{word}_{word_counts[word]}")
+        else:
+            unique_words.append(word)
+    return unique_words
 def build_blind_word_stats_from_knowledge_graph(knowledge_graph, delimiters):
     """ takes a knowledge graph, returns a dictionary of all the words with their frequency and the list of the
     10 most frequent preceding and following words with the corresponding probability of transition.

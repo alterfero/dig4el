@@ -254,7 +254,7 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
                     if patient_value != "":
                         is_active_patient = True
                         # is this active agent associated with a word in target language?
-                        if patient_value in transcriptions[entry_index]["recording_data"]["concept_words"] :
+                        if patient_value in transcriptions[entry_index]["recording_data"]["concept_words"]:
                             patient_target = transcriptions[entry_index]["recording_data"]["concept_words"][patient_value]
                             patient_target_list = patient_target.split("...")
                             patient_target_pos_word = patient_target_list[0]
@@ -271,6 +271,9 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
             if is_event:
                 # transitive event with known positions
                 if event_position != -1 and agent_position != -1 and patient_position != -1:
+                    print("index {}, event {} ({}), agent {} ({}), patient {} ({})".format(entry_index+1, event_target, event_position,
+                                                                                          agent_target, agent_position,
+                                                                                           patient_target, patient_position))
                     positions = {
                         'V': event_position,
                         'S': agent_position,
@@ -282,6 +285,7 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
                     order = ''.join([item[0] for item in sorted_order])
 
                     output_dict["observations"][order]["details"][entry_index] = kgu.get_kg_entry_signature(transcriptions, entry_index)
+
 
     for order in output_dict["observations"].keys():
         output_dict["observations"][order]["count"] = len(output_dict["observations"][order]["details"].keys())
