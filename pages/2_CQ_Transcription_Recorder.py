@@ -281,22 +281,25 @@ if st.session_state["cq_is_chosen"]:
     concept_words = {}
     st.write(
         "In this sentence, would you know which word(s) would contribute to the expression the following concepts?")
-    for concept in cq["dialog"][str(st.session_state["counter"])]["concept"]:
+    concept_list = cq["dialog"][str(st.session_state["counter"])]["intent"]
+    concept_list += cq["dialog"][str(st.session_state["counter"])]["predicate"]
+    is_negative_polarity = False
+    for concept, properties in cq["dialog"][str(st.session_state["counter"])]["graph"].items():
+        if concept[-8:] == "POLARITY":
+            if properties["value"] == "NEGATIVE":
+                concept_list.append("Negative Polarity")
+    concept_list += cq["dialog"][str(st.session_state["counter"])]["concept"]
+    for concept in concept_list:
         concept_default = []
-        if concept in concepts_kson.keys():
-            if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
-                if concept in st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"].keys():
-                    target_word_list = utils.listify(st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"][concept])
-                    if all(element in segmented_target_sentence for element in target_word_list):
-                        concept_default = target_word_list
-                else:
-                    st.write("concept {} is in the CQ but not in this recording, it will be ignored".format(concept))
-            else:
-                concept_default = []
-            concept_translation_list = st.multiselect("{} : ".format(concept), segmented_target_sentence, default=concept_default, key=concept+str(st.session_state["counter"]))
-            concept_words[concept] = "...".join(concept_translation_list)
+        if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
+            if concept in st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"].keys():
+                target_word_list = utils.listify(st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"][concept])
+                if all(element in segmented_target_sentence for element in target_word_list):
+                    concept_default = target_word_list
         else:
-            st.write("Concept {} not found in the concept graph".format(concept))
+            concept_default = []
+        concept_translation_list = st.multiselect("{} : ".format(concept), segmented_target_sentence, default=concept_default, key=concept+str(st.session_state["counter"]))
+        concept_words[concept] = "...".join(concept_translation_list)
     comment = st.text_input("Comments/Notes", value=default_comment)
 
     if st.button("Validate sentence"):

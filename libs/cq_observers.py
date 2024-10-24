@@ -271,9 +271,9 @@ def observer_order_of_subject_object_verb(transcriptions, language, delimiters, 
             if is_event:
                 # transitive event with known positions
                 if event_position != -1 and agent_position != -1 and patient_position != -1:
-                    print("index {}, event {} ({}), agent {} ({}), patient {} ({})".format(entry_index+1, event_target, event_position,
-                                                                                          agent_target, agent_position,
-                                                                                           patient_target, patient_position))
+                    #print("index {}, event {} ({}), agent {} ({}), patient {} ({})".format(entry_index+1, event_target, event_position,
+                    #                                                                     agent_target, agent_position,
+                    #                                                                       patient_target, patient_position))
                     positions = {
                         'V': event_position,
                         'S': agent_position,
