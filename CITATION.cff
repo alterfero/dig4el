@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: CHRISTIAN
+    given-names: Sebastien
+    orcid: 0009-0009-2785-5432
+title: "DIG4EL"
+version: 0.1.0
+date-released: 2024-10-29
+url: "https://github.com/alterfero/dig4el"
