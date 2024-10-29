@@ -2,7 +2,7 @@ import json
 import os
 import copy
 import random
-from libs import wals_utils as wu, grambank_utils as gu
+from libs import wals_utils as wu, grambank_utils as gu, grambank_wals_utils as gwu
 import math
 import pickle
 
@@ -243,8 +243,8 @@ class GeneralAgent:
     def initialize_graph(self, alternate_graph={}):
         """ creates the graph between parameters supporting interactions.
         By default, the graph is fully connected. The alternate_graph param can pass another graph to use.
-        The graph is represented by a dict of nodes which values are a dict of other nodes it is connected
-        to, which value is the potential function."""
+        The graph is represented by a dict of nodes. Each Pi node's value is a dict of other Pj nodes it is connected
+        to, each of these nodes with the value (Pj given Pi) matrix."""
         if self.verbose:
             print("Agent {}: initializing graph.")
         if alternate_graph != {}:
@@ -256,16 +256,30 @@ class GeneralAgent:
                     # add edge and compute only if both wals or grambank
                     if lpn1 in wu.parameter_pk_by_name.keys() and lpn2 in wu.parameter_pk_by_name.keys() and lpn2 != lpn1:
                         cp_matrix = wu.compute_wals_cp_matrix_from_general_data(
-                            self.language_parameters[lpn1].parameter_pk,
-                            self.language_parameters[lpn2].parameter_pk
+                            self.language_parameters[lpn2].parameter_pk,
+                            self.language_parameters[lpn1].parameter_pk
                         )
                         self.graph[lpn1][lpn2] = cp_matrix
                     elif lpn1 in gu.grambank_pid_by_pname.keys() and lpn2 in gu.grambank_pid_by_pname.keys() and lpn2 != lpn1:
                         cp_matrix = gu.compute_grambank_cp_matrix_from_general_data(
-                            self.language_parameters[lpn1].parameter_pk,
-                            self.language_parameters[lpn2].parameter_pk
+                            self.language_parameters[lpn2].parameter_pk,
+                            self.language_parameters[lpn1].parameter_pk
                         )
                         self.graph[lpn1][lpn2] = cp_matrix
+
+                    # grambank base node to wals node, value is wals given grambank
+                    elif lpn1 in gu.grambank_pid_by_pname.keys() and lpn2 in wu.parameter_pk_by_name.keys():
+                        cp_matrix = gwu.compute_wals_given_grambank_cp(self.language_parameters[lpn2].parameter_pk,
+                                                                       self.language_parameters[lpn1].parameter_pk)
+                        if cp_matrix is not None:
+                            self.graph[lpn1][lpn2] = cp_matrix
+
+                    # wals given grambank
+                    elif lpn1 in wu.parameter_pk_by_name.keys() and lpn2 in gu.grambank_pid_by_pname.keys():
+                        cp_matrix = gwu.compute_grambank_given_wals_cp(self.language_parameters[lpn2].parameter_pk,
+                                                                       self.language_parameters[lpn1].parameter_pk)
+                        if cp_matrix is not None:
+                            self.graph[lpn1][lpn2] = cp_matrix
         if self.verbose:
             print("Agent {}: Graph initialized.".format(self.name))
 
@@ -426,9 +440,8 @@ class GeneralAgent:
         # Retrieve the parameter objects
         Pi = self.language_parameters[Pi_name]
         Pj = self.language_parameters[Pj_name]
-
         # Get the potential function between Pi and Pj
-        potential = self.graph[Pi_name][Pj_name]  # DataFrame with rows x_i, columns x_j
+        cp_matrix_Pj_given_Pi = self.graph[Pi_name][Pj_name]  # DataFrame with rows x_i, columns x_j
 
         # Get the local evidence (beliefs) at node Pi
         phi_i = Pi.beliefs  # {x_i: probability}
@@ -459,7 +472,7 @@ class GeneralAgent:
             for x_i in x_i_values:
                 # Retrieve values
                 phi_i_xi = phi_i.get(x_i, 0.0)
-                psi_ij = potential.at[x_i, x_j]  # Potential value between x_i and x_j
+                psi_ij = cp_matrix_Pj_given_Pi.at[x_j, x_i]  # Potential value between x_i and x_j
                 prod_msg_xi = product_messages.get(x_i, 1.0)
                 # Compute the term
                 term = phi_i_xi * psi_ij * prod_msg_xi

@@ -59,6 +59,19 @@ if "redacted" not in st.session_state:
 if "obs" not in st.session_state:
     st.session_state["obs"] = {}
 
+topics2 =  {"Canonical word orders": {
+"obs": {
+  "Order of Subject, Object and Verb": "81",
+  "Order of Demonstrative and Noun": "88",
+            },
+"nobs": {
+  "What is the order of numeral and noun in the NP?": "GB024",
+  "What is the order of adnominal demonstrative and noun?": "GB025",
+  "Is the order of core argument (i.e. S/A/P) constituents fixed?": "GB136",
+            }
+        }
+    }
+
 topics = {"Canonical word orders": {
 "obs": {
   "Order of Subject, Object and Verb": "81",
@@ -84,8 +97,6 @@ topics = {"Canonical word orders": {
   "Is a pragmatically unmarked constituent order verb-final for transitive clauses?": "GB133",
   "Is the order of constituents the same in main and subordinate clauses?": "GB134",
   "What is the order of adnominal property word and noun?": "GB193",
-  "What is the order of numeral and noun in the NP?": "GB024",
-  "What is the order of adnominal demonstrative and noun?": "GB025",
   "What is the pragmatically unmarked order of adnominal possessor noun and possessed noun?": "GB065"
             }
         }
@@ -270,11 +281,12 @@ if st.session_state["tl_name"] != "":
 # PROCESSING TRANSCRIPTIONS
 
 if st.session_state["consolidated_transcriptions"] != {}:
-    # oberving svo word order
+
     st.session_state["obs"]["Order of Subject, Object and Verb"] = obs.observer_order_of_subject_object_verb(st.session_state["consolidated_transcriptions"],
-                                                        st.session_state["tl_name"],
-                                                        st.session_state["delimiters"],
-                                                        canonical=True)
+                                                         st.session_state["tl_name"],
+                                                         st.session_state["delimiters"],
+                                                         canonical=True)
+
     st.session_state["obs"]["Order of Subject and Verb"] = obs.observer_order_of_subject_and_verb(st.session_state["consolidated_transcriptions"],
                                                         st.session_state["tl_name"],
                                                         st.session_state["delimiters"],
@@ -363,7 +375,7 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
             beliefs = st.session_state["ga"].get_beliefs()
             for pname in beliefs.keys():
                 max_vcode = max(beliefs[pname], key=beliefs[pname].get)
-                vname = gwu.get_palue_name_from_value_code(max_vcode)
+                vname = gwu.get_pvalue_name_from_value_code(max_vcode)
                 st.write("{}: {}".format(pname, vname))
 
             # GRAPH with pyvis
@@ -374,37 +386,41 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                 for param_name in ga.graph.keys():
                     if param_name in st.session_state["tl_knowledge"]["known_wals"]:
                         col = "blue"
-                        s = 75
+                        s = 30
                         prefix = "KNOWN (WALS)"
                     elif param_name in st.session_state["tl_knowledge"]["known_grambank"]:
                         col = "pink"
-                        s = 75
+                        s = 30
                         prefix = "KNOWN (Grambank)"
                     elif param_name in st.session_state["tl_knowledge"]["observed"]:
                         col = "yellow"
-                        s = 50
+                        s = 20
                         prefix = "OBSERVED"
                     else:
                         col = "grey"
-                        s = 30
+                        s = 10
                         prefix = "Inferred"
 
                     net.add_node(
                             n_id=param_name,
-                            label=prefix + "\n" + param_name + "\n" + gwu.get_palue_name_from_value_code(max(beliefs[param_name], key=beliefs[param_name].get)),
-                            title=prefix + "\n" + param_name + "\n" + gwu.get_palue_name_from_value_code(max(beliefs[param_name], key=beliefs[param_name].get)),
+                            label=prefix + "\n" + param_name + "\n" + gwu.get_pvalue_name_from_value_code(max(beliefs[param_name], key=beliefs[param_name].get)),
+                            title=prefix + "\n" + param_name + "\n" + gwu.get_pvalue_name_from_value_code(max(beliefs[param_name], key=beliefs[param_name].get)),
                             size=s,
                             color=col
                         )
                 # Add edges with probabilities
                 for from_node in ga.graph.keys():
                     for to_node in ga.graph[from_node].keys():
+                        max_cp = ga.graph[from_node][to_node].max().max()
+                        max_row, max_col = ga.graph[from_node][to_node].stack().idxmax()
+                        max_row_name = gwu.get_pvalue_name_from_value_code(max_row)
+                        max_col_name = gwu.get_pvalue_name_from_value_code(max_col)
                         try:
                             net.add_edge(
                                 source=from_node,
                                 to=to_node,
                                 value=ga.graph[from_node][to_node].max().max(),
-                                title=ga.graph[from_node][to_node].max().max(),
+                                title=from_node + "-->" + to_node + "\nMax CP value: " + str(ga.graph[from_node][to_node].max().max()) + " for " + max_row_name + " given " + max_col_name,
                                 label=ga.graph[from_node][to_node].max().max(),
                                 color="#eeeeee",
                                 arrows="",
@@ -425,7 +441,7 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                     "color": {
                       "inherit": true
                     },
-                    "smooth": false
+                    "smooth": true
                   },
                   "physics": {
                     "enabled": true,
@@ -462,7 +478,7 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
     beliefs = st.session_state["ga"].get_beliefs()
     for pname in beliefs.keys():
         max_vcode = max(beliefs[pname], key=beliefs[pname].get)
-        depk_name = gwu.get_palue_name_from_value_code(max_vcode)
+        depk_name = gwu.get_pvalue_name_from_value_code(max_vcode)
         st.session_state["prompt_content"]["canonical word order"][pname] = {
             "main value":depk_name,
             "examples by value": {}

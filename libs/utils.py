@@ -5,11 +5,18 @@ from os.path import isfile, join
 from os import listdir
 import pandas as pd
 
+def normalize_column(column):
+    col_sum = column.sum()
+    if col_sum == 0:
+        # All values are 0, assign a uniform distribution
+        return pd.Series([1 / len(column)] * len(column), index=column.index)
+    else:
+        # Normalize the column
+        return column / col_sum
 
 def csv_to_dict(file_path):
     df = pd.read_csv(file_path)
     return df.to_dict(orient='records')
-
 
 def add_field_to_concept_json(concept_json_file, field_name, field_value):
     """Add a field to a concept json file."""

@@ -3,6 +3,7 @@ import json
 import csv
 import pandas as pd
 import numpy as np
+from libs import utils as u
 
 # GLOBAL VARIABLES
 try:
@@ -74,30 +75,20 @@ def get_grambank_language_data_by_id_or_name(language_id, language_name=None):
         return {}
 
 def compute_grambank_cp_matrix_from_general_data(pid1, pid2):
-    """ creates the conditional probability matrix P(ppk2 | ppk1) and returns it as  df"""
-    # if rows of extracted cpt samples have only zeros, making impossible a normalization,
-    # the values of such rows are changed to uniform distributions, expressing the absence of information.
-    def normalize_row(row):
-        row_sum = row.sum()
-        if row_sum == 0:
-            # All values are 0, assign uniform distribution using Pandas
-            return pd.Series([1 / len(row)] * len(row), index=row.index)
-        else:
-            # Normalize the row
-            return row / row_sum
+    """ creates the conditional probability matrix P(pid1 | pid2) and returns it as  df"""
 
     if pid1 in grambank_param_value_dict and pid2 in grambank_param_value_dict:
 
         pid1_list = list(grambank_param_value_dict[pid1]["pvalues"].keys())
         pid2_list = list(grambank_param_value_dict[pid2]["pvalues"].keys())
 
-        # P2 GIVEN P1 DF
-        # keep only p1 on lines (primary)
-        filtered_cpt_p2_given_p1 = cpt.loc[pid1_list]
-        # keep only p2 on columns (secondary)
-        filtered_cpt_p2_given_p1 = filtered_cpt_p2_given_p1[pid2_list]
+        # P1 GIVEN P2 DF
+        # keep only p1 on rows
+        filtered_cpt_p1 = cpt.loc[pid1_list]
+        # keep only p2 on columns
+        filtered_cpt_p1_given_p2 = filtered_cpt_p1[pid2_list]
         # normalization: all the columns of each row (primary event) should sum up to 1
-        filtered_cpt_p2_given_p1_normalized = filtered_cpt_p2_given_p1.apply(normalize_row, axis=1)
+        filtered_cpt_p2_given_p1_normalized = filtered_cpt_p1_given_p2.apply(u.normalize_column, axis=0)
 
         return filtered_cpt_p2_given_p1_normalized
     else:
@@ -126,8 +117,7 @@ def compute_grambank_param_distribution(pid, lids_list=["ALL"]):
         
 def compute_grambank_conditional_de_proba(vid_a, vid_b, filtered_language_lid=[]):
     """
-    compute the conditional probability of having domain_element_b in a language knowing that we have domain_element a
-    The conditional proba will be computed only with the language pks in the list
+    compute the conditional probability p(vid_a | vid_b)
     """
     total_language_count = len(filtered_language_lid)
     total_observation_count = 0
@@ -146,16 +136,16 @@ def compute_grambank_conditional_de_proba(vid_a, vid_b, filtered_language_lid=[]
             b_count += 1
         if a and b:
             a_and_b_count += 1
-    # P(B|A) = P(A inter B)/P(A)
+    # P(A|B) = P(A inter B)/P(B)
     joint_probability =  a_and_b_count / total_observation_count
-    marginal_probability_a = a_count / total_observation_count
-    if a_count != 0:
-        p_b_knowing_a = a_and_b_count / a_count
+    marginal_probability_b = b_count / total_observation_count
+    if b_count != 0:
+        p_a_given_b = a_and_b_count / b_count
     else:
-        p_b_knowing_a = None
+        p_a_given_b = None
 
-    return {"a": vid_a, "b": vid_b, "p_b_knowing_a": p_b_knowing_a, "a_count":a_count, "b_count":b_count, "a_and_b_count": a_and_b_count,
-            "marginal_proba_a": marginal_probability_a, "joint_probability": joint_probability}
+    return {"a": vid_a, "b": vid_b, "p_a_given_b": p_a_given_b, "a_count":a_count, "b_count":b_count, "a_and_b_count": a_and_b_count,
+            "marginal_proba_b": marginal_probability_b, "joint_probability": joint_probability}
 
 
 def build_grambank_conditional_probability_table(language_filter={}):
@@ -214,9 +204,8 @@ def build_grambank_conditional_probability_table(language_filter={}):
         print("vid {}, {}% total completion".format(vid_a, 100 * c / de_count))
         for vid_b in vid_list:
             proba_dict = compute_grambank_conditional_de_proba(vid_a, vid_b, filtered_language_lid)
-            p_b_knowing_a = proba_dict["p_b_knowing_a"]
-            cpt.at[vid_a, vid_b] = p_b_knowing_a
-            #full_proba_dict[str(vid_a) + " | " + str(vid_b)] = proba_dict
+            p_a_given_b = proba_dict["p_a_given_b"]
+            cpt.at[vid_a, vid_b] = p_a_given_b
 
     output_folder = "../external_data/grambank_derived/"
     output_filename = "grambank_vid_conditional_probability"

@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 import pandas as pd
-from libs import wals_utils as wu, prob_utils as pu
+from libs import utils as u, wals_utils as wu, prob_utils as pu
 from streamlit_agraph import agraph, Node, Edge, Config
 from pyvis.network import Network
 
@@ -202,17 +202,17 @@ with st.expander("Show conditional probability tables between two parameters"):
     with st.popover("i"):
         st.markdown("Select two parameters to see the conditional probability table of the parameter in column given the parameter in row computed across all languages.")
 
-    p2 = st.selectbox("Show the conditional probability of ", parameter_name_list_filtered)
-    p2_pk = st.session_state["parameter_pk_by_name"][str(p2)]
-    p1 = st.selectbox("given", parameter_name_list_filtered)
-    p1_pk = st.session_state["parameter_pk_by_name"][str(p1)]
+    p1 = st.selectbox("Show the conditional probability of ", parameter_name_list_filtered)
+    p1_pk = st.session_state["parameter_pk_by_name"][p1]
+    p2 = st.selectbox("given", parameter_name_list_filtered)
+    p2_pk = st.session_state["parameter_pk_by_name"][p2]
 
-    p1_de_pk_list = st.session_state["domain_elements_pk_by_parameter_pk"][str(p1_pk)]
-    p2_de_pk_list = st.session_state["domain_elements_pk_by_parameter_pk"][str(p2_pk)]
+    p1_de_pk_list = st.session_state["domain_elements_pk_by_parameter_pk"][p1_pk]
+    p2_de_pk_list = st.session_state["domain_elements_pk_by_parameter_pk"][p2_pk]
 
-    # keep only p1 on lines (primary)
+    # keep only p1 on lines
     filtered_cpt = wu.cpt.loc[p1_de_pk_list]
-    # keep only p2 on columns (secondary)
+    # keep only p2 on columns
     filtered_cpt = filtered_cpt[p2_de_pk_list]
 
     # renaming rows
@@ -259,10 +259,10 @@ with st.expander("Show conditional probability tables between two parameters"):
     filtered_cpt = filtered_cpt.rename(columns=new_p2_labels)
 
     # normalization: all the columns of each row (primary event) should sum up to 1
-    filtered_cpt_normalized = filtered_cpt.div(filtered_cpt.sum(axis=1), axis=0)
+    filtered_cpt_normalized = filtered_cpt.apply(u.normalize_column, axis=0)
 
-    st.write("P( {} ) | {}: ".format(p2,p1))
-    st.dataframe(filtered_cpt_normalized.T)
+    st.write("P( {} | {}): ".format(p1,p2))
+    st.dataframe(filtered_cpt_normalized)
 
 
 

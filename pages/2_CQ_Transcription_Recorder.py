@@ -99,6 +99,21 @@ with st.popover("i"):
     st.markdown("""This page allows to record the transcription of Conversational Questionnaires. 
                 You can either start a new transcription or continue working on a DIG4EL transcription you have on your computer. 
                 ***Your inputs will not be saved on the server!*** Make sure you use the 'save' button at the bottom of the page to save the file on your computer (one per Conversational Questionnaire).
+                
+                The interface allows entering each segment in the target language in the 'Equivalent in ...' field.
+                Once entered the equivalent of the segment in the target language, press the return key to enable the concept(s)-word(s) association. 
+                This series of fields allow to match concepts expressed in the segment with word(s) in the target language, a word being a sequence
+                of characters between two spaces/punctuation marks. All the words contributing to a concept can be entered in each field. 
+                - Fields can be left empty.
+                - Multiple words from the drop-down list can be associated with a single concept.
+                - The same word can be associated with several concepts.
+                
+                Regarding concepts:
+                - PPxxx as PP1SG indicates the reference in the segment to humans or humanized entities.
+                - Ref_x_obj indicates the reference in the segment to x non-human objects. 
+                - Wildcards: Wildcards indicate that there is a pointer in the segment to a concept not previously mentioned, as an interrogative word does. 
+                - Pointed by speaker: There is in the segment a pointing action from the speaker, which can be translated into words, as 'this' in English.
+                
                 """)
 
 with st.sidebar:

@@ -2,26 +2,27 @@ from libs import wals_utils as wu, grambank_utils as gu
 from libs import general_agents
 
 
-gamix = agents.GeneralAgent("gamix",
-                               parameter_names=["Are there definite or specific articles?",
-                                                "Are there prenominal articles?",
-                                                "Order of Subject, Object and Verb",
-                                                "Order of Demonstrative and Noun"],
+gamix = general_agents.GeneralAgent("gamix",
+                               parameter_names=["Order of Subject, Object and Verb",
+                                                "Order of Demonstrative and Noun",
+                                                "What is the order of numeral and noun in the NP?",
+                                                "What is the order of adnominal demonstrative and noun?",
+                                                "Is the order of core argument (i.e. S/A/P) constituents fixed?"],
                                language_stat_filter={}, verbose=True)
 
 print("beliefs: ", gamix.get_beliefs())
 
 # OBSERVATIONS
-# # Adding a WALS observation
-# gamix.add_observations("Order of Subject, Object and Verb",
-#                       {'387': 0, '386': 0, '388': 0, '385': 8, '383': 2, '384': 0, '389': 0})
-# gamix.run_belief_update_from_observations()
-# print("beliefs after wals obs: ",gamix.get_beliefs())
-# # Adding a Grambank observation
-# gamix.add_observations("Are there definite or specific articles?",
-#                        {'GB020-0':1, 'GB020-1':5})
-# gamix.run_belief_update_from_observations()
-# print("beliefs after grambank obs: ",gamix.get_beliefs())
+# Adding a WALS observation
+gamix.add_observations("Order of Subject, Object and Verb",
+                      {'387': 0, '386': 0, '388': 0, '385': 8, '383': 2, '384': 0, '389': 0})
+gamix.run_belief_update_from_observations()
+print("beliefs after wals obs: ",gamix.get_beliefs())
+# Adding a Grambank observation
+gamix.add_observations("Are there definite or specific articles?",
+                       {'GB020-0':1, 'GB020-1':5})
+gamix.run_belief_update_from_observations()
+print("beliefs after grambank obs: ",gamix.get_beliefs())
 
 # INJECTION
 # print("Injecting beliefs")

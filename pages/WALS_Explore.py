@@ -337,7 +337,7 @@ with st.expander("Exploration by parameter and value"):
     selected_param_recap_dict = {}
     selected_param_proba_distribution = {}
     total_languages = 0
-    for value in params_dict[selected_param_pk]["param_values"]:
+    for value in params_dict[int(selected_param_pk)]["param_values"]:
         total_languages += len(value["languages"])
         selected_param_recap_dict[value["name"]] = len(value["languages"])
     for value in selected_param_recap_dict:
@@ -351,7 +351,7 @@ with st.expander("Exploration by parameter and value"):
     #st.write(params_dict[selected_param_pk]["param_values"])
     selected_value = st.selectbox("Choose a value", selected_param_recap_dict.keys())
     selected_language_dict = {}
-    for value in params_dict[selected_param_pk]["param_values"]:
+    for value in params_dict[int(selected_param_pk)]["param_values"]:
         if value["name"] == selected_value:
             for item in value["languages"]:
                 language_id = item["language_id"]

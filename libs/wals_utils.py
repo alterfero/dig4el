@@ -147,34 +147,25 @@ def get_careful_name_of_de_pk(depk):
         return(str(depk))
 
 def compute_wals_cp_matrix_from_general_data(ppk1, ppk2):
-    """ creates the conditional probability matrix P(ppk2 | ppk1) and returns it as  df"""
+    """ creates the conditional probability matrix P(p1 | p2) and returns it as  df"""
     # if rows of extracted cpt samples have only zeros, making impossible a normalization,
     # the values of such rows are changed to uniform distributions, expressing the absence of information.
-
-    def normalize_row(row):
-        row_sum = row.sum()
-        if row_sum == 0:
-            # All values are 0, assign uniform distribution using Pandas
-            return pd.Series([1 / len(row)] * len(row), index=row.index)
-        else:
-            # Normalize the row
-            return row / row_sum
 
     if str(ppk1) in domain_elements_pk_by_parameter_pk and str(ppk2) in domain_elements_pk_by_parameter_pk:
 
         p1_de_pk_list = domain_elements_pk_by_parameter_pk[ppk1]
         p2_de_pk_list = domain_elements_pk_by_parameter_pk[ppk2]
 
-        # P2 GIVEN P1 DF
+        # P1 GIVEN P2 DF
 
-        # keep only p1 on lines (primary)
+        # keep only p1 on rows
         filtered_cpt_p1 = cpt.loc[p1_de_pk_list]
-        # keep only p2 on columns (secondary)
-        filtered_cpt_p2_given_p1 = filtered_cpt_p1[p2_de_pk_list]
+        # keep only given p2 on columns
+        filtered_cpt_p1_given_p2 = filtered_cpt_p1[p2_de_pk_list]
         # normalization: all the columns of each row (primary event) should sum up to 1
-        filtered_cpt_p2_given_p1_normalized = filtered_cpt_p2_given_p1.apply(normalize_row, axis=1)
+        filtered_cpt_p1_given_p2_normalized = filtered_cpt_p1_given_p2.apply(u.normalize_column, axis=0)
 
-        return filtered_cpt_p2_given_p1_normalized
+        return filtered_cpt_p1_given_p2_normalized
     else:
         # either wrong or not wals ppk
         return None
@@ -259,11 +250,13 @@ def get_language_pks_by_family(family):
         return language_pk_by_family[family]
     else:
         print("Language family {} not in list of known families".format(family))
+
 def get_language_pks_by_subfamily(subfamily):
     if subfamily in language_pk_by_subfamily:
         return language_pk_by_subfamily[subfamily]
     else:
         print("Language subfamily {} not in list of known subfamilies".format(subfamily))
+
 def get_language_pks_by_genus(genus):
     if genus in language_pk_by_genus:
         return language_pk_by_genus[genus]
@@ -289,8 +282,6 @@ def build_number_of_params_by_language_id():
         print("{} / {}".format(c, n))
     with open("./external_data/wals_derived/n_param_by_language_id.json", "w") as f:
         json.dump(out_dict, f)
-
-
 
 def build_domain_elements_by_language_and_languages_by_domain_element():
     with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
@@ -322,7 +313,7 @@ def build_domain_elements_by_language_and_languages_by_domain_element():
 
 def compute_conditional_de_proba(domain_element_a_pk, domain_element_b_pk, filtered_language_pk=[]):
     """
-    compute the conditional probability of having domain_element_b in a language knowing that we have domain_element a
+    compute the conditional probability P(a | b).
     The conditional proba will be computed only with the language pks in the list
     """
     total_language_count = len(filtered_language_pk)
@@ -343,20 +334,20 @@ def compute_conditional_de_proba(domain_element_a_pk, domain_element_b_pk, filte
             b_count += 1
         if a and b:
             a_and_b_count += 1
-    # P(B|A) = P(A inter B)/P(A)
+    # P(A|B) = P(A inter B)/P(B)
     joint_probability =  a_and_b_count / total_observation_count
-    marginal_probability_a = a_count / total_observation_count
-    if a_count != 0:
-        p_b_knowing_a = a_and_b_count / a_count
+    marginal_probability_b = b_count / total_observation_count
+    if b_count != 0:
+        p_a_given_b = a_and_b_count / b_count
     else:
-        p_b_knowing_a = None
+        p_a_given_b = None
 
-    return {"a": domain_element_a_pk, "b": domain_element_b_pk, "p_b_knowing_a": p_b_knowing_a, "a_count":a_count, "b_count":b_count, "a_and_b_count": a_and_b_count,
-            "marginal_proba_a": marginal_probability_a, "joint_probability": joint_probability}
+    return {"a": domain_element_a_pk, "b": domain_element_b_pk, "p_a_given_b": p_a_given_b, "a_count":a_count, "b_count":b_count, "a_and_b_count": a_and_b_count,
+            "marginal_proba_b": marginal_probability_b, "joint_probability": joint_probability}
 
 def build_conditional_probability_table(filtered_params=True, language_filter={}):
     print("BUILDING D.E. CONDITIONAL PROBABILITY TABLE")
-    """the conditional probability table shows the probability of having value b knowing value a,
+    """the conditional probability table shows the probability of having value a given value b,
     for all pairs of values, by measuring them across all languages where they both appear. 
      the filtered_params argument says if we use a filtered list of parameters
      the language_filter argument is a dict that restricts the languages the cpt is computed on
@@ -364,11 +355,11 @@ def build_conditional_probability_table(filtered_params=True, language_filter={}
 
     # load convenient lookup tables
     if filtered_params:
-        with open ("./external_data/wals_derived/domain_element_by_pk_lookup_table_filtered.json") as f:
+        with open ("../external_data/wals_derived/domain_element_by_pk_lookup_table_filtered.json") as f:
             domain_element_by_pk_lookup_table = json.load(f)
         print("build_conditional_probability_table loaded FILTERED domain element list")
     else:
-        with open ("./external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+        with open ("../external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
             domain_element_by_pk_lookup_table = json.load(f)
         print("build_conditional_probability_table loaded FULL domain element list")
 
@@ -413,16 +404,16 @@ def build_conditional_probability_table(filtered_params=True, language_filter={}
     #populate df
     de_count = len(domain_element_pk_list)
     c = 0
-    for domain_element_a_pk in domain_element_pk_list:
+    for domain_element_1_pk in domain_element_pk_list:
         c += 1
-        print("Domain element {}, {}% total completion".format(domain_element_a_pk, 100 * c / de_count))
-        for domain_element_b_pk in domain_element_pk_list:
-            proba_dict = compute_conditional_de_proba(domain_element_a_pk, domain_element_b_pk, filtered_language_pk)
-            p_b_knowing_a = proba_dict["p_b_knowing_a"]
-            cpt.at[domain_element_a_pk, domain_element_b_pk] = p_b_knowing_a
-            full_proba_dict[str(domain_element_a_pk) + " | " + str(domain_element_b_pk)] = proba_dict
+        print("Domain element {}, {}% total completion".format(domain_element_1_pk, 100 * c / de_count))
+        for domain_element_2_pk in domain_element_pk_list:
+            proba_dict = compute_conditional_de_proba(domain_element_1_pk, domain_element_2_pk, filtered_language_pk)
+            p_1_given_2 = proba_dict["p_a_given_b"]
+            cpt.at[domain_element_1_pk, domain_element_2_pk] = p_1_given_2
+            full_proba_dict[str(domain_element_1_pk) + " | " + str(domain_element_2_pk)] = proba_dict
 
-    output_folder = "./external_data/wals_derived/partial_cpt/"
+    output_folder = "../external_data/wals_derived/partial_cpt/"
     output_filename = "de_conditional_probability"
     if "family" in language_filter.keys():
         output_filename += "_family_" + "-".join(language_filter["family"])
@@ -439,13 +430,6 @@ def build_conditional_probability_table(filtered_params=True, language_filter={}
     cpt.to_json(output_folder + output_filename)
     return cpt
 
-def build_conditional_probability_table_per_subfamily():
-    c = 0
-    for subfamily in language_pk_by_subfamily:
-        c += 1
-        print("Language subfamily {} with {} languages, {} subfamilies/{} completed".format(subfamily, len(language_pk_by_subfamily[subfamily]), c, len(language_pk_by_subfamily)))
-        build_conditional_probability_table(filtered_params=True, language_filter={"subfamily":[subfamily]})
-
 def get_available_wals_languages_dict():
     language_dict = {}
     with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
@@ -458,7 +442,6 @@ def get_available_wals_languages_dict():
     with open("./external_data/wals_derived/language_pk_id_by_name.json", "w") as f:
         json.dump(language_dict, f)
     return language_dict
-
 
 def get_wals_language_data_by_id_or_name(language_id, language_name=None):
     try:
@@ -532,12 +515,12 @@ def get_wals_language_data_by_id_or_name(language_id, language_name=None):
 
 def build_parameter_pk_by_name_lookup_table():
     print("build_parameter_pk_by_name_lookup_table")
-    parameter = u.csv_to_dict("./external_data/wals-master/raw/parameter.csv")
+    parameter = u.csv_to_dict("../external_data/wals-master/raw/parameter.csv")
     parameter_pk_by_name_lookup_table = {}
     for entry in parameter:
-        parameter_pk_by_name_lookup_table[entry["name"]] = entry["pk"]
+        parameter_pk_by_name_lookup_table[entry["name"]] = str(entry["pk"])
     # store the lookup table in a file
-    with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json", "w") as f:
+    with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json", "w") as f:
         json.dump(parameter_pk_by_name_lookup_table, f)
     return parameter_pk_by_name_lookup_table
 
