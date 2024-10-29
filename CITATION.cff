@@ -1,10 +1,21 @@
+```yaml
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-authors:
-  - family-names: CHRISTIAN
-    given-names: Sebastien
-    orcid: 0009-0009-2785-5432
+message: "If you use this software, please cite it using these metadata."
 title: "DIG4EL"
+authors:
+  - family-names: "Christian"
+    given-names: "Sebastien"
+    orcid: "https://orcid.org/0009-0009-2785-5432"
 version: 0.1.0
+doi: 10.5281/zenodo.14009843
 date-released: 2024-10-29
 url: "https://github.com/alterfero/dig4el"
+preferred-citation:
+  type: software
+  authors:
+    - family-names: "CHRISTIAN"
+      given-names: "Sebastien"
+  doi: "10.5281/zenodo.14009843"
+  title: "DIG4EL"
+  year: 2024
+  ```

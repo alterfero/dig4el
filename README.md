@@ -17,8 +17,10 @@ This software is intended for academic and research purposes. If you use this so
   author = {Sebastien CHRISTIAN},
   title = {DIG4EL},
   year = {2024},
-  url = {https://github.com/username/repository},
-  version = {1.0.0}
+  url = {https://github.com/alterfero/dig4el},
+  version = {0.1.0},
+  doi       = {10.5281/zenodo.14009843},
+  url       = {https://doi.org/10.5281/zenodo.14009843}
 }
 ```
 
@@ -71,9 +73,7 @@ Sebastien CHRISTIAN: sebastien.christian@doctorant.upf.pf
 ## Acknowledgment
 
 Many thanks to those who have supported this research effort: Jacques Vernaudon and Alexandre François 
-for their invaluable contributions in conceptualization, supervision, review, and editing, as well as for providing resources in Tahitian and Mwotlap. 
-I am deeply grateful to Marie Teikitohe for her contributions in Marquesan, Takurua Parent in Rapa, Albert Hugues in Mangareva, 
-and Herenui Vanaa and Nati Pita in Paumotu, for sharing resources in their languages. 
+for their invaluable contributions in conceptualization, supervision, review, and editing.
 I would also like to extend special thanks to Mary Walworth, Nick Thieberger, and Vanessa Raffin for their valuable advice 
 and feedback on the features (and bugs) of the software. Lastly, I express my profound gratitude to all community members 
 not specifically mentioned here who generously shared their time, knowledge, languages, and insights, making this work possible.
