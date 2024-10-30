@@ -18,6 +18,7 @@ st.markdown("- Efficient and engaging field data collection methods with Convers
 st.markdown("- The use of accumulated linguistic knowledge from over 2,500 of the world's languages, thanks to the World Atlas of Language Structures (Dryer & Haspelmath,2013)")
 st.markdown("- The intelligence of teaching the grammar of threatened and endangered languages (Vernaudon, 2018).")
 st.markdown("- Original natural language processing (NLP) algorithms leveraging Abstract Meaning Representations, Bayesian networks and Markov Random Fields.")
+
 with st.popover("References", use_container_width=True):
     st.markdown("**Radical Construction Grammar**")
     st.markdown("Croft W. (2001). Radical Construction Grammar. Oxford University Press.")
@@ -36,8 +37,32 @@ with st.popover("References", use_container_width=True):
     st.markdown("DIG4EL is the fruit of the collaboration of Christian Sebastien, PhD student at the University of French Polynesia, "
                 "François Alexandre, Research Director at the French National Center for Scientific Research, and Vernaudon Jacques, "
                 "senior lecturer of Linguistics at the University of French Polynesia. The algorithms and software are designed and developed by Sebastien Christian.")
-
+    st.markdown("""
+    **how to Cite:** 
+    
+    To cite DIG4EL in your research, please use:
+    
+    CHRISTIAN, S. (2024). DIG4EL (v0.1.2). Zenodo. https://doi.org/10.5281/zenodo.14009843
+    For more information, visit:
+    https://github.com/alterfero/dig4el
+    """)
 st.markdown("For any enquiry, contact sebastien.christian@doctorant.upf.pf")
+st.markdown("----------------------------------------------------")
+st.markdown("""
+DIG4EL
+Version 0.1.2
+
+Copyright © 2024 Sebastien Christian,
+Licensed under GNU Affero General Public License v3.0.
+
+If you use this software in your research, please cite:
+- Christian S. (2024). DIG4EL (Version 0.1.2) DOI: 10.5281/zenodo.1400983
+- WALS, instructions at https://wals.info/
+- Grambank, instructions at https://github.com/grambank/grambank/wiki/Citing-grambank
+
+Source code: https://github.com/alterfero/dig4el
+""")
+st.markdown("------------------------------------------------------")
 
 with st.sidebar:
     st.subheader("DIG4EL")
@@ -54,31 +79,3 @@ with st.sidebar:
     st.write("**Explore DIG4EL processes**")
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
-
-# create a list of all available CQs - list all the json files in the CQs folder
-
-# with st.expander("Available Conversational Questionnaires"):
-#     # for each CQ, show how may recordings are available
-#     for cq in cq_json_list:
-#         # determine if there is a folder with the same name as the CQ in ./recordings
-#         if cq[:-5] in listdir(recordings_folder):
-#             st.write("- Conversational Questionnaire **{}** has recordings:".format(cq[:-5]))
-#             available_languages = listdir(recordings_folder + "/" + cq[:-5])
-#             if ".DS_Store" in available_languages:
-#                 available_languages.remove(".DS_Store")
-#             if available_languages is not None:
-#                 for language in available_languages:
-#                     # determine how many recordings are available for each language
-#                     recordings = listdir(join(recordings_folder, cq[:-5], language))
-#                     if ".DS_Store" in recordings:
-#                         recordings.remove(".DS_Store")
-#                     st.write("{} recording(s) in {}".format(len(recordings), language))
-#         else:
-#             st.write("- {} does not have recordings yet".format(cq[:-5]))
-#
-# with st.expander("Statistics on concept graph"):
-#     n_nodes = len(concepts_kson.keys())
-#     n_leaves = len(graphs_utils.get_all_leaves(concepts_kson))
-#     st.write("{} nodes, among which {} leaves".format(n_nodes, n_leaves))
-#
-#

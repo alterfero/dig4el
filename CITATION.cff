@@ -6,7 +6,7 @@ authors:
   - family-names: "Christian"
     given-names: "Sebastien"
     orcid: "https://orcid.org/0009-0009-2785-5432"
-version: 0.1.0
+version: 0.1.2
 doi: 10.5281/zenodo.14009843
 date-released: 2024-10-29
 url: "https://github.com/alterfero/dig4el"

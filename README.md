@@ -6,7 +6,7 @@ Observations are derived from Conversational Questionnaires, as well as prior da
 from the Max Planck Institute. DIG4EL implements a method that is being developed as part the doctoral research of Sebastien CHRISTIAN 
 at the University of French Polynesia, expected to be completed in late 2026. An official public release of the software is anticipated around that time. 
 Until then, this software is available primarily for testing and review purposes and will sustain major changes as the method evolves and
-feddback is received.
+feedback is received.
 
 ## Academic usage
 
