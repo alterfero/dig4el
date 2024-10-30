@@ -10,7 +10,7 @@ st.set_page_config(
 st.header("DIG4EL")
 st.markdown("### Digital Inferential Grammars for Endangered Languages")
 
-st.markdown("DIG4EL is a work-in-progress software designed to support the computer-assisted creation of grammatical learning material "
+st.markdown("DIG4EL is a research software prototype designed to support the computer-assisted creation of grammatical learning material "
             "for endangered languages.")
 st.markdown("The method combines")
 st.markdown("- The thoretical framework of Radical Construction Grammar (Croft, 2001).")
