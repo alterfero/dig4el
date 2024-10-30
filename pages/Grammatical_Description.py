@@ -23,6 +23,8 @@ from libs import general_agents
 import json
 import openai
 from pyvis.network import Network
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -351,6 +353,7 @@ if st.session_state["consolidated_transcriptions"] != {}:
 if st.session_state["known_processed"] and st.session_state["observations_processed"]:
     # RUNNING INFERENCES
     infospot = st.empty()
+
     if show_details:
         st.write("Launching inferential engine: General Agent")
         st.write("Prior knowledge is based on statistics over all languages.")
@@ -358,15 +361,22 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
     st.session_state["ga"] = general_agents.GeneralAgent("canonical word order",
                                                          parameter_names=ga_param_name_list,
                                                          language_stat_filter={})
+    belief_history = {param: [] for param in st.session_state["ga"].language_parameters.keys()}
+    for param in belief_history.keys():
+        belief_history[param].append(st.session_state["ga"].language_parameters[param].beliefs)
     if show_details:
-        st.write("Agent created with {} parameters".format(len(st.session_state["ga"].language_parameters)))
-        st.write("{} parameters will be locked as known: {} {}".format(len(st.session_state["tl_knowledge"]["known_wals"])+len(st.session_state["tl_knowledge"]["known_grambank"]),
-                                                                    st.session_state["tl_knowledge"]["known_wals"], st.session_state["tl_knowledge"]["known_grambank"]))
-        st.write("{} parameters have been observed: {}".format(len(st.session_state["tl_knowledge"]["observed"]), st.session_state["tl_knowledge"]["observed"]))
+        st.write("Agent created with {} parameters, {} known, {} observed.".format(len(st.session_state["ga"].language_parameters),
+                                                                                       len(st.session_state["tl_knowledge"]["known_wals"])+len(st.session_state["tl_knowledge"]["known_grambank"]),
+                                                                                       len(st.session_state["tl_knowledge"]["observed"])))
+        # st.write("{} parameters will be locked as known: {} {}".format(len(st.session_state["tl_knowledge"]["known_wals"])+len(st.session_state["tl_knowledge"]["known_grambank"]),
+        #                                                             st.session_state["tl_knowledge"]["known_wals"], st.session_state["tl_knowledge"]["known_grambank"]))
+        # st.write("{} parameters have been observed: {}".format(len(st.session_state["tl_knowledge"]["observed"]), st.session_state["tl_knowledge"]["observed"]))
         st.write("Injecting Observations")
     for observed_param_name in st.session_state["tl_knowledge"]["observed"]:
         st.session_state["ga"].add_observations(observed_param_name,
                                                 st.session_state["tl_knowledge"]["observed"][observed_param_name])
+    for param in belief_history.keys():
+        belief_history[param].append(st.session_state["ga"].language_parameters[param].beliefs)
     if show_details:
         st.write("Injecting known information")
     for known_p_name in st.session_state["tl_knowledge"]["known_wals_pk"].keys():
@@ -379,111 +389,143 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
         st.write("Running inferences...")
     for i in range(5):
         st.session_state["ga"].run_belief_update_cycle()
+        for param in st.session_state["ga"].language_parameters.keys():
+            belief_history[param].append(st.session_state["ga"].language_parameters[param].beliefs)
 
     if show_details:
         st.markdown("#### Beliefs of the General Agent")
         show_beliefs = st.toggle("Show the inferred beliefs of the general agent")
         if show_beliefs:
-            beliefs = st.session_state["ga"].get_beliefs()
-            for pname in beliefs.keys():
-                max_vcode = max(beliefs[pname], key=beliefs[pname].get)
-                vname = gwu.get_pvalue_name_from_value_code(max_vcode)
-                st.write("{}: {}".format(pname, vname))
+                # Create heatmap with Seaborn
+                # fig, ax = plt.subplots(figsize=(6, 1))
+                # heatmap = sns.heatmap(pdf, annot=True, cmap='YlGnBu', ax=ax, annot_kws={"size": 4})
+                # ax.tick_params(axis='both', labelsize=4)
+                # colorbar = heatmap.collections[0].colorbar
+                # colorbar.ax.tick_params(labelsize=4)  # Color bar label font size
+                # # Display heatmap in Streamlit
+                # st.pyplot(fig)
+                beliefs = st.session_state["ga"].get_beliefs()
+                # for pname in beliefs.keys():
+                #     max_vcode = max(beliefs[pname], key=beliefs[pname].get)
+                #     vname = gwu.get_pvalue_name_from_value_code(max_vcode)
+                #     st.write("{}: {}".format(pname, vname))
 
-            # GRAPH with pyvis
-            def plot_ga_pyvis(ga, beliefs):
-                net = Network(height='800px', width='100%', directed=True)
-                net.barnes_hut()
-                # Add nodes with belief values
-                for param_name in ga.graph.keys():
-                    if param_name in st.session_state["tl_knowledge"]["known_wals"]:
-                        col = "blue"
-                        s = 30
-                        prefix = "KNOWN (WALS)"
-                    elif param_name in st.session_state["tl_knowledge"]["known_grambank"]:
-                        col = "pink"
-                        s = 30
-                        prefix = "KNOWN (Grambank)"
-                    elif param_name in st.session_state["tl_knowledge"]["observed"]:
-                        col = "yellow"
-                        s = 20
-                        prefix = "OBSERVED"
-                    else:
-                        col = "grey"
-                        s = 10
-                        prefix = "Inferred"
+                # GRAPH with pyvis
+                def plot_ga_pyvis(ga, beliefs):
+                    net = Network(height='800px', width='100%', directed=True)
+                    net.barnes_hut()
+                    # Add nodes with belief values
+                    for param_name in ga.graph.keys():
+                        if param_name in st.session_state["tl_knowledge"]["known_wals"]:
+                            col = "blue"
+                            s = 30
+                            prefix = "KNOWN (WALS)"
+                        elif param_name in st.session_state["tl_knowledge"]["known_grambank"]:
+                            col = "pink"
+                            s = 30
+                            prefix = "KNOWN (Grambank)"
+                        elif param_name in st.session_state["tl_knowledge"]["observed"]:
+                            col = "yellow"
+                            s = 20
+                            prefix = "OBSERVED"
+                        else:
+                            col = "grey"
+                            s = 10
+                            prefix = "Inferred"
 
-                    net.add_node(
-                            n_id=param_name,
-                            label=prefix + "\n" + param_name + "\n" + gwu.get_pvalue_name_from_value_code(max(beliefs[param_name], key=beliefs[param_name].get)),
-                            title=prefix + "\n" + param_name + "\n" + gwu.get_pvalue_name_from_value_code(max(beliefs[param_name], key=beliefs[param_name].get)),
-                            size=s,
-                            color=col
-                        )
-                # Add edges with probabilities
-                for from_node in ga.graph.keys():
-                    for to_node in ga.graph[from_node].keys():
-                        max_cp = ga.graph[from_node][to_node].max().max()
-                        max_row, max_col = ga.graph[from_node][to_node].stack().idxmax()
-                        max_row_name = gwu.get_pvalue_name_from_value_code(max_row)
-                        max_col_name = gwu.get_pvalue_name_from_value_code(max_col)
-                        try:
-                            net.add_edge(
-                                source=from_node,
-                                to=to_node,
-                                value=ga.graph[from_node][to_node].max().max(),
-                                title=from_node + "-->" + to_node + "\nMax CP value: " + str(ga.graph[from_node][to_node].max().max()) + " for " + max_row_name + " given " + max_col_name,
-                                label=ga.graph[from_node][to_node].max().max(),
-                                color="#eeeeee",
-                                arrows="",
-                                physics=True
-                                )
-                        except:
-                            print("no node")
+                        net.add_node(
+                                n_id=param_name,
+                                label=prefix,
+                                title=prefix + "\n" + param_name + ":\n" + gwu.get_pvalue_name_from_value_code(max(beliefs[param_name], key=beliefs[param_name].get)),
+                                size=s,
+                                color=col
+                            )
+                    # Add edges with probabilities
+                    for from_node in ga.graph.keys():
+                        for to_node in ga.graph[from_node].keys():
+                            max_cp = ga.graph[from_node][to_node].max().max()
+                            max_row, max_col = ga.graph[from_node][to_node].stack().idxmax()
+                            max_row_name = gwu.get_pvalue_name_from_value_code(max_row)
+                            max_col_name = gwu.get_pvalue_name_from_value_code(max_col)
+                            try:
+                                net.add_edge(
+                                    source=from_node,
+                                    to=to_node,
+                                    value=ga.graph[from_node][to_node].max().max(),
+                                    title=from_node + "-->" + to_node + "\nMax CP value: " + str(ga.graph[from_node][to_node].max().max()) + " for " + max_row_name + " given " + max_col_name,
+                                    label=ga.graph[from_node][to_node].max().max(),
+                                    color="#eeeeee",
+                                    arrows="",
+                                    physics=True
+                                    )
+                            except:
+                                print("no node")
 
-                # Customize physics options for better layout
-                net.set_options("""
-                var options = {
-                  "nodes": {
-                    "font": {
-                      "size": 24
+                    # Customize physics options for better layout
+                    net.set_options("""
+                    var options = {
+                      "nodes": {
+                        "font": {
+                          "size": 16
+                        }
+                      },
+                      "edges": {
+                        "color": {
+                          "inherit": true
+                        },
+                        "smooth": true
+                      },
+                      "physics": {
+                        "enabled": true,
+                        "stabilization": {
+                        "enabled": true,
+                        "iterations": 100,
+                        "updateInterval": 25
+                        },
+                        "barnesHut": {
+                          "gravitationalConstant": -8000,
+                          "centralGravity": 0.9,
+                          "springLength": 500,
+                          "springConstant": 0.05,
+                          "damping": 0.5,
+                          "avoidOverlap": 1
+                        },
+                        "minVelocity": 0.75
+                      }
                     }
-                  },
-                  "edges": {
-                    "color": {
-                      "inherit": true
-                    },
-                    "smooth": true
-                  },
-                  "physics": {
-                    "enabled": true,
-                    "stabilization": {
-                    "enabled": true,
-                    "iterations": 100,
-                    "updateInterval": 25
-                    },
-                    "barnesHut": {
-                      "gravitationalConstant": -8000,
-                      "centralGravity": 0.9,
-                      "springLength": 500,
-                      "springConstant": 0.05,
-                      "damping": 0.5,
-                      "avoidOverlap": 1
-                    },
-                    "minVelocity": 0.75
-                  }
-                }
-                """)
-                # Generate HTML representation of the graph
-                return net.generate_html()
+                    """)
+                    # Generate HTML representation of the graph
+                    return net.generate_html()
 
-            # Generate the PyVis graph HTML
-            html_str = plot_ga_pyvis(st.session_state["ga"], st.session_state["ga"].get_beliefs())
+                # Generate the PyVis graph HTML
+                html_str = plot_ga_pyvis(st.session_state["ga"], st.session_state["ga"].get_beliefs())
 
-            # Display the PyVis graph in Streamlit
-            st.components.v1.html(html_str, height=800, width=1000)
-            #st.write(st.session_state["ga"].graph)
+                # Display the PyVis graph in Streamlit
+                st.components.v1.html(html_str, height=800, width=1000)
+                #st.write(st.session_state["ga"].graph)
 
+                st.write("**beliefs evolution**")
+                for param in belief_history.keys():
+                    if param in st.session_state["tl_knowledge"]["known_wals"]:
+                        origin = "Known"
+                    elif param in st.session_state["tl_knowledge"]["known_grambank"]:
+                        origin = "Known"
+                    elif param in st.session_state["tl_knowledge"]["observed"]:
+                        origin = "Observed"
+                    else:
+                        origin = "Inferred"
+                    if st.session_state["ga"].language_parameters[param].locked:
+                        l = " is locked"
+                    else:
+                        l = ""
+                    st.write(param + "(" + origin + ")" + l)
+
+                    pdf = pd.DataFrame(belief_history[param]).T
+                    renaming_dict = {}
+                    for v in belief_history[param][0].keys():
+                        renaming_dict[v] = gwu.get_pvalue_name_from_value_code(v)
+                    pdf = pdf.rename(index=renaming_dict)
+                    st.dataframe(pdf)
     # LESSSON CONTENT AND PROMPT
 
     #known
