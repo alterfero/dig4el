@@ -14,6 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import streamlit as st
+import os
 import pandas as pd
 from libs import utils as u, wals_utils as wu, general_agents, grambank_utils as gu
 from libs import grambank_wals_utils as gwu
@@ -589,7 +590,13 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
     prompt += "Don't put the '''markdown''' in the output."
 
     if st.button("Create a grammar lesson from these inferences and examples"):
-        openai.api_key = st.secrets["openai_key"]
+        # openai.api_key = os.getenv("OPEN_AI_KEY")
+        # Check if 'OPENAI_API_KEY' is available in st.secrets (i.e., running on Streamlit Cloud)
+        if "OPEN_AI_KEY" in st.secrets:
+            openai.api_key = st.secrets["OPEN_AI_KEY"]
+        else:
+            # Fallback to environment variable for local development
+            openai.api_key = os.getenv("OPEN_AI_KEY")
         #print(openai.models.list())
         response = openai.chat.completions.create(
             model="chatgpt-4o-latest",
