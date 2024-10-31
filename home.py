@@ -13,11 +13,11 @@ st.markdown("### Digital Inferential Grammars for Endangered Languages")
 st.markdown("DIG4EL is a research software prototype designed to support the computer-assisted creation of grammatical learning material "
             "for endangered languages.")
 st.markdown("The method combines")
-st.markdown("- The thoretical framework of Radical Construction Grammar (Croft, 2001).")
-st.markdown("- Efficient and engaging field data collection methods with Conversational Questionnaires (François, 2019).")
-st.markdown("- The use of accumulated linguistic knowledge from over 2,500 of the world's languages, thanks to the World Atlas of Language Structures (Dryer & Haspelmath,2013)")
-st.markdown("- The intelligence of teaching the grammar of threatened and endangered languages (Vernaudon, 2018).")
-st.markdown("- Original natural language processing (NLP) algorithms leveraging Abstract Meaning Representations, Bayesian networks and Markov Random Fields.")
+st.markdown("- The thoretical framework of **Radical Construction Grammar** (Croft, 2001).")
+st.markdown("- Efficient and engaging field data collection methods with **Conversational Questionnaires** (François, 2019).")
+st.markdown("- The use of accumulated linguistic knowledge from over 2,500 of the world's languages, thanks to the **World Atlas of Language Structures** (Dryer & Haspelmath,2013) and **Grambank** (Skyrgård et al., 2023)")
+st.markdown("- The intelligence of **teaching the grammar of threatened and endangered languages** (Vernaudon, 2018).")
+st.markdown("- Original natural language processing (NLP) algorithms leveraging **Abstract Meaning Representations** and **Bayesian networks**.")
 
 with st.popover("References", use_container_width=True):
     st.markdown("**Radical Construction Grammar**")
@@ -48,13 +48,11 @@ with st.popover("References", use_container_width=True):
     To cite DIG4EL in your research, please use:
     
     CHRISTIAN, S. (2024). DIG4EL (v0.1.2). Zenodo. https://doi.org/10.5281/zenodo.14009843
-    For more information, visit:
-    https://github.com/alterfero/dig4el
     """)
 st.markdown("For any enquiry, contact sebastien.christian@doctorant.upf.pf")
 st.markdown("----------------------------------------------------")
 st.markdown("""
-DIG4EL
+DIG4EL prototype 
 Version 0.1.2
 
 Copyright © 2024 Sebastien Christian,

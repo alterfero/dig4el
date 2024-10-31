@@ -29,11 +29,33 @@ if "gb_given_wals_df" not in st.session_state:
     st.session_state["gb_given_wals_df"].index = st.session_state["gb_given_wals_df"].index.astype(str)
     st.session_state["gb_given_wals_df"].columns = st.session_state["gb_given_wals_df"].columns.astype(str)
 
-def normalize_columns(df):
-    for col in df.columns:
-        col_sum = df[col].sum()
-        if col_sum != 0:
-            df[col] = df[col] / col_sum
+
+def normalize_conditional_probabilities(df, row_groups):
+    """
+    Normalize columns in the DataFrame only across specified rows.
+
+    Parameters:
+    - df (pd.DataFrame): The conditional probability DataFrame to normalize.
+    - row_groups (dict): A dictionary where each key is a column label,
+                         and the value is a list of row labels that can have non-zero probabilities.
+
+    Returns:
+    - pd.DataFrame: The normalized DataFrame.
+    """
+    for col, rows in row_groups.items():
+        # Select only the rows in the group for this column
+        subset = df.loc[rows, col]
+
+        # Calculate the sum for the subset
+        subset_sum = subset.sum()
+
+        if subset_sum != 0:
+            # Normalize only the specified rows for this column
+            df.loc[rows, col] = subset / subset_sum
+        else:
+            # If the sum is zero, assign uniform distribution to the specified rows
+            df.loc[rows, col] = 1 / len(rows)
+
     return df
 
 st.subheader("Edit wals-grambank cross CP")
@@ -95,9 +117,15 @@ if st.button("submit"):
     st.rerun()
 
 if st.button("save"):
-    normalized_wals_given_gb_df = normalize_columns(st.session_state["wals_given_gb_df"])
+    # normalization by colums across relevant rows only
+    vid_list = list(gu.grambank_param_value_dict[current_gb_pid]["pvalues"].keys())
+    depk_list = wu.domain_elements_pk_by_parameter_pk[current_wals_param_pk]
+    wals_given_gb_row_groups = {vid:depk_list for vid in vid_list}
+    gb_given_wals_row_groups = {depk:vid_list for depk in depk_list}
+
+    normalized_wals_given_gb_df = normalize_conditional_probabilities(st.session_state["wals_given_gb_df"], wals_given_gb_row_groups)
     normalized_wals_given_gb_df.to_json("./external_data/wals_given_grambank_cpt.json")
-    normalized_gb_given_wals_df = normalize_columns(st.session_state["gb_given_wals_df"])
+    normalized_gb_given_wals_df = normalize_conditional_probabilities(st.session_state["gb_given_wals_df"], gb_given_wals_row_groups)
     normalized_gb_given_wals_df.to_json("./external_data/grambank_given_wals_cpt.json")
     st.write("CP files updated")
 
