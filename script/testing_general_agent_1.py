@@ -23,7 +23,9 @@ def test_general_agent():
         if lp_name in injection_list:
             print("Injecting in {}".format(lp_name))
             # this parameter is considered as observed. Finding its true value
-            true_depk = wu.get_language_data_by_id(lid)[wu.parameter_pk_by_name[lp_name]]["domainelement_pk"]
+            language_data = wu.get_wals_language_data_by_id_or_name(lid)
+            ppk = int(wu.parameter_pk_by_name[lp_name])
+            true_depk = language_data[ppk]["domainelement_pk"]
             print("True value: {}".format(true_depk))
             gawo.language_parameters[lp_name].inject_peak_belief(true_depk, 0.6, locked=False)
             print("Beliefs of LP {} after injection: {}".format(lp_name, gawo.language_parameters[lp_name].beliefs))
