@@ -43,8 +43,8 @@ class LanguageParameter:
         self.verbose = verbose
         self.name = parameter_name
         self.origin = origin
-        self.trust_weight = 1
-        self.incoming_messages_damping_factor = 1
+        self.entropy = 0
+        self.weight = 0.3 # trust is used to weight outgoing messages and damp incoming
         self.priors_language_pk_list = priors_language_pk_list
         # a locked boolean is used for parameters with known value.
         self.locked = False
@@ -92,8 +92,24 @@ class LanguageParameter:
         self.observations_inbox = []
         self.message_inbox = {}
 
+    def update_entropy(self):
+        entropy = -sum(p * math.log(p) for p in self.beliefs.values() if p > 0)
+        norm_factor = math.log(len(self.beliefs.keys()))
+        self.entropy = entropy/norm_factor
+
+    def update_weight_with_entropy(self):
+        min_entropy = 0
+        max_entropy = math.log(len(self.beliefs.keys()))
+        weight = 1 - (self.entropy - min_entropy) / (max_entropy - min_entropy)
+        weight = max(0.0, min(1.0, weight))  # Ensure weight is between 0 and 1
+        self.weight =  weight
+
+    def update_weight_from_observations(self):
+        self.weight = max(self.beliefs.values())
+
     def get_winning_belief_code(self):
         return sorted(self.beliefs.keys(), key=self.beliefs.get, reverse=True)[0]
+
     def get_winning_belief_name(self):
         return gwu.get_pvalue_name_from_value_code(sorted(self.beliefs.keys(), key=self.beliefs.get, reverse=True)[0])
 
@@ -101,6 +117,7 @@ class LanguageParameter:
         pvalues = gu.grambank_param_value_dict[self.parameter_pk]["pvalues"].keys()
         self.beliefs = gu.compute_grambank_param_distribution(self.parameter_pk, self.priors_language_pk_list)
         self.beliefs_history.append(copy.deepcopy(self.beliefs))
+        self.update_entropy()
         if self.verbose:
             print("LanguageParameter {}: Beliefs initialized with Grambank: {}".format(self.name, self.beliefs))
 
@@ -109,6 +126,7 @@ class LanguageParameter:
         # initialize with statistical priors
         self.beliefs = wu.compute_wals_param_distribution(self.parameter_pk, self.priors_language_pk_list)
         self.beliefs_history.append(copy.deepcopy(self.beliefs))
+        self.update_entropy()
         if self.verbose:
             print("LanguageParameter {}: Beliefs initialized with WALS: {}".format(self.name, self.beliefs))
 
@@ -128,6 +146,7 @@ class LanguageParameter:
             self.locked = True
         #print("updated belief after injection", self.beliefs)
         self.beliefs_history.append(copy.deepcopy(self.beliefs))
+        self.update_entropy()
         # if self.verbose:
         #     print("LanguageParameter {}: beliefs_history updated by inject_peak_belief, length {}.".format(self.name, len(self.beliefs_history)))
         #     print(self.beliefs_history)
@@ -211,6 +230,7 @@ class LanguageParameter:
                                                                                                                ))
             self.observations_inbox = []
             self.beliefs_history.append(copy.deepcopy(self.beliefs))
+            self.update_entropy()
 
 # ************************************************************************
 
@@ -418,12 +438,14 @@ class GeneralAgent:
         if parameter_name in self.language_parameters.keys():
             self.language_parameters[parameter_name].observations_inbox.append(observations)
 
-    def update_beliefs_from_messages_received(self, parameter_name, verbose=False):
+    def update_beliefs_from_messages_received(self, parameter_name, damping_factor=0.5, verbose=False):
         """
-        Updates the beliefs of a parameter based on messages received from neighbors.
+        Updates the beliefs of a parameter based on messages received from neighbors,
+        incorporating a damping factor.
 
         Parameters:
         - parameter_name: Name of the parameter (node) to update.
+        - damping_factor: Damping factor alpha (default is 0.5).
 
         Returns:
         - None (the function updates the beliefs in place).
@@ -434,21 +456,20 @@ class GeneralAgent:
         # Retrieve the parameter object
         P = self.language_parameters[parameter_name]
 
-        # update beliefs only if the parameter is not locked
-        if P.locked is False:
+        # Update beliefs only if the parameter is not locked
+        if not P.locked:
 
             # Get the messages from neighbors
             message_inbox = P.message_inbox  # {neighbor_name: message_dict}
 
-            # Initialize new beliefs
-            new_beliefs = {}
-
-            # Get the possible values of x_i
+            # Initialize variables
             x_i_values = P.beliefs.keys()
+            computed_beliefs = {}
 
             for x_i in x_i_values:
-                # Start with local evidence
-                belief = P.beliefs.get(x_i, 1.0)  # Default to 1.0 if local evidence is missing
+                # Start with current belief as the prior
+                prior_belief = P.beliefs.get(x_i, 1.0 / len(x_i_values))  # Default to uniform if missing
+                belief = prior_belief  # Use the current belief as the starting point
 
                 # Multiply by messages from all neighbors
                 for neighbor_name, message in message_inbox.items():
@@ -456,36 +477,61 @@ class GeneralAgent:
                     m_value = m_neighbor_to_P.get(x_i, 1.0)  # Default to 1.0 if message value is missing
                     belief *= m_value
 
-                new_beliefs[x_i] = belief
+                computed_beliefs[x_i] = belief
 
-            # Normalize the beliefs
-            total_belief = sum(new_beliefs.values())
+            # Normalize the computed beliefs
+            total_belief = sum(computed_beliefs.values())
             if total_belief > 0:
                 for x_i in x_i_values:
-                    new_beliefs[x_i] /= total_belief
+                    computed_beliefs[x_i] /= total_belief
             else:
                 # Handle zero total by assigning uniform probabilities
                 num_values = len(x_i_values)
                 if num_values > 0:
                     uniform_prob = 1.0 / num_values
                     for x_i in x_i_values:
-                        new_beliefs[x_i] = uniform_prob
+                        computed_beliefs[x_i] = uniform_prob
+
+            # Apply the damping factor
+            damped_beliefs = {}
+            for x_i in x_i_values:
+                old_belief = P.beliefs.get(x_i, 1.0 / len(x_i_values))  # Default to uniform if missing
+                new_belief = computed_beliefs[x_i]
+                damped_belief = damping_factor * old_belief + (1 - damping_factor) * new_belief
+                damped_beliefs[x_i] = damped_belief
+
+            # Normalize the damped beliefs
+            total_damped_belief = sum(damped_beliefs.values())
+            if total_damped_belief > 0:
+                for x_i in x_i_values:
+                    damped_beliefs[x_i] /= total_damped_belief
+            else:
+                # Handle zero total by assigning uniform probabilities
+                num_values = len(x_i_values)
+                if num_values > 0:
+                    uniform_prob = 1.0 / num_values
+                    for x_i in x_i_values:
+                        damped_beliefs[x_i] = uniform_prob
 
             # Update the beliefs in the parameter object
-            P.beliefs = new_beliefs
+            P.beliefs = damped_beliefs
             P.beliefs_history.append(copy.deepcopy(P.beliefs))
+            P.update_entropy()
             if verbose:
-                print("Agent {}: belief of parameter {} updated)".format(self.name, parameter_name))
+                print(
+                    "Agent {}: belief of parameter {} updated with damping factor {}".format(self.name, parameter_name,
+                                                                                             damping_factor))
                 print("New belief: {}".format(self.language_parameters[parameter_name].beliefs))
 
         else:
             if verbose:
-                print("Agent {}: parameter {} is locked and will not be updated by messages.".format(self.name, parameter_name))
-
+                print("Agent {}: parameter {} is locked and will not be updated by messages.".format(self.name,
+                                                                                                     parameter_name))
 
     def generate_message(self, Pi_name, Pj_name, verbose=False):
         """
-        Generates the message from parameter Pi to parameter Pj using belief propagation.
+        Generates the message from parameter Pi to parameter Pj using belief propagation,
+        incorporating a weighting parameter for the sender node Pi.
 
         Parameters:
         - Pi_name: Name of the sender parameter (node).
@@ -500,10 +546,11 @@ class GeneralAgent:
         # Retrieve the parameter objects
         Pi = self.language_parameters[Pi_name]
         Pj = self.language_parameters[Pj_name]
-        # Get the potential function between Pi and Pj
-        cp_matrix_Pj_given_Pi = self.graph[Pi_name][Pj_name]  # DataFrame with rows x_i, columns x_j
 
-        # Get the local evidence (beliefs) at node Pi
+        # Get the potential function between Pi and Pj
+        cp_matrix_Pj_given_Pi = self.graph[Pi_name][Pj_name]  # DataFrame with rows x_j, columns x_i
+
+        # Get the local beliefs at node Pi
         phi_i = Pi.beliefs  # {x_i: probability}
 
         # Get neighbors of Pi excluding Pj
@@ -538,6 +585,14 @@ class GeneralAgent:
                 term = phi_i_xi * psi_ij * prod_msg_xi
                 total += term
             message_Pi_to_Pj[x_j] = total
+
+        # **Incorporate the weighting parameter**
+        # Retrieve the weight of node Pi
+        weight_Pi = Pi.weight  # Assuming that Pi has an attribute 'weight'
+
+        # Multiply the entire message by the weight
+        for x_j in x_j_values:
+            message_Pi_to_Pj[x_j] *= weight_Pi
 
         # Normalize the message
         total_message = sum(message_Pi_to_Pj.values())
