@@ -47,6 +47,7 @@ pandas==2.1.1
 parso==0.8.4
 pexpect==4.9.0
 Pillow==10.1.0
+plotly==5.24.1
 prompt_toolkit==3.0.48
 protobuf==4.24.4
 ptyprocess==0.7.0
