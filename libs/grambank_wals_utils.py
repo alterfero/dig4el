@@ -103,6 +103,7 @@ def get_pvalue_name_from_value_code(code):
     else:
         return wu.get_careful_name_of_de_pk(code)
 
+
 def get_language_family_by_language_name(lname):
     if lname in wu.language_pk_id_by_name.keys():
         lid = wu.language_pk_id_by_name[lname]["id"]
@@ -117,12 +118,13 @@ def get_language_family_by_language_name(lname):
             return None
 
 
-
 def build_wals_given_grambank_cpt_df():
     wals_cpt = wu.cpt
     grambank_cpt = gu.cpt
     wals_given_grambank_cpt = pd.DataFrame(float(0), index=wals_cpt.index, columns=grambank_cpt.columns)
     wals_given_grambank_cpt.to_json("../external_data/wals_given_grambank_cpt.json")
+
+
 def build_grambank_given_wals_cpt_df():
     wals_cpt = wu.cpt
     grambank_cpt = gu.cpt

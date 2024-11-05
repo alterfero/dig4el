@@ -304,11 +304,11 @@ if len(st.session_state["ga_domains"]) > 0:
         for pn in ga_param_name_list:
           agent_name += pn[0] + random.sample(vowels, 1)[0]
         if st.session_state["language_family_filter"] == "ALL":
-          st.session_state["current_ga"] = agents.GeneralAgent(agent_name + str(time.time())[-3:],
+          st.session_state["current_ga"] = general_agents.GeneralAgent(agent_name + str(time.time())[-3:],
                                      parameter_names=ga_param_name_list,
                                      language_stat_filter={})
         else:
-          st.session_state["current_ga"] = agents.GeneralAgent(agent_name + str(time.time())[-3:],
+          st.session_state["current_ga"] = general_agents.GeneralAgent(agent_name + str(time.time())[-3:],
                                                                parameter_names=ga_param_name_list,
                                                                language_stat_filter={"family":[st.session_state["language_family_filter"]]})
         st.write("General Agent created")
@@ -336,7 +336,9 @@ if len(st.session_state["ga_domains"]) > 0:
           for lp_name in st.session_state["current_ga"].language_parameters.keys():
             if lp_name in st.session_state["observed_params_name"]:
               # this parameter is considered as observed. Finding its true value
-              true_depk = wu.get_language_data_by_id(lid)[wu.parameter_pk_by_name[lp_name]]["domainelement_pk"]
+              language_data = wu.get_wals_language_data_by_id_or_name(lid)
+              ppk = int(wu.parameter_pk_by_name[lp_name])
+              true_depk = language_data[ppk]["domainelement_pk"]
               st.session_state["current_ga"].language_parameters[lp_name].inject_peak_belief(true_depk, st.session_state["prob_obs"], locked=True)
           st.session_state["peak_beliefs_injected"] = True
 
@@ -346,7 +348,9 @@ if len(st.session_state["ga_domains"]) > 0:
         if st.session_state["expected_beliefs"] == {}:
           for lpn in st.session_state["current_ga"].language_parameters.keys():
             st.session_state["expected_beliefs"][lpn] = {}
-            true_depk = wu.get_language_data_by_id(lid)[wu.parameter_pk_by_name[lpn]]["domainelement_pk"]
+            language_data = wu.get_wals_language_data_by_id_or_name(lid)
+            ppk = int(wu.parameter_pk_by_name[lpn])
+            true_depk = language_data[ppk]["domainelement_pk"]
             for value in st.session_state["current_ga"].language_parameters[str(lpn)].beliefs:
               if str(value) == str(true_depk):
                 st.session_state["expected_beliefs"][lpn][str(value)] = 1
@@ -362,7 +366,7 @@ if len(st.session_state["ga_domains"]) > 0:
         evaluation = {"success":0, "failure":0}
         for upn in st.session_state["unknown_params_names"]:
           general_result_dict[lname][upn] = {}
-          expected_value = wu.get_language_data_by_id(lid)[wu.parameter_pk_by_name[upn]]["domainelement_pk"]
+          expected_value = wu.get_wals_language_data_by_id_or_name(lid)[int(wu.parameter_pk_by_name[upn])]["domainelement_pk"]
           current_consensus = max(st.session_state["current_ga"].language_parameters[upn].beliefs, key=st.session_state["current_ga"].language_parameters[upn].beliefs.get)
 
           general_result_dict[lname][upn]["expected"] = wu.get_careful_name_of_de_pk(str(expected_value))
