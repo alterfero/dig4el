@@ -14,6 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import streamlit as st
+import math
 import os
 import pandas as pd
 from libs import utils as u, wals_utils as wu, general_agents, grambank_utils as gu
@@ -555,7 +556,7 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
     else:
         l_filter = {}
 
-    # RUNNING INFERENCES
+    # PREPARING AND RUNNING GENERAL AGENT
     st.markdown("#### Generating Grammar")
     if st.button("Launch inferential process"):
         st.session_state["run_ga"] = True
@@ -586,6 +587,14 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
             st.session_state["ga"].add_observations(observed_param_name,
                                                     st.session_state["tl_knowledge"]["observed"][observed_param_name])
         st.session_state["ga"].run_belief_update_from_observations()
+        # adjust the weight of observed parameters according to their certainty
+        for observed_param_name in st.session_state["tl_knowledge"]["observed"]:
+            try:
+                st.session_state["ga"].language_parameters[observed_param_name].update_entropy()
+                st.session_state["ga"].language_parameters[observed_param_name].update_weight_from_observations()
+            except KeyError:
+                print("updating weight: {} not in {}".format(observed_param_name, st.session_state["ga"].language_parameters.keys()))
+
         for param in st.session_state["belief_history"].keys():
             st.session_state["belief_history"][param].append(st.session_state["ga"].language_parameters[param].beliefs)
         if show_details:
@@ -622,10 +631,9 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                 st.session_state["ga"].run_belief_update_cycle()
                 for param in st.session_state["ga"].language_parameters.keys():
                     st.session_state["belief_history"][param].append(st.session_state["ga"].language_parameters[param].beliefs)
-                st.write("----------------**Messaging Iteration {}**---------------------".format(i))
-                st.write(st.session_state["ga"].get_displayable_beliefs())
-            for param in st.session_state["ga"].language_parameters.keys():
-                st.session_state["consensus_store"][k] = st.session_state["ga"].get_beliefs()
+                # st.write("----------------**Messaging Iteration {}**---------------------".format(i))
+                # st.write(st.session_state["ga"].get_displayable_beliefs())
+            st.session_state["consensus_store"][k] = st.session_state["ga"].get_beliefs()
 
 
         cross_consensus_stat = {param: {gwu.get_pvalue_name_from_value_code(pvalue): [] for pvalue in st.session_state["consensus_store"][0][param].keys()}
@@ -653,8 +661,11 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                     l = " is locked"
                 else:
                     l = ""
+                rounded_weight = round(st.session_state["ga"].language_parameters[param].weight, 2)
                 st.write(param + "(" + origin + ")" + l)
-
+                st.write("{} ({}, {}). Normalized entropy = {}%. Weight = {}".format(param, origin, l,
+                                                                         round(100*st.session_state["ga"].language_parameters[param].entropy, 2),
+                                                                         rounded_weight))
                 pdf = pd.DataFrame(st.session_state["belief_history"][param]).T
                 renaming_dict = {}
                 for v in st.session_state["belief_history"][param][0].keys():
@@ -777,7 +788,7 @@ if st.session_state["ga_output_available"]:
         if st.session_state["ga_output_available"]:
             st.markdown("""Based on statistical information, existing knowledge, observations and inferences across parameters, the following beliefs formed a consensus.
             """)
-
+            result_list = []
             for pname, P in st.session_state["ga"].language_parameters.items():
                 if pname in st.session_state["tl_knowledge"]["known_wals"]:
                     origin = "Known"
@@ -787,7 +798,14 @@ if st.session_state["ga_output_available"]:
                     origin = "Observed"
                 else:
                     origin = "Inferred"
-                st.markdown("**{}** ({}): {}".format(pname, origin, P.get_winning_belief_name()))
+                result_list.append({"Parameter": pname,
+                                    "Origin": origin,
+                                    "Winner": P.get_winning_belief_name(),
+                                    "Confidence": round(100*(1-P.entropy))})
+            result_df = pd.DataFrame(result_list)
+            st.dataframe(result_df, use_container_width=True)
+
+            #st.markdown("{} ({}): **{}** with {}% confidence.".format(pname, origin, P.get_winning_belief_name(), round(100*(1-P.entropy))))
         if st.button("Approve beliefs"):
             st.session_state["results_approved"] = True
     else:
@@ -821,7 +839,6 @@ if st.session_state["ga_output_available"]:
 
             if st.button("Approve beliefs"):
                 st.session_state["results_approved"] = True
-
 
 # GRAMMATICAL DESCRIPTION CONTENT
 if st.session_state["ga_output_available"] and st.session_state["results_approved"]:
