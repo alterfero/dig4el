@@ -17,6 +17,9 @@ import json
 import os
 import copy
 import random
+
+import pandas as pd
+
 from libs import wals_utils as wu, grambank_utils as gu, grambank_wals_utils as gwu
 import math
 import pickle
@@ -40,6 +43,8 @@ class LanguageParameter:
         self.verbose = verbose
         self.name = parameter_name
         self.origin = origin
+        self.trust_weight = 1
+        self.incoming_messages_damping_factor = 1
         self.priors_language_pk_list = priors_language_pk_list
         # a locked boolean is used for parameters with known value.
         self.locked = False
@@ -74,6 +79,9 @@ class LanguageParameter:
             else:
                 print("parameter origin is supposedly grambank but {} not found in grambank_pid_by_pname".format(parameter_name))
                 self.values = []
+        elif self.origin == "dig4el":
+            print("dig4el custom parameter {}".format(self.name))
+            self.values = []
         else:
             print("Parameter {} origin undefined, values can't be set.".format(parameter_name))
             self.values = []
@@ -83,6 +91,11 @@ class LanguageParameter:
         self.beliefs_history = []
         self.observations_inbox = []
         self.message_inbox = {}
+
+    def get_winning_belief_code(self):
+        return sorted(self.beliefs.keys(), key=self.beliefs.get, reverse=True)[0]
+    def get_winning_belief_name(self):
+        return gwu.get_pvalue_name_from_value_code(sorted(self.beliefs.keys(), key=self.beliefs.get, reverse=True)[0])
 
     def initialize_beliefs_with_grambank(self):
         pvalues = gu.grambank_param_value_dict[self.parameter_pk]["pvalues"].keys()
@@ -197,6 +210,7 @@ class LanguageParameter:
                                                                                                               autolock_threshold
                                                                                                                ))
             self.observations_inbox = []
+            self.beliefs_history.append(copy.deepcopy(self.beliefs))
 
 # ************************************************************************
 
@@ -232,9 +246,11 @@ class GeneralAgent:
                 self.language_parameters[parameter_name] = new_language_parameter
                 new_language_parameter.initialize_beliefs_with_grambank()
             else:
-                # unknown/custom parameter, ignored.
-                # TODO: enable custom parameters
-                print("General Agent {}: parameter name {} not in parameter_pk_by_name, discarding.".format(self.name, parameter_name))
+                new_language_parameter = LanguageParameter(parameter_name, origin="dig4el",
+                                                           priors_language_pk_list=[],
+                                                           verbose=self.verbose)
+                self.language_parameters[parameter_name] = new_language_parameter
+                new_language_parameter.initialize_beliefs_with_grambank()
         if self.verbose:
             print("General Agent {}: {} instances of LanguageParameter objects initialized.".format(self.name, len(self.language_parameters)))
 
@@ -249,6 +265,20 @@ class GeneralAgent:
         for lpn in self.language_parameters.keys():
             beliefs[lpn] = self.language_parameters[lpn].beliefs
         return beliefs
+
+    def get_displayable_beliefs(self):
+        beliefs = {}
+        for lpn in self.language_parameters.keys():
+            beliefs[lpn] = {gwu.get_pvalue_name_from_value_code(vcode):proba for vcode, proba in self.language_parameters[lpn].beliefs.items()}
+        return beliefs
+
+    def put_beliefs(self, beliefs):
+        for lpn in self.language_parameters.keys():
+                self.language_parameters[lpn].beliefs = beliefs[lpn]
+
+    def reset_beliefs_history(self):
+        for lp_name, lp in self.language_parameters.items():
+            lp.beliefs_history = []
 
     def reset_language_parameters_beliefs_with_wals(self):
         for lp_name, lp in self.language_parameters.items():
@@ -335,18 +365,17 @@ class GeneralAgent:
         for p_name in path:
             self.language_parameters[p_name].update_beliefs_from_observations()
 
-    def run_belief_update_cycle(self):
-        path = self.create_random_propagation_path()
+    def run_belief_update_cycle(self, path_type="random"):
+        path = self.create_path(path_type=path_type)
         # run messaging round
         self.run_message_round()
         # update each parameter's beliefs from observations and neighbors messages
         for p_name in path:
-            self.language_parameters[p_name].update_beliefs_from_observations()
             self.update_beliefs_from_messages_received(p_name)
 
-    def run_message_round(self):
+    def run_message_round(self, path_type="random"):
         messages = {}
-        path = self.create_random_propagation_path()
+        path = self.create_path(path_type=path_type)
         for sender_name in path:
             for recipient_name in self.graph[sender_name].keys():
                 message = self.generate_message(sender_name, recipient_name)
@@ -354,6 +383,7 @@ class GeneralAgent:
                 messages[sender_name + "->" + recipient_name] = message
                 # if self.verbose:
                 #     print("Message {}->{}: {}".format(sender_name, recipient_name, message))
+
     def create_random_propagation_path(self):
         """ List of parameters indicating the order in which the belief propagation is executed."""
         path = self.parameter_names.copy()
@@ -361,6 +391,21 @@ class GeneralAgent:
         if self.verbose:
             print("General Agent {}: Random belief propagation path is {}".format(self.name, path))
         return path
+
+    def create_path(self, path_type="random"):
+        path = []
+        if path_type == "random":
+            path = self.parameter_names.copy()
+            random.shuffle(path)
+            return path
+        elif path_type == "decreasing_beliefs":
+            p = {pname:max(self.language_parameters[pname].beliefs.values()) for pname in self.language_parameters.keys()}
+            path = list(sorted(p.keys(), key=p.get, reverse=True))
+            return path
+        elif path_type == "increasing_beliefs":
+            p = {pname:max(self.language_parameters[pname].beliefs.values()) for pname in self.language_parameters.keys()}
+            path = list(sorted(p.keys(), key=p.get, reverse=False))
+            return path
 
     def add_observations(self, parameter_name, observations):
         """ add observations to a LanguageParameter observation inbox.
@@ -428,7 +473,7 @@ class GeneralAgent:
 
             # Update the beliefs in the parameter object
             P.beliefs = new_beliefs
-            P.beliefs_history.append(new_beliefs)
+            P.beliefs_history.append(copy.deepcopy(P.beliefs))
             if verbose:
                 print("Agent {}: belief of parameter {} updated)".format(self.name, parameter_name))
                 print("New belief: {}".format(self.language_parameters[parameter_name].beliefs))

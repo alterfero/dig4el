@@ -280,6 +280,7 @@ def build_gloss_df(knowledge_graph, entry, delimiters):
     return pd.DataFrame.from_dict(sentence_display_ordered_dict, orient="index", columns=["concept"]).T
 
 def get_kg_entry_signature(knowledge_graph, entry_index):
+    print("SIGNATURE")
     is_positive_polarity = True
     is_wildcard = False
     is_ref = False
@@ -289,7 +290,7 @@ def get_kg_entry_signature(knowledge_graph, entry_index):
         if concept[:3] == "Ref" or concept[:2] == "PP":
             is_ref = True
     for concept in knowledge_graph[entry_index]["sentence_data"]["graph"].keys():
-        if concept[:-8] == "POLARITY":
+        if concept.endswith("POLARITY"):
             if knowledge_graph[entry_index]["sentence_data"]["graph"][concept]["value"] == "NEGATIVE":
                 is_positive_polarity = False
 

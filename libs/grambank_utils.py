@@ -38,6 +38,7 @@ try:
         grambank_vname_by_vid = json.load(f)
     with open("../external_data/grambank_derived/grambank_language_id_by_vid.json", "r") as f:
         grambank_language_id_by_vid = json.load(f)
+
     cpt = pd.read_json("../external_data/grambank_derived/grambank_vid_conditional_probability.json")
 except FileNotFoundError:
     with open("./external_data/grambank_derived/grambank_pname_by_pid.json", "r") as f:
@@ -66,6 +67,7 @@ def build_vname_by_vid():
     with open("../external_data/grambank_derived/grambank_vname_by_vid.json", "w") as f:
         json.dump(grambank_vname_by_vid, f, indent=4)
 
+
 def get_grambank_language_data_by_id_or_name(language_id, language_name=None):
 
     language_id_found = False
@@ -88,6 +90,7 @@ def get_grambank_language_data_by_id_or_name(language_id, language_name=None):
     else:
         print("language id {} not found".format(language_id))
         return {}
+
 
 def compute_grambank_cp_matrix_from_general_data(pid1, pid2):
     """ creates the conditional probability matrix P(pid1 | pid2) and returns it as  df"""
@@ -127,7 +130,6 @@ def compute_grambank_param_distribution(pid, lids_list=["ALL"]):
     for vid in param_distribution.keys():
         param_distribution[vid] = param_distribution[vid]/total_count
     return param_distribution
-
 
         
 def compute_grambank_conditional_de_proba(vid_a, vid_b, filtered_language_lid=[]):
@@ -253,6 +255,7 @@ def build_grambank_pvalues_by_language():
     with open("../external_data/grambank_derived/grambank_pvalues_by_language.json", "w") as f:
         json.dump(grambank_pvalues_by_language, f, indent=4)
 
+
 def build_grambank_language_id_by_vid():
     grambank_language_id_by_vid = {}
     with open("../external_data/grambank-1.0.3/cldf/values.csv", "r") as f:
@@ -267,6 +270,7 @@ def build_grambank_language_id_by_vid():
     print("grambank_language_id_by_pvalue_id built, {} data points.".format(entry_count))
     with open("../external_data/grambank_derived/grambank_language_id_by_vid.json", "w") as f:
         json.dump(grambank_language_id_by_vid, f, indent=4)
+
 
 def build_grambank_language_by_lid():
     language_by_lid = {}
@@ -353,3 +357,14 @@ def build_vids_by_lid():
             vids_by_lid[item["Language_ID"]] = [item["Code_ID"]]
     with open("../external_data/grambank_derived/pvalue_ids_by_language_id.json", "w") as f:
         json.dump(vids_by_lid, f, indent=4)
+
+
+def build_lid_by_family():
+    lid_by_family = {}
+    for lid, ldata in grambank_language_by_lid.items():
+        if ldata["family"] not in lid_by_family.keys():
+            lid_by_family[ldata["family"]] = [lid]
+        else:
+            lid_by_family[ldata["family"]].append(lid)
+    with open("../external_data/grambank_derived/lid_by_family.json", "w") as f:
+        json.dump(lid_by_family, f, indent=4)

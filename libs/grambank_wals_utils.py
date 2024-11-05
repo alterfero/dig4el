@@ -83,11 +83,40 @@ def compute_wals_given_grambank_cp(ppk, pid):
         # not grambank pids
         return None
 
+
+def get_pname_from_pcode(pcode):
+    if pcode in wu.parameter_name_by_pk:
+        return wu.parameter_name_by_pk[pcode]
+    elif pcode in gu.grambank_param_value_dict.keys():
+        return gu.grambank_param_value_dict[pcode]["pname"]
+    else:
+        print("pcode {} not in wals or grambank".format(pcode))
+        return None
+
+
 def get_pvalue_name_from_value_code(code):
     if code[:2] == "GB":
-        return gu.grambank_vname_by_vid[code]
+        if code in gu.grambank_vname_by_vid.keys():
+            return gu.grambank_vname_by_vid.get(code, None)
+        else:
+            print("code {} not in grambank_vname_by_vid, returning name None".format(code))
     else:
         return wu.get_careful_name_of_de_pk(code)
+
+def get_language_family_by_language_name(lname):
+    if lname in wu.language_pk_id_by_name.keys():
+        lid = wu.language_pk_id_by_name[lname]["id"]
+        return wu.language_info_by_id[lid].get("family", None)
+    else:
+        try:
+            lid = next(gu.grambank_language_by_lid[lid]["name"]
+                       for lid in gu.grambank_language_by_lid.keys()
+                       if gu.grambank_language_by_lid[lid]["name"] == lname)
+            return gu.grambank_language_by_lid[lid]["family"]
+        except StopIteration:
+            return None
+
+
 
 def build_wals_given_grambank_cpt_df():
     wals_cpt = wu.cpt

@@ -88,10 +88,12 @@ col3.write(gb_param_name)
 fdf1 = st.session_state["wals_given_gb_df"].loc[wu.domain_elements_pk_by_parameter_pk[current_wals_param_pk]]
 ffdf1 = fdf1[list(gu.grambank_param_value_dict[current_gb_pid]["pvalues"].keys())]
 st.dataframe(ffdf1, use_container_width=True)
-st.write("**{}** GIVEN **{}**".format(wals_de_name, gb_vname))
-cole, colr = st.columns(2)
-cole.metric("Current value", st.session_state["wals_given_gb_df"].at[wals_depk, gb_vid])
-new_wgb_cp = colr.slider("Edit gb|w value", min_value=0.0,max_value=1.0,step=0.1,value=float(st.session_state["wals_given_gb_df"].at[wals_depk, gb_vid]))
+
+if wals_depk is not None and gb_vid is not None:
+    st.write("**{}** GIVEN **{}**".format(wals_de_name, gb_vname))
+    cole, colr = st.columns(2)
+    cole.metric("Current value", st.session_state["wals_given_gb_df"].at[wals_depk, gb_vid])
+    new_wgb_cp = colr.slider("Edit gb|w value", min_value=0.0,max_value=1.0,step=0.1,value=float(st.session_state["wals_given_gb_df"].at[wals_depk, gb_vid]))
 
 st.markdown("-----------------------------")
 col4, col5, col6 = st.columns(3)
@@ -106,10 +108,11 @@ fdf2 = st.session_state["gb_given_wals_df"].loc[list(gu.grambank_param_value_dic
 ffdf2 = fdf2[wu.domain_elements_pk_by_parameter_pk[current_wals_param_pk]]
 
 st.dataframe(ffdf2, use_container_width=True)
-st.write("**{}** GIVEN **{}**".format(gb_vname, wals_de_name))
-colq, colw = st.columns(2)
-colq.metric("Current value", st.session_state["gb_given_wals_df"].at[gb_vid, wals_depk])
-new_gbw_cp = colw.slider("Edit w|gb value", min_value=0.0,max_value=1.0,step=0.1,value=float(st.session_state["gb_given_wals_df"].at[gb_vid, wals_depk]))
+if wals_depk is not None and gb_vid is not None:
+    st.write("**{}** GIVEN **{}**".format(gb_vname, wals_de_name))
+    colq, colw = st.columns(2)
+    colq.metric("Current value", st.session_state["gb_given_wals_df"].at[gb_vid, wals_depk])
+    new_gbw_cp = colw.slider("Edit w|gb value", min_value=0.0,max_value=1.0,step=0.1,value=float(st.session_state["gb_given_wals_df"].at[gb_vid, wals_depk]))
 
 if st.button("submit"):
     st.session_state["wals_given_gb_df"].at[wals_depk, gb_vid] = new_wgb_cp

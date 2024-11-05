@@ -67,5 +67,3 @@ fi
 if [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ] ; then
     hash -r 2> /dev/null
 fi
-
-export OPEN_AI_KEY="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"
