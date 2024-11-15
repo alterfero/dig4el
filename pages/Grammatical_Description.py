@@ -878,7 +878,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
 
 # REDACTED GRAMMATICAL DESCRIPTION
 if st.session_state["ga_output_available"] and st.session_state["results_approved"] and st.session_state["generate_description"]:
-    st.markdown("#### Generate redacted grammatical descriptions by topic.")
+    st.markdown("#### Generate customized grammatical descriptions by topic.")
     lesson_topic = st.selectbox("Choose a topic", st.session_state["selected_topics"])
     lesson_audience = st.selectbox("Choose an audience", ["Adult L2 beginners", "L2 Teachers", "Primary school student", "Middle school student", "High school student", "Linguists"])
     lesson_format = st.selectbox("Choose a format", ["Display here", "Markdown"])

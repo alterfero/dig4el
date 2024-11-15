@@ -12,28 +12,45 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from scipy.stats import chi2_contingency
+from libs import wals_utils as wu, grambank_utils as gu, cq_observers as cqo
+import pandas as pd
+from libs import stats
 
-import json
-import os
-import copy
-import random
-from libs import wals_utils as wu, grambank_utils as gu
-import math
+class Properson_Construction():
+    properson_props = {
+        "PP1SG": {"number": "singular", "ref": ["speaker"]},
+        "PP1INCDU": {"number": "dual", "ref": ["speaker", "listener"]},
+        "PP1EXCDU": {"number": "dual", "ref": ["speaker", "other"]},
+        "PP1INCTR": {"number": "trial", "ref": ["speaker", "listener", "other"]},
+        "PP1EXCTR": {"number": "trial", "ref": ["speaker", "other", "other"]},
+        "PP1INCPC": {"number": "paucal", "ref": ["speaker", "listener(s)", "other(s)"]},
+        "PP1EXCPC": {"number": "paucal", "ref": ["speaker", "other(s)"]},
+        "PP1INCPL": {"number": "plural", "ref": ["speaker", "listener(s)", "other(s)"]},
+        "PP1EXCPL": {"number": "plural", "ref": ["speaker", "other(s)"]},
 
-class ConstructionAgent:
-    """
-    A concstruction agent focuses on a semantic-to-syntaxic process, as determining how a reference to a known object is made,
-    how aspect or negation are expressed. The CA starts from a collection of concepts, that are assembled as being part of the
-    same semantic group, and searches the mechanisms of expression of these concepts.
-    The model of the process is
-    - Ontological impact
-    - Internal particularization options
-    - Relational particularization options
-    - Graphemical neighboring effects
-    """
+        "PP2SG": {"number": "singular", "ref": ["listener"]},
+        "PP2DU": {"number": "dual", "ref": ["listener", "listener"]},
+        "PP2TR": {"number": "trial", "ref": ["listener", "listener", "listener"]},
+        "PP2PC": {"number": "paucal", "ref": ["listener(s)"]},
+        "PP2PL": {"number": "plural", "ref": ["listener(s)"]},
 
-    def __init__(self, concepts, wals_parameter_names, grambank_parameter_names):
-        self.concepts = concepts
-        self.wals_parameter_names = wals_parameter_names
-        self.grambank_parameter_names = grambank_parameter_names
+        "PP3SG": {"number": "singular", "ref": ["other"]},
+        "PP3DU": {"number": "dual", "ref": ["other", "other"]},
+        "PP3TR": {"number": "trial", "ref": ["other", "other", "other"]},
+        "PP3PC": {"number": "paucal", "ref": ["other(s)"]},
+
+        "PP3PL": {"number": "plural", "ref": ["other(s)"]},
+    }
+    parameters = ["intent", "polarity", "semantic_role"]
+
+    def __init__(self, properson):
+        self.properson = properson
+        self.parameters = ["intent", "polarity", "semantic_role"]
+        self.data_list = None
+        self.data_df = None
+
+    def populate_data_list(self, knowledge_graph):
+        self.data_list = cqo.properson_observer(self.properson, knowledge_graph)
+        self.data_df = pd.DataFrame(self.data_list)
 

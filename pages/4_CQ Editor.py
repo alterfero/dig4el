@@ -381,10 +381,6 @@ with colz.container():
         colu.success("validated sentence #{}".format(st.session_state["counter"]))
         #print(st.session_state["cq"]["dialog"][str(st.session_state["counter"])])
         st.rerun()
-    # if coli.button("Save questionnaire"):
-    #     cq_file_name = "cq_" + st.session_state["cq"]["title"] + "_" + st.session_state["uid"] + ".json"
-    #     json.dump(st.session_state["cq"], open("./questionnaires/" + cq_file_name, "w"))
-    #     colo.success("Saved questionnaire as {}".format(cq_file_name))
 
     coli.download_button(label="download your Conversational Questionnaire", data=json.dumps(st.session_state["cq"], indent=4),
                        file_name="cq_" + st.session_state["cq"]["title"] + "_" + st.session_state["uid"] + ".json")
