@@ -26,8 +26,12 @@ import pandas as pd
 # delimiters = json.load(open("./data/delimiters.json"))
 
 def consolidate_cq_transcriptions(transcriptions_list, language, delimiters):
-    cq_folder = "./questionnaires"
-    cq_json_list = [f for f in listdir(cq_folder) if isfile(join(cq_folder, f)) and f.endswith(".json")]
+    try:
+        cq_folder = "./questionnaires"
+        cq_json_list = [f for f in listdir(cq_folder) if isfile(join(cq_folder, f)) and f.endswith(".json")]
+    except FileNotFoundError:
+        cq_folder = "../questionnaires"
+        cq_json_list = [f for f in listdir(cq_folder) if isfile(join(cq_folder, f)) and f.endswith(".json")]
     cq_id_dict = {}
     # preparing the list of available cqs
     for cq in cq_json_list:
@@ -172,6 +176,11 @@ def get_value_loc_dict(knowledge_graph, concept_kson, selected_f, delimiters):
                             value_loc_dict["neutral"].append(entry_key)
     return value_loc_dict
 
+def get_kg_entry_polarity(kg_entry):
+    for concept_name, data in kg_entry["sentence_data"]["graph"].items():
+        if "POLARITY" in concept_name and data["value"]=="NEGATIVE":
+            return "NEGATIVE"
+    return "POSITIVE"
 
 def get_concepts_associated_to_word_by_human(knowledge_graph, word, language):
     """ build a dict with all the concepts connected to a word in the target language
@@ -254,7 +263,7 @@ def get_sentences_with_and_without_value(knowledge_graph, concept):
                 sentences_without_value.append(knowledge_graph[entry]["recording_data"]["translation"])
     return sentences_with_value, sentences_without_value
 
-def get_sentences_with_word(knowledge_graph, word, language, delimiters):
+def get_sentences_with_word(knowledge_graph, word, delimiters):
     sentences_with_word = []
     for entry in knowledge_graph:
         words = stats.custom_split(knowledge_graph[entry]["recording_data"]["translation"], delimiters)
@@ -264,7 +273,6 @@ def get_sentences_with_word(knowledge_graph, word, language, delimiters):
 
 def build_gloss_df(knowledge_graph, entry, delimiters):
     sentence_display_ordered_dict = OrderedDict()
-    language = knowledge_graph[0]["language"]
     w_list = stats.custom_split(knowledge_graph[entry]["recording_data"]["translation"], delimiters)
     for wd in [w for w in w_list if w]:
         if wd in knowledge_graph[entry]["recording_data"]["concept_words"].values():

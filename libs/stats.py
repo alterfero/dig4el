@@ -16,6 +16,11 @@
 import re
 import math
 from collections import Counter, defaultdict, OrderedDict
+import pandas as pd
+from scipy.stats import chi2_contingency
+from sklearn.metrics import mutual_info_score
+import numpy as np
+
 
 def calculate_entropy(prob_dict):
     entropy = 0.0
@@ -23,6 +28,7 @@ def calculate_entropy(prob_dict):
         if prob > 0:
             entropy -= prob * math.log2(prob)
     return entropy
+
 
 def custom_split(text, delimiters):
     #print("XXXXXXXXXXXX splitting {} with {}".format(text, delimiters))
@@ -48,6 +54,8 @@ def custom_split(text, delimiters):
         else:
             unique_words.append(word)
     return unique_words
+
+
 def build_blind_word_stats_from_knowledge_graph(knowledge_graph, delimiters):
     """ takes a knowledge graph, returns a dictionary of all the words with their frequency and the list of the
     10 most frequent preceding and following words with the corresponding probability of transition.
@@ -98,6 +106,7 @@ def build_blind_word_stats_from_knowledge_graph(knowledge_graph, delimiters):
         }
     return word_statistics
 
+
 def compute_average_blind_entropy(word_statistics):
     total_entropy = 0.0
     word_count = 0
@@ -114,3 +123,31 @@ def compute_average_blind_entropy(word_statistics):
     # Average entropy for the language
     average_entropy = total_entropy / word_count if word_count > 0 else 0
     return average_entropy
+
+
+# CONSTRUCTION AGENT EXPLORATION
+
+def assess_parameter_influence_mi(df, parameters):
+    mi_scores = {}
+    for param in parameters:
+        mi = mutual_info_score(df[param], df['target_words'])
+        mi_scores[param] = mi
+        print(f"Mutual Information between {param} and target_words: {mi}")
+    return mi_scores
+
+
+def compute_standardized_residuals(df, param, expression_col='target_words'):
+    contingency_table = pd.crosstab(df[param], df[expression_col])
+    chi2, p, dof, expected = chi2_contingency(contingency_table)
+    residuals = (contingency_table - expected) / np.sqrt(expected)
+    return residuals
+
+
+def assess_parameter_influence_residuals(df, parameters):
+    residuals_dict = {}
+    for param in parameters:
+        residuals = compute_standardized_residuals(df, param)
+        residuals_dict[param] = residuals
+        print(f"\nStandardized Residuals for {param} and target_words:")
+        print(residuals)
+    return residuals_dict
