@@ -62,6 +62,21 @@ delimiters_default = [
     "\u2026"
   ]
 
+with st.sidebar:
+    st.subheader("DIG4EL")
+    st.page_link("home.py", label="Home", icon=":material/home:")
+
+    st.write("**Base features**")
+    st.page_link("pages/2_CQ_Transcription_Recorder.py", label="Record transcription", icon=":material/contract_edit:")
+    st.page_link("pages/Grammatical_Description.py", label="Generate Grammars", icon=":material/menu_book:")
+
+    st.write("**Expert features**")
+    st.page_link("pages/4_CQ Editor.py", label="Edit CQs", icon=":material/question_exchange:")
+    st.page_link("pages/Concept_graph_editor.py", label="Edit Concept Graph", icon=":material/device_hub:")
+
+    st.write("**Explore DIG4EL processes**")
+    st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
+
 st.markdown("## Compare CQs across languages")
 
 cqs = st.file_uploader("Load Conversational Questionnaires' transcriptions (all at once for multiple transcriptions)",
@@ -129,20 +144,32 @@ if st.session_state["kgs"] != {}:
 
     # user selection
     #st.write(st.session_state["sentence_comp_dict"])
+    ifilter = st.selectbox("Filter by intent (optional)", ["all intents", "ASSERT", "ORDER", "ASK", "WISH", "EXPRESS CONDITION"])
     cfilter = st.selectbox("Filter by concept (optional)", ["all concepts"] + list(st.session_state["concepts"].keys()))
-    filtered_sentence_keys = list(st.session_state["sentence_comp_dict"].keys())
+    ifiltered_sentence_keys = list(st.session_state["sentence_comp_dict"].keys())
+    cfiltered_sentence_keys = list(st.session_state["sentence_comp_dict"].keys())
+    if ifilter != "all intents":
+        ifiltered_sentence_keys = []
+        for sentence, data in st.session_state["sentence_comp_dict"].items():
+            l0 = list(data.keys())[0]
+            if ifilter in st.session_state["kgs"][l0][data[l0]["kg_index"]]["sentence_data"]["intent"]:
+                ifiltered_sentence_keys.append(sentence)
+    else:
+        ifiltered_sentence_keys = list(st.session_state["sentence_comp_dict"].keys())
     if cfilter != "all concepts":
-        filtered_sentence_keys = []
+        cfiltered_sentence_keys = []
         for sentence, data in st.session_state["sentence_comp_dict"].items():
             l0 = list(data.keys())[0]
             if cfilter in st.session_state["kgs"][l0][data[l0]["kg_index"]]["sentence_data"]["concept"]:
-                filtered_sentence_keys.append(sentence)
+                cfiltered_sentence_keys.append(sentence)
+    filtered_sentence_keys = list(set(ifiltered_sentence_keys).intersection(set(cfiltered_sentence_keys)))
+
     if len(filtered_sentence_keys) > 0:
         selected_sentence = st.selectbox("select sentence", filtered_sentence_keys)
 
         # result display
         for tl in st.session_state["sentence_comp_dict"][selected_sentence]:
-            st.markdown("#### in {}".format(tl))
+            st.markdown("#### {}".format(tl))
             st.write(st.session_state["sentence_comp_dict"][selected_sentence][tl]["stl"])
             gloss = kgu.build_gloss_df(st.session_state["kgs"][tl],
                                st.session_state["sentence_comp_dict"][selected_sentence][tl]["kg_index"],
