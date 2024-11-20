@@ -876,7 +876,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
     st.download_button("Download raw description as a json file.", json.dumps(st.session_state["prompt_content"], indent=4), file_name="grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
     st.session_state["generate_description"] = True
 
-# REDACTED GRAMMATICAL DESCRIPTION
+# PLAIN TEXT GRAMMATICAL DESCRIPTION
 if st.session_state["ga_output_available"] and st.session_state["results_approved"] and st.session_state["generate_description"]:
     st.markdown("#### Generate customized grammatical descriptions by topic.")
     lesson_topic = st.selectbox("Choose a topic", st.session_state["selected_topics"])
@@ -894,7 +894,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
     prompt += "Compare the {} language to English to help readers understand the differences."
     prompt += "Use only on the material and examples provided. Do not use or infer any additional information, examples, or rules beyond what I give. If something is unclear or missing from the input, don't fill the gaps. Focus on explaining the rules and providing examples from the material I supply."
     prompt += "If there is no knowledge and no example on a topic, ignore it."
-    prompt += "Use all and only the examples provided. Use the gloss information to explain which word in target language means what using horizontal tables showing the correspondance between English words and {} words.".format(st.session_state["tl_name"])
+    prompt += "Use all and only the examples provided. Use the gloss information to explain which word in target language means what using horizontal tables showing the correspondence between English words and {} words.".format(st.session_state["tl_name"])
     prompt += "Here are the information (use only this information): "
     prompt += str(st.session_state["prompt_content"][lesson_topic]) + "."
     prompt += "Don't add encouragement or personal comment."
@@ -918,7 +918,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                     "content": [
                         {
                             "type": "text",
-                            "text": "You are an assistant that writes short and engaging grammar book chapters for {}. Use only the information provided by the user. Use all the examples provided by the user. Do not introduce any additional material, even if it seems relevant. If the user-provided material is incomplete or ambiguous, ommit content. ".format(lesson_audience)
+                            "text": "You are an assistant that writes short and engaging grammar book chapters for {}. Use only the information provided by the user. Use all the examples provided by the user. Do not introduce any additional material, even if it seems relevant. If the user-provided material is incomplete or ambiguous, omit content. ".format(lesson_audience)
                         }
                     ]
                 },
