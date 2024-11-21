@@ -10,18 +10,18 @@ st.set_page_config(
 st.header("DIG4EL")
 st.markdown("### Digital Inferential Grammars for Endangered Languages")
 
-st.markdown("DIG4EL is a research software prototype designed to support the computer-assisted creation of grammatical learning material "
+st.markdown("DIG4EL is a research software prototype designed to support the computer-assisted creation of grammatical learning materials "
             "for endangered languages.")
 st.markdown("The method combines")
-st.markdown("- The thoretical framework of **Radical Construction Grammar** (Croft, 2001).")
-st.markdown("- Efficient and engaging field data collection methods with **Conversational Questionnaires** (François, 2019).")
-st.markdown("- The use of accumulated linguistic knowledge from over 2,500 of the world's languages, thanks to the **World Atlas of Language Structures** (Dryer & Haspelmath,2013) and **Grambank** (Skyrgård et al., 2023)")
-st.markdown("- The intelligence of **teaching the grammar of threatened and endangered languages** (Vernaudon, 2018).")
+st.markdown("- The theoretical framework of **Radical Construction Grammar** (Croft, 2001).")
+st.markdown("- An efficient and engaging method for data collection in the field, namely **Conversational Questionnaires** (François, 2019).")
+st.markdown("- The use of accumulated linguistic knowledge from over 2,500 of the world's languages, thanks to the **World Atlas of Language Structures** (Dryer & Haspelmath,2013) and **Grambank** (Skirgård et al., 2023)")
+st.markdown("- The craft of **teaching the grammar of threatened and endangered languages**  (Vernaudon, 2018).")
 st.markdown("- Original natural language processing (NLP) algorithms leveraging **Abstract Meaning Representations** and **Bayesian networks**.")
 
 with st.popover("References", use_container_width=True):
     st.markdown("**Radical Construction Grammar**")
-    st.markdown("Croft W. (2001). Radical Construction Grammar. Oxford University Press.")
+    st.markdown("Croft W. 2001. Radical Construction Grammar. Oxford University Press.")
     st.markdown("**World Atlas of Language Structures**")
     st.markdown(
         "Dryer, Matthew S. & Haspelmath, Martin (eds.) 2013. The World Atlas of Language Structures Online. Leipzig: Max Planck Institute for Evolutionary Anthropology.")
@@ -34,10 +34,10 @@ with st.popover("References", use_container_width=True):
     """)
     st.link_button("Visit Grambank", "https://grambank.clld.org/")
     st.markdown("**Conversational Questionnaires**")
-    st.markdown("François, A.A proposal for conversational questionnaires(2019) In Lahaussois A., Vuillermet M.Methodological Tools for Linguistic Description and Typology, 16, , pp.155-196, 2019, Language Documentation & Conservation Special Publications, 978-0-9973295-5-1. ffhal-02061237f. https://hal.science / hal - 02061237 / document")
+    st.markdown("François, A. 2019. A proposal for conversational questionnaires In Lahaussois A., Vuillermet M.Methodological Tools for Linguistic Description and Typology, 16, , pp.155-196, 2019, Language Documentation & Conservation Special Publications, 978-0-9973295-5-1. ffhal-02061237f. https://hal.science / hal - 02061237 / document")
     st.link_button("Read the paper online", "https://hal.science/hal-02061237/document")
     st.markdown("**Didactic grammars of endangered languages**")
-    st.markdown("Vernaudon J. (2013). L’enseignement des langues kanak en Nouvelle-Calédonie. Hermès. n° 65. , [ p.]. 10.4267/2042/51507 or Vernaudon, Jacques. (2018). Les métalangues du tahitien à l'école, https://www.researchgate.net/publication/333261526_Les_metalangues_du_tahitien_a_l'ecole")
+    st.markdown("Vernaudon J. 2013. L’enseignement des langues kanak en Nouvelle-Calédonie. Hermès. n° 65. , [ p.]. 10.4267/2042/51507 or Vernaudon, Jacques. (2018). Les métalangues du tahitien à l'école, https://www.researchgate.net/publication/333261526_Les_metalangues_du_tahitien_a_l'ecole")
     st.markdown("**Algorithms and development**")
     st.markdown("Christian Sebastien, PhD student at the University of French Polynesia.")
     st.markdown("**Acknowledgement**")
