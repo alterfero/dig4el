@@ -11789,7 +11789,8 @@
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER"
+                        "PP3SG QUANTIFIER",
+                        "PP3SG SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
@@ -11809,92 +11810,38 @@
                     ],
                     "value": ""
                 },
+                "PP3SG SEX-BASED GENDER": {
+                    "is_required_by": [
+                        "PP3SG"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "PP3SG",
+                        "SEX-BASED GENDER"
+                    ],
+                    "value": "male"
+                },
                 "harvesting": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "harvesting QUANTIFIER",
-                        "harvesting LOCATION INFORMATION",
-                        "harvesting TIME INFORMATION",
                         "harvesting AGENT",
                         "harvesting ASPECT",
-                        "harvesting EVENT TENSE",
+                        "harvesting QUALIFIER",
+                        "harvesting LOCATION INFORMATION",
                         "harvesting PATIENT",
                         "harvesting POLARITY",
-                        "harvesting QUALIFIER"
+                        "harvesting EVENT TENSE",
+                        "harvesting TIME INFORMATION",
+                        "harvesting QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
                         "harvesting"
                     ],
                     "value": ""
-                },
-                "harvesting QUANTIFIER": {
-                    "is_required_by": [
-                        "harvesting"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "harvesting",
-                        "QUANTIFIER"
-                    ],
-                    "value": ""
-                },
-                "harvesting LOCATION INFORMATION": {
-                    "is_required_by": [
-                        "harvesting"
-                    ],
-                    "requires": [
-                        "harvesting LOCATION INFORMATION REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "harvesting",
-                        "LOCATION INFORMATION"
-                    ],
-                    "value": ""
-                },
-                "harvesting LOCATION INFORMATION REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "harvesting LOCATION INFORMATION"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "harvesting",
-                        "LOCATION INFORMATION",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": ""
-                },
-                "harvesting TIME INFORMATION": {
-                    "is_required_by": [
-                        "harvesting"
-                    ],
-                    "requires": [
-                        "harvesting TIME INFORMATION REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "harvesting",
-                        "TIME INFORMATION"
-                    ],
-                    "value": ""
-                },
-                "harvesting TIME INFORMATION REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "harvesting TIME INFORMATION"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "harvesting",
-                        "TIME INFORMATION",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": "yesterday"
                 },
                 "harvesting AGENT": {
                     "is_required_by": [
@@ -11935,17 +11882,59 @@
                     ],
                     "value": ""
                 },
-                "harvesting EVENT TENSE": {
+                "harvesting QUALIFIER": {
                     "is_required_by": [
                         "harvesting"
+                    ],
+                    "requires": [
+                        "harvesting QUALIFIER REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "harvesting",
+                        "QUALIFIER"
+                    ],
+                    "value": ""
+                },
+                "harvesting QUALIFIER REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "harvesting QUALIFIER"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
                         "harvesting",
-                        "EVENT TENSE"
+                        "QUALIFIER",
+                        "REFERENCE TO CONCEPT"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": ""
+                },
+                "harvesting LOCATION INFORMATION": {
+                    "is_required_by": [
+                        "harvesting"
+                    ],
+                    "requires": [
+                        "harvesting LOCATION INFORMATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "harvesting",
+                        "LOCATION INFORMATION"
+                    ],
+                    "value": ""
+                },
+                "harvesting LOCATION INFORMATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "harvesting LOCATION INFORMATION"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "harvesting",
+                        "LOCATION INFORMATION",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
                 },
                 "harvesting PATIENT": {
                     "is_required_by": [
@@ -11986,30 +11975,54 @@
                     ],
                     "value": ""
                 },
-                "harvesting QUALIFIER": {
+                "harvesting EVENT TENSE": {
                     "is_required_by": [
                         "harvesting"
-                    ],
-                    "requires": [
-                        "harvesting QUALIFIER REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "harvesting",
-                        "QUALIFIER"
-                    ],
-                    "value": ""
-                },
-                "harvesting QUALIFIER REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "harvesting QUALIFIER"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
                         "harvesting",
-                        "QUALIFIER",
+                        "EVENT TENSE"
+                    ],
+                    "value": "WHENEVER IN THE PAST"
+                },
+                "harvesting TIME INFORMATION": {
+                    "is_required_by": [
+                        "harvesting"
+                    ],
+                    "requires": [
+                        "harvesting TIME INFORMATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "harvesting",
+                        "TIME INFORMATION"
+                    ],
+                    "value": ""
+                },
+                "harvesting TIME INFORMATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "harvesting TIME INFORMATION"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "harvesting",
+                        "TIME INFORMATION",
                         "REFERENCE TO CONCEPT"
+                    ],
+                    "value": "yesterday"
+                },
+                "harvesting QUANTIFIER": {
+                    "is_required_by": [
+                        "harvesting"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "harvesting",
+                        "QUANTIFIER"
                     ],
                     "value": ""
                 },
@@ -12018,41 +12031,14 @@
                         "sentence"
                     ],
                     "requires": [
-                        "AND AND_TERM2",
-                        "AND AND_TERM1"
-                    ],
-                    "path": [
-                        "sentence",
-                        "AND"
-                    ],
-                    "value": ""
-                },
-                "AND AND_TERM2": {
-                    "is_required_by": [
-                        "AND"
-                    ],
-                    "requires": [
-                        "AND AND_TERM2 REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "AND",
-                        "AND_TERM2"
-                    ],
-                    "value": ""
-                },
-                "AND AND_TERM2 REFERENCE TO CONCEPT": {
-                    "is_required_by": [
+                        "AND AND_TERM1",
                         "AND AND_TERM2"
                     ],
-                    "requires": [],
                     "path": [
                         "sentence",
-                        "AND",
-                        "AND_TERM2",
-                        "REFERENCE TO CONCEPT"
+                        "AND"
                     ],
-                    "value": "bringing"
+                    "value": ""
                 },
                 "AND AND_TERM1": {
                     "is_required_by": [
@@ -12081,120 +12067,54 @@
                     ],
                     "value": "harvesting"
                 },
+                "AND AND_TERM2": {
+                    "is_required_by": [
+                        "AND"
+                    ],
+                    "requires": [
+                        "AND AND_TERM2 REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "AND",
+                        "AND_TERM2"
+                    ],
+                    "value": ""
+                },
+                "AND AND_TERM2 REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "AND AND_TERM2"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "AND",
+                        "AND_TERM2",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": "bringing"
+                },
                 "bringing": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "bringing OBLIQUE ROLE OBJECTIVE",
-                        "bringing QUANTIFIER",
-                        "bringing LOCATION INFORMATION",
-                        "bringing TIME INFORMATION",
                         "bringing AGENT",
                         "bringing ASPECT",
-                        "bringing OBLIQUE ROLE",
-                        "bringing EVENT TENSE",
-                        "bringing PATIENT",
+                        "bringing QUALIFIER",
                         "bringing OBLIQUE ROLE DESTINATION",
+                        "bringing LOCATION INFORMATION",
+                        "bringing PATIENT",
                         "bringing POLARITY",
-                        "bringing QUALIFIER"
+                        "bringing EVENT TENSE",
+                        "bringing TIME INFORMATION",
+                        "bringing OBLIQUE ROLE",
+                        "bringing OBLIQUE ROLE OBJECTIVE",
+                        "bringing QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
                         "bringing"
-                    ],
-                    "value": ""
-                },
-                "bringing OBLIQUE ROLE OBJECTIVE": {
-                    "is_required_by": [
-                        "bringing"
-                    ],
-                    "requires": [
-                        "bringing OBLIQUE ROLE OBJECTIVE REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "bringing",
-                        "OBLIQUE ROLE OBJECTIVE"
-                    ],
-                    "value": ""
-                },
-                "bringing OBLIQUE ROLE OBJECTIVE REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "bringing OBLIQUE ROLE OBJECTIVE"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "bringing",
-                        "OBLIQUE ROLE OBJECTIVE",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": ""
-                },
-                "bringing QUANTIFIER": {
-                    "is_required_by": [
-                        "bringing"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "bringing",
-                        "QUANTIFIER"
-                    ],
-                    "value": ""
-                },
-                "bringing LOCATION INFORMATION": {
-                    "is_required_by": [
-                        "bringing"
-                    ],
-                    "requires": [
-                        "bringing LOCATION INFORMATION REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "bringing",
-                        "LOCATION INFORMATION"
-                    ],
-                    "value": ""
-                },
-                "bringing LOCATION INFORMATION REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "bringing LOCATION INFORMATION"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "bringing",
-                        "LOCATION INFORMATION",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": ""
-                },
-                "bringing TIME INFORMATION": {
-                    "is_required_by": [
-                        "bringing"
-                    ],
-                    "requires": [
-                        "bringing TIME INFORMATION REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "bringing",
-                        "TIME INFORMATION"
-                    ],
-                    "value": ""
-                },
-                "bringing TIME INFORMATION REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "bringing TIME INFORMATION"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "bringing",
-                        "TIME INFORMATION",
-                        "REFERENCE TO CONCEPT"
                     ],
                     "value": ""
                 },
@@ -12237,44 +12157,86 @@
                     ],
                     "value": ""
                 },
-                "bringing OBLIQUE ROLE": {
+                "bringing QUALIFIER": {
                     "is_required_by": [
                         "bringing"
                     ],
                     "requires": [
-                        "bringing OBLIQUE ROLE REFERENCE TO CONCEPT"
+                        "bringing QUALIFIER REFERENCE TO CONCEPT"
                     ],
                     "path": [
                         "sentence",
                         "bringing",
-                        "OBLIQUE ROLE"
+                        "QUALIFIER"
                     ],
                     "value": ""
                 },
-                "bringing OBLIQUE ROLE REFERENCE TO CONCEPT": {
+                "bringing QUALIFIER REFERENCE TO CONCEPT": {
                     "is_required_by": [
-                        "bringing OBLIQUE ROLE"
+                        "bringing QUALIFIER"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
                         "bringing",
-                        "OBLIQUE ROLE",
+                        "QUALIFIER",
                         "REFERENCE TO CONCEPT"
                     ],
                     "value": ""
                 },
-                "bringing EVENT TENSE": {
+                "bringing OBLIQUE ROLE DESTINATION": {
                     "is_required_by": [
                         "bringing"
+                    ],
+                    "requires": [
+                        "bringing OBLIQUE ROLE DESTINATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "bringing",
+                        "OBLIQUE ROLE DESTINATION"
+                    ],
+                    "value": ""
+                },
+                "bringing OBLIQUE ROLE DESTINATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "bringing OBLIQUE ROLE DESTINATION"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
                         "bringing",
-                        "EVENT TENSE"
+                        "OBLIQUE ROLE DESTINATION",
+                        "REFERENCE TO CONCEPT"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": ""
+                },
+                "bringing LOCATION INFORMATION": {
+                    "is_required_by": [
+                        "bringing"
+                    ],
+                    "requires": [
+                        "bringing LOCATION INFORMATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "bringing",
+                        "LOCATION INFORMATION"
+                    ],
+                    "value": ""
+                },
+                "bringing LOCATION INFORMATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "bringing LOCATION INFORMATION"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "bringing",
+                        "LOCATION INFORMATION",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": "home"
                 },
                 "bringing PATIENT": {
                     "is_required_by": [
@@ -12303,33 +12265,6 @@
                     ],
                     "value": "Ref_many_objects"
                 },
-                "bringing OBLIQUE ROLE DESTINATION": {
-                    "is_required_by": [
-                        "bringing"
-                    ],
-                    "requires": [
-                        "bringing OBLIQUE ROLE DESTINATION REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "bringing",
-                        "OBLIQUE ROLE DESTINATION"
-                    ],
-                    "value": ""
-                },
-                "bringing OBLIQUE ROLE DESTINATION REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "bringing OBLIQUE ROLE DESTINATION"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "bringing",
-                        "OBLIQUE ROLE DESTINATION",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": "home"
-                },
                 "bringing POLARITY": {
                     "is_required_by": [
                         "bringing"
@@ -12342,30 +12277,108 @@
                     ],
                     "value": ""
                 },
-                "bringing QUALIFIER": {
+                "bringing EVENT TENSE": {
                     "is_required_by": [
                         "bringing"
-                    ],
-                    "requires": [
-                        "bringing QUALIFIER REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "bringing",
-                        "QUALIFIER"
-                    ],
-                    "value": ""
-                },
-                "bringing QUALIFIER REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "bringing QUALIFIER"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
                         "bringing",
-                        "QUALIFIER",
+                        "EVENT TENSE"
+                    ],
+                    "value": "WHENEVER IN THE PAST"
+                },
+                "bringing TIME INFORMATION": {
+                    "is_required_by": [
+                        "bringing"
+                    ],
+                    "requires": [
+                        "bringing TIME INFORMATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "bringing",
+                        "TIME INFORMATION"
+                    ],
+                    "value": ""
+                },
+                "bringing TIME INFORMATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "bringing TIME INFORMATION"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "bringing",
+                        "TIME INFORMATION",
                         "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "bringing OBLIQUE ROLE": {
+                    "is_required_by": [
+                        "bringing"
+                    ],
+                    "requires": [
+                        "bringing OBLIQUE ROLE REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "bringing",
+                        "OBLIQUE ROLE"
+                    ],
+                    "value": ""
+                },
+                "bringing OBLIQUE ROLE REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "bringing OBLIQUE ROLE"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "bringing",
+                        "OBLIQUE ROLE",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "bringing OBLIQUE ROLE OBJECTIVE": {
+                    "is_required_by": [
+                        "bringing"
+                    ],
+                    "requires": [
+                        "bringing OBLIQUE ROLE OBJECTIVE REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "bringing",
+                        "OBLIQUE ROLE OBJECTIVE"
+                    ],
+                    "value": ""
+                },
+                "bringing OBLIQUE ROLE OBJECTIVE REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "bringing OBLIQUE ROLE OBJECTIVE"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "bringing",
+                        "OBLIQUE ROLE OBJECTIVE",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "bringing QUANTIFIER": {
+                    "is_required_by": [
+                        "bringing"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "bringing",
+                        "QUANTIFIER"
                     ],
                     "value": ""
                 },
@@ -12374,136 +12387,19 @@
                         "sentence"
                     ],
                     "requires": [
-                        "home QUANTIFIER",
-                        "home POSSESSEE",
-                        "home LOCATION INFORMATION",
-                        "home TIME INFORMATION",
-                        "home DEFINITENESS",
-                        "home POLARITY",
                         "home QUALIFIER",
                         "home POSSESSOR",
-                        "home ORIGIN OF OBJECTS"
+                        "home DEFINITENESS",
+                        "home LOCATION INFORMATION",
+                        "home ORIGIN OF OBJECTS",
+                        "home POLARITY",
+                        "home TIME INFORMATION",
+                        "home POSSESSEE",
+                        "home QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
                         "home"
-                    ],
-                    "value": ""
-                },
-                "home QUANTIFIER": {
-                    "is_required_by": [
-                        "home"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "home",
-                        "QUANTIFIER"
-                    ],
-                    "value": ""
-                },
-                "home POSSESSEE": {
-                    "is_required_by": [
-                        "home"
-                    ],
-                    "requires": [
-                        "home POSSESSEE REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "home",
-                        "POSSESSEE"
-                    ],
-                    "value": ""
-                },
-                "home POSSESSEE REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "home POSSESSEE"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "home",
-                        "POSSESSEE",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": ""
-                },
-                "home LOCATION INFORMATION": {
-                    "is_required_by": [
-                        "home"
-                    ],
-                    "requires": [
-                        "home LOCATION INFORMATION REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "home",
-                        "LOCATION INFORMATION"
-                    ],
-                    "value": ""
-                },
-                "home LOCATION INFORMATION REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "home LOCATION INFORMATION"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "home",
-                        "LOCATION INFORMATION",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": ""
-                },
-                "home TIME INFORMATION": {
-                    "is_required_by": [
-                        "home"
-                    ],
-                    "requires": [
-                        "home TIME INFORMATION REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "home",
-                        "TIME INFORMATION"
-                    ],
-                    "value": ""
-                },
-                "home TIME INFORMATION REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "home TIME INFORMATION"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "home",
-                        "TIME INFORMATION",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": ""
-                },
-                "home DEFINITENESS": {
-                    "is_required_by": [
-                        "home"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "home",
-                        "DEFINITENESS"
-                    ],
-                    "value": ""
-                },
-                "home POLARITY": {
-                    "is_required_by": [
-                        "home"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "home",
-                        "POLARITY"
                     ],
                     "value": ""
                 },
@@ -12561,6 +12457,45 @@
                     ],
                     "value": ""
                 },
+                "home DEFINITENESS": {
+                    "is_required_by": [
+                        "home"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "home",
+                        "DEFINITENESS"
+                    ],
+                    "value": ""
+                },
+                "home LOCATION INFORMATION": {
+                    "is_required_by": [
+                        "home"
+                    ],
+                    "requires": [
+                        "home LOCATION INFORMATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "home",
+                        "LOCATION INFORMATION"
+                    ],
+                    "value": ""
+                },
+                "home LOCATION INFORMATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "home LOCATION INFORMATION"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "home",
+                        "LOCATION INFORMATION",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
                 "home ORIGIN OF OBJECTS": {
                     "is_required_by": [
                         "home"
@@ -12588,16 +12523,247 @@
                     ],
                     "value": ""
                 },
+                "home POLARITY": {
+                    "is_required_by": [
+                        "home"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "home",
+                        "POLARITY"
+                    ],
+                    "value": ""
+                },
+                "home TIME INFORMATION": {
+                    "is_required_by": [
+                        "home"
+                    ],
+                    "requires": [
+                        "home TIME INFORMATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "home",
+                        "TIME INFORMATION"
+                    ],
+                    "value": ""
+                },
+                "home TIME INFORMATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "home TIME INFORMATION"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "home",
+                        "TIME INFORMATION",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "home POSSESSEE": {
+                    "is_required_by": [
+                        "home"
+                    ],
+                    "requires": [
+                        "home POSSESSEE REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "home",
+                        "POSSESSEE"
+                    ],
+                    "value": ""
+                },
+                "home POSSESSEE REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "home POSSESSEE"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "home",
+                        "POSSESSEE",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "home QUANTIFIER": {
+                    "is_required_by": [
+                        "home"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "home",
+                        "QUANTIFIER"
+                    ],
+                    "value": ""
+                },
                 "Ref_many_objects": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
+                        "Ref_many_objects QUALIFIER",
+                        "Ref_many_objects POSSESSOR",
+                        "Ref_many_objects LOCATION INFORMATION",
+                        "Ref_many_objects POLARITY",
+                        "Ref_many_objects TIME INFORMATION",
+                        "Ref_many_objects POSSESSEE",
                         "Ref_many_objects QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
                         "Ref_many_objects"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects QUALIFIER": {
+                    "is_required_by": [
+                        "Ref_many_objects"
+                    ],
+                    "requires": [
+                        "Ref_many_objects QUALIFIER REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "QUALIFIER"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects QUALIFIER REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "Ref_many_objects QUALIFIER"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "QUALIFIER",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects POSSESSOR": {
+                    "is_required_by": [
+                        "Ref_many_objects"
+                    ],
+                    "requires": [
+                        "Ref_many_objects POSSESSOR REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "POSSESSOR"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects POSSESSOR REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "Ref_many_objects POSSESSOR"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "POSSESSOR",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects LOCATION INFORMATION": {
+                    "is_required_by": [
+                        "Ref_many_objects"
+                    ],
+                    "requires": [
+                        "Ref_many_objects LOCATION INFORMATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "LOCATION INFORMATION"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects LOCATION INFORMATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "Ref_many_objects LOCATION INFORMATION"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "LOCATION INFORMATION",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects POLARITY": {
+                    "is_required_by": [
+                        "Ref_many_objects"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "POLARITY"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects TIME INFORMATION": {
+                    "is_required_by": [
+                        "Ref_many_objects"
+                    ],
+                    "requires": [
+                        "Ref_many_objects TIME INFORMATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "TIME INFORMATION"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects TIME INFORMATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "Ref_many_objects TIME INFORMATION"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "TIME INFORMATION",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects POSSESSEE": {
+                    "is_required_by": [
+                        "Ref_many_objects"
+                    ],
+                    "requires": [
+                        "Ref_many_objects POSSESSEE REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "POSSESSEE"
+                    ],
+                    "value": ""
+                },
+                "Ref_many_objects POSSESSEE REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "Ref_many_objects POSSESSEE"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "Ref_many_objects",
+                        "POSSESSEE",
+                        "REFERENCE TO CONCEPT"
                     ],
                     "value": ""
                 },
@@ -12645,11 +12811,13 @@
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER"
+                        "PP3SG QUANTIFIER",
+                        "PP3SG SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP3SG"
+                        "PP3SG",
+                        "sentence"
                     ],
                     "value": ""
                 },
@@ -12658,15 +12826,15 @@
                         "sentence"
                     ],
                     "requires": [
-                        "harvesting QUANTIFIER",
-                        "harvesting LOCATION INFORMATION",
-                        "harvesting TIME INFORMATION",
                         "harvesting AGENT",
                         "harvesting ASPECT",
-                        "harvesting EVENT TENSE",
+                        "harvesting QUALIFIER",
+                        "harvesting LOCATION INFORMATION",
                         "harvesting PATIENT",
                         "harvesting POLARITY",
-                        "harvesting QUALIFIER"
+                        "harvesting EVENT TENSE",
+                        "harvesting TIME INFORMATION",
+                        "harvesting QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
@@ -12683,8 +12851,8 @@
                         "sentence"
                     ],
                     "requires": [
-                        "AND AND_TERM2",
-                        "AND AND_TERM1"
+                        "AND AND_TERM1",
+                        "AND AND_TERM2"
                     ],
                     "path": [
                         "sentence",
@@ -12699,18 +12867,18 @@
                         "sentence"
                     ],
                     "requires": [
-                        "bringing OBLIQUE ROLE OBJECTIVE",
-                        "bringing QUANTIFIER",
-                        "bringing LOCATION INFORMATION",
-                        "bringing TIME INFORMATION",
                         "bringing AGENT",
                         "bringing ASPECT",
-                        "bringing OBLIQUE ROLE",
-                        "bringing EVENT TENSE",
-                        "bringing PATIENT",
+                        "bringing QUALIFIER",
                         "bringing OBLIQUE ROLE DESTINATION",
+                        "bringing LOCATION INFORMATION",
+                        "bringing PATIENT",
                         "bringing POLARITY",
-                        "bringing QUALIFIER"
+                        "bringing EVENT TENSE",
+                        "bringing TIME INFORMATION",
+                        "bringing OBLIQUE ROLE",
+                        "bringing OBLIQUE ROLE OBJECTIVE",
+                        "bringing QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
@@ -12727,15 +12895,15 @@
                         "sentence"
                     ],
                     "requires": [
-                        "home QUANTIFIER",
-                        "home POSSESSEE",
-                        "home LOCATION INFORMATION",
-                        "home TIME INFORMATION",
-                        "home DEFINITENESS",
-                        "home POLARITY",
                         "home QUALIFIER",
                         "home POSSESSOR",
-                        "home ORIGIN OF OBJECTS"
+                        "home DEFINITENESS",
+                        "home LOCATION INFORMATION",
+                        "home ORIGIN OF OBJECTS",
+                        "home POLARITY",
+                        "home TIME INFORMATION",
+                        "home POSSESSEE",
+                        "home QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
@@ -12748,6 +12916,12 @@
                         "sentence"
                     ],
                     "requires": [
+                        "Ref_many_objects QUALIFIER",
+                        "Ref_many_objects POSSESSOR",
+                        "Ref_many_objects LOCATION INFORMATION",
+                        "Ref_many_objects POLARITY",
+                        "Ref_many_objects TIME INFORMATION",
+                        "Ref_many_objects POSSESSEE",
                         "Ref_many_objects QUANTIFIER"
                     ],
                     "path": [
@@ -12783,18 +12957,19 @@
                         "sentence",
                         "sentence",
                         "sentence",
+                        "sentence",
                         "sentence"
                     ],
                     "value": ""
                 },
-                "harvesting TIME INFORMATION": {
+                "PP3SG SEX-BASED GENDER": {
                     "is_required_by": [
-                        "harvesting"
+                        "PP3SG"
                     ],
                     "path": [
-                        "harvesting"
+                        "PP3SG"
                     ],
-                    "value": "yesterday"
+                    "value": "male"
                 },
                 "harvesting AGENT": {
                     "is_required_by": [
@@ -12805,15 +12980,6 @@
                     ],
                     "value": "PP3SG"
                 },
-                "harvesting EVENT TENSE": {
-                    "is_required_by": [
-                        "harvesting"
-                    ],
-                    "path": [
-                        "harvesting"
-                    ],
-                    "value": "WHENEVER IN THE PAST"
-                },
                 "harvesting PATIENT": {
                     "is_required_by": [
                         "harvesting"
@@ -12823,14 +12989,23 @@
                     ],
                     "value": "Ref_many_objects"
                 },
-                "AND AND_TERM2": {
+                "harvesting EVENT TENSE": {
                     "is_required_by": [
-                        "AND"
+                        "harvesting"
                     ],
                     "path": [
-                        "AND"
+                        "harvesting"
                     ],
-                    "value": "bringing"
+                    "value": "WHENEVER IN THE PAST"
+                },
+                "harvesting TIME INFORMATION": {
+                    "is_required_by": [
+                        "harvesting"
+                    ],
+                    "path": [
+                        "harvesting"
+                    ],
+                    "value": "yesterday"
                 },
                 "AND AND_TERM1": {
                     "is_required_by": [
@@ -12841,6 +13016,15 @@
                     ],
                     "value": "harvesting"
                 },
+                "AND AND_TERM2": {
+                    "is_required_by": [
+                        "AND"
+                    ],
+                    "path": [
+                        "AND"
+                    ],
+                    "value": "bringing"
+                },
                 "bringing AGENT": {
                     "is_required_by": [
                         "bringing"
@@ -12850,14 +13034,14 @@
                     ],
                     "value": "PP3SG"
                 },
-                "bringing EVENT TENSE": {
+                "bringing LOCATION INFORMATION": {
                     "is_required_by": [
                         "bringing"
                     ],
                     "path": [
                         "bringing"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "home"
                 },
                 "bringing PATIENT": {
                     "is_required_by": [
@@ -12868,14 +13052,14 @@
                     ],
                     "value": "Ref_many_objects"
                 },
-                "bringing OBLIQUE ROLE DESTINATION": {
+                "bringing EVENT TENSE": {
                     "is_required_by": [
                         "bringing"
                     ],
                     "path": [
                         "bringing"
                     ],
-                    "value": "home"
+                    "value": "WHENEVER IN THE PAST"
                 }
             },
             "legacy index": "25",
