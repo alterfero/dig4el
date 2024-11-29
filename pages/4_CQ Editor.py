@@ -110,11 +110,11 @@ if not st.session_state["loaded_existing"]:
     st.write("You can start a new questionnaire, or load an existing one")
 if not st.session_state["loaded_existing"]:
     with st.expander("Load CQ"):
-            existing_cq = st.file_uploader("Load an existing questionnaire", type="json")
-            if existing_cq is not None:
-                st.session_state["cq"] = json.load(existing_cq)
-                st.session_state["uid"] = st.session_state["cq"]["uid"]
-                st.session_state["loaded_existing"] = True
+        existing_cq = st.file_uploader("Load an existing questionnaire", type="json")
+        if existing_cq is not None:
+            st.session_state["cq"] = json.load(existing_cq)
+            st.session_state["uid"] = st.session_state["cq"]["uid"]
+            st.session_state["loaded_existing"] = True
 
 if st.session_state["loaded_existing"]:
     default_title = st.session_state["cq"]["title"]

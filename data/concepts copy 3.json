@@ -2788,7 +2788,7 @@
     "other": {
         "description": "",
         "type": "concept",
-        "ontological parent": "SEX-BASED GENDER",
+        "ontological parent": "NON-GRAMATICAL QUALIFIER",
         "gramprop": [],
         "requires": []
     },
@@ -3980,14 +3980,21 @@
         "gramprop": [],
         "requires": []
     },
-    "male": {
+    "MALE": {
         "description": "",
         "type": "concept",
         "ontological parent": "SEX-BASED GENDER",
         "gramprop": [],
         "requires": []
     },
-    "female": {
+    "FEMALE": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "SEX-BASED GENDER",
+        "gramprop": [],
+        "requires": []
+    },
+    "OTHER": {
         "description": "",
         "type": "concept",
         "ontological parent": "SEX-BASED GENDER",

@@ -768,11 +768,25 @@ def properson_observer(properson, knowledge_graph):
                 signature["polarity"] = kgu.get_kg_entry_polarity(data)
                 signature["speaker_gender"] = data["speaker_gender"]
                 signature["speaker_age"] = data["speaker_age"]
+                signature["listener_gender"] = data["listener_gender"]
+                signature["listener_age"] = data["listener_age"]
                 try:
                     signature["predicate"] = data["sentence_data"]["predicate"][0]
                 except IndexError:
                     signature["predicate"] = "UNKNOWN"
+                # reference gender
+                if properson == "PP1SG":
+                    signature["ref_gender"] = data["speaker_gender"]
+                elif properson == "PP2SG":
+                    signature["ref_gender"] = data["listener_gender"]
+                elif properson == "PP3SG":
+                    if "PP3SG SEX-BASED GENDER" in data["sentence_data"]["graph"].keys():
+                        signature["ref_gender"] = data["sentence_data"]["graph"]["PP3SG SEX-BASED GENDER"].get("value", None)
+                else:
+                    signature["ref_gender"] = "uncertain plural"
+                # speaker-group number
                 signature["number"] = properson_props[properson]["number"]
+                # semantic role
                 if "AGENT REFERENCE TO CONCEPT" in concept_name:
                     signature["semantic_role"] = "agent"
                 elif "PATIENT REFERENCE TO CONCEPT" in concept_name:
@@ -785,8 +799,16 @@ def properson_observer(properson, knowledge_graph):
                     signature["semantic_role"] = "oblique"
                 else:
                     signature["semantic_role"] = ""
-                signature["target_words"] = data["recording_data"]["concept_words"][properson]
-                output_list.append(signature)
+                    continue
+                # target word
+                if properson in data["recording_data"]["concept_words"]:
+                    if data["recording_data"]["concept_words"][properson] != "":
+                        signature["target_words"] = data["recording_data"]["concept_words"][properson]
+                        output_list.append(signature)
+                    else:
+                        print("Properson target word empty in {}".format(data["recording_data"]["concept_words"]))
+                else:
+                    print("Properson is not in the list of concept words in {}".format(data["recording_data"]["concept_words"]))
     return output_list
 
 # General approach, not precise enough yet

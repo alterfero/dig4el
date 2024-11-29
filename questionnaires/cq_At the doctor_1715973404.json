@@ -1,16 +1,16 @@
 {
     "uid": "1715973404",
     "title": "At the doctor",
-    "context": "A patient [A] visits the doctor [B].",
+    "context": "A man [A] visits a male doctor [B].",
     "speakers": {
         "A": {
             "name": "Patient",
-            "gender": "indef",
+            "gender": "male",
             "age": "adult"
         },
         "B": {
             "name": "Doctor",
-            "gender": "indef",
+            "gender": "male",
             "age": "adult"
         }
     },
@@ -14437,7 +14437,8 @@
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER"
+                        "PP3SG QUANTIFIER",
+                        "PP3SG SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
@@ -14457,12 +14458,25 @@
                     ],
                     "value": ""
                 },
+                "PP3SG SEX-BASED GENDER": {
+                    "is_required_by": [
+                        "PP3SG"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "PP3SG",
+                        "SEX-BASED GENDER"
+                    ],
+                    "value": "male"
+                },
                 "PP1SG": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "PP1SG QUANTIFIER",
+                        "PP1SG SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
@@ -14482,31 +14496,70 @@
                     ],
                     "value": ""
                 },
+                "PP1SG SEX-BASED GENDER": {
+                    "is_required_by": [
+                        "PP1SG"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "PP1SG",
+                        "SEX-BASED GENDER"
+                    ],
+                    "value": ""
+                },
                 "giving": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "giving EVENT TENSE",
-                        "giving LOCATION INFORMATION",
-                        "giving OBLIQUE ROLE GOAL",
-                        "giving OBLIQUE ROLE DESTINATION",
+                        "giving AGENT",
                         "giving ASPECT",
+                        "giving QUALIFIER",
+                        "giving OBLIQUE ROLE DESTINATION",
+                        "giving LOCATION INFORMATION",
+                        "giving PATIENT",
+                        "giving OBLIQUE ROLE GOAL",
+                        "giving POLARITY",
+                        "giving EVENT TENSE",
                         "giving TIME INFORMATION",
                         "giving OBLIQUE ROLE OBJECTIVE",
-                        "giving POLARITY",
-                        "giving QUALIFIER",
-                        "giving PATIENT",
-                        "giving QUANTIFIER",
+                        "giving QUANTIFIER"
+                    ],
+                    "path": [
+                        "sentence",
+                        "giving"
+                    ],
+                    "value": ""
+                },
+                "giving AGENT": {
+                    "is_required_by": [
+                        "giving"
+                    ],
+                    "requires": [
+                        "giving AGENT REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "giving",
+                        "AGENT"
+                    ],
+                    "value": ""
+                },
+                "giving AGENT REFERENCE TO CONCEPT": {
+                    "is_required_by": [
                         "giving AGENT"
                     ],
+                    "requires": [],
                     "path": [
                         "sentence",
-                        "giving"
+                        "giving",
+                        "AGENT",
+                        "REFERENCE TO CONCEPT"
                     ],
-                    "value": ""
+                    "value": "PP3SG"
                 },
-                "giving EVENT TENSE": {
+                "giving ASPECT": {
                     "is_required_by": [
                         "giving"
                     ],
@@ -14514,63 +14567,36 @@
                     "path": [
                         "sentence",
                         "giving",
-                        "EVENT TENSE"
+                        "ASPECT"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": ""
                 },
-                "giving LOCATION INFORMATION": {
+                "giving QUALIFIER": {
                     "is_required_by": [
                         "giving"
                     ],
                     "requires": [
-                        "giving LOCATION INFORMATION REFERENCE TO CONCEPT"
+                        "giving QUALIFIER REFERENCE TO CONCEPT"
                     ],
                     "path": [
                         "sentence",
                         "giving",
-                        "LOCATION INFORMATION"
+                        "QUALIFIER"
                     ],
                     "value": ""
                 },
-                "giving LOCATION INFORMATION REFERENCE TO CONCEPT": {
+                "giving QUALIFIER REFERENCE TO CONCEPT": {
                     "is_required_by": [
-                        "giving LOCATION INFORMATION"
+                        "giving QUALIFIER"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
                         "giving",
-                        "LOCATION INFORMATION",
+                        "QUALIFIER",
                         "REFERENCE TO CONCEPT"
                     ],
                     "value": ""
-                },
-                "giving OBLIQUE ROLE GOAL": {
-                    "is_required_by": [
-                        "giving"
-                    ],
-                    "requires": [
-                        "giving OBLIQUE ROLE GOAL REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "giving",
-                        "OBLIQUE ROLE GOAL"
-                    ],
-                    "value": ""
-                },
-                "giving OBLIQUE ROLE GOAL REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "giving OBLIQUE ROLE GOAL"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "giving",
-                        "OBLIQUE ROLE GOAL",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": "trying"
                 },
                 "giving OBLIQUE ROLE DESTINATION": {
                     "is_required_by": [
@@ -14599,7 +14625,88 @@
                     ],
                     "value": "PP1SG"
                 },
-                "giving ASPECT": {
+                "giving LOCATION INFORMATION": {
+                    "is_required_by": [
+                        "giving"
+                    ],
+                    "requires": [
+                        "giving LOCATION INFORMATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "giving",
+                        "LOCATION INFORMATION"
+                    ],
+                    "value": ""
+                },
+                "giving LOCATION INFORMATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "giving LOCATION INFORMATION"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "giving",
+                        "LOCATION INFORMATION",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "giving PATIENT": {
+                    "is_required_by": [
+                        "giving"
+                    ],
+                    "requires": [
+                        "giving PATIENT REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "giving",
+                        "PATIENT"
+                    ],
+                    "value": ""
+                },
+                "giving PATIENT REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "giving PATIENT"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "giving",
+                        "PATIENT",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": "fruit"
+                },
+                "giving OBLIQUE ROLE GOAL": {
+                    "is_required_by": [
+                        "giving"
+                    ],
+                    "requires": [
+                        "giving OBLIQUE ROLE GOAL REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "giving",
+                        "OBLIQUE ROLE GOAL"
+                    ],
+                    "value": ""
+                },
+                "giving OBLIQUE ROLE GOAL REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "giving OBLIQUE ROLE GOAL"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "giving",
+                        "OBLIQUE ROLE GOAL",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": "trying"
+                },
+                "giving POLARITY": {
                     "is_required_by": [
                         "giving"
                     ],
@@ -14607,7 +14714,19 @@
                     "path": [
                         "sentence",
                         "giving",
-                        "ASPECT"
+                        "POLARITY"
+                    ],
+                    "value": ""
+                },
+                "giving EVENT TENSE": {
+                    "is_required_by": [
+                        "giving"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "giving",
+                        "EVENT TENSE"
                     ],
                     "value": ""
                 },
@@ -14665,72 +14784,6 @@
                     ],
                     "value": ""
                 },
-                "giving POLARITY": {
-                    "is_required_by": [
-                        "giving"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "giving",
-                        "POLARITY"
-                    ],
-                    "value": ""
-                },
-                "giving QUALIFIER": {
-                    "is_required_by": [
-                        "giving"
-                    ],
-                    "requires": [
-                        "giving QUALIFIER REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "giving",
-                        "QUALIFIER"
-                    ],
-                    "value": ""
-                },
-                "giving QUALIFIER REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "giving QUALIFIER"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "giving",
-                        "QUALIFIER",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": ""
-                },
-                "giving PATIENT": {
-                    "is_required_by": [
-                        "giving"
-                    ],
-                    "requires": [
-                        "giving PATIENT REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "giving",
-                        "PATIENT"
-                    ],
-                    "value": ""
-                },
-                "giving PATIENT REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "giving PATIENT"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "giving",
-                        "PATIENT",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": "fruit"
-                },
                 "giving QUANTIFIER": {
                     "is_required_by": [
                         "giving"
@@ -14743,49 +14796,22 @@
                     ],
                     "value": ""
                 },
-                "giving AGENT": {
-                    "is_required_by": [
-                        "giving"
-                    ],
-                    "requires": [
-                        "giving AGENT REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "giving",
-                        "AGENT"
-                    ],
-                    "value": ""
-                },
-                "giving AGENT REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "giving AGENT"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "giving",
-                        "AGENT",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": "PP3SG"
-                },
                 "trying": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "trying EVENT TENSE",
-                        "trying LOCATION INFORMATION",
-                        "trying OBLIQUE ROLE WITH",
+                        "trying AGENT",
                         "trying ASPECT",
+                        "trying QUALIFIER",
+                        "trying LOCATION INFORMATION",
+                        "trying PATIENT",
+                        "trying POLARITY",
+                        "trying EVENT TENSE",
                         "trying TIME INFORMATION",
                         "trying OBLIQUE ROLE OBJECTIVE",
-                        "trying POLARITY",
-                        "trying QUALIFIER",
-                        "trying PATIENT",
                         "trying QUANTIFIER",
-                        "trying AGENT"
+                        "trying OBLIQUE ROLE WITH"
                     ],
                     "path": [
                         "sentence",
@@ -14793,7 +14819,34 @@
                     ],
                     "value": ""
                 },
-                "trying EVENT TENSE": {
+                "trying AGENT": {
+                    "is_required_by": [
+                        "trying"
+                    ],
+                    "requires": [
+                        "trying AGENT REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "trying",
+                        "AGENT"
+                    ],
+                    "value": ""
+                },
+                "trying AGENT REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "trying AGENT"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "trying",
+                        "AGENT",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "trying ASPECT": {
                     "is_required_by": [
                         "trying"
                     ],
@@ -14801,7 +14854,34 @@
                     "path": [
                         "sentence",
                         "trying",
-                        "EVENT TENSE"
+                        "ASPECT"
+                    ],
+                    "value": ""
+                },
+                "trying QUALIFIER": {
+                    "is_required_by": [
+                        "trying"
+                    ],
+                    "requires": [
+                        "trying QUALIFIER REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "trying",
+                        "QUALIFIER"
+                    ],
+                    "value": ""
+                },
+                "trying QUALIFIER REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "trying QUALIFIER"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "trying",
+                        "QUALIFIER",
+                        "REFERENCE TO CONCEPT"
                     ],
                     "value": ""
                 },
@@ -14832,34 +14912,34 @@
                     ],
                     "value": ""
                 },
-                "trying OBLIQUE ROLE WITH": {
+                "trying PATIENT": {
                     "is_required_by": [
                         "trying"
                     ],
                     "requires": [
-                        "trying OBLIQUE ROLE WITH REFERENCE TO CONCEPT"
+                        "trying PATIENT REFERENCE TO CONCEPT"
                     ],
                     "path": [
                         "sentence",
                         "trying",
-                        "OBLIQUE ROLE WITH"
+                        "PATIENT"
                     ],
                     "value": ""
                 },
-                "trying OBLIQUE ROLE WITH REFERENCE TO CONCEPT": {
+                "trying PATIENT REFERENCE TO CONCEPT": {
                     "is_required_by": [
-                        "trying OBLIQUE ROLE WITH"
+                        "trying PATIENT"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
                         "trying",
-                        "OBLIQUE ROLE WITH",
+                        "PATIENT",
                         "REFERENCE TO CONCEPT"
                     ],
                     "value": ""
                 },
-                "trying ASPECT": {
+                "trying POLARITY": {
                     "is_required_by": [
                         "trying"
                     ],
@@ -14867,7 +14947,19 @@
                     "path": [
                         "sentence",
                         "trying",
-                        "ASPECT"
+                        "POLARITY"
+                    ],
+                    "value": ""
+                },
+                "trying EVENT TENSE": {
+                    "is_required_by": [
+                        "trying"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "trying",
+                        "EVENT TENSE"
                     ],
                     "value": ""
                 },
@@ -14925,72 +15017,6 @@
                     ],
                     "value": ""
                 },
-                "trying POLARITY": {
-                    "is_required_by": [
-                        "trying"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "trying",
-                        "POLARITY"
-                    ],
-                    "value": ""
-                },
-                "trying QUALIFIER": {
-                    "is_required_by": [
-                        "trying"
-                    ],
-                    "requires": [
-                        "trying QUALIFIER REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "trying",
-                        "QUALIFIER"
-                    ],
-                    "value": ""
-                },
-                "trying QUALIFIER REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "trying QUALIFIER"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "trying",
-                        "QUALIFIER",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": ""
-                },
-                "trying PATIENT": {
-                    "is_required_by": [
-                        "trying"
-                    ],
-                    "requires": [
-                        "trying PATIENT REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "trying",
-                        "PATIENT"
-                    ],
-                    "value": ""
-                },
-                "trying PATIENT REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "trying PATIENT"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "trying",
-                        "PATIENT",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": "fruit"
-                },
                 "trying QUANTIFIER": {
                     "is_required_by": [
                         "trying"
@@ -15003,29 +15029,29 @@
                     ],
                     "value": ""
                 },
-                "trying AGENT": {
+                "trying OBLIQUE ROLE WITH": {
                     "is_required_by": [
                         "trying"
                     ],
                     "requires": [
-                        "trying AGENT REFERENCE TO CONCEPT"
+                        "trying OBLIQUE ROLE WITH REFERENCE TO CONCEPT"
                     ],
                     "path": [
                         "sentence",
                         "trying",
-                        "AGENT"
+                        "OBLIQUE ROLE WITH"
                     ],
                     "value": ""
                 },
-                "trying AGENT REFERENCE TO CONCEPT": {
+                "trying OBLIQUE ROLE WITH REFERENCE TO CONCEPT": {
                     "is_required_by": [
-                        "trying AGENT"
+                        "trying OBLIQUE ROLE WITH"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
                         "trying",
-                        "AGENT",
+                        "OBLIQUE ROLE WITH",
                         "REFERENCE TO CONCEPT"
                     ],
                     "value": ""
@@ -15035,15 +15061,15 @@
                         "sentence"
                     ],
                     "requires": [
-                        "fruit LOCATION INFORMATION",
-                        "fruit TIME INFORMATION",
-                        "fruit POLARITY",
-                        "fruit ORIGIN OF OBJECTS",
-                        "fruit POSSESSOR",
                         "fruit QUALIFIER",
-                        "fruit QUANTIFIER",
+                        "fruit POSSESSOR",
+                        "fruit DEFINITENESS",
+                        "fruit LOCATION INFORMATION",
+                        "fruit ORIGIN OF OBJECTS",
+                        "fruit POLARITY",
+                        "fruit TIME INFORMATION",
                         "fruit POSSESSEE",
-                        "fruit DEFINITENESS"
+                        "fruit QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
@@ -15051,95 +15077,29 @@
                     ],
                     "value": ""
                 },
-                "fruit LOCATION INFORMATION": {
-                    "is_required_by": [
-                        "fruit"
-                    ],
-                    "requires": [
-                        "fruit LOCATION INFORMATION REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "fruit",
-                        "LOCATION INFORMATION"
-                    ],
-                    "value": ""
-                },
-                "fruit LOCATION INFORMATION REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "fruit LOCATION INFORMATION"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "fruit",
-                        "LOCATION INFORMATION",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": ""
-                },
-                "fruit TIME INFORMATION": {
+                "fruit QUALIFIER": {
                     "is_required_by": [
                         "fruit"
                     ],
                     "requires": [
-                        "fruit TIME INFORMATION REFERENCE TO CONCEPT"
+                        "fruit QUALIFIER REFERENCE TO CONCEPT"
                     ],
                     "path": [
                         "sentence",
                         "fruit",
-                        "TIME INFORMATION"
+                        "QUALIFIER"
                     ],
                     "value": ""
                 },
-                "fruit TIME INFORMATION REFERENCE TO CONCEPT": {
+                "fruit QUALIFIER REFERENCE TO CONCEPT": {
                     "is_required_by": [
-                        "fruit TIME INFORMATION"
+                        "fruit QUALIFIER"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
                         "fruit",
-                        "TIME INFORMATION",
-                        "REFERENCE TO CONCEPT"
-                    ],
-                    "value": ""
-                },
-                "fruit POLARITY": {
-                    "is_required_by": [
-                        "fruit"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "fruit",
-                        "POLARITY"
-                    ],
-                    "value": ""
-                },
-                "fruit ORIGIN OF OBJECTS": {
-                    "is_required_by": [
-                        "fruit"
-                    ],
-                    "requires": [
-                        "fruit ORIGIN OF OBJECTS REFERENCE TO CONCEPT"
-                    ],
-                    "path": [
-                        "sentence",
-                        "fruit",
-                        "ORIGIN OF OBJECTS"
-                    ],
-                    "value": ""
-                },
-                "fruit ORIGIN OF OBJECTS REFERENCE TO CONCEPT": {
-                    "is_required_by": [
-                        "fruit ORIGIN OF OBJECTS"
-                    ],
-                    "requires": [],
-                    "path": [
-                        "sentence",
-                        "fruit",
-                        "ORIGIN OF OBJECTS",
+                        "QUALIFIER",
                         "REFERENCE TO CONCEPT"
                     ],
                     "value": ""
@@ -15171,34 +15131,73 @@
                     ],
                     "value": ""
                 },
-                "fruit QUALIFIER": {
+                "fruit DEFINITENESS": {
+                    "is_required_by": [
+                        "fruit"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "fruit",
+                        "DEFINITENESS"
+                    ],
+                    "value": ""
+                },
+                "fruit LOCATION INFORMATION": {
                     "is_required_by": [
                         "fruit"
                     ],
                     "requires": [
-                        "fruit QUALIFIER REFERENCE TO CONCEPT"
+                        "fruit LOCATION INFORMATION REFERENCE TO CONCEPT"
                     ],
                     "path": [
                         "sentence",
                         "fruit",
-                        "QUALIFIER"
+                        "LOCATION INFORMATION"
                     ],
                     "value": ""
                 },
-                "fruit QUALIFIER REFERENCE TO CONCEPT": {
+                "fruit LOCATION INFORMATION REFERENCE TO CONCEPT": {
                     "is_required_by": [
-                        "fruit QUALIFIER"
+                        "fruit LOCATION INFORMATION"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
                         "fruit",
-                        "QUALIFIER",
+                        "LOCATION INFORMATION",
                         "REFERENCE TO CONCEPT"
                     ],
                     "value": ""
                 },
-                "fruit QUANTIFIER": {
+                "fruit ORIGIN OF OBJECTS": {
+                    "is_required_by": [
+                        "fruit"
+                    ],
+                    "requires": [
+                        "fruit ORIGIN OF OBJECTS REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "fruit",
+                        "ORIGIN OF OBJECTS"
+                    ],
+                    "value": ""
+                },
+                "fruit ORIGIN OF OBJECTS REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "fruit ORIGIN OF OBJECTS"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "fruit",
+                        "ORIGIN OF OBJECTS",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
+                },
+                "fruit POLARITY": {
                     "is_required_by": [
                         "fruit"
                     ],
@@ -15206,9 +15205,36 @@
                     "path": [
                         "sentence",
                         "fruit",
-                        "QUANTIFIER"
+                        "POLARITY"
                     ],
-                    "value": "PLURAL"
+                    "value": ""
+                },
+                "fruit TIME INFORMATION": {
+                    "is_required_by": [
+                        "fruit"
+                    ],
+                    "requires": [
+                        "fruit TIME INFORMATION REFERENCE TO CONCEPT"
+                    ],
+                    "path": [
+                        "sentence",
+                        "fruit",
+                        "TIME INFORMATION"
+                    ],
+                    "value": ""
+                },
+                "fruit TIME INFORMATION REFERENCE TO CONCEPT": {
+                    "is_required_by": [
+                        "fruit TIME INFORMATION"
+                    ],
+                    "requires": [],
+                    "path": [
+                        "sentence",
+                        "fruit",
+                        "TIME INFORMATION",
+                        "REFERENCE TO CONCEPT"
+                    ],
+                    "value": ""
                 },
                 "fruit POSSESSEE": {
                     "is_required_by": [
@@ -15237,7 +15263,7 @@
                     ],
                     "value": ""
                 },
-                "fruit DEFINITENESS": {
+                "fruit QUANTIFIER": {
                     "is_required_by": [
                         "fruit"
                     ],
@@ -15245,9 +15271,9 @@
                     "path": [
                         "sentence",
                         "fruit",
-                        "DEFINITENESS"
+                        "QUANTIFIER"
                     ],
-                    "value": "DEFINITE"
+                    "value": ""
                 }
             },
             "trimmed_graph": {
@@ -15256,11 +15282,13 @@
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER"
+                        "PP3SG QUANTIFIER",
+                        "PP3SG SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP3SG"
+                        "PP3SG",
+                        "sentence"
                     ],
                     "value": ""
                 },
@@ -15269,7 +15297,8 @@
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "PP1SG QUANTIFIER",
+                        "PP1SG SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
@@ -15282,23 +15311,22 @@
                         "sentence"
                     ],
                     "requires": [
-                        "giving EVENT TENSE",
-                        "giving LOCATION INFORMATION",
-                        "giving OBLIQUE ROLE GOAL",
-                        "giving OBLIQUE ROLE DESTINATION",
+                        "giving AGENT",
                         "giving ASPECT",
+                        "giving QUALIFIER",
+                        "giving OBLIQUE ROLE DESTINATION",
+                        "giving LOCATION INFORMATION",
+                        "giving PATIENT",
+                        "giving OBLIQUE ROLE GOAL",
+                        "giving POLARITY",
+                        "giving EVENT TENSE",
                         "giving TIME INFORMATION",
                         "giving OBLIQUE ROLE OBJECTIVE",
-                        "giving POLARITY",
-                        "giving QUALIFIER",
-                        "giving PATIENT",
-                        "giving QUANTIFIER",
-                        "giving AGENT"
+                        "giving QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
                         "giving",
-                        "sentence",
                         "sentence",
                         "sentence",
                         "sentence",
@@ -15311,22 +15339,21 @@
                         "sentence"
                     ],
                     "requires": [
-                        "trying EVENT TENSE",
-                        "trying LOCATION INFORMATION",
-                        "trying OBLIQUE ROLE WITH",
+                        "trying AGENT",
                         "trying ASPECT",
+                        "trying QUALIFIER",
+                        "trying LOCATION INFORMATION",
+                        "trying PATIENT",
+                        "trying POLARITY",
+                        "trying EVENT TENSE",
                         "trying TIME INFORMATION",
                         "trying OBLIQUE ROLE OBJECTIVE",
-                        "trying POLARITY",
-                        "trying QUALIFIER",
-                        "trying PATIENT",
                         "trying QUANTIFIER",
-                        "trying AGENT"
+                        "trying OBLIQUE ROLE WITH"
                     ],
                     "path": [
                         "sentence",
-                        "trying",
-                        "sentence"
+                        "trying"
                     ],
                     "value": ""
                 },
@@ -15335,21 +15362,19 @@
                         "sentence"
                     ],
                     "requires": [
-                        "fruit LOCATION INFORMATION",
-                        "fruit TIME INFORMATION",
-                        "fruit POLARITY",
-                        "fruit ORIGIN OF OBJECTS",
-                        "fruit POSSESSOR",
                         "fruit QUALIFIER",
-                        "fruit QUANTIFIER",
+                        "fruit POSSESSOR",
+                        "fruit DEFINITENESS",
+                        "fruit LOCATION INFORMATION",
+                        "fruit ORIGIN OF OBJECTS",
+                        "fruit POLARITY",
+                        "fruit TIME INFORMATION",
                         "fruit POSSESSEE",
-                        "fruit DEFINITENESS"
+                        "fruit QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "fruit",
-                        "sentence",
-                        "sentence"
+                        "fruit"
                     ],
                     "value": ""
                 },
@@ -15362,30 +15387,27 @@
                         "sentence",
                         "sentence",
                         "sentence",
-                        "sentence",
-                        "sentence",
-                        "sentence",
                         "sentence"
                     ],
                     "value": ""
                 },
-                "giving EVENT TENSE": {
+                "PP3SG SEX-BASED GENDER": {
                     "is_required_by": [
-                        "giving"
+                        "PP3SG"
                     ],
                     "path": [
-                        "giving"
+                        "PP3SG"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "male"
                 },
-                "giving OBLIQUE ROLE GOAL": {
+                "giving AGENT": {
                     "is_required_by": [
                         "giving"
                     ],
                     "path": [
                         "giving"
                     ],
-                    "value": "trying"
+                    "value": "PP3SG"
                 },
                 "giving OBLIQUE ROLE DESTINATION": {
                     "is_required_by": [
@@ -15405,41 +15427,14 @@
                     ],
                     "value": "fruit"
                 },
-                "giving AGENT": {
+                "giving OBLIQUE ROLE GOAL": {
                     "is_required_by": [
                         "giving"
                     ],
                     "path": [
                         "giving"
                     ],
-                    "value": "PP3SG"
-                },
-                "trying PATIENT": {
-                    "is_required_by": [
-                        "trying"
-                    ],
-                    "path": [
-                        "trying"
-                    ],
-                    "value": "fruit"
-                },
-                "fruit QUANTIFIER": {
-                    "is_required_by": [
-                        "fruit"
-                    ],
-                    "path": [
-                        "fruit"
-                    ],
-                    "value": "PLURAL"
-                },
-                "fruit DEFINITENESS": {
-                    "is_required_by": [
-                        "fruit"
-                    ],
-                    "path": [
-                        "fruit"
-                    ],
-                    "value": "DEFINITE"
+                    "value": "trying"
                 }
             },
             "legacy index": "21",
@@ -26673,7 +26668,8 @@
             "intent": "",
             "predicate": "",
             "concept": [],
-            "graph": {}
+            "graph": {},
+            "legacy index": ""
         }
     }
 }
