@@ -729,87 +729,682 @@ def observer_order_of_relative_clause_and_noun(knowledge_graph, language, delimi
 
     return output_dict
 
+def observer_free_pp_inclusive_exclusive(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "39",
+        "agent-ready observation": {},
+        "observations": {
+            "No we": {
+                "depk": "193",
+                "count": 0,
+                "details": {}
+            },
+            "'We' the same as 'I' ": {
+                "depk": "194",
+                "count": 0,
+                "details": {}
+            },
+            "No inclusive/exclusive": {
+                "depk": "195",
+                "count": 0,
+                "details": {}
+            },
+            "Only inclusive": {
+                "depk": "196",
+                "count": 0,
+                "details": {}
+            },
+            "Inclusive/exclusive": {
+                "depk": "197",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    # looking for PP1EXCDU/PLU and PP1INCDU/PLU in agent position
+    key_data = {
+        "PP1INCDU": {
+            "pivot_sentences": ["We should organize a meeting tomorrow morning in the community to tell our people what they should do"],
+            "target_words": []
+        },
+        "PP1EXCDU": {
+            "pivot_sentences": ["Oh, we are fine too.", "Well, we’re walking down to the river, over there.",
+                     "No, no! We won’t be bathing.", "We’re going fishing.", "We’ll try to catch some river fish for dinner.",
+                     "We just need food for our family.", "Besides, we don’t have enough money anymore.",
+                     "We really have to go fishing today.", "My husband and I, we have lots of vegetables from our garden.",
+                     "If you want, we can give you some.", "and we’ll give you some fish."],
+            "target_words": []
+        }
+    }
+    for ps in key_data["PP1INCDU"]["pivot_sentences"]:
+        kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+        if kg_data:
+            if "PP1INCDU" in kg_data["data"]["recording_data"]["concept_words"].keys():
+                if kg_data["data"]["recording_data"]["concept_words"]["PP1INCDU"] != "":
+                    key_data["PP1INCDU"]["target_words"].append(kg_data["data"]["recording_data"]["concept_words"]["PP1INCDU"])
+    for ps in key_data["PP1EXCDU"]["pivot_sentences"]:
+        kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+        if kg_data:
+            if "PP1EXCDU" in kg_data["data"]["recording_data"]["concept_words"].keys():
+                if kg_data["data"]["recording_data"]["concept_words"]["PP1EXCDU"] != "":
+                    key_data["PP1EXCDU"]["target_words"].append(kg_data["data"]["recording_data"]["concept_words"]["PP1EXCDU"])
+
+    # test inclusion
+    if key_data["PP1INCDU"]["target_words"] != [] and key_data["PP1EXCDU"]["target_words"] != []:
+        if set(key_data["PP1INCDU"]["target_words"]).issubset(set(key_data["PP1EXCDU"]["target_words"])):
+            output_dict["observations"]["No inclusive/exclusive"]["count"] += 1
+            example_inc = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                                key_data["PP1INCDU"]["pivot_sentences"][0])
+            output_dict["observations"][ "No inclusive/exclusive"]["details"][example_inc["entry_index"]] = kgu.get_kg_entry_signature(
+                knowledge_graph, example_inc["entry_index"])
+            example_exc = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                               key_data["PP1EXCDU"]["pivot_sentences"][0])
+            output_dict["observations"][ "No inclusive/exclusive"]["details"][example_exc["entry_index"]] = kgu.get_kg_entry_signature(
+                knowledge_graph, example_exc["entry_index"])
+
+        else:
+            output_dict["observations"]["Inclusive/exclusive"]["count"] += 1
+            example_inc = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                               key_data["PP1INCDU"]["pivot_sentences"][0])
+            output_dict["observations"]["Inclusive/exclusive"]["details"][example_inc["entry_index"]] = kgu.get_kg_entry_signature(
+                knowledge_graph, example_inc["entry_index"])
+            example_exc = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                               key_data["PP1EXCDU"]["pivot_sentences"][0])
+            output_dict["observations"]["Inclusive/exclusive"]["details"][example_exc["entry_index"]] = kgu.get_kg_entry_signature(
+                knowledge_graph, example_exc["entry_index"])
+
+    # creating agent-ready observation
+    agent_obs = {}
+    for order in output_dict["observations"].keys():
+        agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+    output_dict["agent-ready observation"] = agent_obs
+
+    return output_dict
+
+def observer_free_pp_dual(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "GB317",
+        "agent-ready observation": {},
+        "observations": {
+            "absent": {
+                "depk": "GB317-0",
+                "count": 0,
+                "details": {}
+            },
+            "present": {
+                "depk": "GB317-1",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    # We'll be looking for PP1INCDU and PP1UNCPLU in agent position
+    key_data = {
+        "PP1INCDU": {
+            "pivot_sentences": ["We should organize a meeting tomorrow morning in the community to tell our people what they should do"],
+            "target_words": []
+        },
+        "PP1PLU":{
+            "pivot_sentences": ["Tonight we will all eat together.", "We should welcome them in a friendly way",
+                     "like we always do",
+                     "we too, we shall sing our own songs, and do our own dances…", "We must choose dances to showcase",
+                     "and we must rehearse them", "we’ll have to prepare enough food for two hundred people."
+                     ],
+            "target_words": []
+        },
+        "PP2DU": {
+            "pivot_sentences": [
+                "I’m fine, and you?", "Where are you going?",
+            ],
+            "target_words": []
+        },
+        "PP2PLU": {
+            "pivot_sentences": [
+                "I’m sorry that you have no food left."
+            ],
+            "target_words": []
+        },
+        "PP3DU": {
+            "pivot_sentences": [
+                "They died before I was born."
+            ],
+            "target_words": []
+        },
+        "PP3PLU": {
+            "pivot_sentences": [
+                "They know so many stories."
+            ],
+            "target_words": []
+        }
+    }
+
+    # populate key_data with knowledge graph
+    for pp in key_data.keys():
+        for ps in key_data[pp]["pivot_sentences"]:
+            kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+            if kg_data:
+                if pp in kg_data["data"]["recording_data"]["concept_words"].keys():
+                    if kg_data["data"]["recording_data"]["concept_words"][pp] != "":
+                        key_data[pp]["target_words"].append(kg_data["data"]["recording_data"]["concept_words"][pp])
+
+    # test dual
+    def check_dual(ppdual, ppplu):
+        if key_data[ppdual]["target_words"] != [] and key_data[ppplu]["target_words"] != []:
+            print(key_data[ppdual]["target_words"], key_data[ppplu]["target_words"])
+            if set(key_data[ppdual]["target_words"]).issubset(set(key_data[ppplu]["target_words"])):
+                output_dict["observations"]["absent"]["count"] += 1
+                example_dual = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data[ppdual]["pivot_sentences"][0])
+                output_dict["observations"]["absent"]["details"][example_dual["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, example_dual["entry_index"])
+                example_plu = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data[ppplu]["pivot_sentences"][0])
+                output_dict["observations"]["absent"]["details"][example_plu["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, example_plu["entry_index"])
+            else:
+                output_dict["observations"]["present"]["count"] += 1
+                example_dual = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data[ppdual]["pivot_sentences"][0])
+                output_dict["observations"]["present"]["details"][example_dual["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, example_dual["entry_index"])
+                example_plu = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data[ppplu]["pivot_sentences"][0])
+                output_dict["observations"]["present"]["details"][example_plu["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, example_plu["entry_index"])
+
+    check_dual("PP1INCDU", "PP1PLU")
+    check_dual("PP2DU", "PP2PLU")
+    check_dual("PP3DU", "PP3PLU")
+
+    # creating agent-ready observation
+    agent_obs = {}
+    for order in output_dict["observations"].keys():
+        agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+    output_dict["agent-ready observation"] = agent_obs
+    print(output_dict)
+    return output_dict
+
+def observer_free_pp1_gender(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "GB197",
+        "agent-ready observation": {},
+        "observations": {
+            "absent": {
+                "depk": "GB197-0",
+                "count": 0,
+                "details": {}
+            },
+            "present": {
+                "depk": "GB197-1",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    key_data = {
+        "PP1_male": {
+            "pivot_sentences": [
+                "but I recognize your eyes and your smile.",
+                "I have nightmares.",
+                "I ate many of them.",
+                "I became sick after that."
+
+                ],
+            "target_words": []
+        },
+        "PP1_female": {
+            "pivot_sentences": [
+                "He will think I didn’t do my homework.",
+                "But I need it for my math class today!",
+                "The teacher will be quite angry if I don't have my notebook.",
+                "I've been looking for it everywhere, but I can't find it!"
+            ],
+            "target_words": []
+        }
+    }
+    # populate key_data with knowledge graph
+    for ps in key_data["PP1_female"]["pivot_sentences"]:
+        kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+        if kg_data:
+            if "PP1SG" in kg_data["data"]["recording_data"]["concept_words"].keys():
+                if kg_data["data"]["recording_data"]["concept_words"]["PP1SG"] != "":
+                    key_data["PP1_female"]["target_words"].append(kg_data["data"]["recording_data"]["concept_words"]["PP1SG"])
+    for ps in key_data["PP1_male"]["pivot_sentences"]:
+        kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+        if kg_data:
+            if "PP1SG" in kg_data["data"]["recording_data"]["concept_words"].keys():
+                if kg_data["data"]["recording_data"]["concept_words"]["PP1SG"] != "":
+                    key_data["PP1_male"]["target_words"].append(kg_data["data"]["recording_data"]["concept_words"]["PP1SG"])
+
+    # test male/female distinction
+    if set(key_data["PP1_male"]["target_words"]).issubset(set(key_data["PP1_female"]["target_words"])) \
+            or set(key_data["PP1_female"]["target_words"]).issubset(set(key_data["PP1_male"]["target_words"])):
+        output_dict["observations"]["absent"]["count"] = 4
+        example_male = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data["PP1_male"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_male["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_male["entry_index"])
+        example_female = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                              key_data["PP1_female"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_female["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_female["entry_index"])
+    else:
+        output_dict["observations"]["present"]["count"] = 4
+        example_male = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                            key_data["PP1_male"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][example_male["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_male["entry_index"])
+        example_female = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data["PP1_female"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][example_female["entry_index"]] = kgu.get_kg_entry_signature(knowledge_graph, example_female["entry_index"])
+
+    # creating agent-ready observation
+    agent_obs = {}
+    for order in output_dict["observations"].keys():
+        agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+    output_dict["agent-ready observation"] = agent_obs
+    print(output_dict)
+    return output_dict
+
+def observer_free_pp2_gender(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "GB196",
+        "agent-ready observation": {},
+        "observations": {
+            "absent": {
+                "depk": "GB196-0",
+                "count": 0,
+                "details": {}
+            },
+            "present": {
+                "depk": "GB196-1",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    key_data = {
+        "PP2_male": {
+            "pivot_sentences": [
+                "You look mischievous on that picture.",
+                "Oh yes, you’re hot!",
+                "You look sick",
+                "You need to sleep."
+            ],
+            "target_words": []
+        },
+        "PP2_female": {
+            "pivot_sentences": [
+                "Hm, did you look in your room, beside your bed?"
+            ],
+            "target_words": []
+        }
+    }
+    # populate key_data with knowledge graph
+    for ps in key_data["PP2_female"]["pivot_sentences"]:
+        kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+        if kg_data:
+            if "PP2SG" in kg_data["data"]["recording_data"]["concept_words"].keys():
+                if kg_data["data"]["recording_data"]["concept_words"]["PP2SG"] != "":
+                    key_data["PP2_female"]["target_words"].append(
+                        kg_data["data"]["recording_data"]["concept_words"]["PP2SG"])
+    for ps in key_data["PP2_male"]["pivot_sentences"]:
+        kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+        if kg_data:
+            if "PP2SG" in kg_data["data"]["recording_data"]["concept_words"].keys():
+                if kg_data["data"]["recording_data"]["concept_words"]["PP2SG"] != "":
+                    key_data["PP2_male"]["target_words"].append(
+                        kg_data["data"]["recording_data"]["concept_words"]["PP2SG"])
+    # test male/female distinction
+    if set(key_data["PP2_male"]["target_words"]).issubset(set(key_data["PP2_female"]["target_words"])) \
+        or set(key_data["PP2_female"]["target_words"]).issubset(set(key_data["PP2_male"]["target_words"])):
+        output_dict["observations"]["absent"]["count"] = 4
+        example_male = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data["PP2_male"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_male["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_male["entry_index"])
+        example_female = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data["PP2_female"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_female["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_female["entry_index"])
+    else:
+        output_dict["observations"]["present"]["count"] = 4
+        example_male = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                            key_data["PP2_male"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][example_male["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_male["entry_index"])
+        example_female = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                              key_data["PP2_female"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][
+            example_female["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_female["entry_index"])
+
+    # creating agent-ready observation
+    agent_obs = {}
+    for order in output_dict["observations"].keys():
+        agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+    output_dict["agent-ready observation"] = agent_obs
+    print(output_dict)
+    return output_dict
+
+def observer_free_pp3_gender(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "GB030",
+        "agent-ready observation": {},
+        "observations": {
+            "absent": {
+                "depk": "GB030-0",
+                "count": 0,
+                "details": {}
+            },
+            "present": {
+                "depk": "GB030-1",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    key_data = {
+        "PP3_male": {
+            "pivot_sentences": [
+                "He will think I didn’t do my homework.",
+                "He lives far away from here.",
+                "It looks like he’s been playing with it all morning.",
+                "He gave me the fruits to try."
+            ],
+            "target_words": []
+        },
+        "PP3_female": {
+            "pivot_sentences": [
+                "I guess she was coming back from school",
+                "when she was a child"
+            ],
+            "target_words": []
+        }
+    }
+    # populate key_data with knowledge graph
+    for ps in key_data["PP3_female"]["pivot_sentences"]:
+        kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+        if kg_data:
+            if "PP3SG" in kg_data["data"]["recording_data"]["concept_words"].keys():
+                if kg_data["data"]["recording_data"]["concept_words"]["PP3SG"] != "":
+                    key_data["PP3_female"]["target_words"].append(
+                        kg_data["data"]["recording_data"]["concept_words"]["PP3SG"])
+    for ps in key_data["PP3_male"]["pivot_sentences"]:
+        kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+        if kg_data:
+            if "PP3SG" in kg_data["data"]["recording_data"]["concept_words"].keys():
+                if kg_data["data"]["recording_data"]["concept_words"]["PP3SG"] != "":
+                    key_data["PP3_male"]["target_words"].append(
+                        kg_data["data"]["recording_data"]["concept_words"]["PP3SG"])
+
+    # test male/female distinction
+    if set(key_data["PP3_male"]["target_words"]).issubset(set(key_data["PP3_female"]["target_words"])) \
+            or set(key_data["PP3_female"]["target_words"]).issubset(set(key_data["PP3_male"]["target_words"])):
+        output_dict["observations"]["absent"]["count"] = 4
+        example_male = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data["PP3_male"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_male["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_male["entry_index"])
+        example_female = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data["PP3_female"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_female["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_female["entry_index"])
+    else:
+        output_dict["observations"]["present"]["count"] = 4
+        example_male = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                            key_data["PP3_male"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][example_male["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_male["entry_index"])
+        example_female = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                              key_data["PP3_female"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][
+            example_female["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_female["entry_index"])
+
+    # creating agent-ready observation
+    agent_obs = {}
+    for order in output_dict["observations"].keys():
+        agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+    output_dict["agent-ready observation"] = agent_obs
+    print(output_dict)
+    return output_dict
+
+def observer_free_pp1sg_semantic_role(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "GB071",
+        "agent-ready observation": {},
+        "observations": {
+            "absent": {
+                "depk": "GB071-0",
+                "count": 0,
+                "details": {}
+            },
+            "present": {
+                "depk": "GB071-1",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    key_data = {
+        "pp1sg": {
+            "concept": "PP1SG",
+            "semantic_roles": {
+            "agent": {
+            "pivot_sentences": [
+                "Well… I’m not feeling well these days.",
+                "I can’t sleep well at night.",
+                "I sweat",
+                "I have nightmares.",
+                "and then I wake up in the middle of the night."
+            ],
+            "target_words": []
+                },
+            "patient": {
+                "pivot_sentences": [
+                    "How did you recognize me?",
+                    "He gave me the fruits to try.",
+                    "Oh, show it to me please!"
+                ],
+                "target_words": []
+                }
+            }
+        }
+    }
+    # populate key_data with knowledge graph
+    pp = "pp1sg"
+    for sr in key_data[pp]["semantic_roles"].keys():
+        for ps in key_data[pp]["semantic_roles"][sr]["pivot_sentences"]:
+            kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+            if kg_data:
+                if key_data[pp]["concept"] in kg_data["data"]["recording_data"]["concept_words"].keys():
+                    if kg_data["data"]["recording_data"]["concept_words"][key_data[pp]["concept"]] != "":
+                        key_data[pp]["semantic_roles"][sr]["target_words"].append(
+                            kg_data["data"]["recording_data"]["concept_words"][key_data[pp]["concept"]])
+
+    # test semantic role variations
+    if set(key_data[pp]["semantic_roles"]["agent"]["target_words"]).issubset(set(key_data[pp]["semantic_roles"]["patient"]["target_words"])) \
+            or set(key_data[pp]["semantic_roles"]["patient"]["target_words"]).issubset(set(key_data[pp]["semantic_roles"]["agent"]["target_words"])):
+        output_dict["observations"]["absent"]["count"] = 3
+        example_agent = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data[pp]["semantic_roles"]["agent"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_agent["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_agent["entry_index"])
+        example_patient = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                              key_data[pp]["semantic_roles"]["patient"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_patient["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_patient["entry_index"])
+    else:
+        output_dict["observations"]["present"]["count"] = 3
+        example_male = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                            key_data[pp]["semantic_roles"]["agent"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][example_male["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_male["entry_index"])
+        example_female = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                              key_data[pp]["semantic_roles"]["patient"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][
+            example_female["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_female["entry_index"])
+
+    # creating agent-ready observation
+    agent_obs = {}
+    for order in output_dict["observations"].keys():
+        agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+    output_dict["agent-ready observation"] = agent_obs
+    print(output_dict)
+    return output_dict
+
+
+def observer_free_pp2sg_semantic_role(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "GB071",
+        "agent-ready observation": {},
+        "observations": {
+            "absent": {
+                "depk": "GB071-0",
+                "count": 0,
+                "details": {}
+            },
+            "present": {
+                "depk": "GB071-1",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    key_data = {
+        "pp2sg": {
+            "concept": "PP2SG",
+            "semantic_roles": {
+            "agent": {
+                "pivot_sentences": [
+                    "You look sick",
+                    "Oh yes, you’re hot!",
+                    "Have you eaten something particular lately?",
+                    "You’ve never met him."
+                ],
+                "target_words": []
+            },
+            "patient": {
+                "pivot_sentences": [
+                    "I’ll give you some medicine to drink.",
+                    "This is why I came to see you."
+                ],
+                "target_words": []
+            }
+            }
+        }
+    }
+    # populate key_data with knowledge graph
+    pp = "pp2sg"
+    for sr in key_data[pp]["semantic_roles"].keys():
+        for ps in key_data[pp]["semantic_roles"][sr]["pivot_sentences"]:
+            kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+            if kg_data:
+                if key_data[pp]["concept"] in kg_data["data"]["recording_data"]["concept_words"].keys():
+                    if kg_data["data"]["recording_data"]["concept_words"][key_data[pp]["concept"]] != "":
+                        key_data[pp]["semantic_roles"]["semantic_roles"][sr]["target_words"].append(
+                            kg_data["data"]["recording_data"]["concept_words"][key_data[pp]["concept"]])
+
+    # test semantic role variations
+    if set(key_data[pp]["semantic_roles"]["agent"]["target_words"]).issubset(set(key_data[pp]["semantic_roles"]["patient"]["target_words"])) \
+            or set(key_data[pp]["semantic_roles"]["patient"]["target_words"]).issubset(set(key_data[pp]["semantic_roles"]["agent"]["target_words"])):
+        output_dict["observations"]["absent"]["count"] = 3
+        example_agent = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data[pp]["semantic_roles"]["agent"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_agent["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_agent["entry_index"])
+        example_patient = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                              key_data[pp]["semantic_roles"]["patient"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_patient["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_patient["entry_index"])
+    else:
+        output_dict["observations"]["present"]["count"] = 3
+        example_male = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                            key_data[pp]["semantic_roles"]["agent"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][example_male["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_male["entry_index"])
+        example_female = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                              key_data[pp]["semantic_roles"]["patient"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][
+            example_female["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_female["entry_index"])
+
+    # creating agent-ready observation
+    agent_obs = {}
+    for order in output_dict["observations"].keys():
+        agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+    output_dict["agent-ready observation"] = agent_obs
+    print(output_dict)
+    return output_dict
+
+def observer_free_pp3sg_semantic_role(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "GB071",
+        "agent-ready observation": {},
+        "observations": {
+            "absent": {
+                "depk": "GB071-0",
+                "count": 0,
+                "details": {}
+            },
+            "present": {
+                "depk": "GB071-1",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    key_data = {
+        "pp3sg": {
+            "concept": "PP3SG",
+            "semantic_roles": {
+            "agent": {
+                "pivot_sentences": [
+                    "He will think I didn’t do my homework.",
+                    "But he has shredded it into pieces!"
+                ],
+                "target_words": []
+            },
+            "patient": {
+                "pivot_sentences": [
+                    "You’ve never met him."
+                ],
+                "target_words": []
+            }
+            }
+        }
+    }
+    # populate key_data with knowledge graph
+    pp = "pp3sg"
+    for sr in key_data[pp]["semantic_roles"].keys():
+        for ps in key_data[pp]["semantic_roles"][sr]["pivot_sentences"]:
+            kg_data = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, ps)
+            if kg_data:
+                if key_data[pp]["concept"] in kg_data["data"]["recording_data"]["concept_words"].keys():
+                    if kg_data["data"]["recording_data"]["concept_words"][key_data[pp]["concept"]] != "":
+                        key_data[pp]["semantic_roles"][sr]["target_words"].append(
+                            kg_data["data"]["recording_data"]["concept_words"][key_data[pp]["concept"]])
+
+    # test semantic role variations
+    if set(key_data[pp]["semantic_roles"]["agent"]["target_words"]).issubset(set(key_data[pp]["semantic_roles"]["patient"]["target_words"])) \
+            or set(key_data[pp]["semantic_roles"]["patient"]["target_words"]).issubset(set(key_data[pp]["semantic_roles"]["agent"]["target_words"])):
+        output_dict["observations"]["absent"]["count"] = 3
+        example_agent = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph, key_data[pp]["semantic_roles"]["agent"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_agent["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_agent["entry_index"])
+        example_patient = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                              key_data[pp]["semantic_roles"]["patient"]["pivot_sentences"][0])
+        output_dict["observations"]["absent"]["details"][example_patient["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_patient["entry_index"])
+    else:
+        output_dict["observations"]["present"]["count"] = 3
+        example_male = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                            key_data[pp]["semantic_roles"]["agent"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][example_male["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_male["entry_index"])
+        example_female = kgu.get_kg_entry_from_pivot_sentence(knowledge_graph,
+                                                              key_data[pp]["semantic_roles"]["patient"]["pivot_sentences"][0])
+        output_dict["observations"]["present"]["details"][
+            example_female["entry_index"]] = kgu.get_kg_entry_signature(
+            knowledge_graph, example_female["entry_index"])
+
+    # creating agent-ready observation
+    agent_obs = {}
+    for order in output_dict["observations"].keys():
+        agent_obs[output_dict["observations"][order]["depk"]] = output_dict["observations"][order]["count"]
+    output_dict["agent-ready observation"] = agent_obs
+    print(output_dict)
+    return output_dict
+
 # ==============================================
 
-def properson_observer(properson, knowledge_graph):
-    output_list = []
-    properson_props = {
-        "PP1SG": {"number": "singular", "ref": ["speaker"]},
-        "PP1INCDU": {"number": "dual", "ref": ["speaker", "listener"]},
-        "PP1EXCDU": {"number": "dual", "ref": ["speaker", "other"]},
-        "PP1INCTR": {"number": "trial", "ref": ["speaker", "listener", "other"]},
-        "PP1EXCTR": {"number": "trial", "ref": ["speaker", "other", "other"]},
-        "PP1INCPC": {"number": "paucal", "ref": ["speaker", "listener(s)", "other(s)"]},
-        "PP1EXCPC": {"number": "paucal", "ref": ["speaker", "other(s)"]},
-        "PP1INCPL": {"number": "plural", "ref": ["speaker", "listener(s)", "other(s)"]},
-        "PP1EXCPL": {"number": "plural", "ref": ["speaker", "other(s)"]},
 
-        "PP2SG": {"number": "singular", "ref": ["listener"]},
-        "PP2DU": {"number": "dual", "ref": ["listener", "listener"]},
-        "PP2TR": {"number": "trial", "ref": ["listener", "listener", "listener"]},
-        "PP2PC": {"number": "paucal", "ref": ["listener(s)"]},
-        "PP2PL": {"number": "plural", "ref": ["listener(s)"]},
-
-        "PP3SG": {"number": "singular", "ref": ["other"]},
-        "PP3DU": {"number": "dual", "ref": ["other", "other"]},
-        "PP3TR": {"number": "trial", "ref": ["other", "other", "other"]},
-        "PP3PC": {"number": "paucal", "ref": ["other(s)"]},
-
-        "PP3PL": {"number": "plural", "ref": ["other(s)"]},
-    }
-    for entry_index, data in knowledge_graph.items():
-        for concept_name, concept_data in data["sentence_data"]["graph"].items():
-            if concept_data["value"] == properson:
-                signature = {}
-                try:
-                    signature["intent"] = data["sentence_data"]["intent"][0]
-                except IndexError:
-                    signature["intent"] = "UNKNOWN"
-                signature["polarity"] = kgu.get_kg_entry_polarity(data)
-                signature["speaker_gender"] = data["speaker_gender"]
-                signature["speaker_age"] = data["speaker_age"]
-                signature["listener_gender"] = data["listener_gender"]
-                signature["listener_age"] = data["listener_age"]
-                try:
-                    signature["predicate"] = data["sentence_data"]["predicate"][0]
-                except IndexError:
-                    signature["predicate"] = "UNKNOWN"
-                # reference gender
-                if properson == "PP1SG":
-                    signature["ref_gender"] = data["speaker_gender"]
-                elif properson == "PP2SG":
-                    signature["ref_gender"] = data["listener_gender"]
-                elif properson == "PP3SG":
-                    if "PP3SG SEX-BASED GENDER" in data["sentence_data"]["graph"].keys():
-                        signature["ref_gender"] = data["sentence_data"]["graph"]["PP3SG SEX-BASED GENDER"].get("value", None)
-                else:
-                    signature["ref_gender"] = "uncertain plural"
-                # speaker-group number
-                signature["number"] = properson_props[properson]["number"]
-                # semantic role
-                if "AGENT REFERENCE TO CONCEPT" in concept_name:
-                    signature["semantic_role"] = "agent"
-                elif "PATIENT REFERENCE TO CONCEPT" in concept_name:
-                    signature["semantic_role"] = "patient"
-                elif "POSSESSOR REFERENCE TO CONCEPT" in concept_name:
-                    signature["semantic_role"] = "possessor"
-                elif "POSSESSED REFERENCE TO CONCEPT" in concept_name:
-                    signature["semantic_role"] = "possessed"
-                elif "OBLIQUE" in concept_name and concept_data["value"] == properson:
-                    signature["semantic_role"] = "oblique"
-                else:
-                    signature["semantic_role"] = ""
-                    continue
-                # target word
-                if properson in data["recording_data"]["concept_words"]:
-                    if data["recording_data"]["concept_words"][properson] != "":
-                        signature["target_words"] = data["recording_data"]["concept_words"][properson]
-                        output_list.append(signature)
-                    else:
-                        print("Properson target word empty in {}".format(data["recording_data"]["concept_words"]))
-                else:
-                    print("Properson is not in the list of concept words in {}".format(data["recording_data"]["concept_words"]))
-    return output_list
 
 # General approach, not precise enough yet
 def zzz_observer_order_of_subject_object_verb(transcriptions, language, delimiters, canonical=False):
@@ -1117,3 +1712,84 @@ def zzz_observer_order_of_subject_and_verb(transcriptions, language, delimiters,
         output_dict = canonical_output
 
     return output_dict
+def zzz_properson_observer(properson, knowledge_graph):
+    output_list = []
+    properson_props = {
+        "PP1SG": {"number": "singular", "ref": ["speaker"]},
+        "PP1INCDU": {"number": "dual", "ref": ["speaker", "listener"]},
+        "PP1EXCDU": {"number": "dual", "ref": ["speaker", "other"]},
+        "PP1INCTR": {"number": "trial", "ref": ["speaker", "listener", "other"]},
+        "PP1EXCTR": {"number": "trial", "ref": ["speaker", "other", "other"]},
+        "PP1INCPC": {"number": "paucal", "ref": ["speaker", "listener(s)", "other(s)"]},
+        "PP1EXCPC": {"number": "paucal", "ref": ["speaker", "other(s)"]},
+        "PP1INCPL": {"number": "plural", "ref": ["speaker", "listener(s)", "other(s)"]},
+        "PP1EXCPL": {"number": "plural", "ref": ["speaker", "other(s)"]},
+
+        "PP2SG": {"number": "singular", "ref": ["listener"]},
+        "PP2DU": {"number": "dual", "ref": ["listener", "listener"]},
+        "PP2TR": {"number": "trial", "ref": ["listener", "listener", "listener"]},
+        "PP2PC": {"number": "paucal", "ref": ["listener(s)"]},
+        "PP2PL": {"number": "plural", "ref": ["listener(s)"]},
+
+        "PP3SG": {"number": "singular", "ref": ["other"]},
+        "PP3DU": {"number": "dual", "ref": ["other", "other"]},
+        "PP3TR": {"number": "trial", "ref": ["other", "other", "other"]},
+        "PP3PC": {"number": "paucal", "ref": ["other(s)"]},
+
+        "PP3PL": {"number": "plural", "ref": ["other(s)"]},
+    }
+    for entry_index, data in knowledge_graph.items():
+        for concept_name, concept_data in data["sentence_data"]["graph"].items():
+            if concept_data["value"] == properson:
+                signature = {}
+                try:
+                    signature["intent"] = data["sentence_data"]["intent"][0]
+                except IndexError:
+                    signature["intent"] = "UNKNOWN"
+                signature["polarity"] = kgu.get_kg_entry_polarity(data)
+                signature["speaker_gender"] = data["speaker_gender"]
+                signature["speaker_age"] = data["speaker_age"]
+                signature["listener_gender"] = data["listener_gender"]
+                signature["listener_age"] = data["listener_age"]
+                try:
+                    signature["predicate"] = data["sentence_data"]["predicate"][0]
+                except IndexError:
+                    signature["predicate"] = "UNKNOWN"
+                # reference gender
+                if properson == "PP1SG":
+                    signature["ref_gender"] = data["speaker_gender"]
+                elif properson == "PP2SG":
+                    signature["ref_gender"] = data["listener_gender"]
+                elif properson == "PP3SG":
+                    if "PP3SG SEX-BASED GENDER" in data["sentence_data"]["graph"].keys():
+                        signature["ref_gender"] = data["sentence_data"]["graph"]["PP3SG SEX-BASED GENDER"].get("value", None)
+                else:
+                    signature["ref_gender"] = "uncertain plural"
+                # speaker-group number
+                signature["number"] = properson_props[properson]["number"]
+                # semantic role
+                if "AGENT REFERENCE TO CONCEPT" in concept_name:
+                    signature["semantic_role"] = "agent"
+                elif "PATIENT REFERENCE TO CONCEPT" in concept_name:
+                    signature["semantic_role"] = "patient"
+                elif "POSSESSOR REFERENCE TO CONCEPT" in concept_name:
+                    signature["semantic_role"] = "possessor"
+                elif "POSSESSED REFERENCE TO CONCEPT" in concept_name:
+                    signature["semantic_role"] = "possessed"
+                elif "OBLIQUE" in concept_name and concept_data["value"] == properson:
+                    signature["semantic_role"] = "oblique"
+                else:
+                    signature["semantic_role"] = ""
+                    continue
+                # target word
+                if properson in data["recording_data"]["concept_words"]:
+                    if data["recording_data"]["concept_words"][properson] != "":
+                        signature["target_words"] = data["recording_data"]["concept_words"][properson]
+                        # print(signature)
+                        # print(data["recording_data"]["translation"])
+                        output_list.append(signature)
+                    else:
+                        print("Properson target word empty in {}".format(data["recording_data"]["concept_words"]))
+                else:
+                    print("Properson is not in the list of concept words in {}".format(data["recording_data"]["concept_words"]))
+    return output_list

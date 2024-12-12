@@ -15,7 +15,7 @@
 
 import streamlit as st
 import json
-from libs import knowledge_graph_utils as kgu, construction_agent as ca
+from libs import knowledge_graph_utils as kgu, construction_agent as ca, cq_observers as cqo
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
@@ -149,74 +149,75 @@ with st.expander("Data setup"):
                     len(st.session_state["cq_transcriptions"]), len(st.session_state["kg"]),
                     total_target_word_count, len(unique_words)))
 
+    if st.session_state["kg"] != {}:
+        obsinc = cqo.observer_inclusive_exclusive(st.session_state["kg"], st.session_state["tl_name"], st.session_state["delimiters"], canonical=False)
+        st.write(obsinc)
+        obsdual = cqo.observer_dual(st.session_state["kg"], st.session_state["tl_name"], st.session_state["delimiters"], canonical=False)
+        st.write(obsdual)
 
-if st.session_state["kg"] != {}:
-    properson = st.selectbox("Select properson",properson_props.keys())
-    c = ca.Properson_Construction(properson)
-    c.populate_data_list(st.session_state["kg"])
-    cdf = c.data_df
-    data_list = c.data_list
-    if st.toggle("Show raw dataframe"):
-        st.dataframe(cdf)
 
-    from itertools import product
-    def generate_influence_combinations(parameters):
-        """
-        Generates all possible influence combinations for the given parameters.
-
-        Parameters:
-        - parameters (dict): Dictionary of parameters and their possible values.
-
-        Returns:
-        - List of tuples representing influence combinations.
-        """
-        param_names = list(parameters.keys())
-        # Each parameter can be 0 (not influence) or 1 (influence)
-        influence_options = [[0, 1] for _ in param_names]
-        all_combinations = list(product(*influence_options))
-        return param_names, all_combinations
-
-    all_combinations = generate_influence_combinations(parameters)
-
-    def test_combination(params, combination):
-        # a combination is invalid if two target words are associated with different values of the parameters tested
-        tested_params = [param for flag, param in zip(combination, params) if flag]
-        d = {}
-        for param in tested_params:
-            d[param] = parameters[param]
-        combined_values_list = [dict(zip(d.keys(), values)) for values in product(*d.values())]
-        # for each value combination, search matching data
-        data = []
-        for combined_value in combined_values_list:
-            tmp = {"parameters": tested_params, "combination":combined_value, "count":0, "target_words":[], "influence": "may influence"}
-            for item in data_list:
-                match = True
-                for p, v in combined_value.items():
-                    if item[p] != v:
-                        match = False
-                if match:
-                    tmp["count"] += 1
-                    if item["target_words"] != "":
-                        tmp["target_words"].append(item["target_words"])
-                        #print("item {} match combined value {}, target word {}".format(item, combined_value, item["target_words"] ))
-            if tmp["count"] > 1:
-                tmp["target_words"] = list(set(tmp["target_words"]))
-                if len(tmp["target_words"]) == 0:
-                    continue
-                elif len(tmp["target_words"]) > 1:
-                    tmp["influence"] = "no influence"
-                data.append(tmp)
-            else:
-                tmp["influence"] = "no data"
-        return data
-
-    results = []
-    for combination in all_combinations[1]:
-        influence = test_combination(all_combinations[0], combination)
-        for item in influence:
-            if item["influence"] == "may influence":
-                results.append(item)
-
-    st.write(results)
+# # BRUTE FORCE INFLUENCE
+# if st.session_state["kg"] != {}:
+#     properson = st.selectbox("Select properson",properson_props.keys())
+#     c = ca.Properson_Construction(properson)
+#     c.populate_data_list(st.session_state["kg"])
+#     cdf = c.data_df
+#     data_list = c.data_list
+#     if st.toggle("Show raw dataframe"):
+#         st.dataframe(cdf)
+#
+#     from itertools import product
+#     def generate_influence_combinations(parameters):
+#         """
+#         Generates all possible influence combinations for the given parameters.
+#
+#         Parameters:
+#         - parameters (dict): Dictionary of parameters and their possible values.
+#
+#         Returns:
+#         - List of tuples representing influence combinations.
+#         """
+#         param_names = list(parameters.keys())
+#         # Each parameter can be 0 (not influence) or 1 (influence)
+#         influence_options = [[0, 1] for _ in param_names]
+#         all_combinations = list(product(*influence_options))
+#         return param_names, all_combinations
+#     all_combinations = generate_influence_combinations(parameters)
+#     def test_combination(params, combination):
+#         # a combination is invalid if two target words are associated with different values of the parameters tested
+#         tested_params = [param for flag, param in zip(combination, params) if flag]
+#         d = {}
+#         for param in tested_params:
+#             d[param] = parameters[param]
+#         combined_values_list = [dict(zip(d.keys(), values)) for values in product(*d.values())]
+#         # for each value combination, search matching data
+#         data = []
+#         for combined_value in combined_values_list:
+#             tmp = {"parameters": tested_params, "combination":combined_value, "count":0, "target_words":[], "influence": "may influence"}
+#             for item in data_list:
+#                 match = True
+#                 for p, v in combined_value.items():
+#                     if item[p] != v:
+#                         match = False
+#                 if match:
+#                     tmp["count"] += 1
+#                     if item["target_words"] != "":
+#                         tmp["target_words"].append(item["target_words"])
+#                         #print("item {} match combined value {}, target word {}".format(item, combined_value, item["target_words"] ))
+#             if tmp["count"] > 1:
+#                 tmp["target_words"] = list(set(tmp["target_words"]))
+#                 if len(tmp["target_words"]) == 0:
+#                     continue
+#                 elif len(tmp["target_words"]) > 1:
+#                     tmp["influence"] = "not explanatory"
+#                 data.append(tmp)
+#             else:
+#                 tmp["influence"] = "no data"
+#         return data
+#     results = []
+#     for combination in all_combinations[1]:
+#         influence = test_combination(all_combinations[0], combination)
+#         results.append(influence)
+#     st.write(results)
 
 

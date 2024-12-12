@@ -127,41 +127,21 @@ topics = {
   "What is the order of adnominal property word and noun?": {"code": "GB193", "observer": None},
   "What is the pragmatically unmarked order of adnominal possessor noun and possessed noun?": {"code": "GB065", "observer": None}
         },
-    "Gender and noun class": {
-      "Sex-based and Non-sex-based Gender Systems": {"code": "31", "observer": None},
-      "Is there a gender/noun class system where sex is a factor in class assignment?": {"code": "GB051", "observer": None},
-      "Number of Genders": {"code": "30", "observer": None},
-      "Systems of Gender Assignment": {"code": "32", "observer": None},
-      "Gender Distinctions in Independent Personal Pronouns": {"code": "44", "observer": None},
-      "Is there a gender/noun class system where shape is a factor in class assignment?": {"code": "GB052", "observer": None},
-      "Is there a gender/noun class system where animacy is a factor in class assignment?": {"code": "GB053", "observer": None},
-      "Is there a gender/noun class system where plant status is a factor in class assignment?": {"code": "GB054", "observer": None},
-      "Is there a gender system where a noun's phonological properties are a factor in class assignment?": {"code": "GB192", "observer": None},
-      "Is there a large class of nouns whose gender/noun class is not phonologically or semantically predictable?": {"code": "GB321", "observer": None}
-  },
-    "Number": {
-        "Is dual number regularly marked in the noun phrase by a dedicated phonologically free element?": {"code":"GB317", "observer": None},
-        "Is singular number regularly marked in the noun phrase by a dedicated phonologically free element?" : {"code":"GB316", "observer": None},
-        "Is trial number regularly marked in the noun phrase by a dedicated phonologically free element?": {"code": "GB319", "observer": None},
-        "Is paucal number regularly marked in the noun phrase by a dedicated phonologically free element?": {"code": "GB320", "observer": None},
-        "Is plural number regularly marked in the noun phrase by a dedicated phonologically free element?": {"code": "GB318", "observer": None},
+    "Gender in pronouns": {
+    "Is there a male/female distinction in 1st person independent pronouns?": {"code": "GB197", "observer": (obs.observer_free_pp1_gender, False)},
+    "Is there a male/female distinction in 2nd person independent pronouns?": {"code": "GB196", "observer": (obs.observer_free_pp2_gender, False)},
+    "Is there a gender distinction in independent 3rd person pronouns?": {"code": "GB030", "observer": (obs.observer_free_pp3_gender, False)}
     },
-    "Cases": {
-        "Number of Cases": {"code": "49", "observer": None},
-        "Case Syncretism": {"code": "28", "observer": None},
-        "Position of Case Affixes": {"code": "51", "observer": None},
-        "Asymmetrical Case-Marking": {"code": "50", "observer": None},
-        "Alignment of Case Marking of Pronouns": {"code": "99", "observer": None},
-        "Alignment of Case Marking of Full Noun Phrases": {"code": "98", "observer": None},
-        "Are there morphological cases for pronominal core arguments (i.e. S/A/P)?": {"code": "GB071", "observer": None},
-        "Are there morphological cases for non-pronominal core arguments (i.e. S/A/P)?": {"code": "GB070", "observer": None},
-        "Are there morphological cases for oblique non-pronominal NPs (i.e. not S/A/P)?": {"code": "GB072", "observer": None},
-        "Are there morphological cases for independent oblique personal pronominal arguments (i.e. not S/A/P)?": {"code": "GB073", "observer": None},
+    "Semantic roles in pronouns": {
+    "Are there morphological cases for pronominal core arguments (i.e. S/A/P)?": {"code": "GB071", "observer": (obs.observer_free_pp1sg_semantic_role, False)}
+    },
+    "Dual": {
+    "Is dual number regularly marked in the noun phrase by a dedicated phonologically free element?": {"code": "GB317", "observer": (obs.observer_free_pp_dual, False)},
     },
     "inclusive/exclusive": {
+        "Inclusive/Exclusive Distinction in Independent Pronouns": {"code": "39", "observer": (obs.observer_free_pp_inclusive_exclusive, False)},
         "Is there a distinction between inclusive and exclusive?": {"code": "GB028", "observer": None},
-        "Inclusive/Exclusive Distinction in Verbal Inflection": {"code": "40", "observer": None},
-        "Inclusive/Exclusive Distinction in Independent Pronouns": {"code": "39", "observer": None}
+        "Inclusive/Exclusive Distinction in Verbal Inflection": {"code": "40", "observer": None}
     }
     },
     "ca_topics":{}
@@ -431,7 +411,7 @@ if st.session_state["tl_name"] != "":
     # WALS
     if st.session_state["tl_wals_pk"] is not None:
         if st.session_state["tl_wals_pk"] in wu.domain_elements_by_language.keys():
-            known_values =  wu.domain_elements_by_language[st.session_state["tl_wals_pk"]]
+            known_values = wu.domain_elements_by_language[st.session_state["tl_wals_pk"]]
             for known_value in known_values:
                 if wu.param_pk_by_de_pk[str(known_value)] in ga_param_codes + ca_param_codes:
                     p_name = wu.parameter_name_by_pk[wu.param_pk_by_de_pk[str(known_value)]]
@@ -603,13 +583,15 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
             st.write(st.session_state["ga"].get_displayable_beliefs())
 
         # TRUTH INJECTION
-        # Injecting beliefs of known parameters from wqls/grambank
+        # Injecting beliefs of known parameters from wals/grambank
         for known_p_name in st.session_state["tl_knowledge"]["known_wals_pk"].keys():
             depk = st.session_state["tl_knowledge"]["known_wals_pk"][known_p_name]
-            st.session_state["ga"].language_parameters[known_p_name].inject_peak_belief(depk, 1, locked=True)
+            if known_p_name in st.session_state["ga"].language_parameters.keys():
+                st.session_state["ga"].language_parameters[known_p_name].inject_peak_belief(depk, 1, locked=True)
         for known_p_name in st.session_state["tl_knowledge"]["known_grambank_pid"].keys():
             vid = st.session_state["tl_knowledge"]["known_grambank_pid"][known_p_name]
-            st.session_state["ga"].language_parameters[known_p_name].inject_peak_belief(vid, 1, locked=True)
+            if known_p_name in st.session_state["ga"].language_parameters.keys():
+                st.session_state["ga"].language_parameters[known_p_name].inject_peak_belief(vid, 1, locked=True)
 
         if show_details:
             infospot.write("Injecting known information")
@@ -722,8 +704,7 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                                 source=from_node,
                                 to=to_node,
                                 value=ga.graph[from_node][to_node].max().max(),
-                                title=from_node + "-->" + to_node + "\nMax CP value: " + str(ga.graph[from_node][
-                                                                                                 to_node].max().max()) + " for " + max_row_name + " given " + max_col_name,
+                                title=from_node + "-->" + to_node + "\nCP table:\n" + str(ga.graph[from_node][to_node]),
                                 label=ga.graph[from_node][to_node].max().max(),
                                 color="#eeeeee",
                                 arrows="",
