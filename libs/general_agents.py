@@ -152,7 +152,7 @@ class LanguageParameter:
         #     print(self.beliefs_history)
 
 
-    def update_beliefs_from_observations(self, influence_distribution = "uniform", observation_influence=0.9, autolock_threshold=0.99, verbose=False):
+    def update_beliefs_from_observations(self, influence_distribution = "uniform", observation_influence=0.9, autolock_threshold=0.9, verbose=False):
         """this function takes in the observation inbox a dict of observation counts of the values of the said parameter
         and uses it to update the corresponding uncertain variable.
         observations is of the form {value1: count1, value2: count2...}"""

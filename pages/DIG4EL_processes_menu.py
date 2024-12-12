@@ -43,6 +43,8 @@ st.page_link("pages/WALS_Explore.py", label="WALS Data", icon=":material/databas
 
 st.page_link("pages/Grambank_Explore.py", label="Grambank Data", icon=":material/database:")
 
+st.page_link("pages/wgb_cp.py", label="Grambank <-> WALS Conditional Probabilities", icon=":material/casino:")
+
 st.page_link("pages/Conditional_proba_exploration.py", label="Conditional Probabilies", icon=":material/casino:")
 
 st.page_link("pages/General_agent_gawo_example.py", label="General Agent Gawo Example",
@@ -50,3 +52,6 @@ st.page_link("pages/General_agent_gawo_example.py", label="General Agent Gawo Ex
 
 st.page_link("pages/Testing_general_agents.py", label="Testing General Agents",
              icon=":material/quiz:")
+
+st.page_link("pages/experimental_menu.py", label="Experimental features",
+             icon=":material/experiment:")

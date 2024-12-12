@@ -166,6 +166,7 @@ if st.session_state["kgs"] != {}:
 
     if len(filtered_sentence_keys) > 0:
         selected_sentence = st.selectbox("select sentence", filtered_sentence_keys)
+        st.markdown("**{}**".format(selected_sentence))
 
         # result display
         for tl in st.session_state["sentence_comp_dict"][selected_sentence]:
