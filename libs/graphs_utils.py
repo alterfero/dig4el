@@ -78,8 +78,8 @@ def get_genealogy(concept_graph, node):
     parents = []
     while concept_graph[current_node]["ontological parent"] != "self" and concept_graph[current_node]["ontological parent"] != "sentence":
         #print("get_parent_list, current node ",graph[current_node])
-        parents.append(graph[current_node]["ontological parent"])
-        current_node = graph[current_node]["ontological parent"]
+        parents.append(concept_graph[current_node]["ontological parent"])
+        current_node = concept_graph[current_node]["ontological parent"]
     return parents
 
 def create_features_graph():

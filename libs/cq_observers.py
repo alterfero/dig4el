@@ -1240,7 +1240,6 @@ def observer_free_pp1sg_semantic_role(knowledge_graph, language, delimiters, can
     print(output_dict)
     return output_dict
 
-
 def observer_free_pp2sg_semantic_role(knowledge_graph, language, delimiters, canonical=False):
     output_dict = {
         "ppk": "GB071",
@@ -1403,8 +1402,6 @@ def observer_free_pp3sg_semantic_role(knowledge_graph, language, delimiters, can
     return output_dict
 
 # ==============================================
-
-
 
 # General approach, not precise enough yet
 def zzz_observer_order_of_subject_object_verb(transcriptions, language, delimiters, canonical=False):
