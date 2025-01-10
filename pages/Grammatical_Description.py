@@ -89,21 +89,9 @@ if "results_approved" not in st.session_state:
 if "prompt_content" not in st.session_state:
     st.session_state["prompt_content"] = {}
 
-topics2 = {
-"ga_topics": {
-    "Canonical word orders": {
-  "Order of Subject, Object and Verb": {"code": "81", "observer": (obs.observer_order_of_subject_object_verb, True)},
-  "Order of Subject and Verb": {"code": "82", "observer": (obs.observer_order_of_subject_and_verb, True)}}
-},
-"ca_topics":{}
-}
-
 topics = {
 "ga_topics": {
-    "Existential word?": {
-    "Is there an existential verb?": {"code":"GB126", "observer": None}
-    },
-    "Canonical word orders": {
+  "Canonical word orders": {
   "Order of Subject, Object and Verb": {"code": "81", "observer": (obs.observer_order_of_subject_object_verb, True)},
   "Order of Subject and Verb": {"code": "82", "observer": (obs.observer_order_of_subject_and_verb, True)},
   "Order of Object and Verb": {"code": "83", "observer": None},
@@ -370,12 +358,14 @@ with st.expander("Inputs"):
     # load transcriptions, create knowledge graph
     if st.session_state["loaded_existing"]:
         if st.session_state["cq_transcriptions"] != []:
-            # Consolidating transcriptions
+            # Consolidating transcriptions - Knowledge Graph
             st.session_state[
                 "consolidated_transcriptions"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
                 st.session_state["cq_transcriptions"],
                 st.session_state["tl_name"],
                 st.session_state["delimiters"])
+            with open("./data/knowledge/current_kg.json", "w") as f:
+                json.dump(st.session_state["consolidated_transcriptions"], f, indent=4)
             st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                 len(st.session_state["cq_transcriptions"]), len(st.session_state["consolidated_transcriptions"]),
                 total_target_word_count, len(unique_words)))

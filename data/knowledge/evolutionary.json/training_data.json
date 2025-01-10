@@ -1,0 +1,25 @@
+[
+	(
+	{
+	"context": {"speaker_gender":"male", "listener_gender":"male", "politeness":"None"}
+	"intent": ["ASK"],
+	"super_concept_graph":
+	["PERSON wildcard",
+		"POINTED BY SPEAKER",
+		"photo",
+		"first",
+		"equating"],
+	"concept_words": {
+		"PERSON wildcard": "qui",
+		"POINTED BY SPEAKER": "cette",
+		"photo": "photo",
+		"first": "première",
+		"equating": "est"
+			}
+		}
+	
+	},
+	{"translation": "qui est sur cette première photo ?"}
+	
+	)
+]
