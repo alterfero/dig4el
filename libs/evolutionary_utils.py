@@ -18,7 +18,20 @@ from libs import graphs_utils as gu
 with open("../data/concepts.json", "r") as f:
     concepts = json.load(f)
 
+def get_concept_type(concept):
+    g = gu.get_genealogy(concepts, concept)
+    if g != []:
+        if 'OBJECT' in g:
+            return 'OBJECT'
+        elif 'EVENT' in g:
+            return 'EVENT'
+        else:
+            return g[0]
+    else:
+        return "unknown"
+
 def build_training_data(kg):
+    all_concepts = []
     internal_particularization_list = ["DEFINITENESS", "POLARITY", "TENSE", "ASPECT"]
     relational_particularization_list = ["AGENT", "PATIENT", "OBLIQUE", "POSSESSOR", "POSSESSEE", "QUANTIFIER", "LOCATION INFORMATION", "TIME INFORMATION"]
     training_data = []
@@ -26,6 +39,7 @@ def build_training_data(kg):
         for entry in concepts:
             if concept_string in entry:
                 return entry
+
     def build_training_graph(data, filter=None):
         training_graph = {
             "internal_particularization": [],
@@ -38,22 +52,30 @@ def build_training_data(kg):
                     s = [s for s in relational_particularization_list if s in entry]
                     if s != []:
                         c = get_concept(entry.split(' ', 1)[0])
+                        if content["value"] in data["recording_data"]["concept_words"]:
+                            t = data["recording_data"]["concept_words"][content["value"]]
+                        else:
+                            t = ""
                         relation = s[0]
                         training_graph["relational_particularization"].append(
-                            {"concept": content["value"],
-                             "genealogy": gu.get_genealogy(concepts, c),
+                            {"concept": (content["value"], get_concept_type(content["value"])),
                              "relation": relation,
-                             "to": c})
+                             "to": (c, get_concept_type(c)),
+                             "expression": t})
                 else:
                     s = [s for s in internal_particularization_list if s in entry]
                     if s != []:
                         c = get_concept(entry.split(' ', 1)[0])
+                        if c in data["recording_data"]["concept_words"]:
+                            t = data["recording_data"]["concept_words"][c]
+                        else:
+                            t = ""
                         particularization = s[0]
                         training_graph["internal_particularization"].append(
-                            {"concept": c,
-                             "genealogy": gu.get_genealogy(concepts, c),
+                            {"concept": (c, get_concept_type(c)),
                              "feature": particularization,
-                             "value": content["value"]})
+                             "value": content["value"],
+                             "expression": t})
         return training_graph
 
     for index, data in kg.items():
@@ -74,9 +96,23 @@ def build_training_data(kg):
         else:
             t["type_of_predicate"] = "None"
 
-        t["concepts"] = sd["concept"]
+        t["concepts"] = [(concept, get_concept_type(concept)) for concept in sd["concept"]]
+        for c in t["concepts"]:
+            all_concepts.append(c)
         t["super_concept_graph"] = build_training_graph(data)
         t["concept_words"] = data["recording_data"]["concept_words"]
-        training_data.append((t, data["recording_data"]["translation"]))
+        t["translation"] = data["recording_data"]["translation"]
+        training_data.append(t)
+        all_concepts = list(set(all_concepts))
 
-    return training_data
+    return training_data, all_concepts
+
+def filter_training_data(training_data, concept):
+    filtered_td = []
+    for entry in training_data:
+        concepts = entry[0]["concepts"]
+        if (concept, get_concept_type(concept)) in concepts:
+            filtered_td.append(entry)
+    return filtered_td
+
+

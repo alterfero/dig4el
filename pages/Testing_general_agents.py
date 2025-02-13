@@ -161,7 +161,7 @@ with st.expander("optional process parameters"):
   cola, cols, cold = st.columns(3)
   nl = cola.slider("Number of languages tested", 1, 500, value=1, step=1)
   #ngap = cols.slider("Maximum size of General Agent", 2, 100, value=50, step=1)
-  pobs = cols.slider("Probability of the true value given observations", .5, 1.0, value=0.9, step=0.01)
+  pobs = cols.slider("Probability of the true value given observations", .5, 1.0, value=1.0, step=0.01)
   #map = cola.slider("Minimum amount of known parameters in the target language", 10, 100, value=50, step=1)
   #our = cold.slider("Number of parameters to guess for each parameter observed", 1, 5, value=2, step=1)
 
@@ -404,10 +404,10 @@ if len(st.session_state["ga_domains"]) > 0:
           for upn in general_result_dict[language].keys():
             if upn != "score_percent":
               if general_result_dict[language][upn]["success"]:
-                truth_table[language][upn] = "✅"
+                truth_table[language][upn] = "1"
                 binary_truth_table[language][upn] = 1
               else:
-                truth_table[language][upn] = "❌"
+                truth_table[language][upn] = "0"
                 binary_truth_table[language][upn] = 0
         average_score = average_score / len(general_result_dict)
 
@@ -416,8 +416,13 @@ if len(st.session_state["ga_domains"]) > 0:
         st.metric("**Average accuracy guessing unknown values through consensus**", value = str(round(average_score,2))+"%")
         st.write("**Consensus accuracy on unknown values by language.**")
         st.bar_chart(pd.DataFrame(scoring_table).T)
+
+        st.download_button("Download scoring table", json.dumps(scoring_table, indent=4), file_name="scoring_table.json")
+
         st.write("**Truth table of consensus on unknown values by language.**")
         st.table(truth_table)
+        st.download_button("Download truth table", json.dumps(truth_table, indent=4),
+                           file_name="truth_table.json")
 
         with open("./data/binary_truth_table_tmp.json", "w") as f:
           json.dump(binary_truth_table, f)
