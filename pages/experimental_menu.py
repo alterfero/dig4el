@@ -42,5 +42,3 @@ with st.sidebar:
 st.page_link("pages/compare.py", label="Compare CQs across languages", icon=":material/compare:")
 
 st.page_link("pages/full_concept_graph_viewer.py", label="Explore the full concept graph", icon=":material/schema:")
-
-st.page_link("pages/ca_test_interface.py", label="Test Construction Agents features", icon=":material/science:")
