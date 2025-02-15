@@ -20,6 +20,7 @@ from os.path import isfile, join
 import time
 from libs import graphs_utils
 from libs import utils, stats, wals_utils as wu
+from random import randint
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -66,6 +67,7 @@ delimiters_bank = [
     "–",  # En dash
     "—",  # Em dash
 ]
+key_counter = 0
 
 questionnaires_folder = "./questionnaires"
 # cq_list is the list of json files in the questionnaires folder
@@ -201,10 +203,12 @@ with st.expander("Start a new transcription or edit the header of an existing on
     st.markdown(
     """***Don't forget to save your transcription using the 'Save' button at the bottom of the page. 
     Nothing is saved on the server.***""")
-    interviewer = st.text_input("Interviewer", value=default_interviewer, key="interviewer")
+    interviewer = st.text_input("Interviewer", value=default_interviewer, key="interviewer"+str(key_counter))
+    key_counter += 1
     st.session_state["recording"]["interviewer"] = interviewer
 
-    interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee")
+    interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee"+str(key_counter))
+    key_counter += 1
     st.session_state["recording"]["interviewee"] = interviewee
 
     tl = st.selectbox("Choose a target language", ["not in the list"] + st.session_state["available_target_languages"],
@@ -302,7 +306,8 @@ if st.session_state["cq_is_chosen"]:
         alternate_pivot = ""
 
     translation_raw = st.text_input("Equivalent in {}".format(st.session_state["target_language"]),
-                                value=translation_default, key=str(st.session_state["counter"]))
+                                value=translation_default, key=str(st.session_state["counter"])+str(key_counter))
+    key_counter += 1
     translation = utils.normalize_sentence(translation_raw)
     segmented_target_sentence = stats.custom_split(translation, st.session_state["recording"]["delimiters"])
 
@@ -328,7 +333,8 @@ if st.session_state["cq_is_chosen"]:
                     concept_default = target_word_list
         else:
             concept_default = []
-        concept_translation_list = st.multiselect("{} : ".format(concept), segmented_target_sentence, default=concept_default, key=concept+str(st.session_state["counter"]))
+        concept_translation_list = st.multiselect("{} : ".format(concept), segmented_target_sentence, default=concept_default, key=concept+str(st.session_state["counter"])+str(key_counter))
+        key_counter += 1
         concept_words[concept] = "...".join(concept_translation_list)
     comment = st.text_input("Comments/Notes", value=default_comment)
 
