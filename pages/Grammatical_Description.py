@@ -134,7 +134,7 @@ topics = {
     },
     "ca_topics":{}
     }
-number_of_belief_propagation_process = 1
+number_of_belief_propagation_process = 3
 delimiters_bank = [
     " ",  # Space
     ".",  # Period or dot
@@ -386,10 +386,9 @@ with st.expander("Inputs"):
                 with open("./data/delimiters.json", "r") as f:
                     delimiters_dict = json.load(f)
                     st.session_state["delimiters"] = delimiters_dict[st.session_state["tl_name"]]
-                    print("Word separators are retrieved from the .")
+                    print("Word separators are retrieved from a file.")
             else:
-                st.session_state["delimiters"] = default_delimiters
-            st.multiselect("Edit word separators if needed", delimiters_bank, default=st.session_state["delimiters"])
+                st.session_state["delimiters"] = st.multiselect("Edit word separators if needed", delimiters_bank, default=default_delimiters)
 
     show_details = st.toggle("Show details")
 

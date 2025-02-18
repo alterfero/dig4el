@@ -1401,6 +1401,34 @@ def observer_free_pp3sg_semantic_role(knowledge_graph, language, delimiters, can
     print(output_dict)
     return output_dict
 
+def observer_A_argument_suffix_simple_main_clause(knowledge_graph, language, delimiters, canonical=False):
+    output_dict = {
+        "ppk": "GB091",
+        "agent-ready observation": {},
+        "observations": {
+            "absent": {
+                "depk": "GB091-0",
+                "count": 0,
+                "details": {}
+            },
+            "present": {
+                "depk": "GB091-1",
+                "count": 0,
+                "details": {}
+            }
+        }
+    }
+    key_data = {
+        "seeing": {
+            "PP1SG": {
+                "pivot_sentences": [
+                        "He will think I didn’t do my homework.",
+                        "But he has shredded it into pieces!"
+                    ],
+                    "target_words": []
+            }
+    }}
+
 # ==============================================
 
 # General approach, not precise enough yet

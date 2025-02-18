@@ -1,5 +1,3 @@
-
-
 import copy
 import json
 import stat
@@ -261,16 +259,24 @@ def get_sentences_with_word(knowledge_graph, word, delimiters):
 def build_gloss_df(knowledge_graph, entry, delimiters):
     sentence_display_ordered_dict = OrderedDict()
     w_list = stats.custom_split(knowledge_graph[entry]["recording_data"]["translation"], delimiters)
+    # unpack multiple words associated with a single concept
+    unpacked_tw = {}
+    for concept, target_words in knowledge_graph[entry]["recording_data"]["concept_words"].items():
+        words = target_words.split("...")
+        if len(words) > 1:
+            wcount = 0
+            for word in words:
+                wcount += 1
+                unpacked_tw[concept+"_"+str(wcount)] = word
+        else:
+            unpacked_tw[concept] = words[0]
+    # build ordered dict
     for wd in [w for w in w_list if w]:
-        if wd in knowledge_graph[entry]["recording_data"]["concept_words"].values():
-            concept_key = utils.get_key_by_value(knowledge_graph[entry]["recording_data"]["concept_words"], wd)
+        if wd in unpacked_tw.values():
+            concept_key = utils.get_key_by_value(unpacked_tw, wd)
             sentence_display_ordered_dict[wd] = concept_key
-            # TODO: of what is this concept a value?
-
         else:
             sentence_display_ordered_dict[wd] = ""
-
-
     # build dataframe from ordered dict
     return pd.DataFrame.from_dict(sentence_display_ordered_dict, orient="index", columns=["concept"]).T
 
@@ -325,6 +331,50 @@ def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):
                 "data": data
             }
     return output
+
+def build_concept_dict(kg):
+    ipks = ["QUANTIFIER", "ASPECT", "EVENT TENSE", "POLARITY", "DEFINITENESS"]
+    rpks = ["AGENT", "PATIENT", "OBLIQUE", "POSSESSOR", "POSSESSEE"]
+    cdict = {}
+    # create dict with concepts and their particularizations
+    for entry, content in kg.items():
+        for concept in content["sentence_data"]["concept"]:
+            if concept not in cdict.keys():
+                cdict[concept] = []
+            details = {
+                "pivot_sentence": content["sentence_data"]["text"],
+                "target_sentence": content["recording_data"]["translation"],
+                "target_words":
+                    content.get("recording_data", "none").get("concept_words", "none").get(concept, "none").split("_")[
+                        0],
+                "particularization":
+                    {
+                "enunciation": {"speaker gender": content["speaker_gender"]},
+                "intent": {"intent": ", ".join(content["sentence_data"]["intent"])},
+                "internal particularization": {},
+                "relational particularization": {}
+                },
+                "kg_entry": entry
+            }
+            if content["recording_data"]["alternate_pivot"] != "":
+                details["alternate_pivot"] = concept["recording_data"]["alternate_pivot"]
+            for k, v in content["sentence_data"]["graph"].items():
+                if concept in k and v["value"] != "":
+                    for ipk in ipks:
+                        if ipk in k:
+                            details["particularization"]["internal particularization"][ipk] = v["value"]
+                    for rpk in rpks:
+                        if rpk in k:
+                            details["particularization"]["relational particularization"][rpk] = v["value"]
+                if v["value"] == concept:
+                    for ipk in ipks:
+                        if ipk in k:
+                            details["particularization"]["internal particularization"][ipk] = v["value"]
+                    for rpk in rpks:
+                        if rpk in k:
+                            details["particularization"]["relational particularization"][rpk] = v["value"]
+            cdict[concept].append(details)
+    return cdict
 
 
 
