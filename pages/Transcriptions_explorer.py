@@ -191,7 +191,7 @@ if st.session_state["knowledge_graph"] != {}:
             gloss_selection = st.dataframe(gloss, selection_mode="single-column", on_select=display_result, key="gloss_df")
             # show sentences with the selected word if any
             if gloss_selection["selection"]["columns"] != []:
-                tw = gloss_selection["selection"]["columns"][0]
+                tw = gloss_selection["selection"]["columns"][0].split("_")[0]
                 kg_entries_with_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
                                             tw,
                                             st.session_state["delimiters"])
@@ -430,7 +430,7 @@ if st.session_state["knowledge_graph"] != {}:
             pgloss_selection =st.dataframe(pgloss, selection_mode="single-column", on_select="rerun", key="pgloss_df")
             # show sentences with the selected word if any
             if pgloss_selection["selection"]["columns"] != []:
-                ptw = pgloss_selection["selection"]["columns"][0]
+                ptw = pgloss_selection["selection"]["columns"][0].split("_")[0]
                 pkg_entries_with_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
                                                                    ptw,
                                                                    st.session_state["delimiters"])
