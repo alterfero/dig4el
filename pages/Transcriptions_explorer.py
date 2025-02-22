@@ -18,6 +18,7 @@ import json
 from libs import knowledge_graph_utils as kgu
 import pandas as pd
 import plotly.express as px
+import os
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -104,14 +105,27 @@ with st.sidebar:
 
 with st.expander("Input"):
     # load transcriptions
-    cqs = st.file_uploader("Load Conversational Questionnaire transcriptions (all at once for multiple transcriptions)", type="json", accept_multiple_files=True)
-    if cqs is not None:
+    cqs = st.file_uploader("Load your Conversational Questionnaire transcriptions (all at once for multiple transcriptions)", type="json", accept_multiple_files=True)
+    if cqs != []:
         st.session_state["cq_transcriptions"] = []
         for cq in cqs:
             new_cq = json.load(cq)
             st.session_state["cq_transcriptions"].append(new_cq)
         st.session_state["loaded_existing"] = True
-        st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
+        st.session_state["tl_name"] = st.session_state["cq_transcriptions"][0]["target language"]
+        st.write("{} files loaded in {}.".format(len(st.session_state["cq_transcriptions"]), st.session_state["tl_name"]))
+    existing = st.selectbox("Or load an available set of transcriptions", ["French"])
+    if st.button("Load existing"):
+        tpath = os.path.join(".", "available_transcriptions", existing)
+        if os.path.isdir(tpath):
+            st.session_state["cq_transcriptions"] = []
+            for t in os.listdir(tpath):
+                if t.endswith(".json"):
+                    with open(os.path.join(tpath, t)) as f:
+                        new_cq = json.load(f)
+                        st.session_state["cq_transcriptions"].append(new_cq)
+            st.session_state["loaded_existing"] = True
+            st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
     if st.session_state["loaded_existing"]:
         if st.session_state["cq_transcriptions"] != []:
             # managing delimiters
@@ -125,9 +139,9 @@ with st.expander("Input"):
                 st.session_state["delimiters"] = deli
             # Consolidating transcriptions - Knowledge Graph
             st.write("Once your transcriptions are loaded and word separators selected, click on 'Build knowledge graph' below")
+
             if st.button("Build knowledge graph"):
-                st.session_state[
-                    "knowledge_graph"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
+                st.session_state["knowledge_graph"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
                     st.session_state["cq_transcriptions"],
                     st.session_state["tl_name"],
                     st.session_state["delimiters"])
