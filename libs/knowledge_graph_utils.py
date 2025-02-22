@@ -350,9 +350,11 @@ def build_concept_dict(kg):
                 "particularization":
                     {
                 "enunciation": {"speaker gender": content["speaker_gender"]},
-                "intent": {"intent": ", ".join(content["sentence_data"]["intent"])},
-                "internal particularization": {},
-                "relational particularization": {}
+                "intent": {"intent": "&".join(content["sentence_data"]["intent"])
+                           },
+                "predicate": {"predicate": content["sentence_data"]["predicate"][0]},
+                "internal_particularization": {},
+                "relational_particularization": {}
                 },
                 "kg_entry": entry
             }
@@ -362,17 +364,17 @@ def build_concept_dict(kg):
                 if concept in k and v["value"] != "":
                     for ipk in ipks:
                         if ipk in k:
-                            details["particularization"]["internal particularization"][ipk] = v["value"]
+                            details["particularization"]["internal_particularization"][ipk] = v["value"]
                     for rpk in rpks:
                         if rpk in k:
-                            details["particularization"]["relational particularization"][rpk] = v["value"]
+                            details["particularization"]["relational_particularization"][rpk] = v["value"]
                 if v["value"] == concept:
                     for ipk in ipks:
                         if ipk in k:
-                            details["particularization"]["internal particularization"][ipk] = v["value"]
+                            details["particularization"]["internal_particularization"][ipk] = v["value"]
                     for rpk in rpks:
                         if rpk in k:
-                            details["particularization"]["relational particularization"][rpk] = v["value"]
+                            details["particularization"]["relational_particularization"][rpk] = v["value"]
             cdict[concept].append(details)
     return cdict
 
