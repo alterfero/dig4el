@@ -54,6 +54,7 @@ with st.sidebar:
 
     st.write("**Base features**")
     st.page_link("pages/2_CQ_Transcription_Recorder.py", label="Record transcription", icon=":material/contract_edit:")
+    st.page_link("pages/Transcriptions_explorer.py", label="Explore transcriptions", icon=":material/search:")
     st.page_link("pages/Grammatical_Description.py", label="Generate Grammars", icon=":material/menu_book:")
 
     st.write("**Expert features**")

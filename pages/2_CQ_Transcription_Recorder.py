@@ -139,6 +139,7 @@ with st.sidebar:
 
     st.write("**Base features**")
     st.page_link("pages/2_CQ_Transcription_Recorder.py", label="Record transcription", icon=":material/contract_edit:")
+    st.page_link("pages/Transcriptions_explorer.py", label="Explore transcriptions", icon=":material/search:")
     st.page_link("pages/Grammatical_Description.py", label="Generate Grammars", icon=":material/menu_book:")
 
     st.write("**Expert features**")
@@ -347,10 +348,13 @@ if st.session_state["cq_is_chosen"]:
             "concept_words": concept_words,
             "comment": comment
         }
-        if st.session_state["counter"] < number_of_sentences:
+        if st.session_state["counter"] < number_of_sentences - 1:
             st.session_state["counter"] = st.session_state["counter"] + 1
             default_comment = ""
-        st.rerun()
+            st.rerun()
+        else:
+            st.subheader("End of the CQ, congratulations! Click on 'Download your recording' below!")
+            st.balloons()
 
     #st.write(st.session_state["recording"])
     filename = ("recording_"
