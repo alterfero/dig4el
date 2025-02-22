@@ -1,6 +1,17 @@
 {
-    "target language": "french",
-    "pivot language": "english",
+    "target language": "Frunch",
+    "delimiters": [
+        " ",
+        ".",
+        ",",
+        ";",
+        ":",
+        "!",
+        "?",
+        "\u2026",
+        "'"
+    ],
+    "pivot language": "English",
     "cq_uid": "1716315461",
     "data": {
         "1": {
@@ -8,14 +19,20 @@
             "cq": "Good morning!",
             "alternate_pivot": "",
             "translation": "bonjour",
-            "concept_words": {}
+            "concept_words": {
+                "GREET": "bonjour"
+            },
+            "comment": ""
         },
         "2": {
             "legacy index": "2",
             "cq": "Hello!",
             "alternate_pivot": "",
             "translation": "bonjour",
-            "concept_words": {}
+            "concept_words": {
+                "GREET": "bonjour"
+            },
+            "comment": ""
         },
         "3": {
             "legacy index": "3",
@@ -23,8 +40,12 @@
             "alternate_pivot": "",
             "translation": "comment tu vas",
             "concept_words": {
+                "ASK": "comment",
+                "GREET": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP2SG": "tu"
-            }
+            },
+            "comment": ""
         },
         "4": {
             "legacy index": "4",
@@ -32,9 +53,14 @@
             "alternate_pivot": "",
             "translation": "je vais bien bien et vous",
             "concept_words": {
+                "ASSERT": "",
+                "ASK": "",
+                "GREET": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP1SG": "je",
                 "PP2DU": "vous"
-            }
+            },
+            "comment": ""
         },
         "5": {
             "legacy index": "5",
@@ -42,8 +68,11 @@
             "alternate_pivot": "",
             "translation": "oh nous allons bien",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP1EXCDU": "nous"
-            }
+            },
+            "comment": ""
         },
         "6": {
             "legacy index": "6",
@@ -51,10 +80,13 @@
             "alternate_pivot": "",
             "translation": "vous allez o\u00f9",
             "concept_words": {
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "",
                 "spatial position wildcard": "o\u00f9",
                 "going": "allez",
                 "PP2DU": "vous"
-            }
+            },
+            "comment": ""
         },
         "7": {
             "legacy index": "7",
@@ -62,10 +94,13 @@
             "alternate_pivot": "",
             "translation": "eh ben on descend \u00e0 la rivi\u00e8re",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP1EXCDU": "on",
                 "walking": "descend",
                 "river": "rivi\u00e8re"
-            }
+            },
+            "comment": ""
         },
         "8": {
             "legacy index": "8a",
@@ -73,8 +108,11 @@
             "alternate_pivot": "",
             "translation": "pourquoi",
             "concept_words": {
+                "ASK": "pourquoi",
+                "PROCESSIVE PREDICATE": "",
                 "causality wildcard": "pourquoi"
-            }
+            },
+            "comment": ""
         },
         "9": {
             "legacy index": "8b",
@@ -82,9 +120,12 @@
             "alternate_pivot": "",
             "translation": "vous allez vous baigner",
             "concept_words": {
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP2DU": "vous",
                 "bathing": "baigner...allez"
-            }
+            },
+            "comment": ""
         },
         "10": {
             "legacy index": "9",
@@ -92,9 +133,13 @@
             "alternate_pivot": "",
             "translation": "non non on ne va pas se baigner",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "ne...pas",
                 "bathing": "va...se...baigner",
                 "PP1EXCDU": "on"
-            }
+            },
+            "comment": ""
         },
         "11": {
             "legacy index": "10",
@@ -102,10 +147,13 @@
             "alternate_pivot": "",
             "translation": "on va p\u00eacher",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP1EXCDU": "on",
                 "going": "va",
                 "fishing": "p\u00eacher"
-            }
+            },
+            "comment": ""
         },
         "12": {
             "legacy index": "11",
@@ -113,19 +161,26 @@
             "alternate_pivot": "",
             "translation": "on va essayer de p\u00eacher du poisson pour le d\u00eener",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP1EXCDU": "on",
                 "trying": "va...essayer",
                 "catching": "p\u00eacher",
                 "fish": "poisson",
                 "dinner": "d\u00eener"
-            }
+            },
+            "comment": ""
         },
         "13": {
             "legacy index": "12a",
             "cq": "Oh I see.",
             "alternate_pivot": "",
             "translation": "ah ok",
-            "concept_words": {}
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "ah...ok",
+                "APPRECIATIVE PREDICATE": "ah...ok"
+            },
+            "comment": ""
         },
         "14": {
             "legacy index": "12b",
@@ -133,9 +188,12 @@
             "alternate_pivot": "",
             "translation": "il y a une f\u00eate au village",
             "concept_words": {
+                "ASK": "",
+                "EXISTENTIAL PREDICATE": "il...y...a",
                 "celebration": "f\u00eate",
                 "village": "village"
-            }
+            },
+            "comment": ""
         },
         "15": {
             "legacy index": "13",
@@ -143,9 +201,13 @@
             "alternate_pivot": "",
             "translation": "je ne savais pas",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "ne...pas",
                 "knowing": "savais",
                 "PP1SG": "je"
-            }
+            },
+            "comment": ""
         },
         "16": {
             "legacy index": "14",
@@ -153,8 +215,12 @@
             "alternate_pivot": "",
             "translation": "non il n'y a pas de f\u00eate",
             "concept_words": {
+                "ASSERT": "",
+                "EXISTENTIAL PREDICATE": "il...y...a",
+                "Negative Polarity": "n...pas",
                 "celebration": "f\u00eate"
-            }
+            },
+            "comment": ""
         },
         "17": {
             "legacy index": "15",
@@ -162,11 +228,14 @@
             "alternate_pivot": "",
             "translation": "on a juste besoin de nourriture pour notre famille",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP1EXCDU": "on",
                 "needing": "a...besoin",
                 "food": "nourriture",
                 "family": "famille"
-            }
+            },
+            "comment": ""
         },
         "18": {
             "legacy index": "16",
@@ -174,27 +243,33 @@
             "alternate_pivot": "",
             "translation": "ma femme avait achet\u00e9 un poulet au march\u00e9 l'autre jour",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP1SG": "ma",
                 "wife": "femme",
                 "buying": "avait...achet\u00e9",
                 "chicken": "poulet",
                 "market": "march\u00e9",
                 "the other day": "l...autre...jour"
-            }
+            },
+            "comment": ""
         },
         "19": {
             "legacy index": "17",
             "cq": "but our children ate it all already",
             "alternate_pivot": "",
-            "translation": "mais nos enfants ont d\u00e9j\u00e0 tout mang\u00e9",
+            "translation": "mais nos enfants l'ont d\u00e9j\u00e0 tout mang\u00e9",
             "concept_words": {
-                "PP2EXCDU": "",
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "BUT": "mais",
                 "children": "enfants",
                 "eating": "ont...mang\u00e9",
-                "Ref_1_object": "",
-                "already": "d\u00e9j\u00e0"
-            }
+                "already": "d\u00e9j\u00e0",
+                "PP1EXCDU": "",
+                "Ref_1_object": "l"
+            },
+            "comment": ""
         },
         "20": {
             "legacy index": "18",
@@ -202,11 +277,14 @@
             "alternate_pivot": "",
             "translation": "maintenant nous n'avons plus rien \u00e0 la maison",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP1EXCDU": "nous",
                 "possessing": "avons",
                 "nothing left": "plus...rien",
                 "home": "maison"
-            }
+            },
+            "comment": ""
         },
         "21": {
             "legacy index": "19",
@@ -214,11 +292,15 @@
             "alternate_pivot": "",
             "translation": "en plus on n'a plus assez d'argent",
             "concept_words": {
+                "ASSERT": "",
+                "EXISTENTIAL PREDICATE": "a",
+                "Negative Polarity": "n...plus_2",
                 "PP1EXCDU": "on",
                 "possessing": "a",
                 "money": "argent",
                 "anymore": "plus"
-            }
+            },
+            "comment": ""
         },
         "22": {
             "legacy index": "20",
@@ -226,19 +308,25 @@
             "alternate_pivot": "",
             "translation": "il faut vraiment qu'on aille p\u00eacher aujourd'hui",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP1EXCDU": "on",
-                "having to": "",
+                "having to": "il...faut",
                 "fishing": "p\u00eacher",
                 "going": "aille",
                 "today": "aujourd...hui"
-            }
+            },
+            "comment": ""
         },
         "23": {
             "legacy index": "21",
             "cq": "I understand.",
             "alternate_pivot": "",
             "translation": "je comprends",
-            "concept_words": {}
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "je...comprends"
+            },
+            "comment": ""
         },
         "24": {
             "legacy index": "22",
@@ -246,12 +334,15 @@
             "alternate_pivot": "",
             "translation": "je suis d\u00e9sol\u00e9e que vous n'ayez plus rien \u00e0 manger",
             "concept_words": {
+                "ATTRIBUTIVE PREDICATE": "suis",
+                "Negative Polarity": "n...plus",
                 "PP1SG": "je",
                 "PP2PLU": "vous",
                 "being sorry": "suis...d\u00e9sol\u00e9e",
                 "possessing": "ayez",
                 "food": "\u00e0...manger"
-            }
+            },
+            "comment": ""
         },
         "25": {
             "legacy index": "23",
@@ -259,11 +350,14 @@
             "alternate_pivot": "",
             "translation": "je peux vous aider les amis",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP1SG": "je",
                 "being able to": "peux",
                 "helping": "aider",
                 "PP2DU": "vous"
-            }
+            },
+            "comment": ""
         },
         "26": {
             "legacy index": "24",
@@ -271,14 +365,17 @@
             "alternate_pivot": "",
             "translation": "mon mari et moi on a plein de l\u00e9gumes du jardin",
             "concept_words": {
+                "ASSERT": "",
+                "ATTRIBUTIVE PREDICATE": "a",
                 "AND": "et",
                 "husband": "mari",
                 "PP1SG": "moi",
-                "PP2EXCDU": "",
                 "possessing": "a",
                 "vegetables": "l\u00e9gumes",
-                "garden": "jardin"
-            }
+                "garden": "jardin",
+                "PP1EXCDU": ""
+            },
+            "comment": ""
         },
         "27": {
             "legacy index": "25",
@@ -286,14 +383,17 @@
             "alternate_pivot": "",
             "translation": "qu'il a cueilli hier et ramen\u00e9 \u00e0 la maison",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP3SG": "il",
                 "harvesting": "cueilli",
-                "Ref_many_objects": "qu",
-                "today": "",
                 "AND": "et",
                 "bringing": "ramen\u00e9",
-                "home": "maison"
-            }
+                "home": "maison",
+                "Ref_many_objects": "qu",
+                "yesterday": "hier"
+            },
+            "comment": ""
         },
         "28": {
             "legacy index": "26",
@@ -301,28 +401,38 @@
             "alternate_pivot": "",
             "translation": "si vous voulez on peut vous en donner",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "CONDITION": "si",
                 "PP2DU": "vous",
                 "wanting": "voulez",
                 "PP1EXCDU": "on",
                 "being able to": "peut",
                 "giving": "donner",
-                "Ref_many_objects": "en"
-            }
+                "Ref_many_objects": "en",
+                "some": ""
+            },
+            "comment": ""
         },
         "29": {
             "legacy index": "27",
             "cq": "Oh really? Thank you very much!",
             "alternate_pivot": "",
             "translation": "oh vraiment ? merci",
-            "concept_words": {}
+            "concept_words": {
+                "THANK": "merci"
+            },
+            "comment": ""
         },
         "30": {
             "legacy index": "28",
             "cq": "You\u2019re welcome.",
             "alternate_pivot": "",
             "translation": "avec plaisir",
-            "concept_words": {}
+            "concept_words": {
+                "ACKNOWLEDGE THANK": "avec...plaisir"
+            },
+            "comment": ""
         },
         "31": {
             "legacy index": "29a",
@@ -330,11 +440,14 @@
             "alternate_pivot": "",
             "translation": "vous nous donnerez des l\u00e9gumes",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "PP2DU": "vous",
                 "PP1PLU": "nous",
                 "giving": "donnerez",
                 "vegetables": "l\u00e9gumes"
-            }
+            },
+            "comment": ""
         },
         "32": {
             "legacy index": "29b",
@@ -342,12 +455,15 @@
             "alternate_pivot": "",
             "translation": "et on vous donnera du poisson",
             "concept_words": {
-                "PP1EXCDU": "poisson",
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1EXCDU": "on",
                 "PP2PLU": "vous",
                 "fish": "poisson",
                 "AND": "et",
                 "giving": "donnera"
-            }
+            },
+            "comment": ""
         },
         "33": {
             "legacy index": "30",
@@ -355,28 +471,37 @@
             "alternate_pivot": "",
             "translation": "ce soir on mangera tous ensemble",
             "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
                 "tonight": "ce...soir",
                 "PP1PLU": "on",
                 "eating": "mangera",
                 "together": "tous...ensemble"
-            }
+            },
+            "comment": ""
         },
         "34": {
             "legacy index": "31",
             "cq": "Great! Good bye!",
             "alternate_pivot": "",
             "translation": "super, au revoir",
-            "concept_words": {}
+            "concept_words": {
+                "PART": "au...revoir"
+            },
+            "comment": ""
         },
         "35": {
             "legacy index": "32",
             "cq": "See you later!",
             "alternate_pivot": "",
             "translation": "\u00e0 tout \u00e0 l'heure",
-            "concept_words": {}
+            "concept_words": {
+                "PART": "\u00e0...tout...\u00e0_2...l...heure"
+            },
+            "comment": ""
         }
     },
     "interviewer": "Sebastien",
     "interviewee": "Sebastien",
-    "recording_uid": "1719363644"
+    "recording_uid": "1740252149"
 }
