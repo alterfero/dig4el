@@ -1,0 +1,804 @@
+{
+    "target language": "German",
+    "delimiters": [
+        " ",
+        ".",
+        ",",
+        ";",
+        ":",
+        "!",
+        "?",
+        "...",
+        "'"
+    ],
+    "pivot language": "English",
+    "cq_uid": "1716852912",
+    "data": {
+        "1": {
+            "legacy index": "1",
+            "cq": "Have you ever seen pictures of my family?",
+            "alternate_pivot": "",
+            "translation": "Hast du jemals Fotos meiner Familie gesehen?",
+            "concept_words": {
+                "PP2SG": "du",
+                "PP1SG": "meiner",
+                "seeing": "hast...gesehen",
+                "picture": "Fotos",
+                "family": "Familie"
+            }
+        },
+        "2": {
+            "legacy index": "2",
+            "cq": "Well, I’ve met some of your relatives, but I’ve never seen your pictures.",
+            "alternate_pivot": "",
+            "translation": "Nun, ich habe einige deiner Verwandten getroffen, aber ich habe deine Fotos noch nie gesehen.",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "noch...nie",
+                "PP1SG": "ich",
+                "PP2SG": "deine",
+                "meeting": "habe...getroffen",
+                "relatives": "Verwandten",
+                "BUT": "aber",
+                "seeing": "habe...gesehen",
+                "picture": "Fotos",
+                "never": "nie"
+            },
+            "comment": ""
+        },
+        "3": {
+            "legacy index": "3",
+            "cq": "Here is an old photo album I just found in my parents’ room.",
+            "alternate_pivot": "",
+            "translation": "Hier ist ein altes Fotoalbum, das ich gerade im Zimmer meiner Eltern gefunden habe.",
+            "concept_words": {
+                "PRESENT X": "hier...ist",
+                "old": "altes",
+                "photo album": "Fotoalbum",
+                "PP1SG": "ich",
+                "finding": "gefunden...habe",
+                "parents": "Eltern",
+                "room": "Zimmer"
+            }
+        },
+        "4": {
+            "legacy index": "4",
+            "cq": "Oh, show it to me please!",
+            "alternate_pivot": "",
+            "translation": "Oh, zeig es mir bitte!",
+            "concept_words": {
+                "showing": "zeig",
+                "Ref_1_object": "es",
+                "PP1SG": "mir",
+                "PP2SG": ""
+            }
+        },
+        "5": {
+            "legacy index": "5",
+            "cq": "Who’s this on that first photo?",
+            "alternate_pivot": "",
+            "translation": "Wer ist das auf dem ersten Foto?",
+            "concept_words": {
+                "PERSON wildcard": "wer",
+                "POINTED BY SPEAKER": "das",
+                "photo": "Foto",
+                "first": "ersten",
+                "equating": "ist"
+            }
+        },
+        "6": {
+            "legacy index": "6a",
+            "cq": "It looks like olden times.",
+            "alternate_pivot": "",
+            "translation": "Es sieht aus wie in alten Zeiten.",
+            "concept_words": {
+                "Ref_1_object": "es",
+                "looking like": "sieht...aus...wie",
+                "olden times": "alten...Zeiten"
+            }
+        },
+        "7": {
+            "legacy index": "6b",
+            "cq": "It's in black and white.",
+            "alternate_pivot": "",
+            "translation": "Es ist in schwarz und weiß.",
+            "concept_words": {
+                "Ref_1_object": "es",
+                "exhibiting (an attribute)": "ist",
+                "black and white": "schwarz...und...weiß"
+            }
+        },
+        "8": {
+            "legacy index": "7a",
+            "cq": "These are my grandparents, on my mother’s side.",
+            "alternate_pivot": "",
+            "translation": "Das sind meine Großeltern, mütterlicherseits.",
+            "concept_words": {
+                "PP1SG": "meine",
+                "grandparents": "Großeltern",
+                "mothers side": "mütterlicherseits",
+                "POINTED BY SPEAKER": "das",
+                "presenting (presentative)": "sind"
+            }
+        },
+        "9": {
+            "legacy index": "7b",
+            "cq": "Grandpa here on the left, and Grandma on the right.",
+            "alternate_pivot": "",
+            "translation": "Opa hier links, und Oma rechts.",
+            "concept_words": {
+                "POINTED BY SPEAKER": "",
+                "grandpa": "Opa",
+                "left": "links",
+                "AND": "und",
+                "grandma": "Oma",
+                "right": "rechts"
+            }
+        },
+        "10": {
+            "legacy index": "8",
+            "cq": "The people around them must be their friends, or other relatives.",
+            "alternate_pivot": "",
+            "translation": "Die Leute um sie herum müssen ihre Freunde sein oder andere Verwandte.",
+            "concept_words": {
+                "equating": "sein",
+                "people": "Leute",
+                "around": "um...herum",
+                "friends": "Freunde",
+                "OR": "oder",
+                "other": "andere",
+                "relatives": "Verwandte",
+                "PP3DU": "sie"
+            }
+        },
+        "11": {
+            "legacy index": "9",
+            "cq": "Was that the day of their wedding?",
+            "alternate_pivot": "",
+            "translation": "War das der Tag ihrer Hochzeit?",
+            "concept_words": {
+                "time position wildcard": "das",
+                "day": "Tag",
+                "wedding": "Hochzeit",
+                "PP3DU": "ihrer",
+                "equating": "war",
+                "event wildcard": ""
+            }
+        },
+        "12": {
+            "legacy index": "10a",
+            "cq": "No, I don’t think so.",
+            "alternate_pivot": "",
+            "translation": "Nein, ich glaube nicht.",
+            "concept_words": {
+                "INFIRM": "nein",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "nicht",
+                "PP1SG": "ich",
+                "thinking": "glaube",
+                "event wildcard": ""
+            },
+            "comment": ""
+        },
+        "13": {
+            "legacy index": "10b",
+            "cq": "They were older than this on their wedding.",
+            "alternate_pivot": "",
+            "translation": "Sie waren älter als das bei ihrer Hochzeit.",
+            "concept_words": {
+                "PP3DU": "sie",
+                "OLDER THAN X": "älter...als",
+                "exhibiting (an attribute)": "waren",
+                "wedding": "Hochzeit",
+                "Ref_1_object": "das"
+            }
+        },
+        "14": {
+            "legacy index": "11",
+            "cq": "This must have been the day when they got engaged.",
+            "alternate_pivot": "",
+            "translation": "Das muss der Tag gewesen sein, an dem sie sich verlobt haben.",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "muss...gewesen...sein",
+                "PROCESSIVE PREDICATE": "",
+                "equating": "gewesen...sein",
+                "Ref_Event": "das",
+                "day": "Tag",
+                "getting engaged": "sich...verlobt...haben",
+                "PP3DU": "sie"
+            },
+            "comment": ""
+        },
+        "15": {
+            "legacy index": "12a",
+            "cq": "In those times, the engagement was a major event for the whole family,",
+            "alternate_pivot": "",
+            "translation": "Damals war die Verlobung ein großes Ereignis für die ganze Familie,",
+            "concept_words": {
+                "ASSERT": "",
+                "EQUATIVE PREDICATE": "war",
+                "those times": "damals",
+                "engagement": "Verlobung",
+                "event_": "Ereignis",
+                "major": "großes",
+                "family": "Familie",
+                "equating": "war"
+            },
+            "comment": ""
+        },
+        "16": {
+            "legacy index": "12b",
+            "cq": "People would wear beautiful clothes.",
+            "alternate_pivot": "",
+            "translation": "Die Leute trugen schöne Kleidung.",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "people": "Leute",
+                "wearing": "trugen",
+                "beautiful": "schöne",
+                "clothes": "Kleidung"
+            },
+            "comment": ""
+        },
+        "17": {
+            "legacy index": "13",
+            "cq": "Have you met them?",
+            "alternate_pivot": "",
+            "translation": "Hast du sie getroffen?",
+            "concept_words": {
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "",
+                "meeting": "getroffen",
+                "PP2SG": "du",
+                "PP3DU": "sie"
+            },
+            "comment": ""
+        },
+        "18": {
+            "legacy index": "14",
+            "cq": "Who? My grandparents?",
+            "alternate_pivot": "",
+            "translation": "Wer? Meine Großeltern?",
+            "concept_words": {
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "",
+                "PERSON wildcard": "wer",
+                "grandparents": "Großeltern",
+                "PP1SG": "meine"
+            },
+            "comment": ""
+        },
+        "19": {
+            "legacy index": "15",
+            "cq": "Yes, your grandparents on the photo.",
+            "alternate_pivot": "",
+            "translation": "Ja, deine Großeltern auf dem Foto.",
+            "concept_words": {
+                "CONFIRM": "ja",
+                "PROCESSIVE PREDICATE": "",
+                "grandparents": "Großeltern",
+                "PP2SG": "deine",
+                "photo": "Foto"
+            },
+            "comment": ""
+        },
+        "20": {
+            "legacy index": "16a",
+            "cq": "Actually no. ",
+            "alternate_pivot": "",
+            "translation": "Eigentlich nein.",
+            "concept_words": {
+                "INFIRM": "nein"
+            },
+            "comment": ""
+        },
+        "21": {
+            "legacy index": "16b",
+            "cq": "They died before I was born.",
+            "alternate_pivot": "",
+            "translation": "Sie sind gestorben, bevor ich geboren wurde.",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP3DU": "sie",
+                "dying": "sind...gestorben",
+                "BEFORE X": "bevor",
+                "PP1SG": "ich",
+                "being born": "geboren...wurde"
+            },
+            "comment": ""
+        },
+        "22": {
+            "legacy index": "16c",
+            "cq": "They were born a long time ago.",
+            "alternate_pivot": "",
+            "translation": "Sie wurden vor langer Zeit geboren.",
+            "concept_words": {
+                "ASSERT": "",
+                "ATTRIBUTIVE PREDICATE": "",
+                "PP3DU": "sie",
+                "being born": "wurden...geboren",
+                "_a long time ago": "vor...langer...Zeit"
+            },
+            "comment": ""
+        },
+        "23": {
+            "legacy index": "17a",
+            "cq": "Oh I see.",
+            "alternate_pivot": "",
+            "translation": "Oh, verstehe.",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "oh...verstehe"
+            },
+            "comment": ""
+        },
+        "24": {
+            "legacy index": "17b",
+            "cq": "And who’s that on the second photo?",
+            "alternate_pivot": "",
+            "translation": "Und wer ist das auf dem zweiten Foto?",
+            "concept_words": {
+                "ASK": "",
+                "EQUATIVE PREDICATE": "ist",
+                "PERSON wildcard": "wer",
+                "second": "zweiten",
+                "photo": "Foto",
+                "POINTED BY SPEAKER": "das",
+                "equating": "ist"
+            },
+            "comment": ""
+        },
+        "25": {
+            "legacy index": "18a",
+            "cq": "This is my mother",
+            "alternate_pivot": "",
+            "translation": "Das ist meine Mutter.",
+            "concept_words": {
+                "ASSERT": "",
+                "EQUATIVE PREDICATE": "ist",
+                "POINTED BY SPEAKER": "das",
+                "mother": "Mutter",
+                "PP1SG": "meine",
+                "equating": "ist"
+            },
+            "comment": ""
+        },
+        "26": {
+            "legacy index": "18b",
+            "cq": "when she was a child",
+            "alternate_pivot": "",
+            "translation": "als sie ein Kind war",
+            "concept_words": {
+                "ASSERT": "",
+                "EQUATIVE PREDICATE": "war",
+                "PP3SG": "sie",
+                "equating": "war",
+                "children": "Kind",
+                "time position wildcard": "als"
+            },
+            "comment": ""
+        },
+        "27": {
+            "legacy index": "19a",
+            "cq": "I guess she was coming back from school",
+            "alternate_pivot": "",
+            "translation": "Ich vermute, sie kam gerade aus der Schule zurück.",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "vermute",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "ich",
+                "guessing": "vermute",
+                "PP3SG": "sie",
+                "coming": "kam...zurück",
+                "school": "Schule"
+            },
+            "comment": ""
+        },
+        "28": {
+            "legacy index": "19b",
+            "cq": "look at her schoolbag.",
+            "alternate_pivot": "",
+            "translation": "Sieh dir ihren Schulranzen an.",
+            "concept_words": {
+                "ORDER": "sieh",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "",
+                "looking": "sieh...an",
+                "schoolbag": "Schulranzen",
+                "PP3SG": "ihren"
+            },
+            "comment": ""
+        },
+        "29": {
+            "legacy index": "",
+            "cq": "Oh yeah, nice.",
+            "alternate_pivot": "",
+            "translation": "Oh ja, schön.",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "oh...ja",
+                "APPRECIATIVE PREDICATE": "schön"
+            },
+            "comment": ""
+        },
+        "30": {
+            "legacy index": "20",
+            "cq": "And who is the small boy behind her?",
+            "alternate_pivot": "",
+            "translation": "Und wer ist der kleine Junge hinter ihr?",
+            "concept_words": {
+                "ASK": "",
+                "EQUATIVE PREDICATE": "ist",
+                "PERSON wildcard": "wer",
+                "small": "kleine",
+                "boy": "Junge",
+                "BEHIND X": "hinter",
+                "PP3SG": "ihr",
+                "equating": "ist"
+            },
+            "comment": ""
+        },
+        "31": {
+            "legacy index": "21a",
+            "cq": "That’s my uncle Teri.",
+            "alternate_pivot": "",
+            "translation": "Das ist mein Onkel Teri.",
+            "concept_words": {
+                "ASSERT": "",
+                "EQUATIVE PREDICATE": "ist",
+                "uncle": "Onkel",
+                "Teri": "Teri",
+                "equating": "ist",
+                "POINTED BY SPEAKER": "das",
+                "PP1SG": "mein"
+            },
+            "comment": ""
+        },
+        "32": {
+            "legacy index": "21b",
+            "cq": "You’ve never met him.",
+            "alternate_pivot": "",
+            "translation": "Du hast ihn nie getroffen.",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "du",
+                "never": "nie",
+                "meeting": "hast...getroffen",
+                "PP3SG": "ihn"
+            },
+            "comment": ""
+        },
+        "33": {
+            "legacy index": "21c",
+            "cq": "He lives far away from here.",
+            "alternate_pivot": "",
+            "translation": "Er wohnt weit weg von hier.",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP3SG": "er",
+                "residing": "wohnt",
+                "far away": "weit...weg",
+                "here": "hier"
+            },
+            "comment": ""
+        },
+        "34": {
+            "legacy index": "22",
+            "cq": "And what school did they attend then?",
+            "alternate_pivot": "",
+            "translation": "Und welche Schule haben sie damals besucht?",
+            "concept_words": {
+                "ASK": "",
+                "ATTRIBUTIVE PREDICATE": "",
+                "attending": "haben...besucht",
+                "PP3DU": "sie",
+                "school": "Schule",
+                "object wildcard": "welche",
+                "then (time)": "damals"
+            },
+            "comment": ""
+        },
+        "35": {
+            "legacy index": "23",
+            "cq": "That was an old school that doesn’t exist anymore.",
+            "alternate_pivot": "",
+            "translation": "Das war eine alte Schule, die nicht mehr existiert.",
+            "concept_words": {
+                "ASSERT": "",
+                "EQUATIVE PREDICATE": "war",
+                "Negative Polarity": "nicht...mehr",
+                "existing": "existiert",
+                "equating": "war",
+                "Ref_1_object": "das",
+                "old": "alte",
+                "school": "Schule",
+                "anymore": "mehr"
+            },
+            "comment": ""
+        },
+        "36": {
+            "legacy index": "23",
+            "cq": "It was located down the road, towards the lake.",
+            "alternate_pivot": "",
+            "translation": "Sie lag weiter die Straße hinunter, in Richtung See.",
+            "concept_words": {
+                "ASSERT": "",
+                "LOCATIVE PREDICATE": "lag",
+                "AND": "",
+                "down the road": "die...Straße...hinunter",
+                "TOWARD X": "in...Richtung",
+                "lake": "See",
+                "BEING LOCATED": "lag",
+                "Ref_1_object": "sie"
+            },
+            "comment": ""
+        },
+        "37": {
+            "legacy index": "24",
+            "cq": "Let me see this other photo.",
+            "alternate_pivot": "",
+            "translation": "Lass mich dieses andere Foto ansehen.",
+            "concept_words": {
+                "ORDER": "lass",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "",
+                "allowing": "lass",
+                "PP1SG": "mich",
+                "seeing": "ansehen",
+                "OTHER X": "andere",
+                "picture": "Foto",
+                "POINTED BY SPEAKER": "dieses"
+            },
+            "comment": ""
+        },
+        "38": {
+            "legacy index": "25",
+            "cq": "This woman is surely your mother again, carrying a child on her back.",
+            "alternate_pivot": "",
+            "translation": "Diese Frau ist sicher wieder deine Mutter, die ein Kind auf ihrem Rücken trägt.",
+            "concept_words": {
+                "EQUATIVE PREDICATE": "ist",
+                "PROCESSIVE PREDICATE": "",
+                "women": "Frau",
+                "POINTED BY SPEAKER": "diese",
+                "surely": "sicher",
+                "mother": "Mutter",
+                "PP2SG": "deine",
+                "again": "wieder",
+                "carrying": "trägt",
+                "children": "Kind",
+                "back (anatomy)": "Rücken",
+                "PP3SG": "ihrem",
+                "equating": "ist"
+            },
+            "comment": ""
+        },
+        "39": {
+            "legacy index": "26a",
+            "cq": "Oh, I think I know who this child is.",
+            "alternate_pivot": "",
+            "translation": "Oh, ich glaube, ich weiß, wer dieses Kind ist.",
+            "concept_words": {
+                "EXPRESS BELIEF (EPISTEMIC)": "glaube",
+                "PROCESSIVE PREDICATE": "",
+                "EQUATIVE PREDICATE": "ist",
+                "PP1SG": "ich",
+                "thinking": "glaube",
+                "knowing": "weiß",
+                "PERSON wildcard": "wer",
+                "children": "Kind",
+                "POINTED BY SPEAKER": "dieses",
+                "equating": "ist"
+            },
+            "comment": ""
+        },
+        "40": {
+            "legacy index": "26b",
+            "cq": "That’s you!",
+            "alternate_pivot": "",
+            "translation": "Das bist du!",
+            "concept_words": {
+                "ASSERT": "",
+                "EQUATIVE PREDICATE": "bist",
+                "POINTED BY SPEAKER": "das",
+                "PP2SG": "du",
+                "equating": "bist"
+            },
+            "comment": ""
+        },
+        "41": {
+            "legacy index": "27a",
+            "cq": "That's me indeed!",
+            "alternate_pivot": "",
+            "translation": "Das bin ich in der Tat!",
+            "concept_words": {
+                "CONFIRM": "in...der...Tat",
+                "EQUATIVE PREDICATE": "bin",
+                "POINTED BY SPEAKER": "das",
+                "PP1SG": "ich",
+                "equating": "bin"
+            },
+            "comment": ""
+        },
+        "42": {
+            "legacy index": "27b",
+            "cq": "How did you recognize me?",
+            "alternate_pivot": "",
+            "translation": "Wie hast du mich erkannt?",
+            "concept_words": {
+                "ASK": "wie",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "du",
+                "recognizing": "hast...erkannt",
+                "PP1SG": "mich",
+                "process wildcard": "wie"
+            },
+            "comment": ""
+        },
+        "43": {
+            "legacy index": "28a",
+            "cq": "Well, on that photo you’re a small child,",
+            "alternate_pivot": "",
+            "translation": "Nun, auf diesem Foto bist du ein kleines Kind,",
+            "concept_words": {
+                "ASSERT": "",
+                "ATTRIBUTIVE PREDICATE": "bist",
+                "PP2SG": "du",
+                "small": "kleines",
+                "children": "Kind",
+                "photo": "Foto",
+                "POINTED BY SPEAKER": "diesem",
+                "exhibiting (an attribute)": "bist"
+            },
+            "comment": ""
+        },
+        "44": {
+            "legacy index": "28b",
+            "cq": "but I recognize your eyes and your smile.",
+            "alternate_pivot": "",
+            "translation": "aber ich erkenne deine Augen und dein Lächeln.",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "BUT": "aber",
+                "recognizing": "erkenne",
+                "PP1SG": "ich",
+                "PP2SG": "deine...dein",
+                "eyes": "Augen",
+                "AND": "und",
+                "smile": "Lächeln"
+            },
+            "comment": ""
+        },
+        "45": {
+            "legacy index": "29",
+            "cq": "You look mischievous on that picture.",
+            "alternate_pivot": "",
+            "translation": "Du siehst auf diesem Bild schelmisch aus.",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "du",
+                "looking like": "siehst...aus",
+                "mischievous": "schelmisch",
+                "picture": "Bild",
+                "POINTED BY SPEAKER": "diesem"
+            },
+            "comment": ""
+        },
+        "46": {
+            "legacy index": "30",
+            "cq": "You haven’t changed much!",
+            "alternate_pivot": "",
+            "translation": "Du hast dich nicht viel verändert!",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "nicht",
+                "PP2SG": "du",
+                "changing (over time)": "hast...verändert",
+                "much": "viel"
+            },
+            "comment": ""
+        },
+        "47": {
+            "legacy index": "31a",
+            "cq": "Ha ha.",
+            "alternate_pivot": "",
+            "translation": "Ha ha.",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": ""
+            },
+            "comment": ""
+        },
+        "48": {
+            "legacy index": "31b",
+            "cq": "But I’m not a child any more, I’ve grown up.",
+            "alternate_pivot": "",
+            "translation": "Aber ich bin kein Kind mehr, ich bin erwachsen geworden.",
+            "concept_words": {
+                "ASSERT": "",
+                "EQUATIVE PREDICATE": "bin",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "kein...mehr",
+                "BUT": "aber",
+                "AND": "",
+                "PP1SG": "ich",
+                "children": "Kind",
+                "anymore": "mehr",
+                "growing up": "bin...erwachsen...geworden",
+                "equating": "bin"
+            },
+            "comment": ""
+        },
+        "49": {
+            "legacy index": "32",
+            "cq": "Today my mother would not be able to carry me on her back!",
+            "alternate_pivot": "",
+            "translation": "Heute könnte meine Mutter mich nicht auf ihrem Rücken tragen!",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "nicht",
+                "today": "heute",
+                "mother": "Mutter",
+                "PP1SG": "mich",
+                "being able to": "könnte",
+                "carrying": "tragen",
+                "back (anatomy)": "Rücken",
+                "PP3SG": "ihrem"
+            },
+            "comment": ""
+        },
+        "50": {
+            "legacy index": "33",
+            "cq": "I’m taller and heavier than her.",
+            "alternate_pivot": "",
+            "translation": "Ich bin größer und schwerer als sie.",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "ich",
+                "MORE X THAN Y": "größer...und...schwerer...als",
+                "AND": "und",
+                "tall": "größer",
+                "heavy": "schwerer",
+                "PP3SG": "sie",
+                "exhibiting (an attribute)": "bin",
+                "equating": "bin"
+            },
+            "comment": ""
+        },
+        "51": {
+            "legacy index": "34a",
+            "cq": "Ha, that’s true.",
+            "alternate_pivot": "",
+            "translation": "Ha, das stimmt.",
+            "concept_words": {
+                "CONFIRM": "das...stimmt",
+                "APPRECIATIVE PREDICATE": "das...stimmt"
+            },
+            "comment": ""
+        },
+        "52": {
+            "legacy index": "34b",
+            "cq": "You’ve eaten too much!",
+            "alternate_pivot": "",
+            "translation": "Du hast zu viel gegessen!",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "du",
+                "eating": "hast...gegessen",
+                "TOO MUCH OF X": "zu...viel"
+            },
+            "comment": ""
+        }
+    },
+    "interviewer": "Seb",
+    "interviewee": "Seb",
+    "recording_uid": "chatGPT_German_1"
+}

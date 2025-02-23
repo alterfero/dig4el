@@ -114,13 +114,6 @@
         "requires": [],
         "gramprop": []
     },
-    "WHENEVER IN THE PAST": {
-        "description": "Whenever in the past of the real of imaginary speaker.",
-        "type": "concept",
-        "ontological parent": "PAST EVENT",
-        "requires": [],
-        "gramprop": []
-    },
     "JUST A MOMENT AGO": {
         "description": "A few minutes/hours in the past of the speaker.",
         "type": "concept",
@@ -160,13 +153,6 @@
         "description": "After the real or imaginary speaker time.",
         "type": "concept",
         "ontological parent": "EVENT TENSE",
-        "requires": [],
-        "gramprop": []
-    },
-    "WHENEVER IN THE SPEAKER FUTURE": {
-        "description": "Any time in the future of the real or imaginary speaker.",
-        "type": "concept",
-        "ontological parent": "FUTURE EVENT",
         "requires": [],
         "gramprop": []
     },
@@ -3993,5 +3979,19 @@
         "ontological parent": "SEX-BASED GENDER",
         "gramprop": [],
         "requires": []
+    },
+    "GENERIC FUTURE": {
+        "description": "Any time in the future of the real or imaginary speaker.",
+        "type": "concept",
+        "ontological parent": "FUTURE EVENT",
+        "requires": [],
+        "gramprop": []
+    },
+    "GENERIC PAST": {
+        "description": "Whenever in the past of the real of imaginary speaker.",
+        "type": "concept",
+        "ontological parent": "PAST EVENT",
+        "requires": [],
+        "gramprop": []
     }
 }

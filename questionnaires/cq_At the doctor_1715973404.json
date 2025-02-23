@@ -15571,7 +15571,7 @@
                         "Ref_Event",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 }
             },
             "trimmed_graph": {
@@ -15631,7 +15631,7 @@
                     "path": [
                         "Ref_Event"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 }
             },
             "legacy index": "22",
@@ -15768,7 +15768,7 @@
                         "Ref_Event",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 }
             },
             "trimmed_graph": {
@@ -15828,7 +15828,7 @@
                     "path": [
                         "Ref_Event"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 }
             },
             "legacy index": "23a",
@@ -15919,7 +15919,7 @@
                         "liking",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "liking LOCATION INFORMATION": {
                     "is_required_by": [
@@ -16173,7 +16173,7 @@
                     "path": [
                         "liking"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "liking PATIENT": {
                     "is_required_by": [
@@ -16366,7 +16366,7 @@
                         "eating",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "eating TIME INFORMATION": {
                     "is_required_by": [
@@ -16606,7 +16606,7 @@
                     "path": [
                         "eating"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "eating AGENT": {
                     "is_required_by": [
@@ -18449,7 +18449,7 @@
                         "eating",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "eating QUALIFIER": {
                     "is_required_by": [
@@ -18653,7 +18653,7 @@
                         "becoming",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "becoming QUALIFIER": {
                     "is_required_by": [
@@ -18917,7 +18917,7 @@
                     "path": [
                         "eating"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "eating QUALIFIER": {
                     "is_required_by": [
@@ -18962,7 +18962,7 @@
                     "path": [
                         "becoming"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "becoming POLARITY": {
                     "is_required_by": [
@@ -19194,7 +19194,7 @@
                         "doing",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "doing QUALIFIER": {
                     "is_required_by": [
@@ -19426,7 +19426,7 @@
                     "path": [
                         "doing"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "doing POLARITY": {
                     "is_required_by": [
@@ -20742,7 +20742,7 @@
                         "giving",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "giving QUALIFIER": {
                     "is_required_by": [
@@ -21430,7 +21430,7 @@
                     "path": [
                         "giving"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "giving AGENT": {
                     "is_required_by": [
@@ -22415,7 +22415,7 @@
                         "exhibiting (an attribute)",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "exhibiting (an attribute) LOCATION INFORMATION": {
                     "is_required_by": [
@@ -22690,7 +22690,7 @@
                     "path": [
                         "exhibiting (an attribute)"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "exhibiting (an attribute) TIME INFORMATION": {
                     "is_required_by": [

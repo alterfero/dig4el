@@ -1033,7 +1033,7 @@
                         "searching",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "searching PATIENT": {
                     "is_required_by": [
@@ -1940,7 +1940,7 @@
                     "path": [
                         "searching"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "searching PATIENT": {
                     "is_required_by": [
@@ -6412,7 +6412,7 @@
                         "leaving (transitive)",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "leaving (transitive) POLARITY": {
                     "is_required_by": [
@@ -6878,7 +6878,7 @@
                     "path": [
                         "leaving (transitive)"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "leaving (transitive) LOCATION INFORMATION": {
                     "is_required_by": [
@@ -7057,7 +7057,7 @@
                         "putting",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "putting POLARITY": {
                     "is_required_by": [
@@ -8275,7 +8275,7 @@
                     "path": [
                         "putting"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "putting LOCATION INFORMATION": {
                     "is_required_by": [
@@ -8876,7 +8876,7 @@
                         "searching",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "searching AGENT": {
                     "is_required_by": [
@@ -9581,7 +9581,7 @@
                     "path": [
                         "searching"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "searching AGENT": {
                     "is_required_by": [
@@ -15142,7 +15142,7 @@
                         "exhibiting (an attribute)",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "exhibiting (an attribute) QUALIFIER": {
                     "is_required_by": [
@@ -15483,7 +15483,7 @@
                     "path": [
                         "exhibiting (an attribute)"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "exhibiting (an attribute) PATIENT": {
                     "is_required_by": [
@@ -15732,7 +15732,7 @@
                         "thinking",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "thinking TIME INFORMATION": {
                     "is_required_by": [
@@ -16005,7 +16005,7 @@
                         "doing",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "doing TIME INFORMATION": {
                     "is_required_by": [
@@ -16501,7 +16501,7 @@
                     "path": [
                         "thinking"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "doing AGENT": {
                     "is_required_by": [
@@ -16537,7 +16537,7 @@
                     "path": [
                         "doing"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 }
             },
             "legacy index": "16",
@@ -20147,7 +20147,7 @@
                         "shredding",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "shredding TIME INFORMATION": {
                     "is_required_by": [
@@ -20753,7 +20753,7 @@
                     "path": [
                         "shredding"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "PP3SG SEX-BASED GENDER": {
                     "is_required_by": [
@@ -21641,7 +21641,7 @@
                         "happening",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "happening AGENT": {
                     "is_required_by": [
@@ -22228,7 +22228,7 @@
                     "path": [
                         "happening"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "happening AGENT": {
                     "is_required_by": [
