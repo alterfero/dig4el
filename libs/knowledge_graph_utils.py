@@ -8,6 +8,9 @@ from libs import utils, stats, graphs_utils as gu
 from collections import OrderedDict
 import pandas as pd
 
+IPKS = ["QUANTIFIER", "ASPECT", "EVENT TENSE", "POLARITY", "DEFINITENESS"]
+RPKS = ["AGENT", "PATIENT", "OBLIQUE", "POSSESSOR", "POSSESSEE"]
+
 # delimiters = json.load(open("./data/delimiters.json"))
 
 def consolidate_cq_transcriptions(transcriptions_list, language, delimiters):
@@ -280,6 +283,90 @@ def build_gloss_df(knowledge_graph, entry, delimiters):
     # build dataframe from ordered dict
     return pd.DataFrame.from_dict(sentence_display_ordered_dict, orient="index", columns=["concept"]).T
 
+def get_particularization_info(kg, entry, concept):
+    ip = {}
+    rp = {}
+    cgraph = kg[entry]["sentence_data"]["graph"]
+    for gkey, gdata in cgraph.items():
+        if gdata["value"] != "":
+            if gkey.startswith(concept):
+                param = gkey[len(concept) + 1:]
+                if param in IPKS:
+                    ip[param] = gdata["value"]
+                if param in RPKS:
+                    rp[param] = gdata["value"]
+            if gdata["value"] == concept:
+                gkey_concept = [c for c in cgraph["sentence"]["requires"] if c in gdata["path"]][0]
+                param = "undetermined"
+                for rpk in RPKS:
+                    if gdata["path"][-1] == "REFERENCE TO CONCEPT":
+                        param = gdata["path"][-2]
+                    else:
+                        param = gdata["path"][-1]
+                rp[param + " of"] = gkey_concept
+    return ip, rp
+
+def build_super_gloss_df(knowledge_graph, entry, delimiters):
+    sentence_display_list = []
+    target_words_from_translation = stats.custom_split(knowledge_graph[entry]["recording_data"]["translation"], delimiters)
+    unpacked_tw = {}
+    concept_particularization_dict = {}
+    for concept, target_words_from_concept_words in knowledge_graph[entry]["recording_data"]["concept_words"].items():
+        # concept particularization
+        ip, rp = get_particularization_info(knowledge_graph, entry, concept)
+        concept_particularization_dict[concept] = {
+            "ip": ip,
+            "rp": rp
+        }
+        # if multiple target words for a concept (separated by ...) they're developed into multiple words
+        # with concept concept_1, concept_2 etc.
+        words = target_words_from_concept_words.split("...")
+        words = [word.lower() for word in words]
+        if len(words) > 1:
+            wcount = 0
+            for word in words:
+                wcount += 1
+                unpacked_tw[concept + "_" + str(wcount)] = word
+        else:
+            unpacked_tw[concept] = words[0]
+    # build sentence list
+    # for each non-empty word from the translation sentence
+    for wd in [w for w in target_words_from_translation if w]:
+        # if this word is in the unpacked target words from concept words
+        if wd in unpacked_tw.values():
+            # the associated concept is concept_key
+            concept_key = utils.get_key_by_value(unpacked_tw, wd)
+            try:
+                ip_display = ", ".join([str(k)+": "+str(v) for k,v in concept_particularization_dict[concept_key.split("_")[0]]["ip"].items()])
+            except KeyError:
+                ip_display = ""
+                print("Key Error in build super gloss on ip_display.")
+                print("wd: ".format(wd))
+                print("concept_key: ".format(concept_key))
+                print("concept_particularization_dict: {}".format(concept_particularization_dict))
+            try:
+                rp_display = ", ".join([str(k)+" "+str(v) for k,v in concept_particularization_dict[concept_key.split("_")[0]]["rp"].items()])
+            except KeyError:
+                rp_display = ""
+                print("Key Error in build super gloss on rp_display. ")
+                print("wd: ".format(wd))
+                print("concept_key: ".format(concept_key))
+                print("concept_particularization_dict: {}".format(concept_particularization_dict))
+            sentence_display_list.append({"word": wd,
+                                          "concept": concept_key,
+                                          "internal particularization": ip_display,
+                                          "relational particularization": rp_display
+                                          })
+        else:
+            sentence_display_list.append({"word": wd,
+                                          "concept": "",
+                                          "internal particularization": "",
+                                          "relational particularization": ""})
+    # build dataframe from ordered dict
+    output_df = pd.DataFrame(sentence_display_list)
+    output_df.set_index("word", inplace=True)
+    return output_df.T
+
 def get_kg_entry_signature(knowledge_graph, entry_index):
     is_positive_polarity = True
     is_wildcard = False
@@ -333,8 +420,6 @@ def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):
     return output
 
 def build_concept_dict(kg):
-    ipks = ["QUANTIFIER", "ASPECT", "EVENT TENSE", "POLARITY", "DEFINITENESS"]
-    rpks = ["AGENT", "PATIENT", "OBLIQUE", "POSSESSOR", "POSSESSEE"]
     cdict = {}
     # create dict with concepts and their particularizations
     for entry, content in kg.items():
@@ -362,17 +447,17 @@ def build_concept_dict(kg):
                 details["alternate_pivot"] = concept["recording_data"]["alternate_pivot"]
             for k, v in content["sentence_data"]["graph"].items():
                 if concept in k and v["value"] != "":
-                    for ipk in ipks:
+                    for ipk in IPKS:
                         if ipk in k:
                             details["particularization"]["internal_particularization"][ipk] = v["value"]
-                    for rpk in rpks:
+                    for rpk in RPKS:
                         if rpk in k:
                             details["particularization"]["relational_particularization"][rpk] = v["value"]
                 if v["value"] == concept:
-                    for ipk in ipks:
+                    for ipk in IPKS:
                         if ipk in k:
                             details["particularization"]["internal_particularization"][ipk] = v["value"]
-                    for rpk in rpks:
+                    for rpk in RPKS:
                         if rpk in k:
                             details["particularization"]["relational_particularization"][rpk] = v["value"]
             cdict[concept].append(details)

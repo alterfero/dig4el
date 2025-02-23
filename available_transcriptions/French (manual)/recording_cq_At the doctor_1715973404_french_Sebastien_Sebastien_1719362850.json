@@ -1,0 +1,890 @@
+{
+    "target language": "Frunch",
+    "delimiters": [
+        " ",
+        ".",
+        ",",
+        ";",
+        ":",
+        "!",
+        "?",
+        "\u2026",
+        "'"
+    ],
+    "pivot language": "English",
+    "cq_uid": "1715973404",
+    "data": {
+        "1": {
+            "legacy index": "1a",
+            "cq": "Good morning Doctor",
+            "alternate_pivot": "",
+            "translation": "bonjour docteur",
+            "concept_words": {
+                "GREET": "bonjour"
+            },
+            "comment": ""
+        },
+        "2": {
+            "legacy index": "1b",
+            "cq": "How are you?",
+            "alternate_pivot": "",
+            "translation": "comment allez-vous",
+            "concept_words": {
+                "ASK": "comment",
+                "GREET": "comment...allez-vous"
+            },
+            "comment": ""
+        },
+        "3": {
+            "legacy index": "2",
+            "cq": "I'm fine, and you?",
+            "alternate_pivot": "",
+            "translation": "bien et vous",
+            "concept_words": {
+                "ASK": "",
+                "ASSERT": ""
+            },
+            "comment": ""
+        },
+        "4": {
+            "legacy index": "3",
+            "cq": "Well\u2026 I\u2019m not feeling well these days.",
+            "alternate_pivot": "",
+            "translation": "eh bien je ne me sens pas bien ces jours-ci",
+            "concept_words": {
+                "ASSERT": "",
+                "ATTRIBUTIVE PREDICATE": "",
+                "Negative Polarity": "ne...pas",
+                "PP1SG": "je...me",
+                "experiencing in the body": "sens",
+                "good": "bien",
+                "these days": "ces...jours-ci"
+            },
+            "comment": ""
+        },
+        "5": {
+            "legacy index": "4",
+            "cq": "This is why I came to see you.",
+            "alternate_pivot": "",
+            "translation": "c'est pour \u00e7a que je suis venu vous voir",
+            "concept_words": {
+                "ASSERT": "",
+                "EQUATIVE PREDICATE": "",
+                "event wildcard": "c",
+                "causality wildcard": "pour...\u00e7a",
+                "PP1SG": "je",
+                "coming": "suis...venu",
+                "seeing": "voir",
+                "PP2SG": "vous",
+                "equating": "est"
+            },
+            "comment": ""
+        },
+        "6": {
+            "legacy index": "5a",
+            "cq": "What\u2019s happening to you?",
+            "alternate_pivot": "",
+            "translation": "qu'est ce qui vous arrive",
+            "concept_words": {
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "",
+                "event wildcard": "qu",
+                "happening": "arrive",
+                "PP2SG": "vous"
+            },
+            "comment": ""
+        },
+        "7": {
+            "legacy index": "5b",
+            "cq": "You look sick",
+            "alternate_pivot": "",
+            "translation": "vous avez l'air malade",
+            "concept_words": {
+                "ASSERT": "",
+                "ATTRIBUTIVE PREDICATE": "avez...l...air",
+                "PP2SG": "vous",
+                "looking like": "avez...l...air",
+                "sick": "malade"
+            },
+            "comment": ""
+        },
+        "8": {
+            "legacy index": "6",
+            "cq": "I can\u2019t sleep well at night.",
+            "alternate_pivot": "",
+            "translation": "je ne dors pas bien la nuit",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "ne...pas",
+                "PP1SG": "je",
+                "being able to": "",
+                "sleeping": "dors",
+                "at night": "la...nuit"
+            },
+            "comment": ""
+        },
+        "9": {
+            "legacy index": "7a",
+            "cq": "I sweat",
+            "alternate_pivot": "",
+            "translation": "je transpire",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "sweating": "transpire",
+                "PP1SG": "je"
+            },
+            "comment": ""
+        },
+        "10": {
+            "legacy index": "7b",
+            "cq": "I have nightmares.",
+            "alternate_pivot": "",
+            "translation": "je fais des cauchemars",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "je",
+                "experiencing in the body": "fais",
+                "nightmare": "cauchemars"
+            },
+            "comment": ""
+        },
+        "11": {
+            "legacy index": "7c",
+            "cq": "and then I wake up in the middle of the night.",
+            "alternate_pivot": "",
+            "translation": "et apr\u00e8s je me r\u00e9veille au milieu de la nuit",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "je",
+                "waking up": "r\u00e9veille",
+                "middle of the night": "au...milieu...de...la...nuit"
+            },
+            "comment": ""
+        },
+        "12": {
+            "legacy index": "8a",
+            "cq": "Sometimes I feel hot",
+            "alternate_pivot": "",
+            "translation": "parfois j'ai chaud",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "j",
+                "experiencing in the body": "ai",
+                "hot": "chaud",
+                "sometimes": "parfois"
+            },
+            "comment": ""
+        },
+        "13": {
+            "legacy index": "8b",
+            "cq": "sometimes I feel cold",
+            "alternate_pivot": "",
+            "translation": "parfois j'ai froid",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "sometimes": "parfois",
+                "PP1SG": "j",
+                "experiencing in the body": "ai",
+                "cold": "froid"
+            },
+            "comment": ""
+        },
+        "14": {
+            "legacy index": "8c",
+            "cq": "I must have fever?",
+            "alternate_pivot": "",
+            "translation": "je dois avoir de la fi\u00e8vre",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "dois...avoir",
+                "ASK": "",
+                "ATTRIBUTIVE PREDICATE": "avoir",
+                "PP1SG": "je",
+                "experiencing in the body": "avoir",
+                "fever": "fi\u00e8vre"
+            },
+            "comment": ""
+        },
+        "15": {
+            "legacy index": "9a",
+            "cq": "Let me check your forehead",
+            "alternate_pivot": "",
+            "translation": "laissez moi toucher votre front",
+            "concept_words": {
+                "ORDER": "laissez",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "moi",
+                "PP2SG": "",
+                "allowing": "laissez",
+                "checking": "toucher",
+                "forehead": "front"
+            },
+            "comment": ""
+        },
+        "16": {
+            "legacy index": "9b",
+            "cq": "Oh yes, you\u2019re hot!",
+            "alternate_pivot": "",
+            "translation": "oh oui vous \u00eates chaud",
+            "concept_words": {
+                "APPROVE": "oh...oui",
+                "ATTRIBUTIVE PREDICATE": "\u00eates",
+                "PP2SG": "vous",
+                "experiencing in the body": "\u00eates",
+                "hot": "chaud"
+            },
+            "comment": ""
+        },
+        "17": {
+            "legacy index": "10",
+            "cq": "Do you cough?",
+            "alternate_pivot": "",
+            "translation": "vous toussez",
+            "concept_words": {
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "vous",
+                "coughing": "toussez"
+            },
+            "comment": ""
+        },
+        "18": {
+            "legacy index": "11",
+            "cq": "No, I don\u2019t cough.",
+            "alternate_pivot": "",
+            "translation": "non je ne tousse pas",
+            "concept_words": {
+                "DISAPPROVE": "non",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "ne...pas",
+                "PP1SG": "je",
+                "coughing": "tousse"
+            },
+            "comment": ""
+        },
+        "19": {
+            "legacy index": "12a",
+            "cq": "But every time I wake up, I\u2019m very thirsty.",
+            "alternate_pivot": "",
+            "translation": "mais \u00e0 chaque fois que je me r\u00e9veille j'ai tr\u00e8s soif",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "je",
+                "every time": "chaque...fois",
+                "waking up": "r\u00e9veille...me",
+                "experiencing in the body": "ai",
+                "thirst": "soif"
+            },
+            "comment": ""
+        },
+        "20": {
+            "legacy index": "12b",
+            "cq": "I feel I need to drink.",
+            "alternate_pivot": "",
+            "translation": "je sens que j'ai besoin de boire",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "je",
+                "experiencing in the body": "sens",
+                "needing": "ai...besoin",
+                "drinking": "boire"
+            },
+            "comment": ""
+        },
+        "21": {
+            "legacy index": "13a",
+            "cq": "And also, my belly hurts.",
+            "alternate_pivot": "",
+            "translation": "et j'ai mal au ventre",
+            "concept_words": {
+                "ASSERT": "",
+                "ATTRIBUTIVE PREDICATE": "",
+                "PP1SG": "j",
+                "experiencing in the body": "ai",
+                "pain": "mal",
+                "belly": "ventre"
+            },
+            "comment": ""
+        },
+        "22": {
+            "legacy index": "13b",
+            "cq": "It\u2019s painful.",
+            "alternate_pivot": "",
+            "translation": "c'est douloureux",
+            "concept_words": {
+                "ASSERT": "",
+                "EXISTENTIAL PREDICATE": "est",
+                "pain": "douloureux"
+            },
+            "comment": ""
+        },
+        "23": {
+            "legacy index": "14",
+            "cq": "Does it hurt during the day? or only at night?",
+            "alternate_pivot": "",
+            "translation": "\u00e7a fait mal aussi le jour ou seulement la nuit",
+            "concept_words": {
+                "ASK": "",
+                "EXISTENTIAL PREDICATE": "fait",
+                "PP2SG": "",
+                "experiencing in the body": "fait",
+                "pain": "mal",
+                "OR": "ou",
+                "day": "jour",
+                "night": "nuit"
+            },
+            "comment": ""
+        },
+        "24": {
+            "legacy index": "15a",
+            "cq": "Mostly at night.",
+            "alternate_pivot": "",
+            "translation": "surtout la nuit",
+            "concept_words": {
+                "ASSERT": "",
+                "EXISTENTIAL PREDICATE": "",
+                "night": "nuit"
+            },
+            "comment": ""
+        },
+        "25": {
+            "legacy index": "15b",
+            "cq": "I don't know why.",
+            "alternate_pivot": "",
+            "translation": "je ne sais pas pourquoi",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "ne...pas",
+                "PP1SG": "je",
+                "knowing": "sais",
+                "causality wildcard": "pourquoi"
+            },
+            "comment": ""
+        },
+        "26": {
+            "legacy index": "16a",
+            "cq": "Doctor, I\u2019m a bit worried.",
+            "alternate_pivot": "",
+            "translation": "docteur je suis inquiet",
+            "concept_words": {
+                "ASSERT": "",
+                "EXISTENTIAL PREDICATE": "suis",
+                "doctor": "docteur",
+                "PP1SG": "je",
+                "experiencing in the body": "suis",
+                "anxiety": "inquiet",
+                "a bit": ""
+            },
+            "comment": ""
+        },
+        "27": {
+            "legacy index": "16b",
+            "cq": "what is going on?",
+            "alternate_pivot": "",
+            "translation": "qu'est ce qui m'arrive",
+            "concept_words": {
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "",
+                "object wildcard": "ce",
+                "happening": "arrive"
+            },
+            "comment": ""
+        },
+        "28": {
+            "legacy index": "17",
+            "cq": "Have you eaten something particular lately?",
+            "alternate_pivot": "",
+            "translation": "vous avez mang\u00e9 quelque chose de particulier r\u00e9cemment",
+            "concept_words": {
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "vous",
+                "eating": "avez...mang\u00e9",
+                "object wildcard": "quelque...chose",
+                "particular": "particulier",
+                "lately": "r\u00e9cemment"
+            },
+            "comment": ""
+        },
+        "29": {
+            "legacy index": "18a",
+            "cq": "Hm, let me remember\u2026",
+            "alternate_pivot": "",
+            "translation": "hm attendez je r\u00e9fl\u00e9chis",
+            "concept_words": {
+                "ORDER": "",
+                "PROCESSIVE PREDICATE": "",
+                "allowing": "",
+                "PP1SG": "je",
+                "PP2SG": "",
+                "remembering": "r\u00e9fl\u00e9chis"
+            },
+            "comment": ""
+        },
+        "30": {
+            "legacy index": "18b",
+            "cq": "No, I don\u2019t think so.",
+            "alternate_pivot": "",
+            "translation": "non je ne pense pas",
+            "concept_words": {
+                "INFIRM": "non",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "ne...pas",
+                "PP1SG": "je",
+                "thinking": "pense",
+                "event wildcard": ""
+            },
+            "comment": ""
+        },
+        "31": {
+            "legacy index": "19a",
+            "cq": "Oh wait",
+            "alternate_pivot": "",
+            "translation": "oh attendez",
+            "concept_words": {
+                "ORDER": "",
+                "PROCESSIVE PREDICATE": "",
+                "waiting": "attendez",
+                "PP2SG": ""
+            },
+            "comment": ""
+        },
+        "32": {
+            "legacy index": "19b",
+            "cq": "actually yes I did!",
+            "alternate_pivot": "",
+            "translation": "en fait oui",
+            "concept_words": {
+                "APPROVE": "oui",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "",
+                "event wildcard": ""
+            },
+            "comment": ""
+        },
+        "33": {
+            "legacy index": "20",
+            "cq": "Last week, my child came back from the forest with some strange fruit I had never seen.",
+            "alternate_pivot": "",
+            "translation": "la semaine derni\u00e8re, mon fils est revenue de la for\u00eat avec des fruits bizarres que je n'avais jamais vu",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "n...jamais",
+                "last week": "semaine...derni\u00e8re",
+                "children": "fils",
+                "coming": "est...revenue",
+                "forest": "for\u00eat",
+                "fruit": "fruits",
+                "strange": "bizarres",
+                "PP1SG": "je",
+                "seeing": "avais...vu"
+            },
+            "comment": ""
+        },
+        "34": {
+            "legacy index": "21",
+            "cq": "He gave me the fruits to try. ",
+            "alternate_pivot": "",
+            "translation": "il m'a donn\u00e9 des fruits pour que je les go\u00fbte",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP3SG": "il",
+                "PP1SG": "m",
+                "giving": "a...donn\u00e9",
+                "trying": "go\u00fbte",
+                "fruit": "fruits"
+            },
+            "comment": ""
+        },
+        "35": {
+            "legacy index": "22",
+            "cq": "Did you?",
+            "alternate_pivot": "",
+            "translation": "et vous l'avez fait",
+            "concept_words": {
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "vous",
+                "Ref_Event": "l"
+            },
+            "comment": ""
+        },
+        "36": {
+            "legacy index": "23a",
+            "cq": "Yes I did.",
+            "alternate_pivot": "",
+            "translation": "oui",
+            "concept_words": {
+                "APPROVE": "oui",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "",
+                "Ref_Event": ""
+            },
+            "comment": ""
+        },
+        "37": {
+            "legacy index": "23b",
+            "cq": "Actually I liked them.",
+            "alternate_pivot": "",
+            "translation": "en fait je les ai bien aim\u00e9s",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "je",
+                "liking": "ai...aim\u00e9s",
+                "Ref_many_objects": "les"
+            },
+            "comment": ""
+        },
+        "38": {
+            "legacy index": "23c",
+            "cq": "They were sweet.",
+            "alternate_pivot": "",
+            "translation": "ils \u00e9taient sucr\u00e9s",
+            "concept_words": {
+                "ASSERT": "",
+                "EQUATIVE PREDICATE": "\u00e9taient",
+                "Ref_many_objects": "ils",
+                "exhibiting (an attribute)": "\u00e9taient",
+                "sweet": "sucr\u00e9s"
+            },
+            "comment": ""
+        },
+        "39": {
+            "legacy index": "23d",
+            "cq": "I ate many of them.",
+            "alternate_pivot": "",
+            "translation": "j'en ai mang\u00e9 beaucoup",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "j",
+                "eating": "ai...mang\u00e9",
+                "Ref_many_objects": "en",
+                "many": "beaucoup"
+            },
+            "comment": ""
+        },
+        "40": {
+            "legacy index": "24",
+            "cq": "I became sick after that.",
+            "alternate_pivot": "",
+            "translation": "et apr\u00e8s je suis tomb\u00e9 malade",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "becoming": "suis...tomb\u00e9",
+                "sick": "malade",
+                "after": "apr\u00e8s",
+                "event wildcard": "",
+                "PP1SG": "je"
+            },
+            "comment": ""
+        },
+        "41": {
+            "legacy index": "25a",
+            "cq": "I see.",
+            "alternate_pivot": "",
+            "translation": "je vois",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "je...vois",
+                "APPRECIATIVE PREDICATE": "je...vois"
+            },
+            "comment": ""
+        },
+        "42": {
+            "legacy index": "25b",
+            "cq": "It must have been these fruits that made you sick.",
+            "alternate_pivot": "",
+            "translation": "ce sont s\u00fbrement ces fruits qui vous ont rendu malade",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "s\u00fbrement",
+                "PROCESSIVE PREDICATE": "",
+                "POINTED BY SPEAKER": "ces",
+                "fruit": "fruits",
+                "Ref_many_objects": "qui",
+                "making": "ont...rendu",
+                "PP2SG": "vous",
+                "sick": "malade"
+            },
+            "comment": ""
+        },
+        "43": {
+            "legacy index": "26",
+            "cq": "If you hadn\u2019t eaten so much, you wouldn\u2019t have gotten sick.",
+            "alternate_pivot": "",
+            "translation": "si vous n'en aviez pas mang\u00e9 autant, vous n'auriez pas \u00e9t\u00e9 malade",
+            "concept_words": {
+                "EXPRESS CONDITION": "si",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "n...pas",
+                "CONDITION": "si",
+                "PP2SG": "vous",
+                "eating": "aviez...mang\u00e9",
+                "becoming": "auriez...\u00e9t\u00e9",
+                "so much": "autant",
+                "sick": "malade"
+            },
+            "comment": ""
+        },
+        "44": {
+            "legacy index": "27a",
+            "cq": "Oh Doctor, you\u2019re right.",
+            "alternate_pivot": "",
+            "translation": "ah vous avez raison docteur",
+            "concept_words": {
+                "APPROVE": ""
+            },
+            "comment": ""
+        },
+        "45": {
+            "legacy index": "27b",
+            "cq": "I shouldn\u2019t have.",
+            "alternate_pivot": "",
+            "translation": "je n'aurais pas d\u00fb",
+            "concept_words": {
+                "WISH": "aurais...d\u00fb",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "n...pas",
+                "PP1SG": "je",
+                "doing": "aurais...d\u00fb"
+            },
+            "comment": ""
+        },
+        "46": {
+            "legacy index": "28",
+            "cq": "What should I do now?",
+            "alternate_pivot": "",
+            "translation": "qu'est ce que je dois faire maintenant",
+            "concept_words": {
+                "EXPRESS DUTY (DEONTIC)": "dois",
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "",
+                "event wildcard": "qu",
+                "PP1SG": "je",
+                "doing": "dois...faire",
+                "now": "maintenant"
+            },
+            "comment": ""
+        },
+        "47": {
+            "legacy index": "29a",
+            "cq": "Don\u2019t worry.",
+            "alternate_pivot": "",
+            "translation": "ne vous inqui\u00e9tez pas",
+            "concept_words": {
+                "ORDER": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "ne...pas",
+                "worrying": "inqui\u00e9tez",
+                "PP2SG": "vous"
+            },
+            "comment": ""
+        },
+        "48": {
+            "legacy index": "29b",
+            "cq": "I\u2019ll give you some medicine to drink.",
+            "alternate_pivot": "",
+            "translation": "je vais vous donner des m\u00e9dicaments \u00e0 boire",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "je",
+                "giving": "vais...donner",
+                "PP2SG": "vous",
+                "medicine": "m\u00e9dicaments",
+                "drinking": "boire"
+            },
+            "comment": ""
+        },
+        "49": {
+            "legacy index": "30a",
+            "cq": "Take it twice a day.",
+            "alternate_pivot": "",
+            "translation": "prenez les deux fois par jour",
+            "concept_words": {
+                "ORDER": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "",
+                "taking": "prenez",
+                "twice a day": "deux...fois...par...jour",
+                "Ref_1_object": "les"
+            },
+            "comment": ""
+        },
+        "50": {
+            "legacy index": "30b",
+            "cq": "In the morning, and in the evening.",
+            "alternate_pivot": "",
+            "translation": "le matin, et le soir",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "AND": "et",
+                "morning": "matin",
+                "evening": "soir"
+            },
+            "comment": ""
+        },
+        "51": {
+            "legacy index": "31a",
+            "cq": "Alright Doctor.",
+            "alternate_pivot": "",
+            "translation": "tr\u00e8s bien docteur",
+            "concept_words": {
+                "APPROVE": "tr\u00e8s...bien"
+            },
+            "comment": ""
+        },
+        "52": {
+            "legacy index": "31b",
+            "cq": "And then I\u2019ll be better?",
+            "alternate_pivot": "",
+            "translation": "et apr\u00e8s j'irai mieux",
+            "concept_words": {
+                "ASK": "",
+                "ATTRIBUTIVE PREDICATE": "irai",
+                "then (time)": "apr\u00e8s",
+                "PP1SG": "j",
+                "COMP-MORE": "mieux",
+                "healthy": "",
+                "exhibiting (an attribute)": "irai"
+            },
+            "comment": ""
+        },
+        "53": {
+            "legacy index": "32a",
+            "cq": "Yes",
+            "alternate_pivot": "",
+            "translation": "oui",
+            "concept_words": {
+                "APPROVE": "oui"
+            },
+            "comment": ""
+        },
+        "54": {
+            "legacy index": "32b",
+            "cq": "you should get better soon.",
+            "alternate_pivot": "",
+            "translation": "vous devriez aller mieux bient\u00f4t",
+            "concept_words": {
+                "EXPRESS POTENTIAL": "devriez",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "vous",
+                "becoming": "devriez...aller",
+                "COMP-MORE": "mieux",
+                "healthy": "",
+                "soon": "bient\u00f4t"
+            },
+            "comment": ""
+        },
+        "55": {
+            "legacy index": "33",
+            "cq": "This is efficient medicine against fever and belly-ache.",
+            "alternate_pivot": "",
+            "translation": "ce sont des m\u00e9dicament efficaces pour la fi\u00e8vre et le mal de ventre",
+            "concept_words": {
+                "ASSERT": "",
+                "EQUATIVE PREDICATE": "sont",
+                "efficient": "efficaces",
+                "medicine": "m\u00e9dicament",
+                "AND": "et",
+                "fever": "fi\u00e8vre",
+                "belly-ache": "mal...m\u00e9dicament...ventre",
+                "Ref_1_object": "ce",
+                "equating": "sont"
+            },
+            "comment": ""
+        },
+        "56": {
+            "legacy index": "34",
+            "cq": "Also, you must get some rest.",
+            "alternate_pivot": "",
+            "translation": "et vous devez vous reposer",
+            "concept_words": {
+                "ORDER": "devez",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "vous",
+                "experiencing": "",
+                "rest": "reposer"
+            },
+            "comment": ""
+        },
+        "57": {
+            "legacy index": "35a",
+            "cq": "Don\u2019t go to work",
+            "alternate_pivot": "",
+            "translation": "n'allez pas au travail",
+            "concept_words": {
+                "ORDER": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "n...pas",
+                "PP2SG": "",
+                "going": "allez",
+                "work": "travail"
+            },
+            "comment": ""
+        },
+        "58": {
+            "legacy index": "35b",
+            "cq": "You need to sleep.",
+            "alternate_pivot": "",
+            "translation": "vous avez besoin de dormir",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP2SG": "vous",
+                "needing": "avez...besoin",
+                "sleeping": "dormir"
+            },
+            "comment": ""
+        },
+        "59": {
+            "legacy index": "36a",
+            "cq": "Alright Doctor",
+            "alternate_pivot": "",
+            "translation": "tr\u00e8s bien docteur",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "tr\u00e8s...bien"
+            },
+            "comment": ""
+        },
+        "60": {
+            "legacy index": "36b",
+            "cq": "I understand.",
+            "alternate_pivot": "",
+            "translation": "je comprends",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "je",
+                "understanding": "comprends"
+            },
+            "comment": ""
+        },
+        "61": {
+            "legacy index": "36c",
+            "cq": "Thank you so much!",
+            "alternate_pivot": "",
+            "translation": "merci",
+            "concept_words": {
+                "THANK": "merci",
+                "PROCESSIVE PREDICATE": ""
+            },
+            "comment": ""
+        }
+    },
+    "interviewer": "Sebastien",
+    "interviewee": "Sebastien",
+    "recording_uid": "1740251731"
+}

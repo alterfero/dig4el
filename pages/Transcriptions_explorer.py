@@ -84,6 +84,8 @@ delimiters_bank = [
     "…",  # Ellipsis
     "–",  # En dash
     "—",  # Em dash
+    "\u2026",
+    "..."
 ]
 default_delimiters = [" ", ".", ",", ";", ":", "!", "?", "\u2026", "'"]
 
@@ -103,7 +105,8 @@ with st.sidebar:
     st.write("**Explore DIG4EL processes**")
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
-with st.expander("Input"):
+with st.expander("Input", expanded=True):
+    st.markdown("#### Load your transcriptions")
     # load transcriptions
     cqs = st.file_uploader("Load your Conversational Questionnaire transcriptions (all at once for multiple transcriptions)", type="json", accept_multiple_files=True)
     if cqs != []:
@@ -114,18 +117,7 @@ with st.expander("Input"):
         st.session_state["loaded_existing"] = True
         st.session_state["tl_name"] = st.session_state["cq_transcriptions"][0]["target language"]
         st.write("{} files loaded in {}.".format(len(st.session_state["cq_transcriptions"]), st.session_state["tl_name"]))
-    existing = st.selectbox("Or load an available set of transcriptions", ["French"])
-    if st.button("Load existing"):
-        tpath = os.path.join(".", "available_transcriptions", existing)
-        if os.path.isdir(tpath):
-            st.session_state["cq_transcriptions"] = []
-            for t in os.listdir(tpath):
-                if t.endswith(".json"):
-                    with open(os.path.join(tpath, t)) as f:
-                        new_cq = json.load(f)
-                        st.session_state["cq_transcriptions"].append(new_cq)
-            st.session_state["loaded_existing"] = True
-            st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
+
     if st.session_state["loaded_existing"]:
         if st.session_state["cq_transcriptions"] != []:
             # managing delimiters
@@ -150,6 +142,40 @@ with st.expander("Input"):
                 st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                     len(st.session_state["cq_transcriptions"]), len(st.session_state["knowledge_graph"]),
                     total_target_word_count, len(unique_words)))
+            if st.session_state["knowledge_graph"] != {}:
+                st.success("Your transcriptions are ready for exploration, you can click on 'Explore by concept' or 'Explore by parameter' below")
+
+    st.markdown("---")
+    st.markdown("#### or use available examples")
+    available_transcriptions_folders = os.listdir(os.path.join(".", "available_transcriptions"))
+    if ".DS_Store" in available_transcriptions_folders:
+        available_transcriptions_folders.remove(".DS_Store")
+    existing = st.selectbox("Or load an available set of transcriptions", available_transcriptions_folders)
+    if st.button("Load existing"):
+        tpath = os.path.join(".", "available_transcriptions", existing)
+        if os.path.isdir(tpath):
+            st.session_state["cq_transcriptions"] = []
+            for t in os.listdir(tpath):
+                if t.endswith(".json"):
+                    with open(os.path.join(tpath, t)) as f:
+                        new_cq = json.load(f)
+                        st.session_state["cq_transcriptions"].append(new_cq)
+        if st.session_state["cq_transcriptions"] != []:
+            st.session_state["delimiters"] = st.session_state["cq_transcriptions"][0]["delimiters"]
+            st.session_state[
+                "knowledge_graph"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
+                st.session_state["cq_transcriptions"],
+                st.session_state["tl_name"],
+                st.session_state["delimiters"])
+            with open("./data/knowledge/current_kg.json", "w") as f:
+                json.dump(st.session_state["knowledge_graph"], f, indent=4)
+            st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
+                len(st.session_state["cq_transcriptions"]), len(st.session_state["knowledge_graph"]),
+                total_target_word_count, len(unique_words)))
+            st.session_state["loaded_existing"] = True
+            st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
+            if st.session_state["knowledge_graph"] != {}:
+                st.success("Transcriptions are ready for exploration, you can click on 'Explore by concept' or 'Explore by parameter' below")
 
 if st.session_state["knowledge_graph"] != {}:
     st.session_state["cdict"] = kgu.build_concept_dict(st.session_state["knowledge_graph"])
@@ -169,12 +195,12 @@ if st.session_state["knowledge_graph"] != {}:
     st.session_state["pdict"] = index_parameters(st.session_state["cdict"])
 
 # EXPLORE BY CONCEPT -------------------
-    with st.expander("Explore by concept", expanded=True):
+    with st.expander("Explore by concept"):
         user_concept = st.selectbox("Select a concept", list(st.session_state["cdict"].keys()), index=list(st.session_state["cdict"].keys()).index(st.session_state["selected_concept"]))
         if st.button("Explore concept {}".format(user_concept)):
             st.session_state["selected_concept"] = user_concept
 
-        st.write("{} occurrences. Click on the left of any row to get more details on an entry.".format(len(st.session_state["cdict"][st.session_state["selected_concept"]])))
+        st.write("{} occurrences of **{}**. Click on the left of any row to get more details on an entry.".format(len(st.session_state["cdict"][st.session_state["selected_concept"]]), st.session_state["selected_concept"]))
 
         #flatten cdict[selected] to display in a df
         flat_cdict_oc = []
@@ -197,18 +223,15 @@ if st.session_state["knowledge_graph"] != {}:
             selected_cdict_entry = st.session_state["cdict"][st.session_state["selected_concept"]][(selected["selection"]["rows"][0])]
             kg_entry = selected_cdict_entry["kg_entry"]
 
-            # Gloss of selected sentence
-            st.write("---")
-            st.subheader("Concepts and target words of the selected sentence: ")
-            st.write("*click on a target word to explore its usage*")
-            gloss = kgu.build_gloss_df(st.session_state["knowledge_graph"], kg_entry, st.session_state["delimiters"])
-            gloss_selection = st.dataframe(gloss, selection_mode="single-column", on_select=display_result, key="gloss_df")
+            # Supergloss
+            supergloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kg_entry, st.session_state["delimiters"])
+            gloss_selection = st.dataframe(supergloss, use_container_width=True, selection_mode="single-column", on_select="rerun", key="supergloss_df")
             # show sentences with the selected word if any
             if gloss_selection["selection"]["columns"] != []:
                 tw = gloss_selection["selection"]["columns"][0].split("_")[0]
                 kg_entries_with_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
-                                            tw,
-                                            st.session_state["delimiters"])
+                                                                   tw,
+                                                                   st.session_state["delimiters"])
                 # stats
                 wstats = {}
                 for e in kg_entries_with_word:
@@ -224,7 +247,7 @@ if st.session_state["knowledge_graph"] != {}:
                 wstats_df = pd.DataFrame(list(wstats.items()), columns=["Concept", "Number of occurrences"])
                 wstats_df = wstats_df.sort_values("Number of occurrences", ascending=False)
 
-                st.subheader("**{}** is, or is part of, the expression of the following concepts:".format(tw))
+                st.subheader("'**{}**' is, or is part of, the expression of the following concepts:".format(tw))
                 # Create the clickable bar chart
                 fig = px.bar(
                     wstats_df,
@@ -250,7 +273,10 @@ if st.session_state["knowledge_graph"] != {}:
                     s_concept = sc["selection"]["points"][0]["label"]
                 else:
                     s_concept = ""
-                if s_concept != "" and s_concept != "undefined" and s_concept != st.session_state["selected_concept"] and s_concept in list(st.session_state["cdict"].keys()):
+                if s_concept != "" \
+                        and s_concept != "undefined" \
+                        and s_concept != st.session_state["selected_concept"] \
+                        and s_concept in list(st.session_state["cdict"].keys()):
                     if st.button("Jump to concept {}".format(s_concept)):
                         st.session_state["selected_concept"] = s_concept
                         st.rerun()
@@ -266,16 +292,16 @@ if st.session_state["knowledge_graph"] != {}:
                     if s_concept != "" and s_concept != "undefined":
                         if s_concept in kgc["recording_data"]["concept_words"].keys() and tw in kgc["recording_data"]["concept_words"][s_concept].split("..."):
                             gloss_counter += 1
-                            gloss = kgu.build_gloss_df(st.session_state["knowledge_graph"], kge,
+                            gloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kge,
                                                        st.session_state["delimiters"])
                             st.write(st.session_state["knowledge_graph"][kge]["sentence_data"]["text"])
-                            st.dataframe(gloss, key="subgloss"+str(gloss_counter))
+                            st.dataframe(gloss, key="subgloss"+str(gloss_counter), use_container_width=True)
                     else:
                         gloss_counter += 1
-                        gloss = kgu.build_gloss_df(st.session_state["knowledge_graph"], kge,
+                        gloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kge,
                                                    st.session_state["delimiters"])
                         st.write(st.session_state["knowledge_graph"][kge]["sentence_data"]["text"])
-                        st.dataframe(gloss, key="subgloss" + str(gloss_counter))
+                        st.dataframe(gloss, key="subgloss" + str(gloss_counter), use_container_width=True)
 
             # Showing sentences using the same target word(s)
             st.write("---")
@@ -287,7 +313,7 @@ if st.session_state["knowledge_graph"] != {}:
                 for item in st.session_state["cdict"][st.session_state["selected_concept"]]:
                     current_entries.append(item["kg_entry"])
                 current_entries = list(set(current_entries))
-                st.subheader("Other occurrences of **{}** not connected to the concept {}:".format(
+                st.subheader("Other occurrences of '**{}**' not connected to the selected concept:".format(
                     selected_cdict_entry["target_words"],
                     st.session_state["selected_concept"]))
                 xcount = 0
@@ -394,7 +420,13 @@ if st.session_state["knowledge_graph"] != {}:
                     if oc_ip_params == []:
                         subsip = False
                     for pfilter_ip_param in st.session_state["pfilter"]["ip"].keys():
+                        #print("pfilter_ip_param: {}".format(pfilter_ip_param))
+                        #print("oc_ip_params: {}".format(oc_ip_params))
                         if pfilter_ip_param in oc_ip_params:
+                            #print("MATCH: pfilter_ip_param in oc_ip_params")
+                            #print(oc["particularization"]["internal_particularization"][pfilter_ip_param])
+                            #print("in?")
+                            #print(st.session_state["pfilter"]["ip"][pfilter_ip_param])
                             if oc["particularization"]["internal_particularization"][pfilter_ip_param] in st.session_state["pfilter"]["ip"][pfilter_ip_param]:
                                 continue
                             else:
@@ -421,7 +453,6 @@ if st.session_state["knowledge_graph"] != {}:
                     selected_oc.append(oc)
 
         # Display results
-
         # keep unique pivot sentences
         displayed_oc = []
         psl = []
@@ -440,7 +471,7 @@ if st.session_state["knowledge_graph"] != {}:
             # Gloss of selected sentence
             st.write("---")
             st.write("Concepts and target words of the selected sentence: ")
-            pgloss = kgu.build_gloss_df(st.session_state["knowledge_graph"], kgp_entry, st.session_state["delimiters"])
+            pgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kgp_entry, st.session_state["delimiters"])
             pgloss_selection =st.dataframe(pgloss, selection_mode="single-column", on_select="rerun", key="pgloss_df")
             # show sentences with the selected word if any
             if pgloss_selection["selection"]["columns"] != []:
@@ -448,9 +479,9 @@ if st.session_state["knowledge_graph"] != {}:
                 pkg_entries_with_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
                                                                    ptw,
                                                                    st.session_state["delimiters"])
-                st.subheader("Sentences with *{}*:".format(ptw))
+                st.subheader("Sentences with '*{}*':".format(ptw))
                 for pkge in pkg_entries_with_word:
-                    ppgloss = kgu.build_gloss_df(st.session_state["knowledge_graph"], pkge, st.session_state["delimiters"])
+                    ppgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], pkge, st.session_state["delimiters"])
                     st.dataframe(ppgloss)
 
 

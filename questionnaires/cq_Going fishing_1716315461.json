@@ -3816,7 +3816,7 @@
                         "knowing",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "knowing PATIENT": {
                     "is_required_by": [
@@ -3987,7 +3987,7 @@
                     "path": [
                         "knowing"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "knowing POLARITY": {
                     "is_required_by": [
@@ -5400,7 +5400,7 @@
                         "buying",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "buying PATIENT": {
                     "is_required_by": [
@@ -6050,7 +6050,7 @@
                     "path": [
                         "buying"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "buying PATIENT": {
                     "is_required_by": [
@@ -6598,7 +6598,7 @@
                         "eating",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "already": {
                     "is_required_by": [
@@ -6975,7 +6975,7 @@
                     "path": [
                         "eating"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 }
             },
             "legacy index": "17",
@@ -9145,7 +9145,9 @@
         "24": {
             "speaker": "B",
             "text": "I\u2019m sorry that you have no food left.",
-            "intent": [],
+            "intent": [
+                "ASSERT"
+            ],
             "predicate": [
                 "ATTRIBUTIVE PREDICATE"
             ],
@@ -11985,7 +11987,7 @@
                         "harvesting",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "harvesting TIME INFORMATION": {
                     "is_required_by": [
@@ -12287,7 +12289,7 @@
                         "bringing",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "bringing TIME INFORMATION": {
                     "is_required_by": [
@@ -12996,7 +12998,7 @@
                     "path": [
                         "harvesting"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 },
                 "harvesting TIME INFORMATION": {
                     "is_required_by": [
@@ -13059,7 +13061,7 @@
                     "path": [
                         "bringing"
                     ],
-                    "value": "WHENEVER IN THE PAST"
+                    "value": "GENERIC PAST"
                 }
             },
             "legacy index": "25",
@@ -14500,7 +14502,7 @@
                         "giving",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "giving OBLIQUE ROLE GOAL": {
                     "is_required_by": [
@@ -14927,7 +14929,7 @@
                     "path": [
                         "giving"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "vegetables QUANTIFIER": {
                     "is_required_by": [
@@ -15571,7 +15573,7 @@
                         "giving",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "giving LOCATION INFORMATION": {
                     "is_required_by": [
@@ -15759,7 +15761,7 @@
                     "path": [
                         "giving"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 }
             },
             "legacy index": "29b",
@@ -15915,7 +15917,7 @@
                         "eating",
                         "EVENT TENSE"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "eating PATIENT": {
                     "is_required_by": [
@@ -16127,7 +16129,7 @@
                     "path": [
                         "eating"
                     ],
-                    "value": "WHENEVER IN THE SPEAKER FUTURE"
+                    "value": "GENERIC FUTURE"
                 },
                 "eating QUALIFIER": {
                     "is_required_by": [

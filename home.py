@@ -17,7 +17,7 @@ st.markdown("- The theoretical framework of **Radical Construction Grammar** (Cr
 st.markdown("- An efficient and engaging method for data collection in the field, namely **Conversational Questionnaires** (François, 2019).")
 st.markdown("- The use of accumulated linguistic knowledge from over 2,500 of the world's languages, thanks to the **World Atlas of Language Structures** (Dryer & Haspelmath,2013) and **Grambank** (Skirgård et al., 2023)")
 st.markdown("- The craft of **teaching the grammar of threatened and endangered languages**  (Vernaudon, 2018).")
-st.markdown("- Original natural language processing (NLP) algorithms leveraging **Abstract Meaning Representations** and **Bayesian networks**.")
+st.markdown("- Original natural language processing (NLP) algorithms leveraging **Graph-based Meaning Representations** and **Bayesian networks**.")
 
 with st.popover("References", use_container_width=True):
     st.markdown("**Radical Construction Grammar**")
@@ -41,7 +41,7 @@ with st.popover("References", use_container_width=True):
     st.markdown("**Algorithms and development**")
     st.markdown("Christian Sebastien, PhD student at the University of French Polynesia.")
     st.markdown("**Acknowledgement**")
-    st.markdown("Many thanks to those who have supported this research effort: Jacques Vernaudon and Alexandre François for their invaluable contributions in conceptualization, supervision, review, and editing, as well as for providing resources in Tahitian and Mwotlap. I am deeply grateful to Marie Teikitohe for her contributions in Marquesan, Takurua Parent in Rapa, Albert Hugues in Mangareva, and Herenui Vanaa and Nati Pita in Paumotu, for sharing resources in their languages. I would also like to extend special thanks to Mary Walworth, Nick Thieberger, and Vanessa Raffin for their valuable advice and feedback on the features (and bugs) of the software. Lastly, I express my profound gratitude to all community members not specifically mentioned here who generously shared their time, knowledge, languages, and insights, making this work possible.")
+    st.markdown("Many thanks to those who are supporting this research effort: Jacques Vernaudon and Alexandre François for their invaluable contributions in conceptualization, supervision, review, and editing, as well as for providing resources in Tahitian and Mwotlap. I am deeply grateful to Marie Teikitohe for her contributions in Marquesan, Takurua Parent in Rapa, Albert Hugues in Mangareva, and Herenui Vanaa and Nati Pita in Paumotu, for sharing resources in their languages. I would also like to extend special thanks to Mary Walworth, Nick Thieberger, and Vanessa Raffin for their valuable advice and feedback on the features (and bugs) of the software. Lastly, I express my profound gratitude to all community members not specifically mentioned here who generously shared their time, knowledge, languages, and insights, making this work possible.")
     st.markdown("""
     **how to Cite:** 
     

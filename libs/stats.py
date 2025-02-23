@@ -43,6 +43,8 @@ def custom_split(text, delimiters):
     split_text = [word for word in split_text if word]
     # remove spaces around each word
     split_text = [word.strip() for word in split_text]
+    # remove CAPS
+    split_text = [word.lower() for word in split_text]
     # deal with homographs
     word_counts = defaultdict(int)
     # Create a new list with unique identifiers
