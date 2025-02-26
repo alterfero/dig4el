@@ -15,10 +15,14 @@
 
 import streamlit as st
 import json
-from libs import knowledge_graph_utils as kgu
+from libs import knowledge_graph_utils as kgu, stats
 import pandas as pd
 import plotly.express as px
 import os
+from pyvis.network import Network
+import tempfile
+from pathlib import Path
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -193,6 +197,339 @@ if st.session_state["knowledge_graph"] != {}:
                             param_index[param_cat][param].append(oc["particularization"][param_cat][param])
         return param_index
     st.session_state["pdict"] = index_parameters(st.session_state["cdict"])
+
+# OPTIONAL BLIND STATISTICS
+    if st.toggle("Show statistics on target words"):
+        word_dict = stats.build_blind_word_stats_from_knowledge_graph(st.session_state["knowledge_graph"],
+                                                                       st.session_state["delimiters"])
+        # UI controls for visualization parameters
+        st.sidebar.header("Visualization Parameters")
+        min_edge_weight = st.sidebar.slider("Minimum Edge Weight", 0.0, 1.0, 0.1, 0.05)
+        min_node_size = 20
+        max_node_size = 100
+        show_labels = True
+        physics_enabled = True
+
+        # Color scheme
+        node_color = "#4C78A8"
+        edge_color = "#888888"
+        background_color = "#FFFFFF"
+
+
+        # Create a pyvis network
+        def create_network(word_dict, min_edge_weight, min_node_size, max_node_size,
+                           show_labels, physics_enabled, node_color, edge_color, background_color):
+
+            # Create a network with basic options
+            net = Network(height="600px", width="100%", bgcolor=background_color,
+                          font_color="#000000", directed=True)
+
+            # Find max frequency for node scaling
+            all_words = set()
+            max_freq = 1  # default to avoid division by zero
+
+            for word_info in word_dict.values():
+                all_words.add(word_info['word'])
+                max_freq = max(max_freq, word_info['frequency'])
+                for following in word_info['following'].keys():
+                    if following:  # Skip empty string
+                        all_words.add(following)
+
+            # Add all nodes first
+            for word in all_words:
+                # Get word info if available, otherwise use default values
+                if word in word_dict:
+                    freq = word_dict[word]['frequency']
+                else:
+                    # This is a word that appears as a neighbor but not as a main entry
+                    freq = 1  # Default frequency
+
+                # Scale node size based on frequency
+                size = min_node_size + ((max_node_size - min_node_size) * (freq / max_freq))
+
+                # Add node to network
+                tooltip = f"Word: {word}, Frequency: {freq}"
+                if word in word_dict:
+                    preceding_words = ", ".join([f"{w}" for w in word_dict[word]['preceding'].keys() if w])
+                    following_words = ", ".join([f"{w}" for w in word_dict[word]['following'].keys() if w])
+                    if following_words:
+                        tooltip += f"""
+                        ---
+                        Preceding words:
+                        {preceding_words}
+                        ---
+                        Following words: 
+                        {following_words}"""
+
+                net.add_node(word, label=word, size=size, title=tooltip)
+
+            # Add edges
+            for word, word_info in word_dict.items():
+                # Add edges for following words
+                for following, count in word_info['following'].items():
+                    if following and following in all_words:  # Skip empty string and ensure target exists
+                        probability = word_info['following_prob'].get(following, 0)
+
+                        # Only add edges above the minimum weight
+                        if probability >= min_edge_weight:
+                            # Width based on probability
+                            width = 1 + (9 * probability)  # Scale from 1 to 10
+
+                            # Add edge with custom attributes
+                            edge_label = f"{probability:.2f}" if show_labels else ""
+                            tooltip = f"Probability: {probability:.2f}"
+                            net.add_edge(word, following, value=width, title=tooltip, label=edge_label, width=width)
+
+            # Set basic options as string
+            options = """
+            var options = {
+              "nodes": {
+                "borderWidth": 2,
+                "borderWidthSelected": 4,
+                "color": {
+                  "highlight": {
+                    "border": "#FF0000",
+                    "background": "#FF9999"
+                  },
+                  "hover": {
+                    "border": "#FF6600",
+                    "background": "#FFCC99"
+                  }
+                },
+                "font": {
+                  "size": 20
+                },
+                "shape": "dot"
+              },
+              "edges": {
+                "arrows": {
+                  "to": {
+                    "enabled": true
+                  }
+                },
+                "color": {
+                  "inherit": false,
+                  "highlight": "#FF0000",
+                  "hover": "#FF6600"
+                },
+                "smooth": {
+                  "type": "continuous",
+                  "forceDirection": "none"
+                }
+              },
+              "interaction": {
+                "hover": true,
+                "hoverConnectedEdges": true,
+                "selectable": true,
+                "selectConnectedEdges": true,
+                "navigationButtons": true,
+                "tooltipDelay": 100
+              },
+              "physics": {
+                "enabled": %s,
+                "solver": "forceAtlas2Based",
+                "forceAtlas2Based": {
+                  "gravitationalConstant": -300,
+                  "centralGravity": 0.005,
+                  "springLength": 100,
+                  "springConstant": 0.08
+                },
+                "maxVelocity": 50,
+                "minVelocity": 0.1,
+                "timestep": 0.3,
+                "stabilization": {
+                  "enabled": true,
+                  "iterations": 1000,
+                  "updateInterval": 25
+                }
+              },
+              "layout": {
+                "improvedLayout": false
+              }
+            }
+            """ % str(physics_enabled).lower()
+
+            # Apply options
+            net.set_options(options)
+
+            # Generate the HTML
+            html = net.generate_html()
+
+            return html
+
+
+        # Create and display the network
+        try:
+            # Create a temporary directory and file
+            temp_dir = tempfile.mkdtemp()
+            path = Path(temp_dir) / "word_network.html"
+
+            # Generate HTML
+            html = create_network(
+                word_dict,
+                min_edge_weight,
+                min_node_size,
+                max_node_size,
+                show_labels,
+                physics_enabled,
+                node_color,
+                edge_color,
+                background_color
+            )
+
+            # Write HTML to file
+            with open(path, 'w', encoding='utf-8') as f:
+                f.write(html)
+
+            # Display using streamlit components
+            st.components.v1.html(open(path, 'r', encoding='utf-8').read(), height=600)
+
+        except Exception as e:
+            st.error(f"Error creating visualization: {e}")
+            st.error(f"Error details: {str(e)}")
+
+        # Add comprehensive data exploration section
+        st.header("Data Explorer")
+
+        # Show basic statistics
+        st.subheader("Basic Network Statistics")
+        col1, col2, col3 = st.columns(3)
+        total_words = len(word_dict)
+        # Get all unique words (including those only appearing as followers)
+        all_unique_words = set()
+        for word, info in word_dict.items():
+            all_unique_words.add(word)
+            for follower in info['following'].keys():
+                if follower:  # Skip empty strings
+                    all_unique_words.add(follower)
+
+        total_connections = sum(len(info['following']) for info in word_dict.values())
+        avg_connections = round(total_connections / total_words, 2) if total_words > 0 else 0
+
+        with col1:
+            st.metric("Total Words in Dictionary", total_words)
+        with col2:
+            st.metric("Total Unique Words", len(all_unique_words))
+        with col3:
+            st.metric("Total Connections", total_connections)
+
+        # Advanced network metrics
+        st.subheader("Advanced Network Metrics")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Avg Connections Per Word", avg_connections)
+
+            # Calculate network density
+            max_possible_connections = total_words * (len(all_unique_words) - 1)
+            network_density = round((total_connections / max_possible_connections),
+                                    4) if max_possible_connections > 0 else 0
+            st.metric("Network Density", network_density,
+                      help="Ratio of actual connections to all possible connections. Higher values indicate a more interconnected network.")
+
+        with col2:
+            # Calculate words with no followers and words with no precedents
+            isolated_words = sum(1 for info in word_dict.values() if not any(f for f in info['following'].keys() if f))
+            st.metric("Words With No Followers", isolated_words)
+
+            # Calculate words that appear only as followers
+            follower_only = len(all_unique_words) - total_words
+            st.metric("Words Appearing Only As Followers", follower_only)
+
+        # Most frequent words analysis
+        st.subheader("Most Frequent Words")
+        top_n_words = st.slider("Number of top words to display", 5, 50, 10)
+
+        # Calculate word frequencies including words that are both in the dictionary and just followers
+        word_frequencies = {}
+        for word, info in word_dict.items():
+            word_frequencies[word] = info['frequency']
+
+        # Create DataFrame and sort
+        freq_df = pd.DataFrame([{"Word": word, "Frequency": freq} for word, freq in word_frequencies.items()])
+        freq_df = freq_df.sort_values("Frequency", ascending=False).reset_index(drop=True)
+
+        # Display top N frequent words
+        if not freq_df.empty:
+            st.write(f"Top {top_n_words} Most Frequent Words:")
+            st.dataframe(freq_df.head(top_n_words))
+
+            # Create a bar chart for visualization
+            st.bar_chart(freq_df.head(top_n_words).set_index("Word"))
+        else:
+            st.write("No frequency data available")
+
+        # Hub analysis
+        st.subheader("Hub Word Analysis")
+        st.write("Hub words are central to the network, with many connections to other words.")
+
+        # Calculate hub metrics
+        hub_data = []
+        for word, info in word_dict.items():
+            # Count outgoing connections (following)
+            out_degree = len([f for f in info['following'].keys() if f])
+
+            # Count incoming connections (preceding from other words)
+            in_degree = 0
+            for other_word, other_info in word_dict.items():
+                if word in other_info['following']:
+                    in_degree += 1
+
+            # Calculate hub score (combining in and out degree)
+            hub_score = in_degree + out_degree
+
+            hub_data.append({
+                "Word": word,
+                "Out Degree": out_degree,
+                "In Degree": in_degree,
+                "Total Connections": hub_score,
+                "Frequency": info['frequency']
+            })
+
+        # Create DataFrame and calculate different hub metrics
+        hub_df = pd.DataFrame(hub_data)
+
+        # Display different hub rankings
+        hub_metric = st.selectbox(
+            "Select hub metric",
+            ["Total Connections", "Out Degree", "In Degree", "Frequency x Connections"]
+        )
+
+        if hub_metric == "Frequency x Connections":
+            # Create weighted metric that combines frequency and connections
+            hub_df["Frequency x Connections"] = hub_df["Frequency"] * hub_df["Total Connections"]
+            hub_df_sorted = hub_df.sort_values("Frequency x Connections", ascending=False).reset_index(drop=True)
+        else:
+            hub_df_sorted = hub_df.sort_values(hub_metric, ascending=False).reset_index(drop=True)
+
+        # Display top N hub words
+        if not hub_df.empty:
+            st.write(f"Top {top_n_words} Hub Words by {hub_metric}:")
+            st.dataframe(hub_df_sorted.head(top_n_words))
+
+            # Create a bar chart for visualization
+            st.bar_chart(hub_df_sorted.head(top_n_words).set_index("Word")[hub_metric])
+        else:
+            st.write("No hub data available")
+
+        # Display the raw data in expandable section
+        with st.expander("View Raw Data"):
+            # Convert to DataFrame for better display
+            rows = []
+            for word, info in word_dict.items():
+                following_str = ", ".join([f"{w}({p:.2f})" for w, p in info['following_prob'].items() if w])
+                preceding_str = ", ".join([f"{w}({p:.2f})" for w, p in info['preceding_prob'].items() if w])
+                rows.append({
+                    "Word": word,
+                    "Frequency": info['frequency'],
+                    "Following Words (Probability)": following_str,
+                    "Preceding Words (Probability)": preceding_str
+                })
+
+            if rows:
+                df = pd.DataFrame(rows)
+                st.dataframe(df)
+            else:
+                st.write("No data available")
 
 # EXPLORE BY CONCEPT -------------------
     with st.expander("Explore by concept"):

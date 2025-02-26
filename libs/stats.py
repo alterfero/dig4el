@@ -79,6 +79,7 @@ def build_blind_word_stats_from_knowledge_graph(knowledge_graph, delimiters):
     for sentence in sentence_list:
         words = custom_split(sentence, delimiters)
         words = [word for word in words if word]  # Remove empty tokens
+        words = [word.split("_")[0] for word in words]  # Remove the multiple occurrence marker
         for i, word in enumerate(words):
             word_data[word]['frequency'] += 1
             if i > 0:
@@ -99,12 +100,22 @@ def build_blind_word_stats_from_knowledge_graph(knowledge_graph, delimiters):
         preceding_probs = {w: count / total_preceding for w, count in data['preceding'].items()}
         following_probs = {w: count / total_following for w, count in data['following'].items()}
 
+        # word_statistics[word] = {
+        #     'word': word,
+        #     'frequency': data['frequency'],
+        #     'preceding': dict(data['preceding'].most_common(10)),
+        #     'preceding_prob': dict(sorted(preceding_probs.items(), key=lambda item: item[1], reverse=True)[:10]),
+        #     'following': dict(data['following'].most_common(10)),
+        #     'following_prob': dict(sorted(following_probs.items(), key=lambda item: item[1], reverse=True)[:10])
+        # }
+
         word_statistics[word] = {
+            'word': word,
             'frequency': data['frequency'],
-            'preceding': dict(data['preceding'].most_common(10)),
-            'preceding_prob': dict(sorted(preceding_probs.items(), key=lambda item: item[1], reverse=True)[:10]),
-            'following': dict(data['following'].most_common(10)),
-            'following_prob': dict(sorted(following_probs.items(), key=lambda item: item[1], reverse=True)[:10])
+            'preceding': dict(data['preceding']),
+            'preceding_prob': dict(sorted(preceding_probs.items(), key=lambda item: item[1], reverse=True)),
+            'following': dict(data['following']),
+            'following_prob': dict(sorted(following_probs.items(), key=lambda item: item[1], reverse=True))
         }
     return word_statistics
 
@@ -125,31 +136,3 @@ def compute_average_blind_entropy(word_statistics):
     # Average entropy for the language
     average_entropy = total_entropy / word_count if word_count > 0 else 0
     return average_entropy
-
-
-# CONSTRUCTION AGENT EXPLORATION
-
-def assess_parameter_influence_mi(df, parameters):
-    mi_scores = {}
-    for param in parameters:
-        mi = mutual_info_score(df[param], df['target_words'])
-        mi_scores[param] = mi
-        print(f"Mutual Information between {param} and target_words: {mi}")
-    return mi_scores
-
-
-def compute_standardized_residuals(df, param, expression_col='target_words'):
-    contingency_table = pd.crosstab(df[param], df[expression_col])
-    chi2, p, dof, expected = chi2_contingency(contingency_table)
-    residuals = (contingency_table - expected) / np.sqrt(expected)
-    return residuals
-
-
-def assess_parameter_influence_residuals(df, parameters):
-    residuals_dict = {}
-    for param in parameters:
-        residuals = compute_standardized_residuals(df, param)
-        residuals_dict[param] = residuals
-        print(f"\nStandardized Residuals for {param} and target_words:")
-        print(residuals)
-    return residuals_dict
