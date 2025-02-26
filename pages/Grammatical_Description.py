@@ -25,12 +25,8 @@ from libs import general_agents
 import json
 import openai
 from pyvis.network import Network
-import seaborn as sns
-import matplotlib.pyplot as plt
-import plotly.express as px
 import plotly.graph_objects as go
-import numpy as np
-from plotly.subplots import make_subplots
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="DIG4EL",
