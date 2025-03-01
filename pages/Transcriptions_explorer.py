@@ -42,15 +42,16 @@ if "cq_transcriptions" not in st.session_state:
 if "knowledge_graph" not in st.session_state:
     st.session_state["knowledge_graph"] = {}
 if "selected_concept" not in st.session_state:
-    st.session_state["selected_concept"] = "PP1SG"
-if "cdict" not in st.session_state:
-    st.session_state["cdict"] = {}
+    st.session_state["selected_concept"] = ""
 if "pdict" not in st.session_state:
     st.session_state["pdict"] = {}
 if "pfilter" not in st.session_state:
     st.session_state["pfilter"] = {"intent": [], "enunciation": [], "predicate": {}, "ip": {}, "rp": []}
 if "cdict" not in st.session_state:
     st.session_state["cdict"] = {}
+if "concept_graph" not in st.session_state:
+    with open("./data/concepts.json", "r") as f:
+        st.session_state["cg"] = json.load(f)
 
 delimiters_bank = [
     " ",  # Space
@@ -110,6 +111,7 @@ with st.sidebar:
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
 with st.expander("Input", expanded=True):
+    use_cat = st.toggle("Use alterlingua")
     st.markdown("#### Load your transcriptions")
     # load transcriptions
     cqs = st.file_uploader("Load your Conversational Questionnaire transcriptions (all at once for multiple transcriptions)", type="json", accept_multiple_files=True)
@@ -141,6 +143,10 @@ with st.expander("Input", expanded=True):
                     st.session_state["cq_transcriptions"],
                     st.session_state["tl_name"],
                     st.session_state["delimiters"])
+                if use_cat:
+                    st.session_state["knowledge_graph"] = kgu.build_categorical_kg(st.session_state["knowledge_graph"],
+                                                  st.session_state["cg"],
+                                                  replace_target_words=True)
                 with open("./data/knowledge/current_kg.json", "w") as f:
                     json.dump(st.session_state["knowledge_graph"], f, indent=4)
                 st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
@@ -171,6 +177,10 @@ with st.expander("Input", expanded=True):
                 st.session_state["cq_transcriptions"],
                 st.session_state["tl_name"],
                 st.session_state["delimiters"])
+            if use_cat:
+                st.session_state["knowledge_graph"] = kgu.build_categorical_kg(st.session_state["knowledge_graph"],
+                                                                               st.session_state["cg"],
+                                                                               replace_target_words=True)
             with open("./data/knowledge/current_kg.json", "w") as f:
                 json.dump(st.session_state["knowledge_graph"], f, indent=4)
             st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
@@ -198,7 +208,7 @@ if st.session_state["knowledge_graph"] != {}:
         return param_index
     st.session_state["pdict"] = index_parameters(st.session_state["cdict"])
 
-# OPTIONAL BLIND STATISTICS
+# OPTIONAL STATISTICS AND GRAPHS
     if st.toggle("Show statistics on target words"):
         word_dict = stats.build_blind_word_stats_from_knowledge_graph(st.session_state["knowledge_graph"],
                                                                        st.session_state["delimiters"])
@@ -206,15 +216,14 @@ if st.session_state["knowledge_graph"] != {}:
         st.sidebar.header("Visualization Parameters")
         min_edge_weight = st.sidebar.slider("Minimum Edge Weight", 0.0, 1.0, 0.1, 0.05)
         min_node_size = 20
-        max_node_size = 100
+        max_node_size = 150
         show_labels = True
         physics_enabled = True
 
         # Color scheme
         node_color = "#4C78A8"
-        edge_color = "#888888"
+        edge_color = "#EEEEEE"
         background_color = "#FFFFFF"
-
 
         # Create a pyvis network
         def create_network(word_dict, min_edge_weight, min_node_size, max_node_size,
@@ -248,7 +257,7 @@ if st.session_state["knowledge_graph"] != {}:
                 size = min_node_size + ((max_node_size - min_node_size) * (freq / max_freq))
 
                 # Add node to network
-                tooltip = f"Word: {word}, Frequency: {freq}"
+                tooltip = f"Word: {word}, Count: {freq}"
                 if word in word_dict:
                     preceding_words = ", ".join([f"{w}" for w in word_dict[word]['preceding'].keys() if w])
                     following_words = ", ".join([f"{w}" for w in word_dict[word]['following'].keys() if w])
@@ -285,7 +294,7 @@ if st.session_state["knowledge_graph"] != {}:
             var options = {
               "nodes": {
                 "borderWidth": 2,
-                "borderWidthSelected": 4,
+                "borderWidthSelected": 8,
                 "color": {
                   "highlight": {
                     "border": "#FF0000",
@@ -408,8 +417,6 @@ if st.session_state["knowledge_graph"] != {}:
 
         with col1:
             st.metric("Total Words in Dictionary", total_words)
-        with col2:
-            st.metric("Total Unique Words", len(all_unique_words))
         with col3:
             st.metric("Total Connections", total_connections)
 
@@ -445,8 +452,8 @@ if st.session_state["knowledge_graph"] != {}:
             word_frequencies[word] = info['frequency']
 
         # Create DataFrame and sort
-        freq_df = pd.DataFrame([{"Word": word, "Frequency": freq} for word, freq in word_frequencies.items()])
-        freq_df = freq_df.sort_values("Frequency", ascending=False).reset_index(drop=True)
+        freq_df = pd.DataFrame([{"Word": word, "Count": freq} for word, freq in word_frequencies.items()])
+        freq_df = freq_df.sort_values("Count", ascending=False).reset_index(drop=True)
 
         # Display top N frequent words
         if not freq_df.empty:
@@ -482,7 +489,7 @@ if st.session_state["knowledge_graph"] != {}:
                 "Out Degree": out_degree,
                 "In Degree": in_degree,
                 "Total Connections": hub_score,
-                "Frequency": info['frequency']
+                "Count": info['frequency']
             })
 
         # Create DataFrame and calculate different hub metrics
@@ -491,13 +498,13 @@ if st.session_state["knowledge_graph"] != {}:
         # Display different hub rankings
         hub_metric = st.selectbox(
             "Select hub metric",
-            ["Total Connections", "Out Degree", "In Degree", "Frequency x Connections"]
+            ["Total Connections", "Out Degree", "In Degree", "Count x Connections"]
         )
 
-        if hub_metric == "Frequency x Connections":
+        if hub_metric == "Count x Connections":
             # Create weighted metric that combines frequency and connections
-            hub_df["Frequency x Connections"] = hub_df["Frequency"] * hub_df["Total Connections"]
-            hub_df_sorted = hub_df.sort_values("Frequency x Connections", ascending=False).reset_index(drop=True)
+            hub_df["Count x Connections"] = hub_df["Count"] * hub_df["Total Connections"]
+            hub_df_sorted = hub_df.sort_values("Count x Connections", ascending=False).reset_index(drop=True)
         else:
             hub_df_sorted = hub_df.sort_values(hub_metric, ascending=False).reset_index(drop=True)
 
@@ -520,7 +527,7 @@ if st.session_state["knowledge_graph"] != {}:
                 preceding_str = ", ".join([f"{w}({p:.2f})" for w, p in info['preceding_prob'].items() if w])
                 rows.append({
                     "Word": word,
-                    "Frequency": info['frequency'],
+                    "Count": info['frequency'],
                     "Following Words (Probability)": following_str,
                     "Preceding Words (Probability)": preceding_str
                 })
@@ -533,136 +540,136 @@ if st.session_state["knowledge_graph"] != {}:
 
 # EXPLORE BY CONCEPT -------------------
     with st.expander("Explore by concept"):
-        user_concept = st.selectbox("Select a concept", list(st.session_state["cdict"].keys()), index=list(st.session_state["cdict"].keys()).index(st.session_state["selected_concept"]))
+        user_concept = st.selectbox("Select a concept", list(st.session_state["cdict"].keys()), index=0)
         if st.button("Explore concept {}".format(user_concept)):
             st.session_state["selected_concept"] = user_concept
+        if st.session_state["selected_concept"] != "":
+            st.write("{} occurrences of **{}**. Click on the left of any row to get more details on an entry.".format(len(st.session_state["cdict"][st.session_state["selected_concept"]]), st.session_state["selected_concept"]))
 
-        st.write("{} occurrences of **{}**. Click on the left of any row to get more details on an entry.".format(len(st.session_state["cdict"][st.session_state["selected_concept"]]), st.session_state["selected_concept"]))
+            #flatten cdict[selected] to display in a df
+            flat_cdict_oc = []
+            #st.write(st.session_state["cdict"][selected_concept])
+            for oc in st.session_state["cdict"][st.session_state["selected_concept"]]:
+                tmp = {}
+                tmp["pivot_sentence"] = oc["pivot_sentence"]
+                tmp["target_sentence"] = oc["target_sentence"]
+                tmp["target_words"] = oc["target_words"]
+                for param_cat, params in oc["particularization"].items():
+                        for p, v in params.items():
+                            tmp[f"{param_cat}_{p}"] = v
+                flat_cdict_oc.append(tmp)
 
-        #flatten cdict[selected] to display in a df
-        flat_cdict_oc = []
-        #st.write(st.session_state["cdict"][selected_concept])
-        for oc in st.session_state["cdict"][st.session_state["selected_concept"]]:
-            tmp = {}
-            tmp["pivot_sentence"] = oc["pivot_sentence"]
-            tmp["target_sentence"] = oc["target_sentence"]
-            tmp["target_words"] = oc["target_words"]
-            for param_cat, params in oc["particularization"].items():
-                    for p, v in params.items():
-                        tmp[f"{param_cat}_{p}"] = v
-            flat_cdict_oc.append(tmp)
+            oc_df = pd.DataFrame(flat_cdict_oc)
+            def display_result():
+                return None
+            selected = st.dataframe(oc_df, selection_mode="single-row", on_select=display_result, key="oc_df")
+            if selected["selection"]["rows"] != []:
+                selected_cdict_entry = st.session_state["cdict"][st.session_state["selected_concept"]][(selected["selection"]["rows"][0])]
+                kg_entry = selected_cdict_entry["kg_entry"]
 
-        oc_df = pd.DataFrame(flat_cdict_oc)
-        def display_result():
-            return None
-        selected = st.dataframe(oc_df, selection_mode="single-row", on_select=display_result, key="oc_df")
-        if selected["selection"]["rows"] != []:
-            selected_cdict_entry = st.session_state["cdict"][st.session_state["selected_concept"]][(selected["selection"]["rows"][0])]
-            kg_entry = selected_cdict_entry["kg_entry"]
+                # Supergloss
+                supergloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kg_entry, st.session_state["delimiters"])
+                gloss_selection = st.dataframe(supergloss, use_container_width=True, selection_mode="single-column", on_select="rerun", key="supergloss_df")
+                # show sentences with the selected word if any
+                if gloss_selection["selection"]["columns"] != []:
+                    tw = gloss_selection["selection"]["columns"][0].split("_")[0]
+                    kg_entries_with_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
+                                                                       tw,
+                                                                       st.session_state["delimiters"])
+                    # stats
+                    wstats = {}
+                    for e in kg_entries_with_word:
+                        c = [c for c in st.session_state["knowledge_graph"][e]["recording_data"]["concept_words"].keys() if tw in st.session_state["knowledge_graph"][e]["recording_data"]["concept_words"][c].split("...")]
+                        if c == []:
+                            c = "undefined"
+                        else:
+                            c = c[0]
+                        if c in wstats.keys():
+                            wstats[c] += 1
+                        else:
+                            wstats[c] = 1
+                    wstats_df = pd.DataFrame(list(wstats.items()), columns=["Concept", "Number of occurrences"])
+                    wstats_df = wstats_df.sort_values("Number of occurrences", ascending=False)
 
-            # Supergloss
-            supergloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kg_entry, st.session_state["delimiters"])
-            gloss_selection = st.dataframe(supergloss, use_container_width=True, selection_mode="single-column", on_select="rerun", key="supergloss_df")
-            # show sentences with the selected word if any
-            if gloss_selection["selection"]["columns"] != []:
-                tw = gloss_selection["selection"]["columns"][0].split("_")[0]
-                kg_entries_with_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
-                                                                   tw,
-                                                                   st.session_state["delimiters"])
-                # stats
-                wstats = {}
-                for e in kg_entries_with_word:
-                    c = [c for c in st.session_state["knowledge_graph"][e]["recording_data"]["concept_words"].keys() if tw in st.session_state["knowledge_graph"][e]["recording_data"]["concept_words"][c].split("...")]
-                    if c == []:
-                        c = "undefined"
+                    st.subheader("'**{}**' is, or is part of, the expression of the following concepts:".format(tw))
+                    # Create the clickable bar chart
+                    fig = px.bar(
+                        wstats_df,
+                        x='Concept',
+                        y='Number of occurrences',
+                    )
+                    # Enable clicking
+                    fig.update_layout(
+                        xaxis_title="Concepts",
+                        yaxis_title="Count",
+                        # Rotate x-axis labels if there are many words
+                        xaxis=dict(tickangle=45)
+                    )
+                    # Display the chart and store click data in session state
+                    sc = st.plotly_chart(
+                        fig,
+                        use_container_width=True,
+                        key='bar_chart',
+                        theme="streamlit",
+                        on_select="rerun"
+                    )
+                    if sc["selection"]["points"]:
+                        s_concept = sc["selection"]["points"][0]["label"]
                     else:
-                        c = c[0]
-                    if c in wstats.keys():
-                        wstats[c] += 1
-                    else:
-                        wstats[c] = 1
-                wstats_df = pd.DataFrame(list(wstats.items()), columns=["Concept", "Number of occurrences"])
-                wstats_df = wstats_df.sort_values("Number of occurrences", ascending=False)
+                        s_concept = ""
+                    if s_concept != "" \
+                            and s_concept != "undefined" \
+                            and s_concept != st.session_state["selected_concept"] \
+                            and s_concept in list(st.session_state["cdict"].keys()):
+                        if st.button("Jump to concept {}".format(s_concept)):
+                            st.session_state["selected_concept"] = s_concept
+                            st.rerun()
 
-                st.subheader("'**{}**' is, or is part of, the expression of the following concepts:".format(tw))
-                # Create the clickable bar chart
-                fig = px.bar(
-                    wstats_df,
-                    x='Concept',
-                    y='Number of occurrences',
-                )
-                # Enable clicking
-                fig.update_layout(
-                    xaxis_title="Concepts",
-                    yaxis_title="Count",
-                    # Rotate x-axis labels if there are many words
-                    xaxis=dict(tickangle=45)
-                )
-                # Display the chart and store click data in session state
-                sc = st.plotly_chart(
-                    fig,
-                    use_container_width=True,
-                    key='bar_chart',
-                    theme="streamlit",
-                    on_select="rerun"
-                )
-                if sc["selection"]["points"]:
-                    s_concept = sc["selection"]["points"][0]["label"]
-                else:
-                    s_concept = ""
-                if s_concept != "" \
-                        and s_concept != "undefined" \
-                        and s_concept != st.session_state["selected_concept"] \
-                        and s_concept in list(st.session_state["cdict"].keys()):
-                    if st.button("Jump to concept {}".format(s_concept)):
-                        st.session_state["selected_concept"] = s_concept
-                        st.rerun()
-
-                if s_concept != "" and s_concept != "undefined":
-                    st.write("#### Sentences with *{}* contributing to the expression of **{}**".format(gloss_selection["selection"]["columns"][0], s_concept))
-                else:
-                    st.write("#### Sentences with *{}*".format(
-                        gloss_selection["selection"]["columns"][0], s_concept))
-                gloss_counter = 0
-                for kge in kg_entries_with_word:
-                    kgc = st.session_state["knowledge_graph"][kge]
                     if s_concept != "" and s_concept != "undefined":
-                        if s_concept in kgc["recording_data"]["concept_words"].keys() and tw in kgc["recording_data"]["concept_words"][s_concept].split("..."):
+                        st.write("#### Sentences with *{}* contributing to the expression of **{}**".format(gloss_selection["selection"]["columns"][0], s_concept))
+                    else:
+                        st.write("#### Sentences with *{}*".format(
+                            gloss_selection["selection"]["columns"][0], s_concept))
+                    gloss_counter = 0
+                    for kge in kg_entries_with_word:
+                        kgc = st.session_state["knowledge_graph"][kge]
+                        if s_concept != "" and s_concept != "undefined":
+                            if s_concept in kgc["recording_data"]["concept_words"].keys() and tw in kgc["recording_data"]["concept_words"][s_concept].split("..."):
+                                gloss_counter += 1
+                                gloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kge,
+                                                           st.session_state["delimiters"])
+                                st.write(st.session_state["knowledge_graph"][kge]["sentence_data"]["text"])
+                                st.dataframe(gloss, key="subgloss"+str(gloss_counter), use_container_width=True)
+                        else:
                             gloss_counter += 1
                             gloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kge,
                                                        st.session_state["delimiters"])
                             st.write(st.session_state["knowledge_graph"][kge]["sentence_data"]["text"])
-                            st.dataframe(gloss, key="subgloss"+str(gloss_counter), use_container_width=True)
-                    else:
-                        gloss_counter += 1
-                        gloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kge,
-                                                   st.session_state["delimiters"])
-                        st.write(st.session_state["knowledge_graph"][kge]["sentence_data"]["text"])
-                        st.dataframe(gloss, key="subgloss" + str(gloss_counter), use_container_width=True)
+                            st.dataframe(gloss, key="subgloss" + str(gloss_counter), use_container_width=True)
 
-            # Showing sentences using the same target word(s)
-            st.write("---")
-            if selected_cdict_entry["target_words"] != "":
-                entries_with_target_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
-                                                                   selected_cdict_entry["target_words"],
-                                                                   st.session_state["delimiters"])
-                current_entries = []
-                for item in st.session_state["cdict"][st.session_state["selected_concept"]]:
-                    current_entries.append(item["kg_entry"])
-                current_entries = list(set(current_entries))
-                st.subheader("Other occurrences of '**{}**' not connected to the selected concept:".format(
-                    selected_cdict_entry["target_words"],
-                    st.session_state["selected_concept"]))
-                xcount = 0
-                for e in entries_with_target_word:
-                    if e not in current_entries:
-                        xcount += 1
-                        gloss = kgu.build_gloss_df(st.session_state["knowledge_graph"], e,
-                                                   st.session_state["delimiters"])
-                        st.write(st.session_state["knowledge_graph"][e]["sentence_data"]["text"])
-                        st.dataframe(gloss)
-                if xcount == 0:
-                    st.write("None")
+                # Showing sentences using the same target word(s)
+                st.write("---")
+                if selected_cdict_entry["target_words"] != "":
+                    entries_with_target_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
+                                                                       selected_cdict_entry["target_words"],
+                                                                       st.session_state["delimiters"])
+                    current_entries = []
+                    for item in st.session_state["cdict"][st.session_state["selected_concept"]]:
+                        current_entries.append(item["kg_entry"])
+                    current_entries = list(set(current_entries))
+                    st.subheader("Other occurrences of '**{}**' not connected to the selected concept:".format(
+                        selected_cdict_entry["target_words"],
+                        st.session_state["selected_concept"]))
+                    xcount = 0
+                    for e in entries_with_target_word:
+                        if e not in current_entries:
+                            xcount += 1
+                            gloss = kgu.build_gloss_df(st.session_state["knowledge_graph"], e,
+                                                       st.session_state["delimiters"])
+                            st.write(st.session_state["knowledge_graph"][e]["sentence_data"]["text"])
+                            st.dataframe(gloss)
+                    if xcount == 0:
+                        st.write("None")
 
 # EXPLORE BY PARAMETER
     with st.expander("Explore by parameter"):
@@ -800,7 +807,7 @@ if st.session_state["knowledge_graph"] != {}:
         st.write("{} entries selected".format(len(displayed_oc)))
 
         ocp_df = pd.DataFrame(displayed_oc, columns=["pivot_sentence", "target_sentence"])
-        ocp_selected = st.dataframe(ocp_df, selection_mode="single-row", on_select=display_result, key="ocp_df", use_container_width=True)
+        ocp_selected = st.dataframe(ocp_df, selection_mode="single-row", on_select="rerun", key="ocp_df", use_container_width=True)
         if ocp_selected["selection"]["rows"] != []:
             selected_cdictp_entry = displayed_oc[(ocp_selected["selection"]["rows"][0])]
             kgp_entry = selected_cdictp_entry["kg_entry"]

@@ -20,6 +20,7 @@ import pandas as pd
 from scipy.stats import chi2_contingency
 from sklearn.metrics import mutual_info_score
 import numpy as np
+from libs import knowledge_graph_utils as kgu
 
 
 def calculate_entropy(prob_dict):
@@ -56,6 +57,16 @@ def custom_split(text, delimiters):
         else:
             unique_words.append(word)
     return unique_words
+
+
+def build_word_stats_from_knowledge_graph(knowkedge_graph, delimiters):
+    """
+    Returns a dict of hypernyms, their frequency and context,
+    based on known word-concept relations in the knowledge graph
+    """
+    output_dict = {}
+    concept_dict = kgu.build_concept_dict(knowkedge_graph)
+
 
 
 def build_blind_word_stats_from_knowledge_graph(knowledge_graph, delimiters):
