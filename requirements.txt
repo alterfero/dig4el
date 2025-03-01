@@ -91,3 +91,8 @@ urllib3==2.0.7
 validators==0.22.0
 wcwidth==0.2.13
 zipp==3.17.0
+
+deepl~=1.21.0
+torch~=2.6.0
+transformers~=4.49.0
+setuptools~=65.5.0

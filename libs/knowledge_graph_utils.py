@@ -87,8 +87,7 @@ def consolidate_cq_transcriptions(transcriptions_list, language, delimiters):
     return knowledge_graph, unique_words, unique_words_frequency, total_target_word_count
 
 def get_value_loc_dict(knowledge_graph, concept_kson, selected_f, delimiters):
-    """ value_loc_dict provide statistics on values in the full knowledge graph.
-    {'INCLUSIVE PREDICATE': [6, 12, 21], 'ATTRIBUTIVE PREDICATE': [25, 33, 42]}"""
+
 
     value_loc_dict = {}
     value_count_dict = {}
@@ -419,6 +418,129 @@ def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):
             }
     return output
 
+def build_categorical_kg(kg, cg, replace_target_words=True, show_example=True):
+    def replace_word_in_dict(input_dict, old_word, new_word):
+        """
+        Replace a word in a dictionary, whether it's a key or appears in values.
+
+        Args:
+            input_dict: Dictionary to modify
+            old_word: Word to replace
+            new_word: Replacement word
+
+        Returns:
+            Modified dictionary with replacements
+        """
+        result_dict = {}
+
+        # Process each key-value pair
+        for key, value in input_dict.items():
+            # Check if the key contains the word (assuming string keys)
+            if isinstance(key, str) and old_word in key:
+                new_key = key.replace(old_word, new_word)
+            else:
+                new_key = key
+
+            # Process the value based on its type
+            if isinstance(value, str):
+                # Replace word in string values
+                new_value = value.replace(old_word, new_word)
+            elif isinstance(value, list):
+                # Process list values
+                new_value = []
+                for item in value:
+                    if isinstance(item, str):
+                        new_value.append(item.replace(old_word, new_word))
+                    elif isinstance(item, dict):
+                        # Recursively process nested dictionaries
+                        new_value.append(replace_word_in_dict(item, old_word, new_word))
+                    else:
+                        new_value.append(item)
+            elif isinstance(value, dict):
+                # Recursively process nested dictionaries
+                new_value = replace_word_in_dict(value, old_word, new_word)
+            else:
+                # Other value types remain unchanged
+                new_value = value
+
+            # Add the processed key-value pair to the result
+            result_dict[new_key] = new_value
+
+        return result_dict
+    example_counter = 0
+    if show_example:
+        print("===================================================")
+        print("XXX           CATEGORICAL KG                    XXX")
+        print("===================================================")
+    output_kg = {}
+    cat_mapping = {
+        "EVENT": "EVENT",
+        "OBJECT": "OBJECT",
+        "NON-GRAMMATICAL QUALIFIER": "QUALIFIER",
+        "SPACE LOGIC": "SPACE LOGIC",
+        "LOGIC": "LOGIC",
+        "SPECIFIERS": "SPECIFIER",
+        "PERSONAL DEICTIC": "PERSONAL_PRONOUN",
+        "OBJECT DEICTIC": "REF_OBJECT"
+    }
+    for index, entry in kg.items():
+        concept_mapping = {}
+        output_kg[index] = copy.deepcopy(entry)
+        concepts = entry["sentence_data"]["concept"]
+        if show_example and example_counter < 12:
+            print("EXAMPLE")
+            print("Entry {}, concepts: {}".format(index, concepts))
+            example_counter += 1
+        for concept in concepts:
+            concept_mapping[concept] = concept
+            ancestors = gu.get_genealogy(cg, concept)
+            for cat in cat_mapping:
+                if cat in ancestors:
+                    concept_mapping[concept] = cat
+        if show_example and example_counter < 12:
+            print("Concept mapping: {}".format(concept_mapping))
+
+        # change concepts in the concept list
+        output_kg[index]["sentence_data"]["concept"] = [concept_mapping[concept]
+                                                        for concept in entry["sentence_data"]["concept"]]
+        if show_example and example_counter < 12:
+            print("New concept_list: {}".format(output_kg[index]["sentence_data"]["concept"]))
+            print("Entry concept_words: {}".format(entry["recording_data"]["concept_words"]))
+        # change concepts in concept_words + target words and target sentence if replace_target_words=True
+        output_kg[index]["recording_data"]["concept_words"] = {}
+        for concept, tw in entry["recording_data"]["concept_words"].items():
+            if concept in entry["sentence_data"]["concept"]:
+                if show_example and example_counter < 12:
+                    print("concept {}, tw: {}".format(concept, tw))
+                if tw != "":
+                    if replace_target_words:
+                        # replace target words in concept_words and translation
+                        twl = tw.split("...")
+                        for w in twl:
+                            output_kg[index]["recording_data"]["translation"] = \
+                                output_kg[index]["recording_data"]["translation"].replace(w, concept_mapping[concept])
+                        owl = [concept_mapping[concept] for item in twl]
+                        swl = "...".join(owl)
+                        output_kg[index]["recording_data"]["concept_words"][concept_mapping[concept]] = swl
+                    else:
+                        output_kg[index]["recording_data"]["concept_words"][concept_mapping[concept]] = entry["recording_data"]["concept_words"][concept]
+        if show_example and example_counter < 12:
+            print("New concept words: {}".format(output_kg[index]["recording_data"]["concept_words"]))
+            example_counter += 1
+            print("New target sentence: {}".format(output_kg[index]["recording_data"]["translation"]))
+        # change concepts in graph and trimmed graph
+        for concept in concept_mapping.keys():
+            output_kg[index]["sentence_data"]["graph"] = replace_word_in_dict(entry["sentence_data"]["graph"],
+                                                                              concept,
+                                                                              concept_mapping[concept])
+            output_kg[index]["sentence_data"]["trimmed_graph"] = replace_word_in_dict(entry["sentence_data"]["trimmed_graph"],
+                                                                                      concept,
+                                                                                      concept_mapping[concept])
+        else:
+            example_counter += 1
+    return output_kg
+
+
 def build_concept_dict(kg):
     cdict = {}
     # create dict with concepts and their particularizations
@@ -463,5 +585,20 @@ def build_concept_dict(kg):
             cdict[concept].append(details)
     return cdict
 
+def target_word_to_concept_dict(knowledge_graph):
+    """
+    Returns a dict of target_word:[concepts] and concept:[target_words]
+    """
+    tw_to_concept_dict = {}
+    concept_dict = build_concept_dict(knowledge_graph)
+    for concept, details in concept_dict.items():
+        if details["target_words"] != "":
+            tw_to_concept_dict[details["target_words"]] = {
+                "concept": concept,
+                "particularization": details["particularization"],
+                "pivot_sentence": details["pivot_sentence"],
+                "target_sentence": details["target_sentence"]
+            }
+    return tw_to_concept_dict
 
 
