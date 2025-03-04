@@ -418,7 +418,18 @@ def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):
             }
     return output
 
-def build_categorical_kg(kg, cg, replace_target_words=True, show_example=True):
+def build_categorical_kg(kg, delimiters, cg,
+                         replace_target_words=True,
+                         concept_ancestor_level=0,
+                         keep_target_words=False,
+                         include_particularization=False,
+                         show_example=True):
+    def is_sublist(smaller_list, bigger_list):
+        for i in range(len(bigger_list) - len(smaller_list) + 1):
+            if bigger_list[i:i + len(smaller_list)] == smaller_list:
+                return True
+        return False
+
     def replace_word_in_dict(input_dict, old_word, new_word):
         """
         Replace a word in a dictionary, whether it's a key or appears in values.
@@ -467,67 +478,192 @@ def build_categorical_kg(kg, cg, replace_target_words=True, show_example=True):
             result_dict[new_key] = new_value
 
         return result_dict
+
     example_counter = 0
-    if show_example:
+    n_examples = 24
+    if show_example and example_counter < n_examples:
         print("===================================================")
-        print("XXX           CATEGORICAL KG                    XXX")
+        print("XXX           ALTERLINGUAL KG                    XXX")
         print("===================================================")
+
     output_kg = {}
     cat_mapping = {
-        "EVENT": "EVENT",
+        "CONCEPT CORE": "CONCEPT_CORE",
+        "IN FUTURE DIRECTION": "IN_FUTURE_DIRECTION",
+        "EXPERIENCEABLE OBJECT": "THING",
+        "ACTION": "PROCESS",
+        "EXPERIENCE": "PROCESS",
         "OBJECT": "OBJECT",
+        "ABSTRACT OBJECT": "ABSTRACT_OBJECT",
         "NON-GRAMMATICAL QUALIFIER": "QUALIFIER",
-        "SPACE LOGIC": "SPACE LOGIC",
-        "LOGIC": "LOGIC",
-        "SPECIFIERS": "SPECIFIER",
+        "TIME LOGIC": "TIME_LOGIC",
+        "RELATIVE TIME REFERENCE": "RELATIVE_TIME_REFERENCE",
+        "ABSOLUTE TIME REFERENCES": "ABOLUTE_TIME_REFERENCE",
+        "TIME CHUNKS": "TIME_CHUNK",
+        "SPACE LOGIC": "SPACE_LOGIC",
+        "QUANTIFIER": "QUANTIFIER",
+        "QUALIFIER": "QUALIFIER",
         "PERSONAL DEICTIC": "PERSONAL_PRONOUN",
-        "OBJECT DEICTIC": "REF_OBJECT"
+        "EVENT DEICTIC": "EVENT_DEICTIC",
+        "NON-HUMAN DEICTIC": "REF_OBJECT(S)"
     }
     for index, entry in kg.items():
         concept_mapping = {}
         output_kg[index] = copy.deepcopy(entry)
+        translation_items = stats.custom_split(entry["recording_data"]["translation"], delimiters)
         concepts = entry["sentence_data"]["concept"]
-        if show_example and example_counter < 12:
+        if show_example and example_counter < n_examples:
             print("EXAMPLE")
             print("Entry {}, concepts: {}".format(index, concepts))
             example_counter += 1
+
+        # LOOPING OVER ENTRY CONCEPTS IN THE KG TO CREATE CONCEPT MAPPING AND NEW ["sentence_data"]["concept"]
+        concept_log = {}
         for concept in concepts:
+            concept_log[concept] = {"new": "", "ip": {}, "rp": {}}
+
+            # creating concept_mapping
             concept_mapping[concept] = concept
             ancestors = gu.get_genealogy(cg, concept)
-            for cat in cat_mapping:
-                if cat in ancestors:
-                    concept_mapping[concept] = cat
-        if show_example and example_counter < 12:
+            if concept_ancestor_level == 0:
+                exp = concept
+            else:
+                if len(ancestors) >= concept_ancestor_level:
+                    ancestor_index = concept_ancestor_level - 1
+                else:
+                    ancestor_index = len(ancestors) - 1
+                if ancestors[ancestor_index] in cat_mapping.keys():
+                    exp = cat_mapping[ancestors[ancestor_index]]
+                else:
+                    exp = ancestors[ancestor_index]
+            concept_mapping[concept] = exp.replace(" ", "_")
+            concept_log[concept]["new"] = exp.replace(" ", "_")
+        if show_example and example_counter < n_examples:
             print("Concept mapping: {}".format(concept_mapping))
 
-        # change concepts in the concept list
+        # change concepts in the concept list using concept_mapping
         output_kg[index]["sentence_data"]["concept"] = [concept_mapping[concept]
                                                         for concept in entry["sentence_data"]["concept"]]
-        if show_example and example_counter < 12:
+        if show_example and example_counter < n_examples:
             print("New concept_list: {}".format(output_kg[index]["sentence_data"]["concept"]))
             print("Entry concept_words: {}".format(entry["recording_data"]["concept_words"]))
+
         # change concepts in concept_words + target words and target sentence if replace_target_words=True
         output_kg[index]["recording_data"]["concept_words"] = {}
+
+        # LOOPING OVER CONCEPTS AGAIN TO PERFORM UPDATES OF ["recording_data"]["concept_words"] and ["recording_data"]["translation"]
         for concept, tw in entry["recording_data"]["concept_words"].items():
             if concept in entry["sentence_data"]["concept"]:
-                if show_example and example_counter < 12:
+                concept_particularization_dict = {}
+
+                # retrieve concept particularization
+                ip, rp = get_particularization_info(kg, index, concept)
+                concept_particularization_dict[concept] = {
+                    "ip": ip,
+                    "rp": rp
+                }
+                ip_display = "&".join([str(k) + "=" + str(v) for k, v in concept_particularization_dict[concept]["ip"].items()])
+                rp_display = "&".join([str(k) + "_" + str(v) for k, v in concept_particularization_dict[concept]["rp"].items()])
+                ip_and_rp_display = ""
+                if ip_display or rp_display:
+                    ip_and_rp_display += "("
+                if ip_display:
+                    ip_and_rp_display += "" + ip_display
+                if rp_display:
+                    if ip_display:
+                        ip_and_rp_display += "_"
+                    ip_and_rp_display += rp_display
+                if ip_display or rp_display:
+                    ip_and_rp_display += ")"
+
+                if show_example and example_counter < n_examples:
                     print("concept {}, tw: {}".format(concept, tw))
-                if tw != "":
+                    print("ip_display: {}".format(ip_display))
+                    print("rp_display: {}".format(rp_display))
+                    print("translation items: {}".format(translation_items))
+
+                if tw != "":  # if there are target word(s) associated with concept
+                    # KEEP TARGET WORDS if keep_target_words is True, otherwise just keep concepts
+                    # whem multiple words for a concept, + them if they're contiguous, considering them as a unique superword. If they're not: repeat the concept.
+                    # add IP and RP if include_particularization
+
                     if replace_target_words:
-                        # replace target words in concept_words and translation
+                        # individual target words connected to concept
                         twl = tw.split("...")
-                        for w in twl:
-                            output_kg[index]["recording_data"]["translation"] = \
-                                output_kg[index]["recording_data"]["translation"].replace(w, concept_mapping[concept])
-                        owl = [concept_mapping[concept] for item in twl]
+                        # are they contiguous in the translation?
+                        is_contiguous = is_sublist(twl, translation_items)
+                        if show_example and example_counter < n_examples:
+                            print("{} is_contiguous {} in {}".format(tw, is_contiguous, entry["recording_data"]["translation"]))
+
+                        if is_contiguous:
+                            tw_index = 0
+                            while tw_index <= len(twl) - 1:
+                                translation_items_index = translation_items.index(twl[tw_index])
+                                if tw_index == 0:  # first word, erased if multiple contiguous words
+                                    if len(twl) > 1 and not keep_target_words:
+                                        translation_items[translation_items_index] = ""
+                                if tw_index > 0:  # non-first w gets a "+" at the beginning when keeping target words
+                                    if keep_target_words:
+                                        translation_items[translation_items_index] = "+" + translation_items[translation_items_index]
+                                    else:  # otherwise erased
+                                        translation_items[translation_items_index] = ""
+                                if len(twl) == tw_index + 1:  # last w gets the concept mapping added and particularization if option
+                                    if keep_target_words:
+                                        translation_items[translation_items_index] = translation_items[translation_items_index] + "_" + concept_mapping[concept]
+                                    else:
+                                        translation_items[translation_items_index] = concept_mapping[concept]
+                                    if include_particularization:
+                                        translation_items[translation_items_index] += ip_and_rp_display
+                                tw_index += 1
+
+
+                        else:  #non-contiguous: add concept and counter if multiple
+                            c = 0
+                            for w in twl:
+                                if w in translation_items:
+                                    tii = translation_items.index(w)
+                                    if keep_target_words:
+                                        translation_items[tii] = w + "_" + concept_mapping[concept]
+                                        if len(twl) > 1:
+                                            translation_items[tii] += "_" + str(c)
+                                            c += 1
+                                    else:
+                                        translation_items[tii] = concept_mapping[concept]
+                                        if len(twl) > 1:
+                                            translation_items[tii] += "_" + str(c)
+                                            c += 1
+                                    if include_particularization:
+                                        translation_items[tii] += ip_and_rp_display
+
+                        if show_example and example_counter < n_examples:
+                            print("modified translation items: {}".format(translation_items))
+
+                        # Reconstruct target sentence from modified translation_items
+                        new_ts = ""
+                        for item in translation_items:
+                            if item != "":
+                                if item[0] == "+":
+                                    new_ts += item
+                                else:
+                                    new_ts += " " + item
+                        output_kg[index]["recording_data"]["translation"] = new_ts
+
+                        if show_example and example_counter < n_examples:
+                            print("New target sentence: {}".format(output_kg[index]["recording_data"]["translation"]))
+                            print("New concept words: {}".format(output_kg[index]["recording_data"]["concept_words"]))
+                            example_counter += 1
+                            print("New target sentence: {}".format(output_kg[index]["recording_data"]["translation"]))
+
+                        # replace in concept_words
+                        owl = [item+"_"+concept_mapping[concept] for item in twl]
                         swl = "...".join(owl)
                         output_kg[index]["recording_data"]["concept_words"][concept_mapping[concept]] = swl
+
                     else:
                         output_kg[index]["recording_data"]["concept_words"][concept_mapping[concept]] = entry["recording_data"]["concept_words"][concept]
-        if show_example and example_counter < 12:
-            print("New concept words: {}".format(output_kg[index]["recording_data"]["concept_words"]))
-            example_counter += 1
-            print("New target sentence: {}".format(output_kg[index]["recording_data"]["translation"]))
+
+
+
         # change concepts in graph and trimmed graph
         for concept in concept_mapping.keys():
             output_kg[index]["sentence_data"]["graph"] = replace_word_in_dict(entry["sentence_data"]["graph"],

@@ -52,6 +52,14 @@ if "cdict" not in st.session_state:
 if "concept_graph" not in st.session_state:
     with open("./data/concepts.json", "r") as f:
         st.session_state["cg"] = json.load(f)
+if "use_alterlingua" not in st.session_state:
+    st.session_state["use_alterlingua"] = False
+if "keep_target_words" not in st.session_state:
+    st.session_state["keep_target_words"] = True
+if "concept_ancestor_level" not in st.session_state:
+    st.session_state["concept_ancestor_level"] = 1
+if "include_particularization" not in st.session_state:
+    st.session_state["include_particularization"] = False
 
 delimiters_bank = [
     " ",  # Space
@@ -111,7 +119,39 @@ with st.sidebar:
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
 with st.expander("Input", expanded=True):
-    use_cat = st.toggle("Use alterlingua")
+    coli, colo, colp = st.columns(3)
+    use_alterlingua = coli.toggle("Use alterlingua", value=st.session_state["use_alterlingua"])
+    keep_target_words = st.session_state["keep_target_words"]
+    concept_ancestor_level = st.session_state["concept_ancestor_level"]
+    include_particularization = st.session_state["include_particularization"]
+
+    if use_alterlingua:
+        keep_target_words = colo.toggle("Keep target words", value=st.session_state["keep_target_words"])
+        include_particularization = colo.toggle("Include particularization", value=st.session_state["include_particularization"])
+        concept_ancestor_level = colp.slider("Concept ancestor level", min_value=0, max_value=5, value=st.session_state["concept_ancestor_level"], step=1)
+
+    reset_needed = False
+    if use_alterlingua != st.session_state["use_alterlingua"]:
+        reset_needed = True
+        st.session_state["use_alterlingua"] = use_alterlingua
+
+    if use_alterlingua and (keep_target_words != st.session_state["keep_target_words"]
+                            or concept_ancestor_level != st.session_state["concept_ancestor_level"]
+                            or include_particularization != st.session_state["include_particularization"]):
+        reset_needed = True
+        st.session_state["keep_target_words"] = keep_target_words
+        st.session_state["concept_ancestor_level"] = concept_ancestor_level
+        st.session_state["use_alterlingua"] = use_alterlingua
+        st.session_state["include_particularization"] = include_particularization
+
+    if reset_needed:
+        st.session_state["knowledge_graph"] = {}
+        st.session_state["selected_concept"] = ""
+        st.session_state["pdict"] = {}
+        st.session_state["cdict"] = {}
+        st.session_state["pfilter"] = {"intent": [], "enunciation": [], "predicate": {}, "ip": {}, "rp": []}
+        st.rerun()
+
     st.markdown("#### Load your transcriptions")
     # load transcriptions
     cqs = st.file_uploader("Load your Conversational Questionnaire transcriptions (all at once for multiple transcriptions)", type="json", accept_multiple_files=True)
@@ -143,10 +183,14 @@ with st.expander("Input", expanded=True):
                     st.session_state["cq_transcriptions"],
                     st.session_state["tl_name"],
                     st.session_state["delimiters"])
-                if use_cat:
+                if use_alterlingua:
                     st.session_state["knowledge_graph"] = kgu.build_categorical_kg(st.session_state["knowledge_graph"],
-                                                  st.session_state["cg"],
-                                                  replace_target_words=True)
+                                                                                   st.session_state["delimiters"],
+                                                                                   st.session_state["cg"],
+                                                                                   concept_ancestor_level=st.session_state["concept_ancestor_level"],
+                                                                                   replace_target_words=True,
+                                                                                   include_particularization=st.session_state["include_particularization"],
+                                                                                   keep_target_words=st.session_state["keep_target_words"])
                 with open("./data/knowledge/current_kg.json", "w") as f:
                     json.dump(st.session_state["knowledge_graph"], f, indent=4)
                 st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
@@ -155,41 +199,45 @@ with st.expander("Input", expanded=True):
             if st.session_state["knowledge_graph"] != {}:
                 st.success("Your transcriptions are ready for exploration, you can click on 'Explore by concept' or 'Explore by parameter' below")
 
-    st.markdown("---")
-    st.markdown("#### or use available examples")
-    available_transcriptions_folders = os.listdir(os.path.join(".", "available_transcriptions"))
-    if ".DS_Store" in available_transcriptions_folders:
-        available_transcriptions_folders.remove(".DS_Store")
-    existing = st.selectbox("Or load an available set of transcriptions", available_transcriptions_folders)
-    if st.button("Load existing"):
-        tpath = os.path.join(".", "available_transcriptions", existing)
-        if os.path.isdir(tpath):
-            st.session_state["cq_transcriptions"] = []
-            for t in os.listdir(tpath):
-                if t.endswith(".json"):
-                    with open(os.path.join(tpath, t)) as f:
-                        new_cq = json.load(f)
-                        st.session_state["cq_transcriptions"].append(new_cq)
-        if st.session_state["cq_transcriptions"] != []:
-            st.session_state["delimiters"] = st.session_state["cq_transcriptions"][0]["delimiters"]
-            st.session_state[
-                "knowledge_graph"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
-                st.session_state["cq_transcriptions"],
-                st.session_state["tl_name"],
-                st.session_state["delimiters"])
-            if use_cat:
-                st.session_state["knowledge_graph"] = kgu.build_categorical_kg(st.session_state["knowledge_graph"],
-                                                                               st.session_state["cg"],
-                                                                               replace_target_words=True)
-            with open("./data/knowledge/current_kg.json", "w") as f:
-                json.dump(st.session_state["knowledge_graph"], f, indent=4)
-            st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
-                len(st.session_state["cq_transcriptions"]), len(st.session_state["knowledge_graph"]),
-                total_target_word_count, len(unique_words)))
-            st.session_state["loaded_existing"] = True
-            st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
-            if st.session_state["knowledge_graph"] != {}:
-                st.success("Transcriptions are ready for exploration, you can click on 'Explore by concept' or 'Explore by parameter' below")
+    if cqs == []:
+        st.markdown("---")
+        st.markdown("#### or use available examples")
+        available_transcriptions_folders = os.listdir(os.path.join(".", "available_transcriptions"))
+        if ".DS_Store" in available_transcriptions_folders:
+            available_transcriptions_folders.remove(".DS_Store")
+        existing = st.selectbox("Or load an available set of transcriptions", available_transcriptions_folders)
+        if st.button(f"Load {existing}"):
+            tpath = os.path.join(".", "available_transcriptions", existing)
+            if os.path.isdir(tpath):
+                st.session_state["cq_transcriptions"] = []
+                for t in os.listdir(tpath):
+                    if t.endswith(".json"):
+                        with open(os.path.join(tpath, t)) as f:
+                            new_cq = json.load(f)
+                            st.session_state["cq_transcriptions"].append(new_cq)
+            if st.session_state["cq_transcriptions"] != []:
+                st.session_state["delimiters"] = st.session_state["cq_transcriptions"][0]["delimiters"]
+                st.session_state[
+                    "knowledge_graph"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
+                    st.session_state["cq_transcriptions"],
+                    st.session_state["tl_name"],
+                    st.session_state["delimiters"])
+                if use_alterlingua:
+                    st.session_state["knowledge_graph"] = kgu.build_categorical_kg(st.session_state["knowledge_graph"], st.session_state["delimiters"],
+                                                                                   st.session_state["cg"],
+                                                                                   concept_ancestor_level=st.session_state["concept_ancestor_level"],
+                                                                                   replace_target_words=True,
+                                                                                   include_particularization=st.session_state["include_particularization"],
+                                                                                   keep_target_words=st.session_state["keep_target_words"])
+                with open("./data/knowledge/current_kg.json", "w") as f:
+                    json.dump(st.session_state["knowledge_graph"], f, indent=4)
+                st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
+                    len(st.session_state["cq_transcriptions"]), len(st.session_state["knowledge_graph"]),
+                    total_target_word_count, len(unique_words)))
+                st.session_state["loaded_existing"] = True
+                st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
+                if st.session_state["knowledge_graph"] != {}:
+                    st.success("Transcriptions are ready for exploration, you can click on 'Explore by concept' or 'Explore by parameter' below")
 
 if st.session_state["knowledge_graph"] != {}:
     st.session_state["cdict"] = kgu.build_concept_dict(st.session_state["knowledge_graph"])
@@ -341,7 +389,8 @@ if st.session_state["knowledge_graph"] != {}:
                   "gravitationalConstant": -300,
                   "centralGravity": 0.005,
                   "springLength": 100,
-                  "springConstant": 0.08
+                  "springConstant": 0.08,
+                  "damping": 0.9
                 },
                 "maxVelocity": 50,
                 "minVelocity": 0.1,
