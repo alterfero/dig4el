@@ -8,6 +8,8 @@ authors = [
 license = {text = "GNU Affero General Public License v3.0"}
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
+
+[tool.poetry.dependencies]
 dependencies = [
     "altair (==5.1.2)",
     "annotated-types (==0.7.0)",
