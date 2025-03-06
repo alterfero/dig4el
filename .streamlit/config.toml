@@ -7,3 +7,9 @@ font="sans serif"
 
 [client]
 showSidebarNavigation = false
+
+[global]
+developmentMode = false
+
+[server]
+headless = true
