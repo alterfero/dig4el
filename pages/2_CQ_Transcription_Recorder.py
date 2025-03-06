@@ -98,8 +98,8 @@ if "recording" not in st.session_state:
                                      "delimiters": st.session_state["delimiters"],
                                      "pivot language": "English", "cq_uid": "xxx", "data": {},
                                      "interviewer": "", "interviewee": ""}
-if "loaded_existing" not in st.session_state:
-    st.session_state["loaded_existing"] = False
+if "loaded_existing_transcription" not in st.session_state:
+    st.session_state["loaded_existing_transcription"] = False
 if "existing_filename" not in st.session_state:
     st.session_state["existing_filename"] = ""
 if "cq_id_dict" not in st.session_state:
@@ -149,16 +149,16 @@ with st.sidebar:
     st.write("**Explore DIG4EL processes**")
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
-if not st.session_state["loaded_existing"]:
+if not st.session_state["loaded_existing_transcription"]:
     with st.expander("Load an existing DIG4EL transcription"):
         existing_recording = st.file_uploader("Load an existing recording", type="json")
         if existing_recording is not None:
             st.session_state["recording"] = json.load(existing_recording)
             print("Existing recording loaded: ", existing_recording.name)
             st.session_state["existing_filename"] = existing_recording.name
-            st.session_state["loaded_existing"] = True
+            st.session_state["loaded_existing_transcription"] = True
 
-if st.session_state["loaded_existing"]:
+if st.session_state["loaded_existing_transcription"]:
     default_interviewer = st.session_state["recording"]["interviewer"]
     default_interviewee = st.session_state["recording"]["interviewee"]
     default_target_language = st.session_state["recording"]["target language"]
@@ -174,9 +174,11 @@ if st.session_state["loaded_existing"]:
     if default_pivot_language == "english":
         default_pivot_language = "English"
         st.session_state["recording"]["pivot language"] = "English"
+        
     default_cq_uid = st.session_state["recording"]["cq_uid"]
     default_data = st.session_state["recording"]["data"]
-else:
+    
+else: ## if not loaded_existing_transcription
     default_target_language = "English"
     default_delimiters = delimiters["English"]
     if st.session_state["recording"]["interviewer"] == "":
@@ -239,12 +241,12 @@ with st.expander("Start a new transcription or edit the header of an existing on
         st.session_state["recording"]["pivot language"] = pl
         st.session_state["cq_is_chosen"] = False
 
-    if not st.session_state["loaded_existing"]:
+    if not st.session_state["loaded_existing_transcription"]:  # if starting fresh, choose a cq
         select_cq = st.selectbox("Choose a CQ", cq_list, index=cq_list.index(st.session_state["current_cq"]))
         if st.button("select CQ"):
             st.session_state["current_cq"] = select_cq
             st.session_state["cq_is_chosen"] = True
-    else:
+    else:  # if loaded_existing_transcription
         st.session_state["current_cq"] = st.session_state["cq_id_dict"][default_cq_uid]["filename"]
         st.session_state["cq_is_chosen"] = True
 
