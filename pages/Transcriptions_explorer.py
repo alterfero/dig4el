@@ -613,6 +613,19 @@ if st.session_state["knowledge_graph"] != {}:
             oc_df = pd.DataFrame(flat_cdict_oc)
 
             selected = st.dataframe(oc_df, selection_mode="single-row", on_select="rerun", key="oc_df")
+
+            # propose download in docx format
+            entry_list = [oc["kg_entry"] for oc in st.session_state["cdict"][st.session_state["selected_concept"]]]
+            docx_file = ogu.generate_docx_from_kg_index_list(st.session_state["knowledge_graph"],
+                                                             st.session_state["delimiters"],
+                                                             entry_list)
+            st.download_button(
+                label="📥 Download DOCX",
+                data=docx_file,
+                file_name=f'corpus filtered by concept {st.session_state["selected_concept"]}.docx',
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
+
             if selected["selection"]["rows"] != []:
                 selected_cdict_entry = st.session_state["cdict"][st.session_state["selected_concept"]][(selected["selection"]["rows"][0])]
                 kg_entry = selected_cdict_entry["kg_entry"]
@@ -721,17 +734,7 @@ if st.session_state["knowledge_graph"] != {}:
                     if xcount == 0:
                         st.write("None")
 
-            # propose docx format
-            entry_list = [oc["kg_entry"] for oc in st.session_state["cdict"][st.session_state["selected_concept"]]]
-            docx_file = ogu.generate_docx_from_kg_index_list(st.session_state["knowledge_graph"],
-                                                        st.session_state["delimiters"],
-                                                        entry_list)
-            st.download_button(
-                label="📥 Download DOCX",
-                data=docx_file,
-                file_name=f'corpus filtered by concept {st.session_state["selected_concept"]}.docx',
-                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            )
+
 
 # EXPLORE BY PARAMETER
     with st.expander("Explore by parameter"):
