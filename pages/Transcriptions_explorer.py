@@ -23,6 +23,8 @@ from pyvis.network import Network
 import tempfile
 from pathlib import Path
 import streamlit.components.v1 as components
+from libs import output_generation_utils as ogu
+from io import BytesIO
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -609,9 +611,8 @@ if st.session_state["knowledge_graph"] != {}:
                 flat_cdict_oc.append(tmp)
 
             oc_df = pd.DataFrame(flat_cdict_oc)
-            def display_result():
-                return None
-            selected = st.dataframe(oc_df, selection_mode="single-row", on_select=display_result, key="oc_df")
+
+            selected = st.dataframe(oc_df, selection_mode="single-row", on_select="rerun", key="oc_df")
             if selected["selection"]["rows"] != []:
                 selected_cdict_entry = st.session_state["cdict"][st.session_state["selected_concept"]][(selected["selection"]["rows"][0])]
                 kg_entry = selected_cdict_entry["kg_entry"]
@@ -720,6 +721,18 @@ if st.session_state["knowledge_graph"] != {}:
                     if xcount == 0:
                         st.write("None")
 
+            # propose docx format
+            entry_list = [oc["kg_entry"] for oc in st.session_state["cdict"][st.session_state["selected_concept"]]]
+            docx_file = ogu.generate_docx_from_kg_index_list(st.session_state["knowledge_graph"],
+                                                        st.session_state["delimiters"],
+                                                        entry_list)
+            st.download_button(
+                label="📥 Download DOCX",
+                data=docx_file,
+                file_name=f'corpus filtered by concept {st.session_state["selected_concept"]}.docx',
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
+
 # EXPLORE BY PARAMETER
     with st.expander("Explore by parameter"):
         with st.popover("info"):
@@ -775,6 +788,7 @@ if st.session_state["knowledge_graph"] != {}:
         else:
             is_rp_filter = True
         st.session_state["pfilter"]["rp"] = s_relational
+
 
         # FILTER USAGE
         selected_oc = []
@@ -857,6 +871,29 @@ if st.session_state["knowledge_graph"] != {}:
 
         ocp_df = pd.DataFrame(displayed_oc, columns=["pivot_sentence", "target_sentence"])
         ocp_selected = st.dataframe(ocp_df, selection_mode="single-row", on_select="rerun", key="ocp_df", use_container_width=True)
+
+        # propose docx format
+        entry_list_p = [ocp["kg_entry"] for ocp in displayed_oc]
+        docx_file_p = ogu.generate_docx_from_kg_index_list(st.session_state["knowledge_graph"],
+                                                         st.session_state["delimiters"],
+                                                         entry_list_p)
+        filter_string = ""
+        if st.session_state["pfilter"]["intent"] != []:
+            filter_string += "_".join(st.session_state["pfilter"]["intent"])
+        if st.session_state["pfilter"]["enunciation"] != []:
+            filter_string += "+" + "_".join(st.session_state["pfilter"]["enunciation"])
+        if st.session_state["pfilter"]["predicate"] != []:
+            filter_string += "+" + "_".join(st.session_state["pfilter"]["predicate"])
+        if st.session_state["pfilter"]["ip"] != {}:
+            filter_string += "+" + "_".join([k+":"+"+".join(v) for k,v in st.session_state["pfilter"]["ip"].items()])
+        if st.session_state["pfilter"]["rp"] != {}:
+            filter_string += "+" + "_".join(st.session_state["pfilter"]["rp"])
+        st.download_button(
+            label="📥 Download DOCX",
+            data=docx_file_p,
+            file_name=f"corpus_filtered_by_parameters_{filter_string}.docx",
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+
         if ocp_selected["selection"]["rows"] != []:
             selected_cdictp_entry = displayed_oc[(ocp_selected["selection"]["rows"][0])]
             kgp_entry = selected_cdictp_entry["kg_entry"]

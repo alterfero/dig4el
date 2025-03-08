@@ -59,7 +59,7 @@ Copyright © 2024 Sebastien Christian,
 Licensed under GNU Affero General Public License v3.0.
 
 If you use this software in your research, please cite:
-- Christian S. (2024). DIG4EL (Version 0.1.2) DOI: 10.5281/zenodo.1400983
+- Christian S. (2024). DIG4EL (Version 0.1.4) DOI: 10.5281/zenodo.1400983
 - WALS, instructions at https://wals.info/
 - Grambank, instructions at https://github.com/grambank/grambank/wiki/Citing-grambank
 

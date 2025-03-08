@@ -305,7 +305,7 @@ def get_particularization_info(kg, entry, concept):
                 rp[param + " of"] = gkey_concept
     return ip, rp
 
-def build_super_gloss_df(knowledge_graph, entry, delimiters):
+def build_super_gloss_df(knowledge_graph, entry, delimiters, output_dict=False):
     sentence_display_list = []
     target_words_from_translation = stats.custom_split(knowledge_graph[entry]["recording_data"]["translation"], delimiters)
     unpacked_tw = {}
@@ -361,10 +361,13 @@ def build_super_gloss_df(knowledge_graph, entry, delimiters):
                                           "concept": "",
                                           "internal particularization": "",
                                           "relational particularization": ""})
-    # build dataframe from ordered dict
-    output_df = pd.DataFrame(sentence_display_list)
-    output_df.set_index("word", inplace=True)
-    return output_df.T
+    if not output_dict:
+        # build dataframe from ordered dict
+        output_df = pd.DataFrame(sentence_display_list)
+        output_df.set_index("word", inplace=True)
+        return output_df.T
+    else:
+        return sentence_display_list
 
 def get_kg_entry_signature(knowledge_graph, entry_index):
     is_positive_polarity = True
@@ -699,10 +702,15 @@ def build_concept_dict(kg):
                 "internal_particularization": {},
                 "relational_particularization": {}
                 },
-                "kg_entry": entry
+                "kg_entry": entry,
+                "signature": get_kg_entry_signature(kg, entry)
             }
-            if content["recording_data"]["alternate_pivot"] != "":
-                details["alternate_pivot"] = concept["recording_data"]["alternate_pivot"]
+            if "alternate_pivot" in content["recording_data"].keys():
+                if content["recording_data"]["alternate_pivot"] != "":
+                    details["alternate_pivot"] = concept["recording_data"]["alternate_pivot"]
+            else:
+                print("From build_concept_dict: Alternate pivot missing from recording_data in kg")
+                details["alternate_pivot"] = ""
             for k, v in content["sentence_data"]["graph"].items():
                 if concept in k and v["value"] != "":
                     for ipk in IPKS:
