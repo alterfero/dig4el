@@ -53,7 +53,7 @@ st.markdown("For any enquiry, contact sebastien.christian@doctorant.upf.pf")
 st.markdown("----------------------------------------------------")
 st.markdown("""
 DIG4EL prototype 
-Version 0.1.2
+Version 0.1.4
 
 Copyright © 2024 Sebastien Christian,
 Licensed under GNU Affero General Public License v3.0.
