@@ -22,11 +22,14 @@ from libs import grambank_wals_utils as gwu
 from libs import knowledge_graph_utils as kgu
 from libs import cq_observers as obs
 from libs import general_agents
+from libs import output_generation_utils as ogu
 import json
 import openai
 from pyvis.network import Network
 import plotly.graph_objects as go
 import streamlit.components.v1 as components
+from io import BytesIO
+
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -826,7 +829,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                             if  vname not in st.session_state["prompt_content"][topic][pname]["examples by value"].keys():
                                 st.session_state["prompt_content"][topic][pname]["examples by value"][vname] = []
                             for occurrence_index, context in details["details"].items():
-                                gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"],
+                                gdf = kgu.build_super_gloss_df(st.session_state["consolidated_transcriptions"],
                                                          occurrence_index,
                                                          st.session_state["delimiters"])
                                 st.session_state["prompt_content"][topic][pname]["examples by value"][vname].append({
@@ -841,7 +844,15 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                                 })
     st.markdown("#### Download raw grammatical description with examples as a json file.")
     st.download_button("Download raw description as a json file.", json.dumps(st.session_state["prompt_content"], indent=4), file_name="grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
+    with open("./data/current_gram.json", "w") as f:
+        json.dump(st.session_state["prompt_content"], f, indent=4)
     st.session_state["generate_description"] = True
+    docx_file = ogu.generate_docx_from_grammar_json(st.session_state["prompt_content"], st.session_state["tl_name"])
+    st.download_button(
+        label="📥 Download DOCX",
+        data=docx_file,
+        file_name=f'{st.session_state["tl_name"]}_grammar_elements.docx',
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
 # PLAIN TEXT GRAMMATICAL DESCRIPTION
 if st.session_state["ga_output_available"] and st.session_state["results_approved"] and st.session_state["generate_description"]:
