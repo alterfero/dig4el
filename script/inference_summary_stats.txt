@@ -1,0 +1,31 @@
+GRAMMATICAL PARAMETER INFERENCE ACCURACY SUMMARY
+==================================================
+
+Total languages analyzed: 116
+Total parameters: 8
+
+Overall accuracy: 75.43%
+
+Parameter-wise accuracy:
+  - Relationship between the Order of Object and Verb and the Order of Relative Clause and Noun: 90.52%
+  - Relationship between the Order of Object and Verb and the Order of Adjective and Noun: 90.52%
+  - Relationship between the Order of Object and Verb and the Order of Adposition and Noun Phrase: 82.76%
+  - Order of Object, Oblique, and Verb: 81.03%
+  - Order of Adposition and Noun Phrase: 72.41%
+  - Order of Adverbial Subordinator and Clause: 66.38%
+  - Order of Genitive and Noun: 65.52%
+  - Order of Degree Word and Adjective: 54.31%
+
+Top 5 languages by accuracy:
+  - Sango: 100.00%
+  - Basque: 100.00%
+  - Welsh: 100.00%
+  - Iban: 100.00%
+  - Lenakel: 100.00%
+
+Bottom 5 languages by accuracy:
+  - Hausa: 25.00%
+  - Tzutujil: 25.00%
+  - Batak (Karo): 12.50%
+  - Sandawe: 12.50%
+  - Amele: 12.50%

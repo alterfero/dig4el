@@ -1,144 +1,42 @@
 {
-    "Dual": {
-        "Is dual number regularly marked in the noun phrase by a dedicated phonologically free element?": {
-            "main value": "absent",
+    "Canonical word orders": {
+        "Order of Subject, Object and Verb": {
+            "main value": "VSO",
             "examples by value": {
-                "absent": [
+                "SVO": [
                     {
-                        "english sentence": "We should organize a meeting tomorrow morning in the community to tell our people what they should do",
-                        "translation": "Wir sollten morgen fr\u00fch eine Versammlung organisieren, um unseren Leuten zu sagen, was sie tun sollen",
+                        "english sentence": "You\u2019ve never met him.",
+                        "translation": "k\u012b'ere noti koe i m\u0101tau i\u0101na",
                         "gloss": {
-                            "wir": {
-                                "concept": "PP1INCDU",
-                                "internal particularization": "",
-                                "relational particularization": "AGENT of organizing, POSSESSOR of people"
-                            },
-                            "sollten": {
-                                "concept": "EXPRESS DUTY (DEONTIC)",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "morgen": {
+                            "k\u012b'ere": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "fr\u00fch": {
+                            "noti": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "eine": {
+                            "koe": {
+                                "concept": "PP2SG",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of meeting"
+                            },
+                            "i": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "versammlung": {
+                            "m\u0101tau": {
                                 "concept": "meeting",
                                 "internal particularization": "",
-                                "relational particularization": "PATIENT of organizing"
-                            },
-                            "organisieren": {
-                                "concept": "organizing",
-                                "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "um": {
-                                "concept": "",
+                            "i\u0101na": {
+                                "concept": "PP3SG",
                                 "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "unseren": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "leuten": {
-                                "concept": "people",
-                                "internal particularization": "",
-                                "relational particularization": "OBLIQUE ROLE DESTINATION of telling, AGENT of doing"
-                            },
-                            "zu": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "sagen": {
-                                "concept": "telling",
-                                "internal particularization": "",
-                                "relational particularization": "OBLIQUE ROLE OBJECTIVE of organizing"
-                            },
-                            "was": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "sie": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "tun": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "sollen": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            }
-                        },
-                        "context": {
-                            "intent": [
-                                "EXPRESS DUTY (DEONTIC)"
-                            ],
-                            "predicate": [
-                                "PROCESSIVE PREDICATE"
-                            ],
-                            "polarity": true,
-                            "is_wildcard": true,
-                            "is_ref": true
-                        }
-                    },
-                    {
-                        "english sentence": "Tonight we will all eat together.",
-                        "translation": "Heute Abend werden wir alle zusammen essen.",
-                        "gloss": {
-                            "heute": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "abend": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "werden": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "wir": {
-                                "concept": "PP1PLU",
-                                "internal particularization": "",
-                                "relational particularization": "AGENT of eating"
-                            },
-                            "alle": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "zusammen": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "essen": {
-                                "concept": "eating",
-                                "internal particularization": "EVENT TENSE: GENERIC FUTURE",
-                                "relational particularization": ""
+                                "relational particularization": "PATIENT of meeting"
                             }
                         },
                         "context": {
@@ -147,100 +45,6 @@
                             ],
                             "predicate": [
                                 "PROCESSIVE PREDICATE"
-                            ],
-                            "polarity": true,
-                            "is_wildcard": false,
-                            "is_ref": true
-                        }
-                    },
-                    {
-                        "english sentence": "They died before I was born.",
-                        "translation": "Sie sind gestorben, bevor ich geboren wurde.",
-                        "gloss": {
-                            "sie": {
-                                "concept": "PP3DU",
-                                "internal particularization": "",
-                                "relational particularization": "AGENT of dying"
-                            },
-                            "sind": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "gestorben": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "bevor": {
-                                "concept": "BEFORE X",
-                                "internal particularization": "",
-                                "relational particularization": "TIME INFORMATION of dying"
-                            },
-                            "ich": {
-                                "concept": "PP1SG",
-                                "internal particularization": "",
-                                "relational particularization": "AGENT of being born"
-                            },
-                            "geboren": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "wurde": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            }
-                        },
-                        "context": {
-                            "intent": [
-                                "ASSERT"
-                            ],
-                            "predicate": [
-                                "PROCESSIVE PREDICATE"
-                            ],
-                            "polarity": true,
-                            "is_wildcard": false,
-                            "is_ref": true
-                        }
-                    },
-                    {
-                        "english sentence": "They know so many stories.",
-                        "translation": "Sie kennen so viele Geschichten.",
-                        "gloss": {
-                            "sie": {
-                                "concept": "PP3PLU",
-                                "internal particularization": "",
-                                "relational particularization": "AGENT of knowing"
-                            },
-                            "kennen": {
-                                "concept": "knowing",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "so": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "viele": {
-                                "concept": "",
-                                "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "geschichten": {
-                                "concept": "stories",
-                                "internal particularization": "QUANTIFIER: so many",
-                                "relational particularization": "PATIENT of knowing"
-                            }
-                        },
-                        "context": {
-                            "intent": [
-                                "ASSERT"
-                            ],
-                            "predicate": [
-                                "ATTRIBUTIVE PREDICATE"
                             ],
                             "polarity": true,
                             "is_wildcard": false,
@@ -248,47 +52,60 @@
                         }
                     }
                 ],
-                "present": [
+                "VSO": [
                     {
-                        "english sentence": "I\u2019m fine, and you?",
-                        "translation": "Mir geht es gut, und dir?",
+                        "english sentence": "I\u2019ll give you some medicine to drink.",
+                        "translation": "e 'oka atu vou t\u012b ta'i r\u0101'au n\u0101 koe",
                         "gloss": {
-                            "mir": {
+                            "e": {
+                                "concept": "PROCESSIVE PREDICATE",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'oka": {
+                                "concept": "giving",
+                                "internal particularization": "EVENT TENSE: GENERIC FUTURE",
+                                "relational particularization": ""
+                            },
+                            "atu": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "vou": {
                                 "concept": "PP1SG",
                                 "internal particularization": "",
-                                "relational particularization": ""
+                                "relational particularization": "AGENT of giving"
                             },
-                            "geht": {
+                            "t\u012b": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "es": {
+                            "ta'i": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "gut": {
+                            "r\u0101'au": {
+                                "concept": "medicine",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of giving"
+                            },
+                            "n\u0101": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "und": {
-                                "concept": "",
+                            "koe": {
+                                "concept": "PP2SG",
                                 "internal particularization": "",
-                                "relational particularization": ""
-                            },
-                            "dir": {
-                                "concept": "PP2DU",
-                                "internal particularization": "",
-                                "relational particularization": ""
+                                "relational particularization": "OBLIQUE ROLE DESTINATION of giving, AGENT of drinking"
                             }
                         },
                         "context": {
                             "intent": [
-                                "ASSERT",
-                                "ASK",
-                                "GREET"
+                                "ASSERT"
                             ],
                             "predicate": [
                                 "PROCESSIVE PREDICATE"
@@ -299,63 +116,247 @@
                         }
                     },
                     {
-                        "english sentence": "I\u2019m sorry that you have no food left.",
-                        "translation": "Es tut mir leid, dass ihr nichts mehr zu essen habt.",
+                        "english sentence": "We\u2019ll try to catch some river fish for dinner.",
+                        "translation": "e t\u0101mata m\u0101ua e h\u012b i te ika '\u012b kai n\u014d t\u014d p\u014d nei",
                         "gloss": {
-                            "es": {
+                            "e": {
+                                "concept": "PROCESSIVE PREDICATE",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0101mata": {
+                                "concept": "trying",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "m\u0101ua": {
+                                "concept": "PP1EXCDU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of trying"
+                            },
+                            "e_2": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "tut": {
+                            "h\u012b": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "mir": {
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ika": {
+                                "concept": "fish",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of catching"
+                            },
+                            "'\u012b": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "kai": {
+                                "concept": "dinner",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of catching"
+                            },
+                            "n\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "p\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "nei": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "My wife had bought a chicken at the market the other day",
+                        "translation": "k\u0101 ho'o mai t\u014dku tokorua p\u0113'\u0101 t\u012b ta'i moa i te m\u0101kete t\u012b ta'i ma'ana ra",
+                        "gloss": {
+                            "k\u0101": {
+                                "concept": "PROCESSIVE PREDICATE",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ho'o": {
+                                "concept": "buying",
+                                "internal particularization": "EVENT TENSE: GENERIC PAST",
+                                "relational particularization": ""
+                            },
+                            "mai": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014dku": {
                                 "concept": "PP1SG",
                                 "internal particularization": "",
-                                "relational particularization": "AGENT of being sorry"
+                                "relational particularization": "POSSESSOR of wife"
                             },
-                            "leid": {
+                            "tokorua": {
+                                "concept": "wife_1",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of buying"
+                            },
+                            "p\u0113'\u0101": {
+                                "concept": "wife_2",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of buying"
+                            },
+                            "t\u012b": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "dass": {
+                            "ta'i": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "ihr": {
-                                "concept": "PP2PLU",
+                            "moa": {
+                                "concept": "chicken",
                                 "internal particularization": "",
-                                "relational particularization": "AGENT of possessing"
+                                "relational particularization": "PATIENT of buying"
                             },
-                            "nichts": {
+                            "i": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "mehr": {
+                            "te": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "zu": {
+                            "m\u0101kete": {
+                                "concept": "market",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of buying"
+                            },
+                            "t\u012b_2": {
+                                "concept": "the other day_1",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of buying"
+                            },
+                            "ta'i_2": {
+                                "concept": "the other day_2",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of buying"
+                            },
+                            "ma'ana": {
+                                "concept": "the other day_3",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of buying"
+                            },
+                            "ra": {
+                                "concept": "the other day_4",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of buying"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "My husband and I, we have lots of vegetables from our garden.",
+                        "translation": "m\u0113 ngare ra t\u0101 m\u0101ua m\u0101'a tupu n\u014d te fa'a'apu mai",
+                        "gloss": {
+                            "m\u0113": {
+                                "concept": "ATTRIBUTIVE PREDICATE",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ngare": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "essen": {
+                            "ra": {
                                 "concept": "",
                                 "internal particularization": "",
                                 "relational particularization": ""
                             },
-                            "habt": {
+                            "t\u0101": {
                                 "concept": "possessing",
-                                "internal particularization": "POLARITY: NEGATIVE",
-                                "relational particularization": "OBLIQUE ROLE ORIGIN of being sorry"
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "m\u0101ua": {
+                                "concept": "PP1EXCDU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of possessing, POSSESSOR of garden"
+                            },
+                            "m\u0101'a": {
+                                "concept": "vegetables_1",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of possessing"
+                            },
+                            "tupu": {
+                                "concept": "vegetables_2",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of possessing"
+                            },
+                            "n\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "fa'a'apu": {
+                                "concept": "garden",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of vegetables"
+                            },
+                            "mai": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
                             }
                         },
                         "context": {
@@ -365,13 +366,2442 @@
                             "predicate": [
                                 "ATTRIBUTIVE PREDICATE"
                             ],
-                            "polarity": false,
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "You\u2019ll give us some vegetables",
+                        "translation": "e 'oka mai k\u014drua t\u012b ta'i m\u0101'a tupu n\u0101 m\u0101ua",
+                        "gloss": {
+                            "e": {
+                                "concept": "PROCESSIVE PREDICATE",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'oka": {
+                                "concept": "giving",
+                                "internal particularization": "EVENT TENSE: GENERIC FUTURE",
+                                "relational particularization": ""
+                            },
+                            "mai": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "k\u014drua": {
+                                "concept": "PP2DU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of giving"
+                            },
+                            "t\u012b": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ta'i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "m\u0101'a": {
+                                "concept": "vegetables_1",
+                                "internal particularization": "QUANTIFIER: some",
+                                "relational particularization": "PATIENT of giving"
+                            },
+                            "tupu": {
+                                "concept": "vegetables_2",
+                                "internal particularization": "QUANTIFIER: some",
+                                "relational particularization": "PATIENT of giving"
+                            },
+                            "n\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "m\u0101ua": {
+                                "concept": "PP1PLU",
+                                "internal particularization": "",
+                                "relational particularization": "OBLIQUE ROLE DESTINATION of giving"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "and we\u2019ll give you some fish.",
+                        "translation": "e 'e 'oka atu m\u0101ua te ika n\u0101 k\u014drua",
+                        "gloss": {
+                            "e": {
+                                "concept": "PROCESSIVE PREDICATE",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'e": {
+                                "concept": "AND",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'oka": {
+                                "concept": "giving",
+                                "internal particularization": "EVENT TENSE: GENERIC FUTURE",
+                                "relational particularization": "AND_TERM2 of AND"
+                            },
+                            "atu": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "m\u0101ua": {
+                                "concept": "PP1EXCDU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of giving"
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ika": {
+                                "concept": "fish",
+                                "internal particularization": "QUANTIFIER: some",
+                                "relational particularization": "PATIENT of giving"
+                            },
+                            "n\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "k\u014drua": {
+                                "concept": "PP2PLU",
+                                "internal particularization": "",
+                                "relational particularization": "OBLIQUE ROLE DESTINATION of giving"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "The people of X will sing their songs, dance their dances;",
+                        "translation": "e h\u012bmene te tangata n\u014d x i t\u0101 r\u0101tou noti h\u012bmene 'e e 'ori 'oki mai r\u0101tou t\u0101 r\u0101tou 'ori",
+                        "gloss": {
+                            "e": {
+                                "concept": "PROCESSIVE PREDICATE_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "h\u012bmene": {
+                                "concept": "PROCESSIVE PREDICATE_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "tangata": {
+                                "concept": "people",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of dancing"
+                            },
+                            "n\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "x": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "r\u0101tou": {
+                                "concept": "PP3PLU",
+                                "internal particularization": "",
+                                "relational particularization": "POSSESSOR of dances"
+                            },
+                            "noti": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "h\u012bmene_2": {
+                                "concept": "songs",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of singing"
+                            },
+                            "'e": {
+                                "concept": "AND",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "e_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'ori": {
+                                "concept": "dancing",
+                                "internal particularization": "",
+                                "relational particularization": "AND_TERM2 of AND"
+                            },
+                            "'oki": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "mai": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "r\u0101tou_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0101_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "r\u0101tou_3": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'ori_2": {
+                                "concept": "dances",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of dancing"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "Everyone loves music and dance.",
+                        "translation": "m\u0113 au ra n\u0101 te tangata te '\u012bmene 'e te kori",
+                        "gloss": {
+                            "m\u0113": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "au": {
+                                "concept": "loving",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ra": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "n\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "everyone_1",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of loving"
+                            },
+                            "tangata": {
+                                "concept": "everyone_2",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of loving"
+                            },
+                            "te_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'\u012bmene": {
+                                "concept": "music",
+                                "internal particularization": "",
+                                "relational particularization": "AND_TERM1 of AND"
+                            },
+                            "'e": {
+                                "concept": "AND",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of loving"
+                            },
+                            "te_3": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "kori": {
+                                "concept": "dance",
+                                "internal particularization": "",
+                                "relational particularization": "AND_TERM2 of AND"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": false
+                        }
+                    },
+                    {
+                        "english sentence": "Then our elders will tell stories from the olden times, for the young to hear.",
+                        "translation": "'ia oti ana'e, e fa'ati'a t\u014d t\u0101tou pu'era'a 'ina'ina t\u0101 t\u0101tou 'anga 'akaeoroero n\u0101 te taurekareka",
+                        "gloss": {
+                            "'ia": {
+                                "concept": "PROCESSIVE PREDICATE_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "oti": {
+                                "concept": "PROCESSIVE PREDICATE_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ana'e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "fa'ati'a": {
+                                "concept": "telling",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0101tou": {
+                                "concept": "PP1PLU",
+                                "internal particularization": "",
+                                "relational particularization": "POSSESSOR of elders"
+                            },
+                            "pu'era'a": {
+                                "concept": "elders_1",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of telling"
+                            },
+                            "'ina'ina": {
+                                "concept": "elders_2",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of telling"
+                            },
+                            "t\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0101tou_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'anga": {
+                                "concept": "stories_1",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of hearing"
+                            },
+                            "'akaeoroero": {
+                                "concept": "stories_2",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of hearing"
+                            },
+                            "n\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "taurekareka": {
+                                "concept": "youngs",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of hearing"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "You\u2019ve seen it already.",
+                        "translation": "i kite '\u0113na koe t\u014d puta ra",
+                        "gloss": {
+                            "i": {
+                                "concept": "PROCESSIVE PREDICATE",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "kite": {
+                                "concept": "seeing",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'\u0113na": {
+                                "concept": "already",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of seeing"
+                            },
+                            "koe": {
+                                "concept": "PP2SG",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of seeing"
+                            },
+                            "t\u014d": {
+                                "concept": "Ref_1_object_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "puta": {
+                                "concept": "Ref_1_object_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ra": {
+                                "concept": "Ref_1_object_3",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    }
+                ],
+                "VOS": [
+                    {
+                        "english sentence": "People would wear beautiful clothes.",
+                        "translation": "e ka'u roa te tangata te ka'u maitataki ra",
+                        "gloss": {
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ka'u": {
+                                "concept": "wearing",
+                                "internal particularization": "ASPECT: HABITUAL",
+                                "relational particularization": ""
+                            },
+                            "roa": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "tangata": {
+                                "concept": "people",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of wearing"
+                            },
+                            "te_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ka'u_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "maitataki": {
+                                "concept": "beautiful",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of clothes"
+                            },
+                            "ra": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": false
+                        }
+                    }
+                ],
+                "OVS": [
+                    {
+                        "english sentence": "Here is an old photo album I just found in my parents\u2019 room.",
+                        "translation": "r\u0101, k\u014dta'i pu'e hoho'a tahito kite'ia e au i roto i te piha o t\u014dku karakua",
+                        "gloss": {
+                            "r\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "k\u014dta'i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "pu'e": {
+                                "concept": "photo album_1",
+                                "internal particularization": "",
+                                "relational particularization": "PRESENT X of PRESENT X, PATIENT of finding"
+                            },
+                            "hoho'a": {
+                                "concept": "photo album_2",
+                                "internal particularization": "",
+                                "relational particularization": "PRESENT X of PRESENT X, PATIENT of finding"
+                            },
+                            "tahito": {
+                                "concept": "old",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of photo album"
+                            },
+                            "kite'ia": {
+                                "concept": "finding",
+                                "internal particularization": "EVENT TENSE: JUST A MOMENT AGO",
+                                "relational particularization": ""
+                            },
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "au": {
+                                "concept": "PP1SG_1",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of finding"
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "roto": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "i_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "piha": {
+                                "concept": "room",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of finding"
+                            },
+                            "o": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014dku": {
+                                "concept": "PP1SG_2",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of finding"
+                            },
+                            "karakua": {
+                                "concept": "parents",
+                                "internal particularization": "",
+                                "relational particularization": "POSSESSOR of room"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PRESENTATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "now we have nothing left at home!",
+                        "translation": "k\u0101re ake 'aka'ou ho'i \u00efa e kai t\u0101 m\u0101tou t\u014d te 'are",
+                        "gloss": {
+                            "k\u0101re": {
+                                "concept": "nothing left_1",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of possessing"
+                            },
+                            "ake": {
+                                "concept": "nothing left_2",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of possessing"
+                            },
+                            "'aka'ou": {
+                                "concept": "nothing left_3",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of possessing"
+                            },
+                            "ho'i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "\u00efa": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "kai": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0101": {
+                                "concept": "possessing_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "m\u0101tou": {
+                                "concept": "PP1EXCDU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of possessing"
+                            },
+                            "t\u014d": {
+                                "concept": "possessing_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'are": {
+                                "concept": "home",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of possessing"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "After that, we\u2019ll all share lunch together.",
+                        "translation": "'ia oti, e 'amu '\u0101mui pauroa t\u0101tou",
+                        "gloss": {
+                            "'ia": {
+                                "concept": "AFTER X_1",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of sharing"
+                            },
+                            "oti": {
+                                "concept": "AFTER X_2",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of sharing"
+                            },
+                            "e": {
+                                "concept": "PROCESSIVE PREDICATE_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'amu": {
+                                "concept": "PROCESSIVE PREDICATE_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'\u0101mui": {
+                                "concept": "together",
+                                "internal particularization": "",
+                                "relational particularization": "OBLIQUE ROLE WITH of sharing"
+                            },
+                            "pauroa": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0101tou": {
+                                "concept": "PP1PLU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of sharing"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    }
+                ],
+                "OSV": [
+                    {
+                        "english sentence": "They know so many stories.",
+                        "translation": "m\u0113 ngare pa'i te 'akaeroero t\u0101 r\u0101tou i kite",
+                        "gloss": {
+                            "m\u0113": {
+                                "concept": "ATTRIBUTIVE PREDICATE_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ngare": {
+                                "concept": "ATTRIBUTIVE PREDICATE_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "pa'i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'akaeroero": {
+                                "concept": "stories",
+                                "internal particularization": "QUANTIFIER: so many",
+                                "relational particularization": "PATIENT of knowing"
+                            },
+                            "t\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "r\u0101tou": {
+                                "concept": "PP3PLU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of knowing"
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "kite": {
+                                "concept": "knowing",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "ATTRIBUTIVE PREDICATE"
+                            ],
+                            "polarity": true,
                             "is_wildcard": false,
                             "is_ref": true
                         }
                     }
                 ]
             }
+        },
+        "Order of Subject and Verb": {
+            "main value": "VS",
+            "examples by value": {
+                "SV": [
+                    {
+                        "english sentence": "This time, the people from village X will all be coming to our community.",
+                        "translation": "t\u014d mata'iti nei, n\u0101 te tangata o x e haere mai i k\u014d nei",
+                        "gloss": {
+                            "t\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "mata'iti": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "nei": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "n\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "tangata": {
+                                "concept": "people",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of coming"
+                            },
+                            "o": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "x": {
+                                "concept": "village X",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of people"
+                            },
+                            "e": {
+                                "concept": "PROCESSIVE PREDICATE_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "haere": {
+                                "concept": "PROCESSIVE PREDICATE_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "mai": {
+                                "concept": "coming_2",
+                                "internal particularization": "EVENT TENSE: GENERIC FUTURE",
+                                "relational particularization": ""
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "k\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "nei_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    }
+                ],
+                "VS": [
+                    {
+                        "english sentence": "They died before I was born.",
+                        "translation": "k\u0101 mate raua 'a '\u0101nau'ia ai uou",
+                        "gloss": {
+                            "k\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "mate": {
+                                "concept": "dying",
+                                "internal particularization": "EVENT TENSE: GENERIC PAST",
+                                "relational particularization": ""
+                            },
+                            "raua": {
+                                "concept": "PP3DU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of dying"
+                            },
+                            "'a": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'\u0101nau'ia": {
+                                "concept": "being born",
+                                "internal particularization": "EVENT TENSE: GENERIC PAST",
+                                "relational particularization": "BEFORE X of BEFORE X"
+                            },
+                            "ai": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "uou": {
+                                "concept": "PP1SG",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of being born"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "I sweat",
+                        "translation": "e hou ta'anga'ia vou",
+                        "gloss": {
+                            "e": {
+                                "concept": "ASSERT",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "hou": {
+                                "concept": "sweating",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ta'anga'ia": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "vou": {
+                                "concept": "PP1SG",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of sweating"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "and then I wake up in the middle of the night.",
+                        "translation": "e ara atu ai vou 'ia tae te p\u014d",
+                        "gloss": {
+                            "e": {
+                                "concept": "PROCESSIVE PREDICATE_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ara": {
+                                "concept": "waking up",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "atu": {
+                                "concept": "PROCESSIVE PREDICATE_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ai": {
+                                "concept": "PROCESSIVE PREDICATE_3",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "vou": {
+                                "concept": "PP1SG",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of waking up"
+                            },
+                            "'ia": {
+                                "concept": "middle of the night_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "tae": {
+                                "concept": "middle of the night_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "middle of the night_3",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "p\u014d": {
+                                "concept": "middle of the night_4",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "But every time I wake up, I\u2019m very thirsty.",
+                        "translation": "'ia ti'a ana'e r\u0101 vou, e k\u014dta'e t\u0101ku e hina'aro",
+                        "gloss": {
+                            "'ia": {
+                                "concept": "PROCESSIVE PREDICATE_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ti'a": {
+                                "concept": "waking up",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ana'e": {
+                                "concept": "PROCESSIVE PREDICATE_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "r\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "vou": {
+                                "concept": "PP1SG",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of experiencing in the body"
+                            },
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "k\u014dta'e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0101ku": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "e_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "hina'aro": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "Well, we\u2019re walking down to the river, over there.",
+                        "translation": "e naku na m\u0101ua i te m\u0101ng\u0101vai, i k\u014d r\u0101",
+                        "gloss": {
+                            "e": {
+                                "concept": "PROCESSIVE PREDICATE_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "naku": {
+                                "concept": "walking",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "na": {
+                                "concept": "PROCESSIVE PREDICATE_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "m\u0101ua": {
+                                "concept": "PP1EXCDU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of walking"
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "m\u0101ng\u0101vai": {
+                                "concept": "river",
+                                "internal particularization": "",
+                                "relational particularization": "OBLIQUE ROLE DESTINATION of walking"
+                            },
+                            "i_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "k\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "r\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    }
+                ]
+            }
+        },
+        "Order of Object and Verb": {
+            "main value": "VO",
+            "examples by value": {}
+        },
+        "Order of Adjective and Noun": {
+            "main value": "Noun-Adjective",
+            "examples by value": {
+                "Adjective-Noun": [
+                    {
+                        "english sentence": "In those times, the engagement was a major event for the whole family,",
+                        "translation": "t\u014d tau ra, m\u0113 faufa'a roa ra te m\u014dmo'a. e '\u014dro'a t\u0101'ato'a n\u014d te f\u0113ti'i",
+                        "gloss": {
+                            "t\u014d": {
+                                "concept": "those times_1",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of equating"
+                            },
+                            "tau": {
+                                "concept": "those times_2",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of equating"
+                            },
+                            "ra": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "m\u0113": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "faufa'a": {
+                                "concept": "major",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of event_"
+                            },
+                            "roa": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ra_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "m\u014dmo'a": {
+                                "concept": "engagement",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of equating"
+                            },
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'\u014dro'a": {
+                                "concept": "event_",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0101'ato'a": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "n\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "f\u0113ti'i": {
+                                "concept": "family",
+                                "internal particularization": "",
+                                "relational particularization": "OBLIQUE ROLE DESTINATION of equating"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "EQUATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": false
+                        }
+                    },
+                    {
+                        "english sentence": "And who is the small boy behind her?",
+                        "translation": "'o vai \u00efa t\u014d kororio tamariki i muri mai",
+                        "gloss": {
+                            "'o": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "vai": {
+                                "concept": "PERSON wildcard",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of equating"
+                            },
+                            "\u00efa": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "kororio": {
+                                "concept": "small",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of boy"
+                            },
+                            "tamariki": {
+                                "concept": "boy",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "i": {
+                                "concept": "BEHIND X_1",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of boy"
+                            },
+                            "muri": {
+                                "concept": "BEHIND X_2",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of boy"
+                            },
+                            "mai": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASK"
+                            ],
+                            "predicate": [
+                                "EQUATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": true,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "That\u2019s my uncle Teri.",
+                        "translation": "'o teri, metua n\u014dku",
+                        "gloss": {
+                            "'o": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "teri": {
+                                "concept": "Teri",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of uncle"
+                            },
+                            "metua": {
+                                "concept": "uncle",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "n\u014dku": {
+                                "concept": "PP1SG",
+                                "internal particularization": "",
+                                "relational particularization": "POSSESSOR of uncle"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "EQUATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "And what school did they attend then?",
+                        "translation": "t\u0113 'ea ra \u00efa 'are 'aikete'anga t\u0101 r\u0101ua i naku i muri ake",
+                        "gloss": {
+                            "t\u0113": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'ea": {
+                                "concept": "object wildcard",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of school"
+                            },
+                            "ra": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "\u00efa": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'are": {
+                                "concept": "school_1",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of attending"
+                            },
+                            "'aikete'anga": {
+                                "concept": "school_2",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of attending"
+                            },
+                            "t\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "r\u0101ua": {
+                                "concept": "PP3DU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of attending"
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "naku": {
+                                "concept": "attending",
+                                "internal particularization": "EVENT TENSE: A LONG TIME AGO",
+                                "relational particularization": ""
+                            },
+                            "i_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "muri": {
+                                "concept": "then (time)_1",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of attending"
+                            },
+                            "ake": {
+                                "concept": "then (time)_2",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of attending"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASK"
+                            ],
+                            "predicate": [
+                                "ATTRIBUTIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": true,
+                            "is_ref": true
+                        }
+                    }
+                ],
+                "Noun-Adjective": [
+                    {
+                        "english sentence": "Here is an old photo album I just found in my parents\u2019 room.",
+                        "translation": "r\u0101, k\u014dta'i pu'e hoho'a tahito kite'ia e au i roto i te piha o t\u014dku karakua",
+                        "gloss": {
+                            "r\u0101": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "k\u014dta'i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "pu'e": {
+                                "concept": "photo album_1",
+                                "internal particularization": "",
+                                "relational particularization": "PRESENT X of PRESENT X, PATIENT of finding"
+                            },
+                            "hoho'a": {
+                                "concept": "photo album_2",
+                                "internal particularization": "",
+                                "relational particularization": "PRESENT X of PRESENT X, PATIENT of finding"
+                            },
+                            "tahito": {
+                                "concept": "old",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of photo album"
+                            },
+                            "kite'ia": {
+                                "concept": "finding",
+                                "internal particularization": "EVENT TENSE: JUST A MOMENT AGO",
+                                "relational particularization": ""
+                            },
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "au": {
+                                "concept": "PP1SG_1",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of finding"
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "roto": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "i_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "piha": {
+                                "concept": "room",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of finding"
+                            },
+                            "o": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014dku": {
+                                "concept": "PP1SG_2",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of finding"
+                            },
+                            "karakua": {
+                                "concept": "parents",
+                                "internal particularization": "",
+                                "relational particularization": "POSSESSOR of room"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PRESENTATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "Who\u2019s this on that first photo?",
+                        "translation": "'o vai ter\u0101 ra i runga t\u014d hoho'a m\u0101t\u0101mua na r\u0101",
+                        "gloss": {
+                            "'o": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "vai": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ter\u0101": {
+                                "concept": "PERSON wildcard_1",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "ra": {
+                                "concept": "PERSON wildcard_2",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "runga": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014d": {
+                                "concept": "POINTED BY SPEAKER_1",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of equating"
+                            },
+                            "hoho'a": {
+                                "concept": "photo",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of equating"
+                            },
+                            "m\u0101t\u0101mua": {
+                                "concept": "first",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of photo"
+                            },
+                            "na": {
+                                "concept": "POINTED BY SPEAKER_2",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of equating"
+                            },
+                            "r\u0101": {
+                                "concept": "POINTED BY SPEAKER_3",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of equating"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASK"
+                            ],
+                            "predicate": [
+                                "EQUATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": true,
+                            "is_ref": false
+                        }
+                    },
+                    {
+                        "english sentence": "These are my grandparents, on my mother\u2019s side.",
+                        "translation": "t\u014dku 'ina'ina ter\u0101 ra, i te pae o t\u014dku karakua p\u0113'\u0101",
+                        "gloss": {
+                            "t\u014dku": {
+                                "concept": "PP1SG_1",
+                                "internal particularization": "",
+                                "relational particularization": "POSSESSOR of grandparents"
+                            },
+                            "'ina'ina": {
+                                "concept": "grandparents",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of presenting (presentative)"
+                            },
+                            "ter\u0101": {
+                                "concept": "POINTED BY SPEAKER_1",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of presenting (presentative)"
+                            },
+                            "ra": {
+                                "concept": "POINTED BY SPEAKER_2",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of presenting (presentative)"
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "pae": {
+                                "concept": "mothers side_1",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of grandparents"
+                            },
+                            "o": {
+                                "concept": "mothers side_2",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of grandparents"
+                            },
+                            "t\u014dku_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "karakua": {
+                                "concept": "mothers side_4",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of grandparents"
+                            },
+                            "p\u0113'\u0101": {
+                                "concept": "mothers side_5",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of grandparents"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PRESENTATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "Grandpa here on the left, and Grandma on the right.",
+                        "translation": "t\u014dku 'ina'ina rua t\u0113nei ra 'e t\u014dku 'ina'ina p\u0113'\u0101 ter\u0101 ra",
+                        "gloss": {
+                            "t\u014dku": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'ina'ina": {
+                                "concept": "grandpa_1",
+                                "internal particularization": "",
+                                "relational particularization": "AND_TERM1 of AND"
+                            },
+                            "rua": {
+                                "concept": "grandpa_2",
+                                "internal particularization": "",
+                                "relational particularization": "AND_TERM1 of AND"
+                            },
+                            "t\u0113nei": {
+                                "concept": "POINTED BY SPEAKER_1",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of grandpa"
+                            },
+                            "ra": {
+                                "concept": "POINTED BY SPEAKER_2",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of grandpa"
+                            },
+                            "'e": {
+                                "concept": "AND",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014dku_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'ina'ina_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "p\u0113'\u0101": {
+                                "concept": "grandma_2",
+                                "internal particularization": "",
+                                "relational particularization": "AND_TERM2 of AND"
+                            },
+                            "ter\u0101": {
+                                "concept": "POINTED BY SPEAKER_3",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of grandpa"
+                            },
+                            "ra_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PRESENTATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": false
+                        }
+                    },
+                    {
+                        "english sentence": "Was that the day of their wedding?",
+                        "translation": "te ma'ana ter\u0101 o t\u014d raua 'akaipoipo'anga",
+                        "gloss": {
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ma'ana": {
+                                "concept": "day",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "ter\u0101": {
+                                "concept": "Ref_Event",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "o": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "raua": {
+                                "concept": "PP3DU",
+                                "internal particularization": "",
+                                "relational particularization": "POSSESSOR of wedding"
+                            },
+                            "'akaipoipo'anga": {
+                                "concept": "wedding",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of day"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASK"
+                            ],
+                            "predicate": [
+                                "EQUATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "This must have been the day when they got engaged.",
+                        "translation": "te ma'ana pa'a ter\u0101 ra o t\u014d raua m\u014dmo'a",
+                        "gloss": {
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ma'ana": {
+                                "concept": "day",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "pa'a": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ter\u0101": {
+                                "concept": "Ref_Event_1",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ra": {
+                                "concept": "Ref_Event_2",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "o": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "raua": {
+                                "concept": "PP3DU",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of getting engaged"
+                            },
+                            "m\u014dmo'a": {
+                                "concept": "getting engaged",
+                                "internal particularization": "EVENT TENSE: GENERIC PAST",
+                                "relational particularization": "QUALIFIER of day"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "EXPRESS LIKELIHOOD"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "People would wear beautiful clothes.",
+                        "translation": "e ka'u roa te tangata te ka'u maitataki ra",
+                        "gloss": {
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ka'u": {
+                                "concept": "wearing",
+                                "internal particularization": "ASPECT: HABITUAL",
+                                "relational particularization": ""
+                            },
+                            "roa": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "tangata": {
+                                "concept": "people",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of wearing"
+                            },
+                            "te_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ka'u_2": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "maitataki": {
+                                "concept": "beautiful",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of clothes"
+                            },
+                            "ra": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": false
+                        }
+                    },
+                    {
+                        "english sentence": "That was an old school that doesn\u2019t exist anymore.",
+                        "translation": "e 'are 'aikete'anga tahito ra, k\u0101re 'aka'ou",
+                        "gloss": {
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'are": {
+                                "concept": "school_1",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "'aikete'anga": {
+                                "concept": "school_2",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "tahito": {
+                                "concept": "old",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of school"
+                            },
+                            "ra": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "k\u0101re": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'aka'ou": {
+                                "concept": "anymore",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of existing"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "EQUATIVE PREDICATE"
+                            ],
+                            "polarity": false,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "Well, on that photo you\u2019re a small child,",
+                        "translation": "noa atu e tamariki rikiriki ta'anga na koe i k\u014dnei,",
+                        "gloss": {
+                            "noa": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "atu": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "tamariki": {
+                                "concept": "children",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of exhibiting (an attribute)"
+                            },
+                            "rikiriki": {
+                                "concept": "small",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of children"
+                            },
+                            "ta'anga": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "na": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "koe": {
+                                "concept": "PP2SG",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of exhibiting (an attribute)"
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "k\u014dnei": {
+                                "concept": "exhibiting (an attribute)",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "ATTRIBUTIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "It\u2019s my math book.",
+                        "translation": "ter\u0101 pa'i puta n\u016bm\u0113ra ra t\u0101ku",
+                        "gloss": {
+                            "ter\u0101": {
+                                "concept": "EQUATIVE PREDICATE",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "pa'i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "puta": {
+                                "concept": "book",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "n\u016bm\u0113ra": {
+                                "concept": "math",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of book"
+                            },
+                            "ra": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0101ku": {
+                                "concept": "PP1SG",
+                                "internal particularization": "",
+                                "relational particularization": "POSSESSOR of book"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "EQUATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    },
+                    {
+                        "english sentence": "Now I need to buy a new notebook",
+                        "translation": "'i puta '\u0101p\u012b ho'i \u00efa t\u0113nenei",
+                        "gloss": {
+                            "'i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "puta": {
+                                "concept": "notebook",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of buying"
+                            },
+                            "'\u0101p\u012b": {
+                                "concept": "new",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of notebook"
+                            },
+                            "ho'i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "\u00efa": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u0113nenei": {
+                                "concept": "now",
+                                "internal particularization": "",
+                                "relational particularization": "TIME INFORMATION of needing"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASSERT"
+                            ],
+                            "predicate": [
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    }
+                ]
+            }
+        },
+        "Order of Demonstrative and Noun": {
+            "main value": "Noun-Demonstrative",
+            "examples by value": {
+                "Demonstrative-Noun": [
+                    {
+                        "english sentence": "Who\u2019s this on that first photo?",
+                        "translation": "'o vai ter\u0101 ra i runga t\u014d hoho'a m\u0101t\u0101mua na r\u0101",
+                        "gloss": {
+                            "'o": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "vai": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ter\u0101": {
+                                "concept": "PERSON wildcard_1",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "ra": {
+                                "concept": "PERSON wildcard_2",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of equating"
+                            },
+                            "i": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "runga": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "t\u014d": {
+                                "concept": "POINTED BY SPEAKER_1",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of equating"
+                            },
+                            "hoho'a": {
+                                "concept": "photo",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of equating"
+                            },
+                            "m\u0101t\u0101mua": {
+                                "concept": "first",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of photo"
+                            },
+                            "na": {
+                                "concept": "POINTED BY SPEAKER_2",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of equating"
+                            },
+                            "r\u0101": {
+                                "concept": "POINTED BY SPEAKER_3",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of equating"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "ASK"
+                            ],
+                            "predicate": [
+                                "EQUATIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": true,
+                            "is_ref": false
+                        }
+                    }
+                ],
+                "Noun-Demonstrative": [
+                    {
+                        "english sentence": "This woman is surely your mother again, carrying a child on her back.",
+                        "translation": "t\u014d koe karakua p\u0113'\u0101 'aka'ou pa'\u0101ia \u0101nei ter\u0101 e 'akatei ra ki te tamariki",
+                        "gloss": {
+                            "t\u014d": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "koe": {
+                                "concept": "PP2SG",
+                                "internal particularization": "",
+                                "relational particularization": "POSSESSOR of mother"
+                            },
+                            "karakua": {
+                                "concept": "mother_1",
+                                "internal particularization": "",
+                                "relational particularization": "AGENT of carrying, PATIENT of equating"
+                            },
+                            "p\u0113'\u0101": {
+                                "concept": "women",
+                                "internal particularization": "DEFINITENESS: DEFINITE",
+                                "relational particularization": "AGENT of equating"
+                            },
+                            "'aka'ou": {
+                                "concept": "again",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "pa'\u0101ia": {
+                                "concept": "surely_1",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of equating"
+                            },
+                            "\u0101nei": {
+                                "concept": "surely_2",
+                                "internal particularization": "",
+                                "relational particularization": "QUALIFIER of equating"
+                            },
+                            "ter\u0101": {
+                                "concept": "POINTED BY SPEAKER",
+                                "internal particularization": "",
+                                "relational particularization": "LOCATION INFORMATION of women"
+                            },
+                            "e": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "'akatei": {
+                                "concept": "carrying",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ra": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "ki": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "te": {
+                                "concept": "",
+                                "internal particularization": "",
+                                "relational particularization": ""
+                            },
+                            "tamariki": {
+                                "concept": "children",
+                                "internal particularization": "",
+                                "relational particularization": "PATIENT of carrying"
+                            }
+                        },
+                        "context": {
+                            "intent": [
+                                "EXPRESS LIKELIHOOD"
+                            ],
+                            "predicate": [
+                                "EQUATIVE PREDICATE",
+                                "PROCESSIVE PREDICATE"
+                            ],
+                            "polarity": true,
+                            "is_wildcard": false,
+                            "is_ref": true
+                        }
+                    }
+                ]
+            }
+        },
+        "Order of Relative Clause and Noun": {
+            "main value": null,
+            "examples by value": {}
+        },
+        "Order of Object, Oblique, and Verb": {
+            "main value": "VOX",
+            "examples by value": {}
+        },
+        "Order of Adposition and Noun Phrase": {
+            "main value": "Prepositions",
+            "examples by value": {}
+        },
+        "Order of Adverbial Subordinator and Clause": {
+            "main value": "Initial subordinator word",
+            "examples by value": {}
+        },
+        "Order of Genitive and Noun": {
+            "main value": "Noun-Genitive",
+            "examples by value": {}
+        },
+        "Order of Degree Word and Adjective": {
+            "main value": "No dominant order",
+            "examples by value": {}
+        },
+        "Order of Numeral and Noun": {
+            "main value": "Noun-Numeral",
+            "examples by value": {}
+        },
+        "What is the order of numeral and noun in the NP?": {
+            "main value": "N-Num",
+            "examples by value": {}
+        },
+        "What is the order of adnominal demonstrative and noun?": {
+            "main value": "N-Dem",
+            "examples by value": {}
+        },
+        "Is the order of core argument (i.e. S/A/P) constituents fixed?": {
+            "main value": "present",
+            "examples by value": {}
+        },
+        "What is the pragmatically unmarked order of S and V in intransitive clauses?": {
+            "main value": "VS",
+            "examples by value": {}
+        },
+        "Is a pragmatically unmarked constituent order verb-initial for transitive clauses?": {
+            "main value": "absent",
+            "examples by value": {}
+        },
+        "Is a pragmatically unmarked constituent order verb-medial for transitive clauses?": {
+            "main value": "present",
+            "examples by value": {}
+        },
+        "Is a pragmatically unmarked constituent order verb-final for transitive clauses?": {
+            "main value": "absent",
+            "examples by value": {}
+        },
+        "Is the order of constituents the same in main and subordinate clauses?": {
+            "main value": "present",
+            "examples by value": {}
+        },
+        "What is the order of adnominal property word and noun?": {
+            "main value": "N - ANM",
+            "examples by value": {}
+        },
+        "What is the pragmatically unmarked order of adnominal possessor noun and possessed noun?": {
+            "main value": "Possessed-Possessor",
+            "examples by value": {}
         }
     }
 }
