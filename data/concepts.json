@@ -832,7 +832,9 @@
         "type": "concept",
         "ontological parent": "EXPERIENCEABLE OBJECT",
         "requires": [],
-        "gramprop": []
+        "gramprop": [
+            "animal"
+        ]
     },
     "showcasing": {
         "description": " ",
@@ -3993,5 +3995,140 @@
         "ontological parent": "PAST EVENT",
         "requires": [],
         "gramprop": []
+    },
+    "branch": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "EXPERIENCEABLE OBJECT",
+        "gramprop": [],
+        "requires": []
+    },
+    "rock": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "EXPERIENCEABLE OBJECT",
+        "gramprop": [],
+        "requires": []
+    },
+    "coral": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "EXPERIENCEABLE OBJECT",
+        "gramprop": [],
+        "requires": []
+    },
+    "seaside": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "SPACE LOGIC",
+        "gramprop": [],
+        "requires": []
+    },
+    "mountainside": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "SPACE LOGIC",
+        "gramprop": [],
+        "requires": []
+    },
+    "on top of": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "SPACE LOGIC",
+        "gramprop": [],
+        "requires": [
+            "REFERENCE TO CONCEPT"
+        ]
+    },
+    "above": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "SPACE LOGIC",
+        "gramprop": [],
+        "requires": [
+            "REFERENCE TO CONCEPT"
+        ]
+    },
+    "under": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "SPACE LOGIC",
+        "gramprop": [],
+        "requires": [
+            "REFERENCE TO CONCEPT"
+        ]
+    },
+    "below": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "SPACE LOGIC",
+        "gramprop": [],
+        "requires": [
+            "REFERENCE TO CONCEPT"
+        ]
+    },
+    "inside": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "SPACE LOGIC",
+        "gramprop": [],
+        "requires": [
+            "REFERENCE TO CONCEPT"
+        ]
+    },
+    "outside": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "SPACE LOGIC",
+        "gramprop": [],
+        "requires": [
+            "REFERENCE TO CONCEPT"
+        ]
+    },
+    "next to": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "SPACE LOGIC",
+        "gramprop": [],
+        "requires": [
+            "REFERENCE TO CONCEPT"
+        ]
+    },
+    "plant": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "EXPERIENCEABLE OBJECT",
+        "gramprop": [],
+        "requires": []
+    },
+    "tree": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "EXPERIENCEABLE OBJECT",
+        "gramprop": [],
+        "requires": []
+    },
+    "bird": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "EXPERIENCEABLE OBJECT",
+        "gramprop": [
+            "animal"
+        ],
+        "requires": []
+    },
+    "coral head": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "EXPERIENCEABLE OBJECT",
+        "gramprop": [],
+        "requires": []
+    },
+    "big": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "NON-GRAMATICAL QUALIFIER",
+        "gramprop": [],
+        "requires": []
     }
 }
