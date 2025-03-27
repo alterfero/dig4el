@@ -21,6 +21,8 @@ import time
 from libs import graphs_utils
 from libs import utils, stats, wals_utils as wu
 from random import randint
+from libs import output_generation_utils as ogu
+from io import BytesIO
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -130,7 +132,6 @@ with st.popover("i"):
                 - Ref_x_obj indicates the reference in the segment to x non-human objects. 
                 - Wildcards: Wildcards indicate that there is a pointer in the segment to a concept not previously mentioned, as an interrogative word does. 
                 - Pointed by speaker: There is in the segment a pointing action from the speaker, which can be translated into words, as 'this' in English.
-                
                 """)
 
 with st.sidebar:
@@ -257,6 +258,14 @@ if st.session_state["cq_is_chosen"]:
     st.session_state["recording"]["cq_uid"] = cq["uid"]
 
     st.session_state["recording"]["recording_uid"] = str(int(time.time()))
+
+    docx_file = ogu.generate_transcription_doc(cq, st.session_state["target_language"], st.session_state["pivot_language"])
+    with st.sidebar:
+        st.download_button(
+            label="📥 Download a transcription sheet for this CQ as .docx",
+            data=docx_file,
+            file_name=f'{cq["title"]}_transcription_sheet.docx',
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
     st.title("{}".format(cq["title"]))
     st.write("Context: ", cq["context"])

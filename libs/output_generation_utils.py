@@ -7,6 +7,102 @@ from io import BytesIO
 
 import jinja2
 
+def generate_transcription_doc(cq, target_language, pivot_language):
+    if target_language in ["English", ""]:
+        target_language = "target language"
+
+    document = Document()
+    document.add_heading('Conversational Questionnaire', 0)
+    document.add_heading(f'"{cq["title"]}"', 0)
+    document.add_heading("Information", 1)
+    table = document.add_table(rows=5, cols=2, style="Light Grid")  # Fixed column count
+    row_cells0 = table.rows[0].cells
+    row_cells0[0].text = "Target language"
+    if target_language != "target language":
+        row_cells0[1].text = target_language
+    row_cells1 = table.rows[1].cells
+    row_cells1[0].text = "Transcription made by"
+    row_cells2 = table.rows[2].cells
+    row_cells2[0].text = f"Content in {target_language} provided by"
+    row_cells3 = table.rows[3].cells
+    row_cells3[0].text = "Location"
+    row_cells4 = table.rows[4].cells
+    row_cells4[0].text = "Date"
+
+    document.add_page_break()
+
+    document.add_heading("Full dialog in English", 1)
+    document.add_paragraph(cq["context"])
+    dialog_table = document.add_table(rows=1, cols=3, style="Table Grid")  # Fixed column count
+    hdr_cells = dialog_table.rows[0].cells
+    hdr_cells[0].text = "Index"
+    hdr_cells[1].text = cq["speakers"]["A"]["name"]
+    hdr_cells[2].text = cq["speakers"]["B"]["name"]
+    dialog_length = len(cq["dialog"])
+    for index in range(1, dialog_length):
+        content = cq["dialog"][str(index)]
+        row_cells = dialog_table.add_row().cells
+        if content.get("legacy index", "") != "":
+            i = content["legacy index"]
+        else:
+            i = str(index)
+        row_cells[0].text = i
+        if content["speaker"] == "A":
+            row_cells[1].text = content["text"]
+            row_cells[2].text = ""
+        elif content["speaker"] == "B":
+            row_cells[1].text = ""
+            row_cells[2].text = content["text"]
+
+    document.add_page_break()
+
+    document.add_heading("Transcription", 1)
+
+    for index in range(1, dialog_length):
+        content = cq["dialog"][str(index)]
+        if content.get("legacy index", "") != "":
+            i = content["legacy index"]
+        else:
+            i = str(index)
+        document.add_paragraph("")
+        document.add_heading(f'{i}: {content["text"]}', 2)
+        transcription_table = document.add_table(rows=0, cols=2, style="Table Grid")
+        row_cells = transcription_table.add_row().cells
+        row_cells[0].text = "Pivot (if not English)"
+        row_cells[1].text = ""
+        row_cells = transcription_table.add_row().cells
+        row_cells[0].text = f'Sentence in {target_language}'
+        row_cells[1].text = ""
+        document.add_paragraph(" ")
+        p = document.add_paragraph()
+        p.add_run("Connections between word(s) and concept(s):").bold = True
+        document.add_paragraph("In this segment, which word(s) contribute to which concept(s) below? One word can appear in multiple concepts, or in none. Multiple words can appear in a single concept.")
+        concept_table = document.add_table(rows=1, cols=2, style="Table Grid")
+        hdr_cells = concept_table.rows[0].cells
+        hdr_cells[0].text = "Concept"
+        hdr_cells[1].text = "Word(s) contributing to this concept"
+        if content.get("intent", []) != []:
+            row_cells = concept_table.add_row().cells
+            row_cells[0].text = f'Intent: {"+".join(content["intent"])}'
+            row_cells[1].text = ""
+        if content.get("predicate", []) != []:
+            row_cells = concept_table.add_row().cells
+            row_cells[0].text = f'Type of predicate: {"+".join(content["predicate"])}'
+            row_cells[1].text = ""
+        for c in content["concept"]:
+            row_cells = concept_table.add_row().cells
+            row_cells[0].text = c
+            row_cells[1].text = ""
+
+    # Save to a BytesIO buffer instead of disk
+    docx_buffer = BytesIO()
+    document.save(docx_buffer)
+    docx_buffer.seek(0)  # Reset buffer position
+
+    return docx_buffer
+
+
+
 def generate_docx_from_kg_index_list(kg, delimiters, kg_index_list):
     document = Document()
     document.add_heading('Partial corpus', 0)
