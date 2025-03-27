@@ -262,35 +262,52 @@ if st.session_state["cq_is_chosen"]:
     docx_file = ogu.generate_transcription_doc(cq, st.session_state["target_language"], st.session_state["pivot_language"])
     with st.sidebar:
         st.download_button(
-            label="📥 Download a transcription sheet for this CQ as .docx",
+            label="📥 Download an EMPTY transcription sheet for this CQ as .docx",
             data=docx_file,
             file_name=f'{cq["title"]}_transcription_sheet.docx',
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
-    st.title("{}".format(cq["title"]))
-    st.write("Context: ", cq["context"])
+    colt1, colt2 = st.columns([3, 1])
+    colt1.title("{}".format(cq["title"]))
+    colt1.write("Context: {}".format(cq["context"]))
+    with colt1.popover("See the full dialog"):
+        for i in range(1, len(cq["dialog"])):
+            st.write(cq["dialog"][str(i)]["speaker"] + " : " + cq["dialog"][str(i)]["text"])
+    st.divider()
 
-    col1, col2 = st.columns(2)
-    col1.subheader("Counter: {}".format(str(st.session_state.counter)))
+    counter_string = "Segment {}".format(str(st.session_state.counter))
     if "legacy index" in cq["dialog"][str(st.session_state["counter"])]:
         if cq["dialog"][str(st.session_state["counter"])]["legacy index"] != "":
-            col2.subheader("Legacy index: {}".format(cq["dialog"][str(st.session_state["counter"])]["legacy index"]))
-    colq, colw, cole, colr = st.columns(4)
+            counter_string += ", legacy index {}".format(cq["dialog"][str(st.session_state["counter"])]["legacy index"])
+    #st.write(st.write(f'Current position: {counter_string}.'))
+    colq, colw, cole = st.columns([1,3,1])
     if colq.button("Previous"):
         if st.session_state["counter"] > 1:
             st.session_state["counter"] = st.session_state["counter"] - 1
             st.rerun()
-    if colw.button("Next"):
+    if colw.button("Current position {}".format(counter_string)):
+        pass
+    if cole.button("Next"):
         if st.session_state["counter"] < number_of_sentences - 1:
             st.session_state["counter"] = st.session_state["counter"] + 1
             st.rerun()
-    jump_to = colq.slider("jump to", 1, number_of_sentences-1, value=st.session_state["counter"])
+    jump_to = st.slider(f"Jump to segment", 1, number_of_sentences-1, value=st.session_state["counter"])
     if jump_to != st.session_state["counter"]:
         st.session_state["counter"] = jump_to
         st.rerun()
 
+    colz, colx = st.columns(2, gap="large")
+    colz.subheader(cq["dialog"][str(st.session_state["counter"])]["speaker"] + ' says: "' + cq["dialog"][str(st.session_state["counter"])]["text"] + '"')
+    # create the dialog context view on the right column
+    colx.markdown("#### Local dialog context")
+    start_index = max(1, st.session_state["counter"] - 2)
+    stop_index = min(len(cq["dialog"]), start_index + 10)
+    for i in range(start_index, stop_index):
+        if i == st.session_state["counter"]:
+            colx.markdown(f'**{cq["dialog"][str(i)]["speaker"] + ": " + cq["dialog"][str(i)]["text"]}**')
+        else:
+            colx.markdown(f'{cq["dialog"][str(i)]["speaker"] + ": " + cq["dialog"][str(i)]["text"]}')
 
-    st.subheader(cq["dialog"][str(st.session_state["counter"])]["speaker"] + " : " + cq["dialog"][str(st.session_state["counter"])]["text"])
 
     #a recording exists at this index
     if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
@@ -311,13 +328,13 @@ if st.session_state["cq_is_chosen"]:
 
     # if pivot language is not english, store the pivot form
     if st.session_state["pivot_language"] != "English":
-        alternate_pivot = st.text_input(
+        alternate_pivot = colz.text_input(
             "Enter here the expression you used in {}".format(st.session_state["pivot_language"], value=alternate_pivot_default),
             value=alternate_pivot_default)
     else:
         alternate_pivot = ""
 
-    translation_raw = st.text_input("Equivalent in {}".format(st.session_state["target_language"]),
+    translation_raw = colz.text_input("Equivalent in {}".format(st.session_state["target_language"]),
                                 value=translation_default, key=str(st.session_state["counter"])+str(key_counter))
     key_counter += 1
     translation = utils.normalize_sentence(translation_raw)
@@ -326,7 +343,7 @@ if st.session_state["cq_is_chosen"]:
     # for each base concept, display a multiselect tool to select the word(s) that express (part of) this concept in the target language
     # the word(s) are stored as strings in the json, separated by "...", but must be a list for the multiselect tool to work.
     concept_words = {}
-    st.write(
+    colz.write(
         "In this sentence, would you know which word(s) would contribute to the expression the following concepts?")
     concept_list = cq["dialog"][str(st.session_state["counter"])]["intent"]
     concept_list += cq["dialog"][str(st.session_state["counter"])]["predicate"]
@@ -345,12 +362,12 @@ if st.session_state["cq_is_chosen"]:
                     concept_default = target_word_list
         else:
             concept_default = []
-        concept_translation_list = st.multiselect("{} : ".format(concept), segmented_target_sentence, default=concept_default, key=concept+str(st.session_state["counter"])+str(key_counter))
+        concept_translation_list = colz.multiselect("{} : ".format(concept), segmented_target_sentence, default=concept_default, key=concept+str(st.session_state["counter"])+str(key_counter))
         key_counter += 1
         concept_words[concept] = "...".join(concept_translation_list)
-    comment = st.text_input("Comments/Notes", value=default_comment)
+    comment = colz.text_input("Comments/Notes", value=default_comment)
 
-    if st.button("Validate sentence"):
+    if colz.button("Validate sentence"):
         st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
             "legacy index": cq["dialog"][str(st.session_state["counter"])]["legacy index"],
             "cq": cq["dialog"][str(st.session_state["counter"])]["text"],
@@ -367,6 +384,7 @@ if st.session_state["cq_is_chosen"]:
             st.subheader("End of the CQ, congratulations! Click on 'Download your recording' below!")
             st.balloons()
 
+    st.markdown("---")
     #st.write(st.session_state["recording"])
     filename = ("recording_"
                 + st.session_state["current_cq"].replace(".json", "") + "_"
@@ -375,7 +393,8 @@ if st.session_state["cq_is_chosen"]:
                 + st.session_state["recording"]["interviewee"] + "_"
                 + str(int(time.time())) + ".json")
     colf, colg = st.columns(2)
-    colf.download_button(label="**download your recording**", data=json.dumps(st.session_state["recording"], indent=4), file_name=filename)
+    colf.download_button(label="**download your transcription as it is now**", data=json.dumps(st.session_state["recording"], indent=4), file_name=filename)
+    colf.markdown("""Downloading the transcription saves your transcription on your computer.""")
     colg.markdown("""
                 Nothing is stored on the server -> **Save your work!**
                 DIG4EL creates one file per questionnaire, that you can then re-load to continue working on it, or share with anyone you want.  
