@@ -1,2 +1,2 @@
-.streamlit/secrets.toml
+.sqtreamlit/secrets.toml
 venv/

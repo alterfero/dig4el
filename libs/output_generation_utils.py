@@ -39,7 +39,7 @@ def generate_transcription_doc(cq, target_language, pivot_language):
     hdr_cells[1].text = cq["speakers"]["A"]["name"]
     hdr_cells[2].text = cq["speakers"]["B"]["name"]
     dialog_length = len(cq["dialog"])
-    for index in range(1, dialog_length):
+    for index in range(1, dialog_length + 1):
         content = cq["dialog"][str(index)]
         row_cells = dialog_table.add_row().cells
         if content.get("legacy index", "") != "":
@@ -58,7 +58,7 @@ def generate_transcription_doc(cq, target_language, pivot_language):
 
     document.add_heading("Transcription", 1)
 
-    for index in range(1, dialog_length):
+    for index in range(1, dialog_length + 1):
         content = cq["dialog"][str(index)]
         if content.get("legacy index", "") != "":
             i = content["legacy index"]
