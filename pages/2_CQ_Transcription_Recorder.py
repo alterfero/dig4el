@@ -132,7 +132,10 @@ with st.popover("i"):
                 - Ref_x_obj indicates the reference in the segment to x non-human objects. 
                 - Wildcards: Wildcards indicate that there is a pointer in the segment to a concept not previously mentioned, as an interrogative word does. 
                 - Pointed by speaker: There is in the segment a pointing action from the speaker, which can be translated into words, as 'this' in English.
+                
+                Watch the tutorial:
                 """)
+    st.video("https://youtu.be/QTmukcvL3fU")
 
 with st.sidebar:
     st.subheader("DIG4EL")
