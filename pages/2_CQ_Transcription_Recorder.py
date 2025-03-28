@@ -309,18 +309,23 @@ if st.session_state["cq_is_chosen"]:
             colx.markdown(f'{cq["dialog"][str(i)]["speaker"] + ": " + cq["dialog"][str(i)]["text"]}')
 
 
-    #a recording exists at this index
+    # a recording exists at this index
     if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
         translation_default = st.session_state["recording"]["data"][str(st.session_state["counter"])]["translation"]
+        # alernate pivot
         if "alternate_pivot" in st.session_state["recording"]["data"][str(st.session_state["counter"])].keys():
             alternate_pivot_default = st.session_state["recording"]["data"][str(st.session_state["counter"])][
                 "alternate_pivot"]
-        if "comment" in st.session_state["recording"]["data"][str(st.session_state["counter"])].keys():
-            default_comment = st.session_state["recording"]["data"][str(st.session_state["counter"])]["comment"]
         else:
             st.session_state["recording"]["data"][str(st.session_state["counter"])]["alternate_pivot"] = ""
             alternate_pivot_default = ""
+        # comment
+        if "comment" in st.session_state["recording"]["data"][str(st.session_state["counter"])].keys():
+            default_comment = st.session_state["recording"]["data"][str(st.session_state["counter"])]["comment"]
+        else:
+            st.session_state["recording"]["data"][str(st.session_state["counter"])]["comment"] = ""
             default_comment = ""
+    # no recording at this index
     else:
         translation_default = ""
         alternate_pivot_default = ""
@@ -365,7 +370,7 @@ if st.session_state["cq_is_chosen"]:
         concept_translation_list = colz.multiselect("{} : ".format(concept), segmented_target_sentence, default=concept_default, key=concept+str(st.session_state["counter"])+str(key_counter))
         key_counter += 1
         concept_words[concept] = "...".join(concept_translation_list)
-    comment = colz.text_input("Comments/Notes", value=default_comment)
+    comment = colz.text_input("Comments/Notes", value=default_comment, key="comment" + str(st.session_state["counter"]))
 
     if colz.button("Validate sentence"):
         st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
@@ -378,13 +383,12 @@ if st.session_state["cq_is_chosen"]:
         }
         if st.session_state["counter"] < number_of_sentences - 1:
             st.session_state["counter"] = st.session_state["counter"] + 1
-            default_comment = ""
             st.rerun()
         else:
             st.subheader("End of the CQ, congratulations! Click on 'Download your recording' below!")
             st.balloons()
 
-    st.markdown("---")
+    st.divider()
     #st.write(st.session_state["recording"])
     filename = ("recording_"
                 + st.session_state["current_cq"].replace(".json", "") + "_"
