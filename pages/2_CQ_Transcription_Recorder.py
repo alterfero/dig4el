@@ -274,7 +274,7 @@ if st.session_state["cq_is_chosen"]:
     colt1.title("{}".format(cq["title"]))
     colt1.write("Context: {}".format(cq["context"]))
     with colt1.popover("See the full dialog"):
-        for i in range(1, len(cq["dialog"])):
+        for i in range(1, len(cq["dialog"]) + 1):
             st.write(cq["dialog"][str(i)]["speaker"] + " : " + cq["dialog"][str(i)]["text"])
     st.divider()
 
@@ -291,10 +291,10 @@ if st.session_state["cq_is_chosen"]:
     if colw.button("Current position {}".format(counter_string)):
         pass
     if cole.button("Next"):
-        if st.session_state["counter"] < number_of_sentences - 1:
+        if st.session_state["counter"] < number_of_sentences:
             st.session_state["counter"] = st.session_state["counter"] + 1
             st.rerun()
-    jump_to = st.slider(f"Jump to segment", 1, number_of_sentences-1, value=st.session_state["counter"])
+    jump_to = st.slider(f"Jump to segment", 1, number_of_sentences, value=st.session_state["counter"])
     if jump_to != st.session_state["counter"]:
         st.session_state["counter"] = jump_to
         st.rerun()
@@ -304,7 +304,7 @@ if st.session_state["cq_is_chosen"]:
     # create the dialog context view on the right column
     colx.markdown("#### Local dialog context")
     start_index = max(1, st.session_state["counter"] - 2)
-    stop_index = min(len(cq["dialog"]), start_index + 10)
+    stop_index = min(len(cq["dialog"]) + 1, start_index + 10)
     for i in range(start_index, stop_index):
         if i == st.session_state["counter"]:
             colx.markdown(f'**{cq["dialog"][str(i)]["speaker"] + ": " + cq["dialog"][str(i)]["text"]}**')

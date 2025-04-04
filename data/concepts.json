@@ -4130,5 +4130,32 @@
         "ontological parent": "NON-GRAMATICAL QUALIFIER",
         "gramprop": [],
         "requires": []
+    },
+    "grouper": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "fish",
+        "gramprop": [
+            "animal"
+        ],
+        "requires": []
+    },
+    "triggerfish": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "INTELLECT",
+        "gramprop": [
+            "animal"
+        ],
+        "requires": []
+    },
+    "being_included_in_class": {
+        "description": "",
+        "type": "concept",
+        "ontological parent": "EXPERIENCE",
+        "gramprop": [],
+        "requires": [
+            "PATIENT"
+        ]
     }
 }
