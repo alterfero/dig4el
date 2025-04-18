@@ -1,0 +1,507 @@
+{
+    "target language": "Quechua (Cuzco)",
+    "delimiters": [
+        " ",
+        ".",
+        ",",
+        ";",
+        ":",
+        "!",
+        "?",
+        "\u2026"
+    ],
+    "pivot language": "English",
+    "cq_uid": "1716315461",
+    "data": {
+        "1": {
+            "legacy index": "",
+            "cq": "Good morning!",
+            "alternate_pivot": "",
+            "translation": "allin p'unchay",
+            "concept_words": {
+                "GREET": "p'unchay...allin"
+            },
+            "comment": "Allin p\u2019unchay\" as a whole expresses GREET, with \"allin\" being the core warm/positive element."
+        },
+        "2": {
+            "legacy index": "2",
+            "cq": "Hello!",
+            "alternate_pivot": "",
+            "translation": "allinllachu",
+            "concept_words": {
+                "GREET": "allinllachu"
+            },
+            "comment": "WE CAN ALSO USE WORD \"Napaykuy\". In this context, \"Allinllachu!\" (or \"Allinllachu?\") is indeed the more natural and warm choice compared to the neutral \"Napaykuy\""
+        },
+        "3": {
+            "legacy index": "3",
+            "cq": "How are you?",
+            "alternate_pivot": "",
+            "translation": "imaynallam kachkanki",
+            "concept_words": {
+                "ASK": "",
+                "GREET": "imaynallam...kachkanki",
+                "PROCESSIVE PREDICATE": "kachkanki",
+                "PP2SG": "kachkanki"
+            },
+            "comment": "1. PROCESSIVE PRED :\"kachka- 2. PP2SG \"-nki\" 3.The \"-m\" in \"imaynallam\" is an evidential marker that can emphasize the question. 4.This structure is more formal than \"Allinllachu?\" 5.The progressive aspect (\"kachka-\") makes it more nuanced than a simple \"Imayna?\" (\"How?\")"
+        },
+        "4": {
+            "legacy index": "4",
+            "cq": "I\u2019m fine, and you?",
+            "alternate_pivot": "",
+            "translation": "allillanmi, qankunari",
+            "concept_words": {
+                "ASSERT": "allillanmi",
+                "ASK": "qankunari",
+                "GREET": "allillanmi...qankunari",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "",
+                "PP2DU": "qankunari"
+            },
+            "comment": "1. ASSERT : \"-mi\" FROM  \"allillanmi\".2. PROCESSIVE PREDICATE :None (No progressive marker here. \"Allillanmi\" is a stative declaration). 3.PP1SG :The \"-ni\" in \"allillanmi\" ."
+        },
+        "5": {
+            "legacy index": "5",
+            "cq": "Oh, we are fine too.",
+            "alternate_pivot": "",
+            "translation": "ah, \u00f1uqanchikpas allillanmi",
+            "concept_words": {
+                "ASSERT": "allillanmi",
+                "PROCESSIVE PREDICATE": "",
+                "PP1EXCDU": "\u00f1uqanchikpas"
+            },
+            "comment": "1. ASSERT: \"-mi\" . 2. PROCESSIVE PREDICATE. 3.\"\u00d1uqanchik\" can imply dual (\"we two\") or plural (\"we all\") depending on context. 4.The \"-pas\" emphasizes inclusion (\"too\"), creating a contrastive link to the previous statement."
+        },
+        "6": {
+            "legacy index": "6",
+            "cq": "Where are you going?",
+            "alternate_pivot": "",
+            "translation": "mayman riychik",
+            "concept_words": {
+                "ASK": "mayman",
+                "PROCESSIVE PREDICATE": "",
+                "spatial position wildcard": "mayman",
+                "going": "riychik",
+                "PP2DU": "riychik"
+            },
+            "comment": "1. ASK :Mayman\" (where-to) is inherently interrogative. 2.SPATIAL POSITION WILDCARD:\"-man\"-The directional suffix \"-man\" in mayman marks goal-oriented movement (\"to where?\"). 3.GOING -The root \"riy-\" means \"to go\" 4:PP2DU : \"-chik\"-The suffix \"-chik\" indicates 2nd person dual/plural (\"you two\" or \"you all\")."
+        },
+        "7": {
+            "legacy index": "7",
+            "cq": "Well, we\u2019re walking down to the river, over there.",
+            "alternate_pivot": "",
+            "translation": "pues, ch'isiyman purinchik, chay llaqtaman",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1EXCDU": "purinchik",
+                "walking": "purinchik",
+                "river": "ch'isiyman"
+            },
+            "comment": "1. ASSERT :Implicit- IN Quechua we often omits assertion markers in declarative sentences. 2.PP1EXCDU :The suffix \"-nchik\" marks 1st person plural inclusive 3.WALKING:he root \"puri-\" means \"to walk\" or \"to travel. "
+        },
+        "8": {
+            "legacy index": "8a",
+            "cq": "What for?",
+            "alternate_pivot": "",
+            "translation": "imanrayku",
+            "concept_words": {
+                "ASK": "imanrayku",
+                "PROCESSIVE PREDICATE": "",
+                "causality wildcard": "imanrayku"
+            },
+            "comment": "The suffix \"-rayku\" is the causality marker, "
+        },
+        "9": {
+            "legacy index": "8b",
+            "cq": "Are you going to be bathing?",
+            "alternate_pivot": "",
+            "translation": "armakunankichik",
+            "concept_words": {
+                "ASK": "",
+                "PROCESSIVE PREDICATE": "armakunankichik",
+                "PP2DU": "armakunankichik",
+                "bathing": "armakunankichik"
+            },
+            "comment": "1.PROCESSIVE PRED:\t\"-nki-\"-Future tense (\"will bathe\"). 2.PP2DU:\"-chik\"-2nd person dual (\"you two\").3.BATHING:\"armaku-\":Reflexive verb"
+        },
+        "10": {
+            "legacy index": "9",
+            "cq": "No, no! We won\u2019t be bathing.",
+            "alternate_pivot": "",
+            "translation": "manam, manam! manaraq armakunanchikchu",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "armakunanchikchu",
+                "Negative Polarity": "manam...armakunanchikchu",
+                "bathing": "armakunanchikchu",
+                "PP1EXCDU": "armakunanchikchu"
+            },
+            "comment": "ASSERT;\tImplied by manam + -chu. 2.NEGATIVE POLARITY: manam + -chu 3.BATHING :armaku- 4.PP1EXCDU:\t-nchik"
+        },
+        "11": {
+            "legacy index": "10",
+            "cq": "We\u2019re going fishing.",
+            "alternate_pivot": "",
+            "translation": "challwaman risunchik",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1EXCDU": "risunchik",
+                "going": "risunchik",
+                "fishing": "challwaman"
+            },
+            "comment": "1. Word contributing to ASSERT: None (implied by the declarative structure). 2.PROGRESSIVE PREDICATE:   IN QuechuaWE does not have a direct progressive tense like English (\"-ing\"), but ongoing action can be inferred from context or with auxiliary verbs. Here, \"-nchik\" (first-person plural inclusive) indicates present/future action. 3.PP1EXCDU :\"-nchik\" = 1st-person plural INCLUSIVE (we + you)."
+        },
+        "12": {
+            "legacy index": "11",
+            "cq": "We\u2019ll try to catch some river fish for dinner.",
+            "alternate_pivot": "",
+            "translation": "mayu challwata jap'inaykupaq ch'isi mikhuyninchikpaq",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1EXCDU": "",
+                "trying": "jap'inaykupaq",
+                "catching": "jap'inaykupaq",
+                "fish": "challwata",
+                "dinner": "ch'isi...mikhuyninchikpaq"
+            },
+            "comment": "1. ASSERT: In this we doesn't use separate assertion markers - the declarative verb form itself makes the assertion. 2.PROGRESSIVE PREDICATE :The sentence doesn't express progressive/continuous action. 3.PP1EXCDU ;The sentence uses the impersonal/purposive construction \"-nayku\" which doesn't mark person exclusivity. 4. trying ;Contributing words: \"jap'inayku-\". 6 : dinner : \"ch'isi mikhuyninchikpaq\"<\"Ch'isi mikhuyninchikpaq\" is a natural way to say \"for our dinner\" (literally \"for our night eating\").>"
+        },
+        "13": {
+            "legacy index": "12a",
+            "cq": "Oh I see.",
+            "alternate_pivot": "",
+            "translation": "ah, riqsini\u00f1a",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "ah",
+                "APPRECIATIVE PREDICATE": ""
+            },
+            "comment": "The phrase is natural but neutral\u2014it confirms understanding without added appreciation."
+        },
+        "14": {
+            "legacy index": "12b",
+            "cq": "Is there a celebration in the village?",
+            "alternate_pivot": "",
+            "translation": "llaqtach\u00e1 raymikunachu kan",
+            "concept_words": {
+                "ASK": "raymikunachu",
+                "EXISTENTIAL PREDICATE": "kan",
+                "celebration": "raymikunachu",
+                "village": "llaqtach\u00e1"
+            },
+            "comment": "ASK: The suffix \"-chu\" is the primary question marker in Quechua translation."
+        },
+        "15": {
+            "legacy index": "13",
+            "cq": "I didn\u2019t know.",
+            "alternate_pivot": "",
+            "translation": "mana yachanichu",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "Negative Polarity": "mana",
+                "knowing": "yachanichu",
+                "PP1SG": "yachanichu"
+            },
+            "comment": "The full morphological  is: mana + yacha + ni + chu =NEG + know + 1SG + NEG"
+        },
+        "16": {
+            "legacy index": "14",
+            "cq": "No, there\u2019s no celebration.",
+            "alternate_pivot": "",
+            "translation": "manan, manan raymikunachu kan",
+            "concept_words": {
+                "ASSERT": "manan",
+                "EXISTENTIAL PREDICATE": "kan",
+                "Negative Polarity": "manan...raymikunachu",
+                "celebration": "raymikunachu"
+            },
+            "comment": "The double \"manan\" is emphatic - a single \"manan\" would be grammatically sufficient but less forceful  The structure follows Quechua's standard negative existential pattern: [NEG] + [NP] + [NEG] + [existential verb]."
+        },
+        "17": {
+            "legacy index": "15",
+            "cq": "We just need food for our family.",
+            "alternate_pivot": "",
+            "translation": "\u00f1oqanchikpaq mikhuynalla munayku ayllunchikpaq",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1EXCDU": "munayku",
+                "needing": "munayku",
+                "food": "mikhuynalla",
+                "family": "ayllunchikpaq"
+            },
+            "comment": "Inclusive/Exclusive Nuance:  The speaker's group (\"we\") excludes the listener in the act of wanting (\"-yku\"), but the food is for a group that includes the listener (\"-nchik\" in \"ayllunchikpaq\")."
+        },
+        "18": {
+            "legacy index": "16",
+            "cq": "My wife had bought a chicken at the market the other day",
+            "alternate_pivot": "",
+            "translation": "warmiy qayna p'unchaypi qhatupi wallpata rantirqan",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "warmiy",
+                "wife": "warmiy",
+                "buying": "rantirqan",
+                "chicken": "wallpata",
+                "market": "qhatupi",
+                "the other day": "qayna...p'unchaypi"
+            },
+            "comment": "Tense Clarity:  \"-rqa-\" marks the action as completed in the remote past (\"had bought\").  Possession:  The \"-y\" in \"warmiy\" is crucial for indicating \"my wife\" (not just \"the wife\").  Loanword Transparency:  \"Qhatu\" (market) is an Aymara loan but universally understood in rural Cusco Quechua.  Pure Quechua Alternatives:  For \"market,\" \"rantinakuy wasi\" (trading place) exists but sounds unnatural in daily speech.  Glottal Stop Importance:  \"P\u2019unchay\" (with glottal stop) is the correct Cusco spelling (vs. punchaw)."
+        },
+        "19": {
+            "legacy index": "17",
+            "cq": "but our children ate it all already",
+            "alternate_pivot": "",
+            "translation": "chaywanpas wawasunchik llapanta \u00f1a mikhorqanku",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "BUT": "chaywanpas",
+                "children": "wawasunchik",
+                "eating": "mikhorqanku",
+                "already": "\u00f1a",
+                "PP1EXCDU": "",
+                "Ref_1_object": "llapanta"
+            },
+            "comment": "The full morphological of our sentence is: chay-wan-pas wawa-sun-chik llapan-ta \u00f1a mikhu-rqa-nku =that-with-but child-our.PL.INCL all-ACC already eat-PAST-3PL .The inclusive plural \"-nchik\" indicates the children belong to both speaker and listener's group.The past tense marker \"-rqa-\" indicates this was completed before the current moment"
+        },
+        "20": {
+            "legacy index": "18",
+            "cq": "now we have nothing left at home!",
+            "alternate_pivot": "",
+            "translation": "kunan wasiman mana imapas qhipanchik",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "qhipanchik",
+                "PP1EXCDU": "qhipanchik",
+                "possessing": "qhipanchik",
+                "nothing left": "mana...imapas...qhipanchik",
+                "home": "wasiman"
+            },
+            "comment": "The verb qhipa- implies an ongoing state (\"is left\"), fitting a progressive/stative meaning.The suffix -nchik marks 1st person plural inclusive.The same suffix -nchik also indicates possession.The full phrase mana imapas (\"not anything\") + qhipa- (\"remain\") = \"nothing left.\"The noun wasi means \"home/house.\""
+        },
+        "21": {
+            "legacy index": "19",
+            "cq": "Besides, we don\u2019t have enough money anymore.",
+            "alternate_pivot": "",
+            "translation": "yapas, mana\u00f1an qullqiyuq kanchik",
+            "concept_words": {
+                "ASSERT": "",
+                "EXISTENTIAL PREDICATE": "kanchik",
+                "Negative Polarity": "mana\u00f1an",
+                "PP1EXCDU": "kanchik",
+                "possessing": "qullqiyuq",
+                "money": "qullqiyuq",
+                "anymore": "mana\u00f1an"
+            },
+            "comment": "1. ASSERT:(Implied by context).2. EXISTENTIAL PREDICATE:The verb kanchik (from kay, \"to be\") functions as an existential predicate.3. NEGATIVE POLARITY : mana\u00f1an 4. PP1EXCDU ;The suffix -nchik marks 1st person plural inclusive. 5. POSSESSING :-yuq = possessive suffix .6.ANYMORE:The suffix -\u00f1a marks a change of state."
+        },
+        "22": {
+            "legacy index": "20",
+            "cq": "We really have to go fishing today.",
+            "alternate_pivot": "",
+            "translation": "unay\u00f1a challwakuyman ripushananchik",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "ripushananchik",
+                "PP1EXCDU": "ripushananchik",
+                "having to": "ripushananchik",
+                "fishing": "challwakuyman",
+                "going": "ripushananchik",
+                "today": "unay\u00f1a"
+            },
+            "comment": "PP1EXCDU :-nchik in \"ripushananchik\" (-nchik = 1st person plural inclusive) 2.HAVING TO:The suffix -shana expresses obligation 3. GOING:From the verb ripuy (\"to go\")."
+        },
+        "23": {
+            "legacy index": "21",
+            "cq": "I understand.",
+            "alternate_pivot": "",
+            "translation": "hamut'ani",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "hamut'ani"
+            },
+            "comment": "The glottal stop in hamut'a- is crucial in Cusco Quechua"
+        },
+        "24": {
+            "legacy index": "22",
+            "cq": "I\u2019m sorry that you have no food left.",
+            "alternate_pivot": "",
+            "translation": "llakikuyki mana mikhunayki kasqanmanta",
+            "concept_words": {
+                "ASSERT": "",
+                "ATTRIBUTIVE PREDICATE": "llakikuyki",
+                "Negative Polarity": "mana...kasqanmanta",
+                "PP1SG": "",
+                "PP2PLU": "mikhunayki",
+                "being sorry": "llakikuyki",
+                "possessing": "mikhunayki",
+                "food": "mikhunayki"
+            },
+            "comment": "1. ASSERT :The verb llakikuyki inherently asserts the speaker's emotional state. 2. ATTRIBUTIVE PREDICATE :From llakikuy (\"to feel sadness\") + -ki (2nd person object). 3. NEGATIVE POLARITY:mana = negation marker (\"not\") kasqa-n = past existential. 4. PP1SG :The verb llakikuyki implies 1st person subject . 5. PP2PLU : While -yki is technically 2nd person ."
+        },
+        "25": {
+            "legacy index": "23",
+            "cq": "I can help you, my friends.",
+            "alternate_pivot": "",
+            "translation": "yanapaykiman, masikuna",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP1SG": "yanapaykiman",
+                "being able to": "yanapaykiman",
+                "helping": "yanapaykiman",
+                "PP2DU": ""
+            },
+            "comment": "1. ASSERT :The verb yanapaykiman inherently asserts capability. 2. PROCESSIVE PREDICATE :The sentence expresses potential ability, not ongoing action. 3.3. PP1SG :The suffix -man (potential) + absence of explicit subject marker \u2192 defaults to 1st person singular (\"I\") 4.BEING ABLE TO :Yanapay (help) + -ki (you) + -man (can) \u2192 \"I can help you\" 5.HELPING:Root verb yanapay "
+        },
+        "26": {
+            "legacy index": "24",
+            "cq": "My husband and I, we have lots of vegetables from our garden.",
+            "alternate_pivot": "",
+            "translation": "qusanwanmi, chakranchikmanta achka yuyu uywakunata qarqun",
+            "concept_words": {
+                "ASSERT": "qusanwanmi",
+                "ATTRIBUTIVE PREDICATE": "qarqun",
+                "AND": "qusanwanmi",
+                "husband": "qusanwanmi",
+                "PP1SG": "",
+                "possessing": "chakranchikmanta",
+                "vegetables": "yuyu...uywakunata",
+                "garden": "chakranchikmanta",
+                "PP1EXCDU": "chakranchikmanta"
+            },
+            "comment": "1. ASSERT: -mi in qusanwanmi . 2.ATTRIBUTIVE PREDICATE :The verb qarqun (from qarpuy) functions as an attributive predicate. 3.AND ;The comitative suffix -wan (\"with\") functions similarly to \"and\" in this context. 4.POSSESSING :-nchik in chakranchik (\"our garden\") . 5.GARDEN :chakra 6.PP1EXCDU :The suffix -nchik marks inclusive \"we\" ."
+        },
+        "27": {
+            "legacy index": "25",
+            "cq": "which he harvested yesterday, and brought home.",
+            "alternate_pivot": "",
+            "translation": "qayna punchawmi pallarqun, wasiman apamurqan",
+            "concept_words": {
+                "ASSERT": "punchawmi",
+                "PROCESSIVE PREDICATE": "",
+                "PP3SG": "pallarqun...apamurqan",
+                "harvesting": "pallarqun",
+                "AND": "",
+                "bringing": "apamurqan",
+                "home": "wasiman",
+                "Ref_many_objects": "",
+                "yesterday": "qayna...punchawmi"
+            },
+            "comment": "Dialectal Features:  -rqu/-rqa past markers are characteristic of Cusco Quechua  -mu cislocative implies motion toward speaker's location  Implicit Elements:  Subject (3SG) is inferred from context (likely \"he\" or \"she\")  Harvested objects are contextually understood"
+        },
+        "28": {
+            "legacy index": "26",
+            "cq": "If you want, we can give you some.",
+            "alternate_pivot": "",
+            "translation": "munaspaq, qoquyta atinman",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "CONDITION": "munaspaq",
+                "PP2DU": "",
+                "wanting": "munaspaq",
+                "PP1EXCDU": "",
+                "being able to": "atinman",
+                "giving": "qoquyta",
+                "Ref_many_objects": "",
+                "some": ""
+            },
+            "comment": "1. ASSERT : (Implied in main clause) 2:PROCESSIVE PREDICATE :The sentence expresses potential ability, not ongoing action. 3.CONDITION : Munay (to want) + -spa (conditional/subordinator) + -q (2SG subject) 4.PP2DU : -q in munaspaq marks 2nd person singular 5.BEING ABLE TO :Atiy (to be able) + -n (3SG) + -man (potential mood)"
+        },
+        "29": {
+            "legacy index": "27",
+            "cq": "Oh really? Thank you very much!",
+            "alternate_pivot": "",
+            "translation": "wirqaq? a\u00f1ay chanin qusqayki",
+            "concept_words": {
+                "THANK": "a\u00f1ay"
+            },
+            "comment": ""
+        },
+        "30": {
+            "legacy index": "28",
+            "cq": "You\u2019re welcome.",
+            "alternate_pivot": "",
+            "translation": "mana imapas",
+            "concept_words": {
+                "ACKNOWLEDGE THANK": "mana...imapas"
+            },
+            "comment": ""
+        },
+        "31": {
+            "legacy index": "29a",
+            "cq": "You\u2019ll give us some vegetables",
+            "alternate_pivot": "",
+            "translation": "yuyu uywakunata qoquwanchik",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "PP2DU": "",
+                "PP1PLU": "qoquwanchik",
+                "giving": "qoquwanchik",
+                "vegetables": "yuyu...uywakunata"
+            },
+            "comment": "PP2DU: -wa in qoquwa- implies 2nd person object (\"to you\"). PROCESSIVE PREDICATE :The sentence uses future tense, not progressive. ASSERT :(Implied by future tense)The future suffix -nchik inherently asserts the action."
+        },
+        "32": {
+            "legacy index": "29b",
+            "cq": "and we\u2019ll give you some fish.",
+            "alternate_pivot": "",
+            "translation": "\u00f1oqanchikmi challwata qoquwanchik",
+            "concept_words": {
+                "ASSERT": "\u00f1oqanchikmi",
+                "PROCESSIVE PREDICATE": "",
+                "PP1EXCDU": "",
+                "PP2PLU": "qoquwanchik",
+                "fish": "challwata",
+                "AND": "",
+                "giving": "qoquwanchik"
+            },
+            "comment": "1. ASSERT :The assertive clitic -mi attached to \u00f1oqanchik marks this as a committed promise. 2.PROCESSIVE PREDICATE :The future suffix -nchik marks intention, not ongoing action .3. PP1EXCDU ;-nchik marks 1st person plural inclusive .4.PP2PLU:The benefactive -wa- implies \"to you\". 5: GIVING:Contributing Word: qoqu-"
+        },
+        "33": {
+            "legacy index": "30",
+            "cq": "Tonight we will all eat together.",
+            "alternate_pivot": "",
+            "translation": "ch'isi tuta llapallanchik mikhushun",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "tonight": "ch'isi...tuta",
+                "PP1PLU": "llapallanchik",
+                "eating": "mikhushun",
+                "together": "llapallanchik"
+            },
+            "comment": "1. ASSERT :The future suffix -shun inherently asserts the action. 2.PROCESSIVE PREDICATE:The sentence uses future intentional tense, not progressive. 3.TONIGHT: ch\u2019isi tuta 4.PP1PLU :-nchik 5.EATING ; mikhu- "
+        },
+        "34": {
+            "legacy index": "31",
+            "cq": "Great! Good bye!",
+            "alternate_pivot": "",
+            "translation": "allinmi! tupananakama",
+            "concept_words": {
+                "PART": "allinmi"
+            },
+            "comment": "The enclitic -mi in Allinmi  functions as an affirmative particle"
+        },
+        "35": {
+            "legacy index": "32",
+            "cq": "See you later!",
+            "alternate_pivot": "",
+            "translation": "huk kutilla rikunanakama",
+            "concept_words": {
+                "PART": "kutilla"
+            },
+            "comment": "The enclitic -lla in kutilla functions as a limitative/emphasis particle"
+        }
+    },
+    "interviewer": "JULIA",
+    "interviewee": "MUNER",
+    "recording_uid": "1743873235"
+}

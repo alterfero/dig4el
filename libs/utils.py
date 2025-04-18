@@ -80,9 +80,6 @@ def normalize_sentence(sentence):
     sentence = sentence.replace("  ", " ")
 
     return sentence
-
-
-    return sentence
 def list_folders(directory):
     """Lists all folders in the specified directory."""
     folders = []
@@ -124,113 +121,114 @@ def tokenize(sentence):
     """Tokenize a sentence."""
     return sentence.lower().split()
 
-def get_word_stats(recordings_list):
-    word_stats = {}
-    word_count = 0
-    for entry in recordings_list:
-        cl_sent = clean_sentence(entry["recording"])
-        for word in cl_sent.split():
-            if word not in word_stats:
-                word_stats[word] = 0
-            word_stats[word] += 1
-            word_count += 1
-    for word in word_stats:
-        word_stats[word] = word_stats[word] / word_count * 1000 # frequency per 1000 words
-    return word_stats
 
-def get_Ngrams_stats_from_recording(recordings_list):
-    """Get characters bigrams and trigrams frequencies from words from a list of recordings."""
-    monograms = {}
-    bigrams = {}
-    trigrams = {}
-    tetragrams = {}
-    monograms_count = 0
-    bigrams_count = 0
-    trigrams_count = 0
-    tetragrams_count = 0
-    for entry in recordings_list:
-        for word in tokenize(clean_sentence(entry["recording"])):
-            for char in word:
-                monograms_count += 1
-                if char not in monograms:
-                    monograms[char] = 0
-                monograms[char] += 1
-            if len(word) > 1:
-                for i in range(len(word) - 1):
-                    bigrams_count += 1
-                    bigram = word[i:i + 2]
-                    if bigram not in bigrams:
-                        bigrams[bigram] = 0
-                    bigrams[bigram] += 1
-            if len(word) > 2:
-                for i in range(len(word) - 2):
-                    trigrams_count += 1
-                    trigram = word[i:i + 3]
-                    if trigram not in trigrams:
-                        trigrams[trigram] = 0
-                    trigrams[trigram] += 1
-            if len(word) > 3:
-                for i in range(len(word) - 3):
-                    tetragrams_count += 1
-                    tetragram = word[i:i + 4]
-                    if tetragram not in trigrams:
-                        tetragrams[tetragram] = 0
-                    tetragrams[tetragram] += 1
-    for char in monograms:
-        monograms[char] = monograms[char] / monograms_count * 1000
-    for bigram in bigrams:
-        bigrams[bigram] = bigrams[bigram] / bigrams_count * 1000
-    for trigram in trigrams:
-        trigrams[trigram] = trigrams[trigram] / trigrams_count * 1000
-    for tetragram in tetragrams:
-        tetragrams[tetragram] = tetragrams[tetragram] / tetragrams_count * 1000
-    return {
-        "monograms": monograms,
-        "bigrams": bigrams,
-        "trigrams": trigrams,
-        "tetragrams": tetragrams,
-    }
+# def get_word_stats(recordings_list):
+#     word_stats = {}
+#     word_count = 0
+#     for entry in recordings_list:
+#         cl_sent = clean_sentence(entry["recording"])
+#         for word in cl_sent.split():
+#             if word not in word_stats:
+#                 word_stats[word] = 0
+#             word_stats[word] += 1
+#             word_count += 1
+#     for word in word_stats:
+#         word_stats[word] = word_stats[word] / word_count * 1000 # frequency per 1000 words
+#     return word_stats
+#
+# def get_Ngrams_stats_from_recording(recordings_list):
+#     """Get characters bigrams and trigrams frequencies from words from a list of recordings."""
+#     monograms = {}
+#     bigrams = {}
+#     trigrams = {}
+#     tetragrams = {}
+#     monograms_count = 0
+#     bigrams_count = 0
+#     trigrams_count = 0
+#     tetragrams_count = 0
+#     for entry in recordings_list:
+#         for word in tokenize(clean_sentence(entry["recording"])):
+#             for char in word:
+#                 monograms_count += 1
+#                 if char not in monograms:
+#                     monograms[char] = 0
+#                 monograms[char] += 1
+#             if len(word) > 1:
+#                 for i in range(len(word) - 1):
+#                     bigrams_count += 1
+#                     bigram = word[i:i + 2]
+#                     if bigram not in bigrams:
+#                         bigrams[bigram] = 0
+#                     bigrams[bigram] += 1
+#             if len(word) > 2:
+#                 for i in range(len(word) - 2):
+#                     trigrams_count += 1
+#                     trigram = word[i:i + 3]
+#                     if trigram not in trigrams:
+#                         trigrams[trigram] = 0
+#                     trigrams[trigram] += 1
+#             if len(word) > 3:
+#                 for i in range(len(word) - 3):
+#                     tetragrams_count += 1
+#                     tetragram = word[i:i + 4]
+#                     if tetragram not in trigrams:
+#                         tetragrams[tetragram] = 0
+#                     tetragrams[tetragram] += 1
+#     for char in monograms:
+#         monograms[char] = monograms[char] / monograms_count * 1000
+#     for bigram in bigrams:
+#         bigrams[bigram] = bigrams[bigram] / bigrams_count * 1000
+#     for trigram in trigrams:
+#         trigrams[trigram] = trigrams[trigram] / trigrams_count * 1000
+#     for tetragram in tetragrams:
+#         tetragrams[tetragram] = tetragrams[tetragram] / tetragrams_count * 1000
+#     return {
+#         "monograms": monograms,
+#         "bigrams": bigrams,
+#         "trigrams": trigrams,
+#         "tetragrams": tetragrams,
+#     }
 
-def list_all_recordings_in_language_l(language):
-    questionnaires_folder = "../questionnaires"
-    recordings_folder = "../recordings"
-    recordings = []
-    cq_json_list = [f for f in listdir(questionnaires_folder) if
-                    isfile(join(questionnaires_folder, f)) and f.endswith(".json")]
-    for cq in cq_json_list:
-        # determine if there is a folder with the same name as the CQ in ./recordings
-        if cq[:-5] in listdir(recordings_folder):
-            available_languages = listdir(recordings_folder + "/" + cq[:-5])
-            if language in available_languages:
-                recordings = listdir(join(recordings_folder, cq[:-5], language))
-                if ".DS_Store" in recordings:
-                    recordings.remove(".DS_Store")
-    return recordings
+# def list_all_recordings_in_language_l(language):
+#     questionnaires_folder = "../questionnaires"
+#     recordings_folder = "../recordings"
+#     recordings = []
+#     cq_json_list = [f for f in listdir(questionnaires_folder) if
+#                     isfile(join(questionnaires_folder, f)) and f.endswith(".json")]
+#     for cq in cq_json_list:
+#         # determine if there is a folder with the same name as the CQ in ./recordings
+#         if cq[:-5] in listdir(recordings_folder):
+#             available_languages = listdir(recordings_folder + "/" + cq[:-5])
+#             if language in available_languages:
+#                 recordings = listdir(join(recordings_folder, cq[:-5], language))
+#                 if ".DS_Store" in recordings:
+#                     recordings.remove(".DS_Store")
+#     return recordings
 
-def clean_recordings():
-    questionnaires_folder = "../questionnaires"
-    recordings_folder = "../recordings"
-    recordings = []
-    cq_json_list = [f for f in listdir(questionnaires_folder) if
-                    isfile(join(questionnaires_folder, f)) and f.endswith(".json")]
-    for cq in cq_json_list:
-        # determine if there is a folder with the same name as the CQ in ./recordings
-        if cq[:-5] in listdir(recordings_folder):
-            available_languages = listdir(recordings_folder + "/" + cq[:-5])
-            if ".DS_Store" in available_languages:
-                available_languages.remove(".DS_Store")
-            for language in available_languages:
-                recordings = listdir(join(recordings_folder, cq[:-5], language))
-                if ".DS_Store" in recordings:
-                    recordings.remove(".DS_Store")
-                for recording in recordings:
-                    recording_json = json.load(open(join(recordings_folder, cq[:-5], language, recording)))
-                    for item in recording_json["data"]:
-                        recording_json["data"][item]["translation"] = (
-                            normalize_sentence(recording_json["data"][item]["translation"]))
-                        for concept_word in recording_json["data"][item]["concept_words"]:
-                            recording_json["data"][item]["concept_words"][concept_word] = (
-                                normalize_sentence(recording_json["data"][item]["concept_words"][concept_word]))
-                    with open(join(recordings_folder, cq[:-5], language, recording), "w") as f:
-                        json.dump(recording_json, f, indent=4)
-                        print("Recording {} cleaned".format(recording))
+# def clean_recordings():
+#     questionnaires_folder = "../questionnaires"
+#     recordings_folder = "../recordings"
+#     recordings = []
+#     cq_json_list = [f for f in listdir(questionnaires_folder) if
+#                     isfile(join(questionnaires_folder, f)) and f.endswith(".json")]
+#     for cq in cq_json_list:
+#         # determine if there is a folder with the same name as the CQ in ./recordings
+#         if cq[:-5] in listdir(recordings_folder):
+#             available_languages = listdir(recordings_folder + "/" + cq[:-5])
+#             if ".DS_Store" in available_languages:
+#                 available_languages.remove(".DS_Store")
+#             for language in available_languages:
+#                 recordings = listdir(join(recordings_folder, cq[:-5], language))
+#                 if ".DS_Store" in recordings:
+#                     recordings.remove(".DS_Store")
+#                 for recording in recordings:
+#                     recording_json = json.load(open(join(recordings_folder, cq[:-5], language, recording)))
+#                     for item in recording_json["data"]:
+#                         recording_json["data"][item]["translation"] = (
+#                             normalize_sentence(recording_json["data"][item]["translation"]))
+#                         for concept_word in recording_json["data"][item]["concept_words"]:
+#                             recording_json["data"][item]["concept_words"][concept_word] = (
+#                                 normalize_sentence(recording_json["data"][item]["concept_words"][concept_word]))
+#                     with open(join(recordings_folder, cq[:-5], language, recording), "w") as f:
+#                         json.dump(recording_json, f, indent=4)
+#                         print("Recording {} cleaned".format(recording))

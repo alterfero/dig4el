@@ -1,0 +1,522 @@
+{
+    "target language": "Quechua (Cuzco)",
+    "delimiters": [
+        " ",
+        ".",
+        ",",
+        ";",
+        ":",
+        "!",
+        "?",
+        "\u2026"
+    ],
+    "pivot language": "English",
+    "cq_uid": "1716403492",
+    "data": {
+        "1": {
+            "legacy index": "1a",
+            "cq": "Hey, you know what?",
+            "alternate_pivot": "",
+            "translation": "yaw, yachankichu",
+            "concept_words": {
+                "OPEN CONVERSATION": "yaw"
+            },
+            "comment": " \"Yaw\" is a casual interjection like \"Hey.\" \"Yachankichu?\" = \"Do you know?\""
+        },
+        "2": {
+            "legacy index": "1b",
+            "cq": "In two months\u2019 time, we\u2019ll have celebrations for the New Year.",
+            "alternate_pivot": "",
+            "translation": "iskay killa chaymanta, musuq wataypaq kuskalla kuska raykuykuchkanchik",
+            "concept_words": {
+                "ASSERT": "raykuykuchkanchik",
+                "EXISTENTIAL PREDICATE": "",
+                "existing": "raykuykuchkanchik",
+                "celebration": "raykuykuchkanchik",
+                "IN FUTURE DIRECTION": "raykuykuchkanchik",
+                "month": "killa",
+                "new year": "musuq...wataypaq"
+            },
+            "comment": "\u201cIskay killa chaymanta\u201d = in two months from now. \u201cMusuq Watay\u201d = New Year , \u201craykuy\u201d = festival or celebration. In Quechua cuzco language we often uses suffix chains to express tense, aspect, and mood. In this case, -chkanchik expresses future progressive and assertion, covering concepts like assert, existing, and in future direction.  The existential sense (\"there will be\") is implied through the verb rather than a standalone existential verb."
+        },
+        "3": {
+            "legacy index": "2a",
+            "cq": "Oh, that\u2019s right.",
+            "alternate_pivot": "",
+            "translation": "ari, chiqaqmi",
+            "concept_words": {
+                "APPROVE": "ari...chiqaqmi"
+            },
+            "comment": ""
+        },
+        "4": {
+            "legacy index": "2b",
+            "cq": "This time, the people from village X will all be coming to our community.",
+            "alternate_pivot": "",
+            "translation": "kay kutita, llaqtapaq x-manta runakuna llapallan hamunqa",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "this time": "kay...kutita",
+                "people": "runakuna",
+                "village X": "x-manta",
+                "coming": "hamunqa",
+                "community": "llaqtapaq",
+                "PP1PLU": ""
+            },
+            "comment": "No explicit assertion marker (-mi): Common in informal speech.  No progressive aspect: The future tense (hamunqa) suffices here.  Possessive subtlety: Llaqtapaq already includes -nchik (\"our\").  \"All\" implied: Llapallan = \"all of them\" (emphasizes entirety)."
+        },
+        "5": {
+            "legacy index": "3",
+            "cq": "men and women, children, old people, entire families\u2026",
+            "alternate_pivot": "",
+            "translation": "qhari, warmi, wawa, machu, llapa ayllun\u2026",
+            "concept_words": {
+                "ASSERT": "",
+                "EXISTENTIAL PREDICATE": "",
+                "men": "qhari",
+                "women": "warmi",
+                "children": "wawa",
+                "old people": "machu",
+                "families": "llapa...ayllun"
+            },
+            "comment": "The sentence is a noun list without verbs or suffixes that assert or indicate existence.Llapa ayllun emphasizes that entire family groups are included, not just individuals."
+        },
+        "6": {
+            "legacy index": "4",
+            "cq": "We should welcome them in a friendly way",
+            "alternate_pivot": "",
+            "translation": "\u00f1uqanchikmi allin kawsaywan riqsichinqa",
+            "concept_words": {
+                "EXPRESS DUTY (DEONTIC)": "riqsichinqa",
+                "PROCESSIVE PREDICATE": "riqsichinqa",
+                "PP1PLU": "\u00f1uqanchikmi",
+                "welcoming": "riqsichinqa",
+                "PP3PLU": "",
+                "friendly way": "allin...kawsaywan"
+            },
+            "comment": "\u201callin kawsaywan\u201d = with kindness/good living, \u201criqsichinqa\u201d = we will welcome/show ourselves to them."
+        },
+        "7": {
+            "legacy index": "5",
+            "cq": "just like they did to us last year",
+            "alternate_pivot": "",
+            "translation": "qanqanchikta hinataq \u00f1awpaq watapi qankunapas ruwarqankichik",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "COMP-EQUAL": "hinataq",
+                "doing": "ruwarqankichik",
+                "PP1PLU": "qanqanchikta",
+                "PP3PLU": "ruwarqankichik",
+                "last year": "\u00f1awpaq...watapi",
+                "event wildcard": "ruwarqankichik"
+            },
+            "comment": "No assertion marker: Common in subordinate clauses (e.g., comparisons).  Inclusivity: Qanqanchikta emphasizes the communal \"us\" (speaker + listener).  Verb complexity: Ruwarqankichik combines:  ruwa- (do) + -rqa- (past) + -nkichik (3pl subject acting on 1pl object).  Temporal precision: \u00d1awpaq watapi is the idiomatic way to say \"last year.\""
+        },
+        "8": {
+            "legacy index": "6a",
+            "cq": "Yes of course",
+            "alternate_pivot": "",
+            "translation": "ar\u00ed, chaymi kananri",
+            "concept_words": {
+                "APPROVE": "ar\u00ed...chaymi...kananri",
+                "APPRECIATIVE PREDICATE": "chaymi"
+            },
+            "comment": " Added \"kananri\" for emphasis (definitely / of course)."
+        },
+        "9": {
+            "legacy index": "6b",
+            "cq": "like we always do",
+            "alternate_pivot": "",
+            "translation": "\u00f1awpaqmantapas hinallataq",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "",
+                "COMP-EQUAL": "hinallataq",
+                "PP1PLU": "",
+                "doing": "",
+                "always": "\u00f1awpaqmantapas",
+                "event wildcard": "\u00f1awpaqmantapas...hinallataq"
+            },
+            "comment": " \"\u00d1awpaqmanta\" = \"since before,\" \"hinallataq\" = \"exactly like that.\""
+        },
+        "10": {
+            "legacy index": "7",
+            "cq": "Our leaders will start with a welcome speech.",
+            "alternate_pivot": "",
+            "translation": "umalliqninchikkunaqa allin chaskisqa rimaywanmi qallarinqaku",
+            "concept_words": {
+                "ASSERT": "rimaywanmi",
+                "PROCESSIVE PREDICATE": "",
+                "PP1PLU": "umalliqninchikkunaqa",
+                "leaders": "umalliqninchikkunaqa",
+                "starting": "qallarinqaku",
+                "welcome speech": "chaskisqa...allin...rimaywanmi",
+                "Ref_Event": "umalliqninchikkunaqa...allin...chaskisqa...rimaywanmi...qallarinqaku"
+            },
+            "comment": "No progressive aspect: The action is framed as a future definitive act (qallarinqaku).  Emphasis on collectivity: -ninchik (our) + -ku (collective) underscores communal participation.  Cultural nuance: Allin chaskisqa rimay implies a speech that is culturally validated, not just \"welcome.\"  Assertion marker placement: -mi attaches to rimaywan to emphasize the speech as the tool of opening."
+        },
+        "11": {
+            "legacy index": "8",
+            "cq": "Then, people will play in the morning.",
+            "alternate_pivot": "",
+            "translation": "chaymanta, paqarinpi runakuna pukllanakunku",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "pukllanakunku",
+                "then": "chaymanta",
+                "people": "runakuna",
+                "playing": "pukllanakunku",
+                "in the morning": "paqarinpi"
+            },
+            "comment": "The verb pukllanakunku carries the meaning they will (all) play or they play together, expressing a reciprocal or communal activity."
+        },
+        "12": {
+            "legacy index": "9",
+            "cq": "After that, we\u2019ll all share lunch together.",
+            "alternate_pivot": "",
+            "translation": "chay qhepamanmi llapanchis kuska mikhuykuna mikhusaqku",
+            "concept_words": {
+                "ASSERT": "qhepamanmi",
+                "PROCESSIVE PREDICATE": "mikhusaqku",
+                "AFTER X": "qhepamanmi",
+                "lunch": "mikhuykuna",
+                "together": "kuska",
+                "PP1PLU": "llapanchis",
+                "Ref_Event": "mikhuykuna",
+                "sharing": "mikhuykuna"
+            },
+            "comment": "The most commonly used term for \"lunch\" in Quechua is the loanword \"almuerzo.\" However, to keep the translation as pure as possible, we use \"mikhuykuna\" as an alternative. \"Mikhuykuna\" can be interpreted as meals or lunch in this context, ensuring a more authentic Quechua translation while maintaining clarity."
+        },
+        "13": {
+            "legacy index": "10",
+            "cq": "In the afternoon, I hope we can have songs and dances.",
+            "alternate_pivot": "",
+            "translation": "ch'isiyninpi, takikuna, tusuykunapas kananpaqmi",
+            "concept_words": {
+                "WISH": "",
+                "PROCESSIVE PREDICATE": "takikuna...tusuykunapas",
+                "in the afternoon": "ch'isiyninpi",
+                "hoping": "",
+                "experiencing": "",
+                "songs": "kananpaqmi",
+                "dances": "tusuykunapas",
+                "AND": "tusuykunapas",
+                "PP1SG": ""
+            },
+            "comment": "\"Ch\u2019isiyninpi\" provides the time context (in the afternoon).  \"takikuna\" refers to songs, while \"tusuykunapas\" refers to dances.  -pas connects the two nouns (songs and dances) in the sentence."
+        },
+        "14": {
+            "legacy index": "11",
+            "cq": "The people of X will sing their songs, dance their dances;",
+            "alternate_pivot": "",
+            "translation": "x llaqta runakunaqa takiyninkuta takinqaku, tusuyninkuta tusunqaku",
+            "concept_words": {
+                "ASSERT": "runakunaqa",
+                "PROCESSIVE PREDICATE": "takiyninkuta",
+                "people": "runakunaqa",
+                "PP3PLU": "takiyninkuta",
+                "AND": "",
+                "singing": "takiyninkuta",
+                "songs": "takiyninkuta",
+                "dancing": "tusuyninkuta",
+                "dances": "tusuyninkuta",
+                "village X": "x...llaqta"
+            },
+            "comment": "takiyninkuta and tusuyninkuta both use the -ninku suffix, which marks the reflexive or active process of the actions being carried out by the subject (the people).  The sentence reflects actions performed by the people of village X, emphasizing singing and dancing as activities."
+        },
+        "15": {
+            "legacy index": "12",
+            "cq": "we too, we shall sing our own songs, and do our own dances\u2026",
+            "alternate_pivot": "",
+            "translation": "\u00f1uqanchikpas, kikin takinchikkunata takisunchik, hinaspa tusunchikkunata ruwasun..",
+            "concept_words": {
+                "EXPRESS DUTY (DEONTIC)": "",
+                "PROCESSIVE PREDICATE": "takinchikkunata...tusunchikkunata",
+                "PP1PLU": "\u00f1uqanchikpas",
+                "too": "\u00f1uqanchikpas",
+                "singing": "takisunchik",
+                "songs": "takinchikkunata",
+                "dancing": "tusunchikkunata",
+                "dances": "tusunchikkunata",
+                "AND": "hinaspa"
+            },
+            "comment": "The sentence is in the future tense and expresses an action (singing and dancing) that we (the speakers) will do.  The -sunchik and -chikkuna suffixes indicate that the actions and objects (singing and dancing) are being performed by the 1st person plural (we).  The -pas suffix adds emphasis to \u00f1uqanchik, translating to something like as for us, we will sing and dance too."
+        },
+        "16": {
+            "legacy index": "13a",
+            "cq": "Yes, good idea.",
+            "alternate_pivot": "",
+            "translation": "ari, allinmi",
+            "concept_words": {
+                "APPROVE": "ari",
+                "APPRECIATIVE PREDICATE": "allinmi"
+            },
+            "comment": "Ari expresses approval, and allinmi is an appreciative predicate indicating that something is considered good or well."
+        },
+        "17": {
+            "legacy index": "13b",
+            "cq": "Everyone loves music and dance.",
+            "alternate_pivot": "",
+            "translation": "llapa runakuna taki, tusuyta munanku",
+            "concept_words": {
+                "ASSERT": "runakuna",
+                "PROCESSIVE PREDICATE": "taki...tusuyta",
+                "AND": "",
+                "everyone": "llapa...runakuna",
+                "loving": "munanku",
+                "music": "taki",
+                "dance": "tusuyta"
+            },
+            "comment": "Llapa runakuna means everyone, and munanku expresses they love, referring to all people.  Taki and tusuyta are both processive predicates in this sentence, describing the actions of loving music and dancing.  The connection of music and dance here reflects an inherent relationship, even though there is no explicit \"and\" word."
+        },
+        "18": {
+            "legacy index": "14",
+            "cq": "Then our elders will tell stories from the olden times, for the young to hear.",
+            "alternate_pivot": "",
+            "translation": "chaymanta, machukunanchik \u00f1awpaq willakuykunata willanqaku, waynakuna uyariyanankupaq",
+            "concept_words": {
+                "ASSERT": "willanqaku",
+                "PROCESSIVE PREDICATE": "willanqaku",
+                "PP1PLU": "machukunanchik",
+                "elders": "machukunanchik",
+                "telling": "willanqaku",
+                "stories": "willakuykunata",
+                "hearing": "uyariyanankupaq",
+                "youngs": "waynakuna"
+            },
+            "comment": "Chaymanta indicates a shift in the narrative (Then).  willanqaku (they will tell) shows the future action of the elders.  waynakuna uyariyanankupaq expresses the purpose of telling the stories \u2014 for the young to hear.  The structure of the sentence uses possessive pronouns and plural forms to indicate groups, actions, and intentions."
+        },
+        "19": {
+            "legacy index": "15a",
+            "cq": "This will be great.",
+            "alternate_pivot": "",
+            "translation": "sumaqmi kanqa",
+            "concept_words": {
+                "APPROVE": "sumaqmi",
+                "APPRECIATIVE PREDICATE": "sumaqmi"
+            },
+            "comment": "Sumaqmi is an appreciative predicate, emphasizing the beauty or goodness of something.  kanqa is the future tense of the verb kan (to be), which links the descriptive phrase to the subject of the sentence."
+        },
+        "20": {
+            "legacy index": "15b",
+            "cq": "They know so many stories.",
+            "alternate_pivot": "",
+            "translation": "achka willakuykunata yachanku",
+            "concept_words": {
+                "ASSERT": "yachanku",
+                "ATTRIBUTIVE PREDICATE": "yachanku",
+                "PP3PLU": "yachanku",
+                "knowing": "yachanku",
+                "so many": "achka",
+                "stories": "willakuykunata"
+            },
+            "comment": "Achka emphasizes the quantity of stories (so many).  willakuykunata refers to stories in the plural form, being the object of the verb knowing.  yachanku means they know, indicating the action that they are performing.  This sentence is expressing that \"they\" have knowledge of many stories, which is both assertive and descriptive."
+        },
+        "21": {
+            "legacy index": "16",
+            "cq": "And then, in the late afternoon, our two communities will part again.",
+            "alternate_pivot": "",
+            "translation": "hinaspa chaymanta, tuta qhipaman, iskay ayllunchikkuna t'aqanakunqaku",
+            "concept_words": {
+                "ASSERT": "t'aqanakunqaku",
+                "PROCESSIVE PREDICATE": "t'aqanakunqaku",
+                "then": "hinaspa",
+                "late afternoon": "tuta...qhipaman",
+                "communities": "ayllunchikkuna",
+                "two": "iskay",
+                "parting": "t'aqanakunqaku",
+                "again": "t'aqanakunqaku"
+            },
+            "comment": "Hinaspa marks a transition or sequence, meaning \"then.\"  tuta qhipaman gives the time context as \"late afternoon\" or \"in the evening.\"  iskay ayllunchikkuna refers to two communities.  t'aqanakunqaku means they will part, describing the action of separation or departure happening in the future.  kunqaku indicates that this action will occur again.  This sentence reflects a future event where two communities will separate again after an event in the late afternoon."
+        },
+        "22": {
+            "legacy index": "17",
+            "cq": "This will be the end of a day of celebration.",
+            "alternate_pivot": "",
+            "translation": "chaymi punchaw raykuykunapa tukuy",
+            "concept_words": {
+                "ASSERT": "tukuy",
+                "EQUATIVE PREDICATE": "chaymi",
+                "equating": "chaymi",
+                "END OF X": "tukuy",
+                "day of celebration": "punchaw...raykuykunapa",
+                "Ref_Event": ""
+            },
+            "comment": " \u201cPunchaw tukuy\u201d = end of the day; \u201craykuykuna\u201d = celebrations.This refers to the celebration or festivity (event) that is happening, with the suffix -pa indicating it is a direct object (the event being ended)."
+        },
+        "23": {
+            "legacy index": "18",
+            "cq": "Remember that you and I are in charge of the organization this year.",
+            "alternate_pivot": "",
+            "translation": "yuyariy, qamwan \u00f1oqam kay watapaq kamachikuq kani",
+            "concept_words": {
+                "ORDER": "yuyariy",
+                "PROCESSIVE PREDICATE": "kamachikuq",
+                "PP2SG": "qamwan",
+                "PP1INCDU": "\u00f1oqam",
+                "remembering": "yuyariy",
+                "being in charge of": "kamachikuq",
+                "organization": "watapaq",
+                "this year": "kay...watapaq"
+            },
+            "comment": " \"Kamachikuq\" = \"organizer\" (from kamay = to arrange)."
+        },
+        "24": {
+            "legacy index": "19-20",
+            "cq": "We should organize a meeting tomorrow morning in the community to tell our people what they should do",
+            "alternate_pivot": "",
+            "translation": "paqarin punchaw llaqtapi hu\u00f1unakusunmi, runakunaman willanaykupaq imata ruwanankupaq",
+            "concept_words": {
+                "EXPRESS DUTY (DEONTIC)": "willanaykupaq",
+                "PROCESSIVE PREDICATE": "ruwanankupaq",
+                "PP1INCDU": "hu\u00f1unakusunmi",
+                "organizing": "ruwanankupaq",
+                "meeting": "hu\u00f1unakusunmi",
+                "community": "llaqtapi",
+                "telling": "willanaykupaq",
+                "people": "runakunaman",
+                "event wildcard": "paqarin",
+                "doing": "ruwanankupaq"
+            },
+            "comment": "The phrase willanaykupaq indicates a duty to inform or convey information to the people, which is an important part of the sentence, emphasizing responsibility.  ruwanankupaq highlights the action of organizing or setting up the event.  hu\u00f1unakusunmi reflects the inclusive nature of the gathering, implying both the speaker and the listener are involved.  llaqtapi indicates the community setting for the action.  runakunaman emphasizes the people who are the recipients of the information and instructions."
+        },
+        "25": {
+            "legacy index": "21",
+            "cq": "Some of us will clean the village",
+            "alternate_pivot": "",
+            "translation": "wakinchik llaqtata pichanankupaqmi",
+            "concept_words": {
+                "ASSERT": "pichanankupaqmi",
+                "PROCESSIVE PREDICATE": "pichanankupaqmi",
+                "PP1PLU": "wakinchik",
+                "cleaning": "pichanankupaqmi",
+                "village": "llaqtata"
+            },
+            "comment": "Wakinchik indicates the first person plural (some of us), emphasizing the group involvement.  pichanankupaqmi shows the process of cleaning and asserts that the action will happen.  llaqtata refers to the village, which is the object of the cleaning action."
+        },
+        "26": {
+            "legacy index": "23",
+            "cq": "Other people will make the costumes for the dances.",
+            "alternate_pivot": "",
+            "translation": "wakin runakuna tusuykunapaq p'achakunata ruwanankupaqmi",
+            "concept_words": {
+                "ASSERT": "ruwanankupaqmi",
+                "PROCESSIVE PREDICATE": "ruwanankupaqmi",
+                "people": "wakin...runakuna",
+                "making": "ruwanankupaqmi",
+                "costume": "p'achakunata",
+                "dances": "tusuykunapaq",
+                "other": "wakin"
+            },
+            "comment": "Wakin runakuna emphasizes the group of other people who are involved in making the costumes.  ruwanankupaqmi is a processive predicate, showing the action of making will happen.  p\u2019achakunata refers to the costumes being made, and tusuykunapaq specifies that the costumes are for the dances."
+        },
+        "27": {
+            "legacy index": "24",
+            "cq": "We must choose dances to showcase",
+            "alternate_pivot": "",
+            "translation": "tusuykunata akllanaykupaqmi",
+            "concept_words": {
+                "ASSERT": "akllanaykupaqmi",
+                "PROCESSIVE PREDICATE": "akllanaykupaqmi",
+                "PP1PLU": "tusuykunata",
+                "having to": "akllanaykupaqmi",
+                "choosing": "akllanaykupaqmi",
+                "dances": "tusuykunata",
+                "showcasing": "akllanaykupaqmi"
+            },
+            "comment": "Tusuykunata refers to dances and marks them as the object of the action.  Akllanaykupaq expresses a process of having to choose, indicating the necessity of selecting dances.  -mi asserts that the action will take place."
+        },
+        "28": {
+            "legacy index": "25",
+            "cq": "and we must rehearse them",
+            "alternate_pivot": "",
+            "translation": "chaykunata yachanaykupaqpas",
+            "concept_words": {
+                "ASSERT": "yachanaykupaqpas",
+                "PROCESSIVE PREDICATE": "yachanaykupaqpas",
+                "having to": "yachanaykupaqpas",
+                "rehearsing": "yachanaykupaqpas",
+                "Ref_many_objects": "chaykunata",
+                "PP1PLU": "yachanaykupaqpas"
+            },
+            "comment": "Chaykunata refers to them, marking the objects that will be rehearsed (likely multiple dances or activities).  Yachanaykupaq expresses the necessity of rehearsing, implying that the action is required.  The -pas suffix emphasizes that this is a necessary action for the group."
+        },
+        "29": {
+            "legacy index": "26",
+            "cq": "Also, don\u2019t forget",
+            "alternate_pivot": "",
+            "translation": "wakta, ama qonqaychu",
+            "concept_words": {
+                "ORDER": "ama...qonqaychu",
+                "PROCESSIVE PREDICATE": "qonqaychu",
+                "Negative Polarity": "ama...qonqaychu",
+                "PP2SG": "qonqaychu",
+                "forgetting": "qonqaychu"
+            },
+            "comment": "Wakta \u2014 I wakta is being used for also, ama \u2014 The negator ama is making the imperative qonqaychu negative.  qonqaychu \u2014 The verb qonqaychu is in the negative imperative form, meaning don\u2019t forget, and it's directed at the second person singular (2SG)."
+        },
+        "30": {
+            "legacy index": "27",
+            "cq": "we\u2019ll have to prepare enough food for two hundred people.",
+            "alternate_pivot": "",
+            "translation": "iskay pachak runapaq micuya hunt'ata ruwanaykupaqmi",
+            "concept_words": {
+                "ASSERT": "iskay...pachak...runapaq...ruwanaykupaqmi",
+                "PROCESSIVE PREDICATE": "ruwanaykupaqmi",
+                "PP1PLU": "ruwanaykupaqmi",
+                "having to": "ruwanaykupaqmi",
+                "preparing": "ruwanaykupaqmi",
+                "food": "hunt'ata",
+                "two hundred": "iskay...pachak",
+                "people": "runapaq"
+            },
+            "comment": "iskay pachak \u2014 Refers to the number two hundred (used as a quantifier for the people).  runapaq \u2014 Means for people (indicating the people being served or considered in this context).  hunt\u2019ata \u2014 Refers to food that is being prepared.  ruwanaykupaqmi \u2014 A first-person plural verb form indicating the ongoing action of preparing for a group (we are preparing)."
+        },
+        "31": {
+            "legacy index": "28",
+            "cq": "Oh dear, that will be so much work for us all.",
+            "alternate_pivot": "",
+            "translation": "ay ataw! llapallanchikpaq sapaq llamk'aymi kanqa",
+            "concept_words": {
+                "ASSERT": "ay...ataw...llapallanchikpaq...sapaq...llamk'aymi...kanqa",
+                "EQUATIVE PREDICATE": "sapaq...llamk'aymi",
+                "work": "llamk'aymi",
+                "PP1PLU": "llamk'aymi",
+                "equating": "sapaq...llamk'aymi",
+                "Ref_Event": "kanqa",
+                "so much": "llapallanchikpaq"
+            },
+            "comment": "Ay ataw! \u2014 An exclamatory phrase used to express excitement or emphasis.  llapallanchikpaq \u2014 Refers to for all of us or for everyone, indicating that the action will be carried out by the whole group.  sapaq llamk\u2019aymi \u2014 Refers to the group working, implying a future action in the context of work.  kanqa \u2014 Indicates a future event, the action of working, will take place."
+        },
+        "32": {
+            "legacy index": "29a",
+            "cq": "A lot of work indeed.",
+            "alternate_pivot": "",
+            "translation": "ancha llamk'aymi",
+            "concept_words": {
+                "APPROVE": "ancha",
+                "APPRECIATIVE PREDICATE": "llamk'aymi"
+            },
+            "comment": "Ancha \u2014 Refers to so much or a lot, emphasizing the intensity or amount of work.  llamk\u2019aymi \u2014 This is the first-person plural future tense of llamk\u2019ay, meaning to work, indicating that the group will engage in working."
+        },
+        "33": {
+            "legacy index": "29b",
+            "cq": "Let's start today!",
+            "alternate_pivot": "",
+            "translation": "kunan qallariy",
+            "concept_words": {
+                "ORDER": "kunan",
+                "PROCESSIVE PREDICATE": "qallariy",
+                "PP1INCDU": "qallariy",
+                "starting": "qallariy",
+                "today": "kunan"
+            },
+            "comment": "Kunan \u2014 Means today, indicating the time frame for the action.  qallariy \u2014 This is the verb form for begin or start, indicating the initiation of something. It conveys that the action is beginning today or now.  The sentence \"Kunan qallariy!\" translates to \"Starting today!\" or \"Let's begin today!"
+        }
+    },
+    "interviewer": "JULIA",
+    "interviewee": "MUNER",
+    "recording_uid": "1744268422"
+}

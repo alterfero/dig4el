@@ -1,0 +1,313 @@
+{
+    "target language": "Quechua (Cuzco)",
+    "delimiters": [
+        " ",
+        ".",
+        ",",
+        ";",
+        ":",
+        "!",
+        "?",
+        "\u2026"
+    ],
+    "pivot language": "English",
+    "cq_uid": "1742760962",
+    "data": {
+        "1": {
+            "legacy index": "",
+            "cq": "There is a fish!",
+            "alternate_pivot": "",
+            "translation": "challwa tiyanmi",
+            "concept_words": {
+                "ASSERT": "tiyanmi",
+                "EXISTENTIAL PREDICATE": "tiyanmi",
+                "existing": "tiyanmi",
+                "fish": "challwa"
+            },
+            "comment": "ASSERT \u2192 -mi The evidential suffix confirms the speaker's direct knowledge/certainty .EXISTENTIAL PREDICATE \u2192 tiyan The verb meaning \"to exist/be present\" (used for tangible objects).existing \u2192 tiyan Explicitly stated (vs. implied in verbless constructions).fish \u2192 challwa Unmarked noun as subject."
+        },
+        "2": {
+            "legacy index": "",
+            "cq": "Where?",
+            "alternate_pivot": "",
+            "translation": "maypitaq",
+            "concept_words": {
+                "ASK": "maypitaq",
+                "LOCATIVE PREDICATE": "maypitaq",
+                "spatial position wildcard": "maypitaq",
+                "existing": ""
+            },
+            "comment": "The single word contains: Spatial interrogative (may-) Locative marker (-pi) Question particle (-taq) .existing \u2192 Implied through context ."
+        },
+        "3": {
+            "legacy index": "",
+            "cq": "There is a fish next to the coral head.",
+            "alternate_pivot": "",
+            "translation": "challwa tiyan rumi hatunpa qayllanpim",
+            "concept_words": {
+                "ASSERT": "rumi",
+                "EXISTENTIAL PREDICATE": "tiyan",
+                "LOCATIVE PREDICATE": "qayllanpim",
+                "fish": "challwa",
+                "next to": "qayllanpim",
+                "coral head": "rumi...hatunpa",
+                "existing": "tiyan"
+            },
+            "comment": "ASSERT \u2192 -mi .EXISTENTIAL PREDICATE \u2192 tiyan .LOCATIVE PREDICATE \u2192 qaylla-n-pi qaylla = \"side\" -n = possessive (its) -pi = locative (at) .existing \u2192 tiyan Explicit existential verb.   Ecological Adaptation :Rumi hatun replaces \"coral head\" (Andean context).\"Coral head\" has no native Quechua equivalent, as coral reefs are absent in the Andean highlands. While in modern Quechua writing system, we use the Spanish loanword qural (from coral), this translation strictly avoids foreign borrowings to maintain purity in the Cusco dialect.  Instead, we use:  Large/prominent rock (\u1580\u1581\u1586 \u1586\u1582\u1594\u1587) = \"large/prominent rock\"  Rumi = rock/stone (universal in Andean landscapes)  Large = big/great (implies importance, like a coral head\u2019s ecological role)."
+        },
+        "4": {
+            "legacy index": "",
+            "cq": "Now the fish is inside the coral head!",
+            "alternate_pivot": "",
+            "translation": "kunanqa rumipa ukhunpim",
+            "concept_words": {
+                "ASSERT": "rumipa",
+                "LOCATIVE PREDICATE": "ukhunpim",
+                "EXISTENTIAL PREDICATE": "rumipa",
+                "fish": "",
+                "inside": "ukhunpim",
+                "coral head": "rumipa",
+                "existing": ""
+            },
+            "comment": "1. ASSERT \u2192 -mi . 2.LOCATIVE PREDICATE \u2192 ukhu-n-pi  ukhu = \"belly/interior\" (body-part metaphor) -n = possessive (its) -pi = locative (in) 3.EXISTENTIAL PREDICATE \u2192 Implied by -mi . 4.existing \u2192 Inherent in -mi assertion No separate verb needed."
+        },
+        "5": {
+            "legacy index": "",
+            "cq": "No there is no fish.",
+            "alternate_pivot": "",
+            "translation": "manam! mana challwachu",
+            "concept_words": {
+                "DENY": "manam...mana...challwachu",
+                "EXISTENTIAL PREDICATE": "",
+                "Negative Polarity": "mana...challwachu",
+                "fish": "challwachu",
+                "existing": ""
+            },
+            "comment": "Double Negation Emphasis: The standalone Manam! followed by full Mana...-chu creates layered negation for rhetorical force.  Evidential Suffix: -m in manam indicates the speaker's direct observation/certainty."
+        },
+        "6": {
+            "legacy index": "",
+            "cq": "There is no fish next to the coral head.",
+            "alternate_pivot": "",
+            "translation": "mana challwachu rumipa qayllanpichu",
+            "concept_words": {
+                "DENY": "qayllanpichu...mana",
+                "EXISTENTIAL PREDICATE": "",
+                "LOCATIVE PREDICATE": "qayllanpichu",
+                "Negative Polarity": "mana...challwachu",
+                "existing": "",
+                "fish": "challwachu",
+                "next to": "qayllanpichu",
+                "coral head": "rumipa"
+            },
+            "comment": "1. DENY \u2192 Mana...-chu. 2.EXISTENTIAL PREDICATE \u2192 Implied by negation 3.LOCATIVE PREDICATE \u2192 -pi in qayllanpi 4.next to \u2192 qaylla-n-pi. 5.existing \u2192 Implied by challwa's absence."
+        },
+        "7": {
+            "legacy index": "",
+            "cq": "Oh you're right!",
+            "alternate_pivot": "",
+            "translation": "yaw! llumpay cheqaqm\u00e1",
+            "concept_words": {
+                "APPROVE": "cheqaqm\u00e1",
+                "APPRECIATIVE PREDICATE": "yaw...cheqaqm\u00e1"
+            },
+            "comment": "No verb needed: The exclamation stands alone as a complete emotional utterance. -m\u00e1 adds emotional weight to the truth claim, making it appreciative."
+        },
+        "8": {
+            "legacy index": "",
+            "cq": "It is behind the coral head now. ",
+            "alternate_pivot": "",
+            "translation": "kunanqa rumipa qhipanmanmi ayqirun",
+            "concept_words": {
+                "ASSERT": "qhipanmanmi",
+                "EXISTENTIAL PREDICATE": "ayqirun",
+                "LOCATIVE PREDICATE": "qhipanmanmi",
+                "Ref_1_object": "rumipa",
+                "existing": "qhipanmanmi",
+                "BEHIND X": "rumipa",
+                "coral head": "ayqirun"
+            },
+            "comment": "ASSERT  \u2192 -mi (evidential suffix) in Qhipanmanmi. EXISTENTIAL PREDICATE \u2192 Implied by verb \"ayqirun\".LOCATIVE PREDICATE \u2192 -man (directional) + qhipa (back/behind). CORAL HEAD \u2192 Adapted as rumi (rock). No direct translation for \"coral\": Quechua replaces it with culturally relevant objects (rumi). Alternative for \"coral head\" (if needed): Qucha rumi (\"ocean rock\") \u2013 if context is coastal. Rumi llaqta (\"rock cluster\") \u2013 to imply complexity."
+        },
+        "9": {
+            "legacy index": "",
+            "cq": "I can't see it anymore. ",
+            "alternate_pivot": "",
+            "translation": "mana\u00f1am rikuyta atinichu",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "rikuyta",
+                "Negative Polarity": "mana\u00f1am...atinichu",
+                "PP1SG": "atinichu",
+                "being able to": "atinichu",
+                "seeing": "rikuyta",
+                "Ref_1_object": "",
+                "anymore": "mana\u00f1am"
+            },
+            "comment": "Mana = negation base -\u00f1am = \"already/anymore\" (temporal negation) -chu = terminal negation marker 2.PROCESSIVE PREDICATE \u2192 rikuy Nominalized verb \"rikuy\" (\"seeing\") functions as action noun 3.PP1SG (1st Person Singular) \u2192 -ni in atinichu Ati-ni-chu = \"able-I-NEG\" 4. being able to \u2192 ati- Root verb \"to be able\" 5. seeing \u2192 rikuy Nominalized form of rikuy (\"to see\"). 6.Ref_1_object \u2192 Implied (fish/object from context). 7.anymore \u2192 -\u00f1am Temporal suffix indicating cessation."
+        },
+        "10": {
+            "legacy index": "",
+            "cq": "Is it under this rock now?",
+            "alternate_pivot": "",
+            "translation": "kunay kay huch'uy rumipa ukhunpichu",
+            "concept_words": {
+                "ASK": "ukhunpichu",
+                "EXISTENTIAL PREDICATE": "",
+                "LOCATIVE PREDICATE": "ukhunpichu",
+                "existing": "",
+                "Ref_1_object": "rumipa",
+                "UNDER": "ukhunpichu...kunay",
+                "rock": "rumipa"
+            },
+            "comment": "EXISTENTIAL PREDICATE \u2192 Implied by context. LOCATIVE PREDICATE \u2192 -pi (in/at) + ukhu (belly).UNDER \u2192 ukhu-n-pi."
+        },
+        "11": {
+            "legacy index": "",
+            "cq": "No, It is not under this rock!",
+            "alternate_pivot": "",
+            "translation": "manam! mana kay huch'uy rumipichu",
+            "concept_words": {
+                "DENY": "manam...mana...rumipichu",
+                "EXISTENTIAL PREDICATE": "",
+                "LOCATIVE PREDICATE": "rumipichu",
+                "Negative Polarity": "mana...rumipichu",
+                "Ref_1_object": "kay...huch'uy",
+                "existing": "",
+                "under": "rumipichu",
+                "rock": "rumipichu"
+            },
+            "comment": "LOCATIVE PREDICATE \u2192 -pi in rumi-pi-chu (\"rock-in-not\").existing \u2192 Implied through negation (non-existence in this location). Locative Scope: The -pi covers both \"in\" and \"under\" (context clarifies)."
+        },
+        "12": {
+            "legacy index": "",
+            "cq": "It is a small rock... ",
+            "alternate_pivot": "",
+            "translation": "kayqa llullu rumillam.",
+            "concept_words": {
+                "ASSERT": "rumillam",
+                "ATTRIBUTIVE PREDICATE": "llullu",
+                "rock": "rumillam",
+                "small": "llullu",
+                "exhibiting (an attribute)": "rumillam"
+            },
+            "comment": "ASSERT \u2192 -m (in rumillam) The evidential suffix confirms speaker's certainty about the attribution. 1.Affective Diminutive -lla + -m creates a double emphasis: -lla = \"just/merely\" (diminishing importance) -m = \"indeed\" (countering expectations) 2.Adjective-Noun Bond Llullu rumi behaves as a single conceptual unit (\"tiny-rock\")"
+        },
+        "13": {
+            "legacy index": "",
+            "cq": "and the fish is big!",
+            "alternate_pivot": "",
+            "translation": "challwataq hatun hatunmi",
+            "concept_words": {
+                "ASSERT": "hatunmi",
+                "INCLUSIVE PREDICATE": "challwataq",
+                "exhibiting (an attribute)": "hatun...hatunmi",
+                "fish": "challwataq",
+                "big": "hatun...hatunmi"
+            },
+            "comment": "1.Reduplication Hatun hatun conveys: Great size (physical) Importance (metaphorical). 2.Contrastive Focus -taq implies: \"As for the fish (unlike the rock I just mentioned)...\" 3.Evidential Force -mi makes this a firsthand observation (likely visual confirmation). 4.ASSERT \u2192 -mi The evidential suffix confirms the speaker's certainty about the fish's size. "
+        },
+        "14": {
+            "legacy index": "",
+            "cq": "Look, there is a bird",
+            "alternate_pivot": "",
+            "translation": "qhaway! pisqupas tiyanmi",
+            "concept_words": {
+                "ASSERT": "tiyanmi",
+                "EXISTENTIAL PREDICATE": "tiyanmi",
+                "bird": "pisqupas",
+                "existing": "tiyanmi"
+            },
+            "comment": "1.ASSERT \u2192 -mi The evidential suffix confirms the speaker's direct observation (visual confirmation). 2.EXISTENTIAL PREDICATE \u2192 tiyan The verb \"to exist/be present\" (used for tangible beings). 3.bird \u2192 pisqu Unmarked noun (no diminutive/affective suffixes). 4.existing \u2192 tiyan Explicit existential verb (unlike implied existence in verbless constructions)."
+        },
+        "15": {
+            "legacy index": "",
+            "cq": "I think it is looking at the fish",
+            "alternate_pivot": "",
+            "translation": "pisqu challwata qhawaykach\u00e1",
+            "concept_words": {
+                "EXPRESS BELIEF (EPISTEMIC)": "challwata",
+                "PROCESSIVE PREDICATE": "qhawaykach\u00e1",
+                "PP1SG": "challwata",
+                "thinking": "challwata",
+                "looking": "qhawaykach\u00e1",
+                "fish": "challwata",
+                "Ref_1_object": "pisqu"
+            },
+            "comment": "1. EXPRESS BELIEF (EPISTEMIC) \u2192 -ch\u00e1 The dubitative suffix marks the speaker\u2019s uncertain inference. 2.PROCESSIVE PREDICATE \u2192 qhaway-ka- Qhaway = \"to watch/look\" -ka- = progressive/durative action. 3.PP1SG (1st Person Singular) \u2192 Implied by -ch\u00e1 The dubitative suffix inherently reflects the speaker\u2019s perspective. 4.thinking \u2192 Encoded in -ch\u00e1 Quechua expresses belief through evidential markers, not mental verbs. 5.looking \u2192 qhaway Root verb for visual attention. 6.Ref_1_object \u2192 pisqu The bird is the subject/topic of observation."
+        },
+        "16": {
+            "legacy index": "",
+            "cq": "Where is the bird?",
+            "alternate_pivot": "",
+            "translation": "maypitaq pisquqa",
+            "concept_words": {
+                "ASK": "maypitaq",
+                "LOCATIVE PREDICATE": "pisquqa",
+                "spatial position wildcard": "maypitaq",
+                "bird": "pisquqa",
+                "existing": ""
+            },
+            "comment": "1.ASK (Question) \u2192 -taq (interrogative enclitic) .2-LOCATIVE PREDICATE \u2192 -pi (locative suffix inside maypi) .3-spatial position wildcard \u2192 may- (interrogative root for \"where\"). 4-existing \u2192 Implied through the locative question."
+        },
+        "17": {
+            "legacy index": "",
+            "cq": "The bird is on the tree there",
+            "alternate_pivot": "",
+            "translation": "pisquqa chay mallki patanpim",
+            "concept_words": {
+                "ASSERT": "mallki",
+                "LOCATIVE PREDICATE": "pisquqa",
+                "bird": "pisquqa",
+                "on top of": "patanpim",
+                "tree": "mallki",
+                "existing": ""
+            },
+            "comment": "1-LOCATIVE PREDICATE \u2192 -pi (in pata-n-pi) .2-bird \u2192 pisqu-qa Pisqu = bird -qa = topic marker  3.on top of \u2192 Implied by pata 4-existing \u2192 Implied by -m"
+        },
+        "18": {
+            "legacy index": "",
+            "cq": "I see it!",
+            "alternate_pivot": "",
+            "translation": "rikurqani",
+            "concept_words": {
+                "ASSERT": "rikurqani",
+                "PROCESSIVE PREDICATE": "rikurqani",
+                "PP1SG": "rikurqani",
+                "seeing": "rikurqani",
+                "Ref_1_object": "rikurqani"
+            },
+            "comment": "ASSERT \u2192 Implicit in -ni (The 1st-person marker -ni inherently asserts the speaker\u2019s direct experience) 2-PROCESSIVE PREDICATE \u2192 Riku- (The verb root rikuy (\"to see\") implies an active visual process) 3-PP1SG (1st Person Singular) \u2192 -ni The suffix explicitly marks the speaker as the subject (\"I\"). 4-Ref_1_object \u2192 Implied by context"
+        },
+        "19": {
+            "legacy index": "",
+            "cq": "There is another bird above the coral head. ",
+            "alternate_pivot": "",
+            "translation": "huk pisqu rumipa hawanpi wichaykachanmi",
+            "concept_words": {
+                "ASSERT": "rumipa",
+                "EXISTENTIAL PREDICATE": "wichaykachanmi",
+                "LOCATIVE PREDICATE": "hawanpi",
+                "bird": "pisqu",
+                "existing": "",
+                "above": "hawanpi",
+                "coral head": "rumipa"
+            },
+            "comment": "existing \u2192 Implied by verb The progressive -kacha- indicates the bird is currently present/alive."
+        },
+        "20": {
+            "legacy index": "",
+            "cq": "Oh you're right!",
+            "alternate_pivot": "",
+            "translation": "oh allinta ninki",
+            "concept_words": {
+                "APPROVE": "",
+                "APPRECIATIVE PREDICATE": ""
+            },
+            "comment": ""
+        }
+    },
+    "interviewer": "JULIA\\",
+    "interviewee": "MUNER",
+    "recording_uid": "1743700538"
+}
