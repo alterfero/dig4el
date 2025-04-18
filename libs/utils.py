@@ -121,6 +121,61 @@ def tokenize(sentence):
     """Tokenize a sentence."""
     return sentence.lower().split()
 
+import os
+
+def replace_in_file(file_path, old, new):
+    """
+    Open `file_path`, replace all occurrences of `old` with `new`,
+    and overwrite the file if any replacements were made.
+    Returns True if replacements were written, False otherwise.
+    """
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+        print(f"opened {file_path}")
+
+    if old not in content:
+        print(f"no occurrence of {old} in {file_path}")
+        return False
+
+    updated = content.replace(old, new)
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(updated)
+        print(f"replacement done, updated {file_path} saved.")
+    return True
+
+
+def replace_concept_name_in_tree(old_concept_name, new_concept_name, root_directory):
+    """
+    Recursively walks `root_directory`, finds every .json file,
+    and replaces occurrences of old_concept_name with new_concept_name.
+    """
+    for dirpath, dirnames, filenames in os.walk(root_directory):
+        for filename in filenames:
+            if filename.lower().endswith(".json"):
+                full_path = os.path.join(dirpath, filename)
+                if replace_in_file(full_path, old_concept_name, new_concept_name):
+                    print(f"Replaced in {full_path}")
+
+
+def replace_concept_name_everywhere(old_concept_name, new_concept_name):
+
+    print(f"!!! Replacing {old_concept_name} by {new_concept_name} everywhere.")
+
+    print("CQ files")
+    cq_files = list_json_files("./questionnaires")
+    for cq_file in cq_files:
+        if replace_in_file(cq_file, old_concept_name, new_concept_name):
+            print(f"replacement successful in {cq_file}")
+
+    print("available transcriptions")
+    replace_concept_name_in_tree(old_concept_name, new_concept_name, "./available_transcriptions")
+
+    print("concepts.json")
+    if replace_in_file("./data/concepts.json", old_concept_name, new_concept_name):
+        print(f"replacement successful in concept.json")
+
+
+
 
 # def get_word_stats(recordings_list):
 #     word_stats = {}
