@@ -20,8 +20,8 @@
             "alternate_pivot": "",
             "translation": "tu as d\u00e9j\u00e0 vu des photos de ma famille",
             "concept_words": {
-                "PP2SG": "tu",
-                "PP1SG": "ma",
+                "Ref_addressee": "tu",
+                "Ref_speaker": "ma",
                 "seeing": "as...vu",
                 "picture": "photos",
                 "family": "famille"
@@ -36,8 +36,8 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "n...jamais",
-                "PP1SG": "",
-                "PP2SG": "ta",
+                "Ref_speaker": "",
+                "Ref_addressee": "ta",
                 "meeting": "ai...rencontr\u00e9",
                 "relatives": "membres...de...famille",
                 "BUT": "mais",
@@ -56,7 +56,7 @@
                 "PRESENT X": "voici",
                 "old": "vieil",
                 "photo album": "album",
-                "PP1SG": "j",
+                "Ref_speaker": "j",
                 "finding": "ai...trouv\u00e9",
                 "parents": "parents",
                 "room": "chambre"
@@ -70,8 +70,8 @@
             "concept_words": {
                 "showing": "montre",
                 "Ref_1_object": "le",
-                "PP1SG": "moi",
-                "PP2SG": ""
+                "Ref_speaker": "moi",
+                "Ref_addressee": ""
             }
         },
         "5": {
@@ -115,7 +115,7 @@
             "alternate_pivot": "",
             "translation": "ce sont mes grands-parents du c\u00f4t\u00e9 de ma m\u00e8re",
             "concept_words": {
-                "PP1SG": "mes",
+                "Ref_speaker": "mes",
                 "grandparents": "grands-parents",
                 "mothers side": "du...c\u00f4t\u00e9...de...ma...m\u00e8re",
                 "POINTED BY SPEAKER": "ce",
@@ -149,7 +149,7 @@
                 "OR": "ou",
                 "other": "",
                 "relatives": "de...la...famille",
-                "PP3DU": ""
+                "Ref_2_people": ""
             }
         },
         "11": {
@@ -161,7 +161,7 @@
                 "time position wildcard": "c",
                 "day": "jour",
                 "wedding": "mariage",
-                "PP3DU": "leur",
+                "Ref_2_people": "leur",
                 "equating": "\u00e9tait",
                 "event wildcard": ""
             }
@@ -175,7 +175,7 @@
                 "INFIRM": "non",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "thinking": "pense",
                 "event wildcard": ""
             },
@@ -187,7 +187,7 @@
             "alternate_pivot": "",
             "translation": "ils \u00e9taient plus vieux que \u00e7a \u00e0 leur mariage",
             "concept_words": {
-                "PP3DU": "ils",
+                "Ref_2_people": "ils",
                 "OLDER THAN X": "plus...vieux...que",
                 "exhibiting (an attribute)": "\u00e9taient",
                 "wedding": "mariage",
@@ -206,7 +206,7 @@
                 "Ref_Event": "ce",
                 "day": "jour",
                 "getting engaged": "se...sont...fianc\u00e9s",
-                "PP3DU": "ils"
+                "Ref_2_people": "ils"
             },
             "comment": ""
         },
@@ -251,8 +251,8 @@
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
                 "meeting": "connus",
-                "PP2SG": "tu",
-                "PP3DU": "les"
+                "Ref_addressee": "tu",
+                "Ref_2_people": "les"
             },
             "comment": ""
         },
@@ -266,7 +266,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "PERSON wildcard": "qui",
                 "grandparents": "grand-parents",
-                "PP1SG": "mes"
+                "Ref_speaker": "mes"
             },
             "comment": ""
         },
@@ -279,7 +279,7 @@
                 "CONFIRM": "oui",
                 "PROCESSIVE PREDICATE": "",
                 "grandparents": "grands-parents",
-                "PP2SG": "tes",
+                "Ref_addressee": "tes",
                 "photo": "photo"
             },
             "comment": ""
@@ -302,10 +302,10 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP3DU": "ils",
+                "Ref_2_people": "ils",
                 "dying": "sont...morts",
                 "BEFORE X": "avant...que",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "being born": "naisse"
             },
             "comment": ""
@@ -318,7 +318,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "ATTRIBUTIVE PREDICATE": "",
-                "PP3DU": "ils",
+                "Ref_2_people": "ils",
                 "being born": "sont...n\u00e9s",
                 "_a long time ago": "il...y...a...tr\u00e8s...longtemps"
             },
@@ -360,7 +360,7 @@
                 "EQUATIVE PREDICATE": "",
                 "POINTED BY SPEAKER": "c",
                 "mother": "m\u00e8re",
-                "PP1SG": "ma",
+                "Ref_speaker": "ma",
                 "equating": "est"
             },
             "comment": ""
@@ -373,7 +373,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "EQUATIVE PREDICATE": "",
-                "PP3SG": "elle",
+                "Ref_1_person": "elle",
                 "equating": "\u00e9tait",
                 "children": "enfant",
                 "time position wildcard": "quand"
@@ -388,9 +388,9 @@
             "concept_words": {
                 "EXPRESS LIKELIHOOD": "imagine",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "j",
+                "Ref_speaker": "j",
                 "guessing": "imagine",
-                "PP3SG": "elle",
+                "Ref_1_person": "elle",
                 "coming": "revenait",
                 "school": "\u00e9cole"
             },
@@ -404,10 +404,10 @@
             "concept_words": {
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "looking": "regarde",
                 "schoolbag": "sac",
-                "PP3SG": "son"
+                "Ref_1_person": "son"
             },
             "comment": ""
         },
@@ -434,7 +434,7 @@
                 "small": "petit",
                 "boy": "gar\u00e7on",
                 "BEHIND X": "derri\u00e8re",
-                "PP3SG": "elle",
+                "Ref_1_person": "elle",
                 "equating": "est"
             },
             "comment": ""
@@ -451,7 +451,7 @@
                 "Teri": "teri",
                 "equating": "est",
                 "POINTED BY SPEAKER": "c",
-                "PP1SG": "mon"
+                "Ref_speaker": "mon"
             },
             "comment": ""
         },
@@ -463,10 +463,10 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "tu",
+                "Ref_addressee": "tu",
                 "never": "jamais",
                 "meeting": "as...rencontr\u00e9",
-                "PP3SG": "l"
+                "Ref_1_person": "l"
             },
             "comment": ""
         },
@@ -478,7 +478,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP3SG": "il",
+                "Ref_1_person": "il",
                 "residing": "habite",
                 "far away": "loin",
                 "here": "ici"
@@ -494,7 +494,7 @@
                 "ASK": "",
                 "ATTRIBUTIVE PREDICATE": "",
                 "attending": "allaient",
-                "PP3DU": "ils",
+                "Ref_2_people": "ils",
                 "school": "\u00e9cole",
                 "object wildcard": "quelle",
                 "then (time)": "en...ce...temps"
@@ -544,9 +544,9 @@
             "concept_words": {
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "allowing": "laisse",
-                "PP1SG": "moi",
+                "Ref_speaker": "moi",
                 "seeing": "regarder",
                 "OTHER X": "autre",
                 "picture": "photo",
@@ -566,12 +566,12 @@
                 "POINTED BY SPEAKER": "cette",
                 "surely": "s\u00fbrement",
                 "mother": "m\u00e8re",
-                "PP2SG": "ta",
+                "Ref_addressee": "ta",
                 "again": "encore",
                 "carrying": "en...train...de...porter",
                 "children": "enfant",
                 "back (anatomy)": "dos",
-                "PP3SG": "son",
+                "Ref_1_person": "son",
                 "equating": "est"
             },
             "comment": ""
@@ -585,7 +585,7 @@
                 "EXPRESS BELIEF (EPISTEMIC)": "crois",
                 "PROCESSIVE PREDICATE": "",
                 "EQUATIVE PREDICATE": "est",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "thinking": "crois",
                 "knowing": "sais",
                 "PERSON wildcard": "qui",
@@ -604,7 +604,7 @@
                 "ASSERT": "",
                 "EQUATIVE PREDICATE": "est",
                 "POINTED BY SPEAKER": "c",
-                "PP2SG": "toi",
+                "Ref_addressee": "toi",
                 "equating": "est"
             },
             "comment": ""
@@ -618,7 +618,7 @@
                 "CONFIRM": "en...effet",
                 "EQUATIVE PREDICATE": "est",
                 "POINTED BY SPEAKER": "c",
-                "PP1SG": "moi",
+                "Ref_speaker": "moi",
                 "equating": "est"
             },
             "comment": ""
@@ -631,9 +631,9 @@
             "concept_words": {
                 "ASK": "comment",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "tu",
+                "Ref_addressee": "tu",
                 "recognizing": "as...reconnu",
-                "PP1SG": "m",
+                "Ref_speaker": "m",
                 "process wildcard": "comment"
             },
             "comment": ""
@@ -646,7 +646,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "ATTRIBUTIVE PREDICATE": "est",
-                "PP2SG": "tu",
+                "Ref_addressee": "tu",
                 "small": "jeune",
                 "children": "enfant",
                 "photo": "photo",
@@ -665,8 +665,8 @@
                 "PROCESSIVE PREDICATE": "",
                 "BUT": "mais",
                 "recognizing": "reconnais",
-                "PP1SG": "je",
-                "PP2SG": "tes",
+                "Ref_speaker": "je",
+                "Ref_addressee": "tes",
                 "eyes": "yeux",
                 "AND": "et",
                 "smile": "sourire"
@@ -681,7 +681,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "tu",
+                "Ref_addressee": "tu",
                 "looking like": "as...l...air",
                 "mischievous": "espi\u00e8gle",
                 "picture": "photo",
@@ -698,7 +698,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "n...pas",
-                "PP2SG": "tu",
+                "Ref_addressee": "tu",
                 "changing (over time)": "as...chang\u00e9",
                 "much": "beaucoup"
             },
@@ -726,7 +726,7 @@
                 "Negative Polarity": "ne...plus",
                 "BUT": "mais",
                 "AND": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "children": "enfant",
                 "anymore": "plus",
                 "growing up": "ai...grandi",
@@ -745,11 +745,11 @@
                 "Negative Polarity": "ne...pas",
                 "today": "aujourd...hui",
                 "mother": "m\u00e8re",
-                "PP1SG": "me",
+                "Ref_speaker": "me",
                 "being able to": "pourrait",
                 "carrying": "porter",
                 "back (anatomy)": "dos",
-                "PP3SG": "son"
+                "Ref_1_person": "son"
             },
             "comment": ""
         },
@@ -761,12 +761,12 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "MORE X THAN Y": "plus...qu",
                 "AND": "et",
                 "tall": "grand",
                 "heavy": "lourd",
-                "PP3SG": "elle",
+                "Ref_1_person": "elle",
                 "exhibiting (an attribute)": "suis",
                 "equating": "suis"
             },
@@ -791,7 +791,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "tu",
+                "Ref_addressee": "tu",
                 "eating": "as...mang\u00e9",
                 "TOO MUCH OF X": "trop"
             },

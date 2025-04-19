@@ -6672,7 +6672,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "being able to",
                 "seeing",
                 "Ref_1_object",
@@ -6684,7 +6684,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "being able to",
                         "seeing",
                         "Ref_1_object",
@@ -6695,40 +6695,40 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG SEX-BASED GENDER",
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker SEX-BASED GENDER",
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG SEX-BASED GENDER": {
+                "Ref_speaker SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "SEX-BASED GENDER"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -6845,7 +6845,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "being able to ASPECT": {
                     "is_required_by": [
@@ -7332,17 +7332,17 @@
                 }
             },
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG SEX-BASED GENDER",
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker SEX-BASED GENDER",
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -7454,7 +7454,7 @@
                     "path": [
                         "being able to"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "being able to COMPLEMENT": {
                     "is_required_by": [
@@ -10763,7 +10763,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "thinking",
                 "looking",
                 "fish",
@@ -10775,7 +10775,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "thinking",
                         "looking",
                         "fish",
@@ -10786,40 +10786,40 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER",
-                        "PP1SG SEX-BASED GENDER"
+                        "Ref_speaker QUANTIFIER",
+                        "Ref_speaker SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
                 },
-                "PP1SG SEX-BASED GENDER": {
+                "Ref_speaker SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "SEX-BASED GENDER"
                     ],
                     "value": ""
@@ -11026,7 +11026,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "looking": {
                     "is_required_by": [
@@ -11631,17 +11631,17 @@
                 }
             },
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER",
-                        "PP1SG SEX-BASED GENDER"
+                        "Ref_speaker QUANTIFIER",
+                        "Ref_speaker SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -11772,7 +11772,7 @@
                     "path": [
                         "thinking"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "looking PATIENT": {
                     "is_required_by": [
@@ -13240,7 +13240,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "seeing",
                 "Ref_1_object"
             ],
@@ -13250,7 +13250,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "seeing",
                         "Ref_1_object"
                     ],
@@ -13259,40 +13259,40 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER",
-                        "PP1SG SEX-BASED GENDER"
+                        "Ref_speaker QUANTIFIER",
+                        "Ref_speaker SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
                 },
-                "PP1SG SEX-BASED GENDER": {
+                "Ref_speaker SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "SEX-BASED GENDER"
                     ],
                     "value": ""
@@ -13499,7 +13499,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "Ref_1_object": {
                     "is_required_by": [
@@ -13681,17 +13681,17 @@
                 }
             },
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER",
-                        "PP1SG SEX-BASED GENDER"
+                        "Ref_speaker QUANTIFIER",
+                        "Ref_speaker SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -13763,7 +13763,7 @@
                     "path": [
                         "seeing"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 }
             }
         },

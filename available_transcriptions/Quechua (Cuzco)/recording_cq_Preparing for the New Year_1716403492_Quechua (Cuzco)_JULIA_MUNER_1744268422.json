@@ -62,7 +62,7 @@
                 "village X": "x-manta",
                 "coming": "hamunqa",
                 "community": "llaqtapaq",
-                "PP1PLU": ""
+                "Ref_speaker_plus_many_including_addressee": ""
             },
             "comment": "No explicit assertion marker (-mi): Common in informal speech.  No progressive aspect: The future tense (hamunqa) suffices here.  Possessive subtlety: Llaqtapaq already includes -nchik (\"our\").  \"All\" implied: Llapallan = \"all of them\" (emphasizes entirety)."
         },
@@ -90,9 +90,9 @@
             "concept_words": {
                 "EXPRESS DUTY (DEONTIC)": "riqsichinqa",
                 "PROCESSIVE PREDICATE": "riqsichinqa",
-                "PP1PLU": "\u00f1uqanchikmi",
+                "Ref_speaker_plus_many_including_addressee": "\u00f1uqanchikmi",
                 "welcoming": "riqsichinqa",
-                "PP3PLU": "",
+                "Ref_many_people": "",
                 "friendly way": "allin...kawsaywan"
             },
             "comment": "\u201callin kawsaywan\u201d = with kindness/good living, \u201criqsichinqa\u201d = we will welcome/show ourselves to them."
@@ -107,8 +107,8 @@
                 "PROCESSIVE PREDICATE": "",
                 "COMP-EQUAL": "hinataq",
                 "doing": "ruwarqankichik",
-                "PP1PLU": "qanqanchikta",
-                "PP3PLU": "ruwarqankichik",
+                "Ref_speaker_plus_many_including_addressee": "qanqanchikta",
+                "Ref_many_people": "ruwarqankichik",
                 "last year": "\u00f1awpaq...watapi",
                 "event wildcard": "ruwarqankichik"
             },
@@ -134,7 +134,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "COMP-EQUAL": "hinallataq",
-                "PP1PLU": "",
+                "Ref_speaker_plus_many_including_addressee": "",
                 "doing": "",
                 "always": "\u00f1awpaqmantapas",
                 "event wildcard": "\u00f1awpaqmantapas...hinallataq"
@@ -149,7 +149,7 @@
             "concept_words": {
                 "ASSERT": "rimaywanmi",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "umalliqninchikkunaqa",
+                "Ref_speaker_plus_many_including_addressee": "umalliqninchikkunaqa",
                 "leaders": "umalliqninchikkunaqa",
                 "starting": "qallarinqaku",
                 "welcome speech": "chaskisqa...allin...rimaywanmi",
@@ -183,7 +183,7 @@
                 "AFTER X": "qhepamanmi",
                 "lunch": "mikhuykuna",
                 "together": "kuska",
-                "PP1PLU": "llapanchis",
+                "Ref_speaker_plus_many_including_addressee": "llapanchis",
                 "Ref_Event": "mikhuykuna",
                 "sharing": "mikhuykuna"
             },
@@ -203,7 +203,7 @@
                 "songs": "kananpaqmi",
                 "dances": "tusuykunapas",
                 "AND": "tusuykunapas",
-                "PP1SG": ""
+                "Ref_speaker": ""
             },
             "comment": "\"Ch\u2019isiyninpi\" provides the time context (in the afternoon).  \"takikuna\" refers to songs, while \"tusuykunapas\" refers to dances.  -pas connects the two nouns (songs and dances) in the sentence."
         },
@@ -216,7 +216,7 @@
                 "ASSERT": "runakunaqa",
                 "PROCESSIVE PREDICATE": "takiyninkuta",
                 "people": "runakunaqa",
-                "PP3PLU": "takiyninkuta",
+                "Ref_many_people": "takiyninkuta",
                 "AND": "",
                 "singing": "takiyninkuta",
                 "songs": "takiyninkuta",
@@ -234,7 +234,7 @@
             "concept_words": {
                 "EXPRESS DUTY (DEONTIC)": "",
                 "PROCESSIVE PREDICATE": "takinchikkunata...tusunchikkunata",
-                "PP1PLU": "\u00f1uqanchikpas",
+                "Ref_speaker_plus_many_including_addressee": "\u00f1uqanchikpas",
                 "too": "\u00f1uqanchikpas",
                 "singing": "takisunchik",
                 "songs": "takinchikkunata",
@@ -279,7 +279,7 @@
             "concept_words": {
                 "ASSERT": "willanqaku",
                 "PROCESSIVE PREDICATE": "willanqaku",
-                "PP1PLU": "machukunanchik",
+                "Ref_speaker_plus_many_including_addressee": "machukunanchik",
                 "elders": "machukunanchik",
                 "telling": "willanqaku",
                 "stories": "willakuykunata",
@@ -307,7 +307,7 @@
             "concept_words": {
                 "ASSERT": "yachanku",
                 "ATTRIBUTIVE PREDICATE": "yachanku",
-                "PP3PLU": "yachanku",
+                "Ref_many_people": "yachanku",
                 "knowing": "yachanku",
                 "so many": "achka",
                 "stories": "willakuykunata"
@@ -354,8 +354,8 @@
             "concept_words": {
                 "ORDER": "yuyariy",
                 "PROCESSIVE PREDICATE": "kamachikuq",
-                "PP2SG": "qamwan",
-                "PP1INCDU": "\u00f1oqam",
+                "Ref_addressee": "qamwan",
+                "Ref_speaker_and_addressee": "\u00f1oqam",
                 "remembering": "yuyariy",
                 "being in charge of": "kamachikuq",
                 "organization": "watapaq",
@@ -371,7 +371,7 @@
             "concept_words": {
                 "EXPRESS DUTY (DEONTIC)": "willanaykupaq",
                 "PROCESSIVE PREDICATE": "ruwanankupaq",
-                "PP1INCDU": "hu\u00f1unakusunmi",
+                "Ref_speaker_and_addressee": "hu\u00f1unakusunmi",
                 "organizing": "ruwanankupaq",
                 "meeting": "hu\u00f1unakusunmi",
                 "community": "llaqtapi",
@@ -390,7 +390,7 @@
             "concept_words": {
                 "ASSERT": "pichanankupaqmi",
                 "PROCESSIVE PREDICATE": "pichanankupaqmi",
-                "PP1PLU": "wakinchik",
+                "Ref_speaker_plus_many_including_addressee": "wakinchik",
                 "cleaning": "pichanankupaqmi",
                 "village": "llaqtata"
             },
@@ -420,7 +420,7 @@
             "concept_words": {
                 "ASSERT": "akllanaykupaqmi",
                 "PROCESSIVE PREDICATE": "akllanaykupaqmi",
-                "PP1PLU": "tusuykunata",
+                "Ref_speaker_plus_many_including_addressee": "tusuykunata",
                 "having to": "akllanaykupaqmi",
                 "choosing": "akllanaykupaqmi",
                 "dances": "tusuykunata",
@@ -439,7 +439,7 @@
                 "having to": "yachanaykupaqpas",
                 "rehearsing": "yachanaykupaqpas",
                 "Ref_many_objects": "chaykunata",
-                "PP1PLU": "yachanaykupaqpas"
+                "Ref_speaker_plus_many_including_addressee": "yachanaykupaqpas"
             },
             "comment": "Chaykunata refers to them, marking the objects that will be rehearsed (likely multiple dances or activities).  Yachanaykupaq expresses the necessity of rehearsing, implying that the action is required.  The -pas suffix emphasizes that this is a necessary action for the group."
         },
@@ -452,7 +452,7 @@
                 "ORDER": "ama...qonqaychu",
                 "PROCESSIVE PREDICATE": "qonqaychu",
                 "Negative Polarity": "ama...qonqaychu",
-                "PP2SG": "qonqaychu",
+                "Ref_addressee": "qonqaychu",
                 "forgetting": "qonqaychu"
             },
             "comment": "Wakta \u2014 I wakta is being used for also, ama \u2014 The negator ama is making the imperative qonqaychu negative.  qonqaychu \u2014 The verb qonqaychu is in the negative imperative form, meaning don\u2019t forget, and it's directed at the second person singular (2SG)."
@@ -465,7 +465,7 @@
             "concept_words": {
                 "ASSERT": "iskay...pachak...runapaq...ruwanaykupaqmi",
                 "PROCESSIVE PREDICATE": "ruwanaykupaqmi",
-                "PP1PLU": "ruwanaykupaqmi",
+                "Ref_speaker_plus_many_including_addressee": "ruwanaykupaqmi",
                 "having to": "ruwanaykupaqmi",
                 "preparing": "ruwanaykupaqmi",
                 "food": "hunt'ata",
@@ -483,7 +483,7 @@
                 "ASSERT": "ay...ataw...llapallanchikpaq...sapaq...llamk'aymi...kanqa",
                 "EQUATIVE PREDICATE": "sapaq...llamk'aymi",
                 "work": "llamk'aymi",
-                "PP1PLU": "llamk'aymi",
+                "Ref_speaker_plus_many_including_addressee": "llamk'aymi",
                 "equating": "sapaq...llamk'aymi",
                 "Ref_Event": "kanqa",
                 "so much": "llapallanchikpaq"
@@ -509,7 +509,7 @@
             "concept_words": {
                 "ORDER": "kunan",
                 "PROCESSIVE PREDICATE": "qallariy",
-                "PP1INCDU": "qallariy",
+                "Ref_speaker_and_addressee": "qallariy",
                 "starting": "qallariy",
                 "today": "kunan"
             },

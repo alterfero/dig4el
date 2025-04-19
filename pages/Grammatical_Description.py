@@ -351,7 +351,11 @@ with st.expander("Inputs"):
         st.session_state["cq_transcriptions"] = []
         for cq in cqs:
             new_cq = json.load(cq)
-            st.session_state["cq_transcriptions"].append(new_cq)
+            # update concept labels
+            updated_cq, found_some = u.update_concept_names_in_transcription(new_cq)
+            if found_some:
+                st.write("Some concept labels have been aligned with the latest version.")
+            st.session_state["cq_transcriptions"].append(updated_cq)
         st.session_state["loaded_existing"] = True
         st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
 

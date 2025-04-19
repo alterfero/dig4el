@@ -138,13 +138,13 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "rikuyta",
                 "Negative Polarity": "mana\u00f1am...atinichu",
-                "PP1SG": "atinichu",
+                "Ref_speaker": "atinichu",
                 "being able to": "atinichu",
                 "seeing": "rikuyta",
                 "Ref_1_object": "",
                 "anymore": "mana\u00f1am"
             },
-            "comment": "Mana = negation base -\u00f1am = \"already/anymore\" (temporal negation) -chu = terminal negation marker 2.PROCESSIVE PREDICATE \u2192 rikuy Nominalized verb \"rikuy\" (\"seeing\") functions as action noun 3.PP1SG (1st Person Singular) \u2192 -ni in atinichu Ati-ni-chu = \"able-I-NEG\" 4. being able to \u2192 ati- Root verb \"to be able\" 5. seeing \u2192 rikuy Nominalized form of rikuy (\"to see\"). 6.Ref_1_object \u2192 Implied (fish/object from context). 7.anymore \u2192 -\u00f1am Temporal suffix indicating cessation."
+            "comment": "Mana = negation base -\u00f1am = \"already/anymore\" (temporal negation) -chu = terminal negation marker 2.PROCESSIVE PREDICATE \u2192 rikuy Nominalized verb \"rikuy\" (\"seeing\") functions as action noun 3.Ref_speaker (1st Person Singular) \u2192 -ni in atinichu Ati-ni-chu = \"able-I-NEG\" 4. being able to \u2192 ati- Root verb \"to be able\" 5. seeing \u2192 rikuy Nominalized form of rikuy (\"to see\"). 6.Ref_1_object \u2192 Implied (fish/object from context). 7.anymore \u2192 -\u00f1am Temporal suffix indicating cessation."
         },
         "10": {
             "legacy index": "",
@@ -228,13 +228,13 @@
             "concept_words": {
                 "EXPRESS BELIEF (EPISTEMIC)": "challwata",
                 "PROCESSIVE PREDICATE": "qhawaykach\u00e1",
-                "PP1SG": "challwata",
+                "Ref_speaker": "challwata",
                 "thinking": "challwata",
                 "looking": "qhawaykach\u00e1",
                 "fish": "challwata",
                 "Ref_1_object": "pisqu"
             },
-            "comment": "1. EXPRESS BELIEF (EPISTEMIC) \u2192 -ch\u00e1 The dubitative suffix marks the speaker\u2019s uncertain inference. 2.PROCESSIVE PREDICATE \u2192 qhaway-ka- Qhaway = \"to watch/look\" -ka- = progressive/durative action. 3.PP1SG (1st Person Singular) \u2192 Implied by -ch\u00e1 The dubitative suffix inherently reflects the speaker\u2019s perspective. 4.thinking \u2192 Encoded in -ch\u00e1 Quechua expresses belief through evidential markers, not mental verbs. 5.looking \u2192 qhaway Root verb for visual attention. 6.Ref_1_object \u2192 pisqu The bird is the subject/topic of observation."
+            "comment": "1. EXPRESS BELIEF (EPISTEMIC) \u2192 -ch\u00e1 The dubitative suffix marks the speaker\u2019s uncertain inference. 2.PROCESSIVE PREDICATE \u2192 qhaway-ka- Qhaway = \"to watch/look\" -ka- = progressive/durative action. 3.Ref_speaker (1st Person Singular) \u2192 Implied by -ch\u00e1 The dubitative suffix inherently reflects the speaker\u2019s perspective. 4.thinking \u2192 Encoded in -ch\u00e1 Quechua expresses belief through evidential markers, not mental verbs. 5.looking \u2192 qhaway Root verb for visual attention. 6.Ref_1_object \u2192 pisqu The bird is the subject/topic of observation."
         },
         "16": {
             "legacy index": "",
@@ -273,11 +273,11 @@
             "concept_words": {
                 "ASSERT": "rikurqani",
                 "PROCESSIVE PREDICATE": "rikurqani",
-                "PP1SG": "rikurqani",
+                "Ref_speaker": "rikurqani",
                 "seeing": "rikurqani",
                 "Ref_1_object": "rikurqani"
             },
-            "comment": "ASSERT \u2192 Implicit in -ni (The 1st-person marker -ni inherently asserts the speaker\u2019s direct experience) 2-PROCESSIVE PREDICATE \u2192 Riku- (The verb root rikuy (\"to see\") implies an active visual process) 3-PP1SG (1st Person Singular) \u2192 -ni The suffix explicitly marks the speaker as the subject (\"I\"). 4-Ref_1_object \u2192 Implied by context"
+            "comment": "ASSERT \u2192 Implicit in -ni (The 1st-person marker -ni inherently asserts the speaker\u2019s direct experience) 2-PROCESSIVE PREDICATE \u2192 Riku- (The verb root rikuy (\"to see\") implies an active visual process) 3-Ref_speaker (1st Person Singular) \u2192 -ni The suffix explicitly marks the speaker as the subject (\"I\"). 4-Ref_1_object \u2192 Implied by context"
         },
         "19": {
             "legacy index": "",

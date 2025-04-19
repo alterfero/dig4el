@@ -24,6 +24,7 @@ import tempfile
 from pathlib import Path
 import streamlit.components.v1 as components
 from libs import output_generation_utils as ogu
+from libs import utils
 from io import BytesIO
 
 st.set_page_config(
@@ -161,8 +162,13 @@ with st.expander("Input", expanded=True):
         st.session_state["cq_transcriptions"] = []
         for cq in cqs:
             new_cq = json.load(cq)
-            st.session_state["cq_transcriptions"].append(new_cq)
+            # update concept labels
+            updated_cq, found_some = utils.update_concept_names_in_transcription(new_cq)
+            if found_some:
+                st.write("Some concept labels have been aligned with the latest version.")
+            st.session_state["cq_transcriptions"].append(updated_cq)
         st.session_state["loaded_existing"] = True
+
         st.session_state["tl_name"] = st.session_state["cq_transcriptions"][0]["target language"]
         st.write("{} files loaded in {}.".format(len(st.session_state["cq_transcriptions"]), st.session_state["tl_name"]))
 

@@ -55,7 +55,7 @@
                 "ASSERT": "",
                 "ATTRIBUTIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
-                "PP1SG": "ich...mich",
+                "Ref_speaker": "ich...mich",
                 "experiencing in the body": "fühle",
                 "good": "gut",
                 "these days": "in...letzter...Zeit"
@@ -72,10 +72,10 @@
                 "EQUATIVE PREDICATE": "",
                 "event wildcard": "das",
                 "causality wildcard": "deshalb",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "coming": "bin...gekommen",
                 "seeing": "zu...Ihnen",
-                "PP2SG": "Ihnen",
+                "Ref_addressee": "Ihnen",
                 "equating": ""
             },
             "comment": ""
@@ -90,7 +90,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "event wildcard": "",
                 "happening": "passiert",
-                "PP2SG": "Ihnen"
+                "Ref_addressee": "Ihnen"
             },
             "comment": ""
         },
@@ -102,7 +102,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "ATTRIBUTIVE PREDICATE": "sehen...aus",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "looking like": "sehen...aus",
                 "sick": "krank"
             },
@@ -117,7 +117,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "being able to": "kann",
                 "sleeping": "schlafen",
                 "at night": "nachts"
@@ -133,7 +133,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "sweating": "schwitze",
-                "PP1SG": "ich"
+                "Ref_speaker": "ich"
             },
             "comment": ""
         },
@@ -145,7 +145,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "experiencing in the body": "habe",
                 "nightmare": "Albträume"
             },
@@ -159,7 +159,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "waking up": "wache...auf",
                 "middle of the night": "mitten...in...der...Nacht"
             },
@@ -173,7 +173,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "mir",
+                "Ref_speaker": "mir",
                 "experiencing in the body": "ist...heiß",
                 "hot": "heiß",
                 "sometimes": "manchmal"
@@ -189,7 +189,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "sometimes": "manchmal",
-                "PP1SG": "mir",
+                "Ref_speaker": "mir",
                 "experiencing in the body": "ist...kalt",
                 "cold": "kalt"
             },
@@ -204,7 +204,7 @@
                 "EXPRESS LIKELIHOOD": "muss...wohl...haben",
                 "ASK": "",
                 "ATTRIBUTIVE PREDICATE": "haben",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "experiencing in the body": "haben",
                 "fever": "Fieber"
             },
@@ -218,8 +218,8 @@
             "concept_words": {
                 "ORDER": "lassen",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "mich",
-                "PP2SG": "Sie",
+                "Ref_speaker": "mich",
+                "Ref_addressee": "Sie",
                 "allowing": "lassen",
                 "checking": "fühlen",
                 "forehead": "Stirn"
@@ -234,7 +234,7 @@
             "concept_words": {
                 "APPROVE": "oh...ja",
                 "ATTRIBUTIVE PREDICATE": "sind",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "experiencing in the body": "sind",
                 "hot": "heiß"
             },
@@ -248,7 +248,7 @@
             "concept_words": {
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "coughing": "husten"
             },
             "comment": ""
@@ -262,7 +262,7 @@
                 "DISAPPROVE": "nein",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "coughing": "huste"
             },
             "comment": ""
@@ -275,7 +275,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "every time": "jedes...Mal",
                 "waking up": "aufwache",
                 "experiencing in the body": "habe",
@@ -291,7 +291,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "experiencing in the body": "spüre",
                 "needing": "muss",
                 "drinking": "trinken"
@@ -306,7 +306,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "ATTRIBUTIVE PREDICATE": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "experiencing in the body": "habe",
                 "pain": "Bauchschmerzen",
                 "belly": "Bauch"
@@ -333,7 +333,7 @@
             "concept_words": {
                 "ASK": "",
                 "EXISTENTIAL PREDICATE": "",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "experiencing in the body": "tut...weh",
                 "pain": "weh",
                 "OR": "oder",
@@ -363,7 +363,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "knowing": "weiß",
                 "causality wildcard": "warum"
             },
@@ -378,7 +378,7 @@
                 "ASSERT": "",
                 "EXISTENTIAL PREDICATE": "bin",
                 "doctor": "doktor",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "experiencing in the body": "bin...besorgt",
                 "anxiety": "besorgt",
                 "a bit": "etwas"
@@ -406,7 +406,7 @@
             "concept_words": {
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "eating": "haben...gegessen",
                 "object wildcard": "etwas...Besonderes",
                 "particular": "Besonderes",
@@ -423,8 +423,8 @@
                 "ORDER": "lassen...Sie...mich",
                 "PROCESSIVE PREDICATE": "",
                 "allowing": "lassen...Sie...mich",
-                "PP1SG": "mich",
-                "PP2SG": "Sie",
+                "Ref_speaker": "mich",
+                "Ref_addressee": "Sie",
                 "remembering": "nachdenken"
             },
             "comment": ""
@@ -438,7 +438,7 @@
                 "INFIRM": "nein",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "thinking": "glaube",
                 "event wildcard": ""
             },
@@ -453,7 +453,7 @@
                 "ORDER": "warten...Sie",
                 "PROCESSIVE PREDICATE": "",
                 "waiting": "warten",
-                "PP2SG": "Sie"
+                "Ref_addressee": "Sie"
             },
             "comment": ""
         },
@@ -465,7 +465,7 @@
             "concept_words": {
                 "APPROVE": "ja",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "",
+                "Ref_speaker": "",
                 "event wildcard": ""
             },
             "comment": ""
@@ -485,7 +485,7 @@
                 "forest": "wald",
                 "fruit": "früchten",
                 "strange": "seltsamen",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "seeing": "gesehen...hatte"
             },
             "comment": ""
@@ -498,8 +498,8 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP3SG": "er",
-                "PP1SG": "mir",
+                "Ref_1_person": "er",
+                "Ref_speaker": "mir",
                 "giving": "hat...gegeben",
                 "trying": "probiere",
                 "fruit": "früchte"
@@ -514,7 +514,7 @@
             "concept_words": {
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "Ref_Event": "das"
             },
             "comment": ""
@@ -527,7 +527,7 @@
             "concept_words": {
                 "APPROVE": "ja",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "Ref_Event": ""
             },
             "comment": ""
@@ -540,7 +540,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "mir",
+                "Ref_speaker": "mir",
                 "liking": "haben...geschmeckt",
                 "Ref_many_objects": "sie"
             },
@@ -568,7 +568,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "eating": "habe...gegessen",
                 "Ref_many_objects": "davon",
                 "many": "viele"
@@ -587,7 +587,7 @@
                 "sick": "krank",
                 "after": "danach",
                 "event wildcard": "",
-                "PP1SG": "ich"
+                "Ref_speaker": "ich"
             },
             "comment": ""
         },
@@ -614,7 +614,7 @@
                 "fruit": "früchte",
                 "Ref_many_objects": "die",
                 "making": "gemacht...haben",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "sick": "krank"
             },
             "comment": ""
@@ -629,7 +629,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
                 "CONDITION": "wenn",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "eating": "gegessen...hätten",
                 "becoming": "wären...geworden",
                 "so much": "so...viel",
@@ -656,7 +656,7 @@
                 "WISH": "hätte...sollen",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "doing": "tun"
             },
             "comment": ""
@@ -671,7 +671,7 @@
                 "ASK": "was",
                 "PROCESSIVE PREDICATE": "",
                 "event wildcard": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "doing": "machen",
                 "now": "jetzt"
             },
@@ -687,7 +687,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "keine",
                 "worrying": "sorgen",
-                "PP2SG": "Sie"
+                "Ref_addressee": "Sie"
             },
             "comment": ""
         },
@@ -699,9 +699,9 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "giving": "werde...geben",
-                "PP2SG": "Ihnen",
+                "Ref_addressee": "Ihnen",
                 "medicine": "medikament",
                 "drinking": "einnehmen"
             },
@@ -715,7 +715,7 @@
             "concept_words": {
                 "ORDER": "nehmen...Sie",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "taking": "nehmen...Sie",
                 "twice a day": "zweimal...am...Tag",
                 "Ref_1_object": "es"
@@ -755,7 +755,7 @@
                 "ASK": "",
                 "ATTRIBUTIVE PREDICATE": "werde...mich...fühlen",
                 "then (time)": "dann",
-                "PP1SG": "ich...mich",
+                "Ref_speaker": "ich...mich",
                 "COMP-MORE": "besser",
                 "healthy": "",
                 "exhibiting (an attribute)": "fühlen"
@@ -780,7 +780,7 @@
             "concept_words": {
                 "EXPRESS POTENTIAL": "sollten",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "becoming": "sich...erholen",
                 "COMP-MORE": "besser (implied)",
                 "healthy": "",
@@ -814,7 +814,7 @@
             "concept_words": {
                 "ORDER": "müssen",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "experiencing": "",
                 "rest": "ausruhen"
             },
@@ -829,7 +829,7 @@
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "going": "gehen",
                 "work": "arbeit"
             },
@@ -843,7 +843,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "Sie",
+                "Ref_addressee": "Sie",
                 "needing": "müssen",
                 "sleeping": "schlafen"
             },
@@ -867,7 +867,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "understanding": "verstehe"
             },
             "comment": ""

@@ -21,8 +21,8 @@
             "concept_words": {
                 "ASK": "rikurqankichu",
                 "PROCESSIVE PREDICATE": "rikurqankichu",
-                "PP2SG": "",
-                "PP1SG": "aylluykipa",
+                "Ref_addressee": "",
+                "Ref_speaker": "aylluykipa",
                 "seeing": "rikurqankichu",
                 "picture": "rikch'akunata",
                 "family": "aylluykipa"
@@ -38,8 +38,8 @@
                 "ASSERT": "puni",
                 "PROCESSIVE PREDICATE": "rikurqani...rikurqanichu",
                 "Negative Polarity": "mana...rikurqanichu",
-                "PP1SG": "rikurqani...rikurqanichu",
-                "PP2SG": "",
+                "Ref_speaker": "rikurqani...rikurqanichu",
+                "Ref_addressee": "",
                 "meeting": "rikch'aykita...aylluykipi",
                 "relatives": "wakinkunata",
                 "BUT": "ichaqa",
@@ -47,7 +47,7 @@
                 "picture": "rikch'aykita",
                 "never": "mana...rikurqanichu"
             },
-            "comment": "ASSERT:\tPuni\t=Emphatic adverb meaning \u201cindeed\u201d or \u201csure\u201d \u2013 used to affirm something strongly.PP1SG:\trikurqani, rikurqanichu (from the verb=)\tVerbal suffix -ni = \u201cI\u201d (first-person subject).PP2SG: aylluykipi, rikch\u2019aykita =\t-yki = \u201cyour\u201d (second-person possessor) in both nouns. meeting:\t(Not expressed directly)=\tNo verb like \u201ctopaq\u201d or \u201ctantinakuy\u201d used \u2014 instead, \u201cseeing\u201d is used. relatives:\twakinkunata :\twakin = some, -kuna = plural, meaning \u201csome people\u201d = relatives in context. .This sentence is well-structured with clear use of past experiential and negative forms.  The meaning of \u201cnever\u201d is conveyed through the negation rather than a standalone word.  \"Meeting\" is not explicitly stated\u2014it's implied through \"seeing.\""
+            "comment": "ASSERT:\tPuni\t=Emphatic adverb meaning \u201cindeed\u201d or \u201csure\u201d \u2013 used to affirm something strongly.Ref_speaker:\trikurqani, rikurqanichu (from the verb=)\tVerbal suffix -ni = \u201cI\u201d (first-person subject).Ref_addressee: aylluykipi, rikch\u2019aykita =\t-yki = \u201cyour\u201d (second-person possessor) in both nouns. meeting:\t(Not expressed directly)=\tNo verb like \u201ctopaq\u201d or \u201ctantinakuy\u201d used \u2014 instead, \u201cseeing\u201d is used. relatives:\twakinkunata :\twakin = some, -kuna = plural, meaning \u201csome people\u201d = relatives in context. .This sentence is well-structured with clear use of past experiential and negative forms.  The meaning of \u201cnever\u201d is conveyed through the negation rather than a standalone word.  \"Meeting\" is not explicitly stated\u2014it's implied through \"seeing.\""
         },
         "3": {
             "legacy index": "3",
@@ -60,7 +60,7 @@
                 "PRESENT X": "kaypi\u00f1a",
                 "old": "unay",
                 "photo album": "rikch'akunap...qillqaninta",
-                "PP1SG": "\u00f1uqaqa...tarirqani",
+                "Ref_speaker": "\u00f1uqaqa...tarirqani",
                 "finding": "tarirqani",
                 "parents": "tayta-mamaypa",
                 "room": "wasinpi"
@@ -76,11 +76,11 @@
                 "ORDER": "qhawarikuway",
                 "PROCESSIVE PREDICATE": "qhawarikuway",
                 "showing": "qhawarikuway",
-                "PP1SG": "",
-                "PP2SG": "qhawarikuway",
+                "Ref_speaker": "",
+                "Ref_addressee": "qhawarikuway",
                 "Ref_1_object": "qhawarikuway"
             },
-            "comment": "Yaw (Hey!) is an interjection used to catch attention but doesn't contribute to the concepts directly related to the verb.  qhawarikuway is the core action in the sentence, showing a direct request or order to show it to me.PP1SG:\timplicit=\tThe 1st person singular is implied by -kuway, which indicates \"to me\".Ref_1_object:\t-kuway=\tThe suffix -kuway marks the 1st person singular object, indicating that the action is directed towards \"me.\""
+            "comment": "Yaw (Hey!) is an interjection used to catch attention but doesn't contribute to the concepts directly related to the verb.  qhawarikuway is the core action in the sentence, showing a direct request or order to show it to me.Ref_speaker:\timplicit=\tThe 1st person singular is implied by -kuway, which indicates \"to me\".Ref_1_object:\t-kuway=\tThe suffix -kuway marks the 1st person singular object, indicating that the action is directed towards \"me.\""
         },
         "5": {
             "legacy index": "5",
@@ -134,7 +134,7 @@
             "concept_words": {
                 "ASSERT": "kaykunaqa",
                 "PRESENTATIVE PREDICATE": "mamaypa...taytan-mamanmi",
-                "PP1SG": "mamaypa",
+                "Ref_speaker": "mamaypa",
                 "grandparents": "mamaypa...taytan-mamanmi",
                 "mothers side": "mamaypa",
                 "POINTED BY SPEAKER": "kaykunaqa",
@@ -173,7 +173,7 @@
                 "OR": "icha",
                 "other": "huk",
                 "relatives": "ayllu",
-                "PP3DU": "masiykunach\u00e1",
+                "Ref_2_people": "masiykunach\u00e1",
                 "equating": "icha...huk...ayllu"
             },
             "comment": "Masiykunach\u00e1 expresses likelihood, indicating the speaker's guess about the relationship of the people.  Icha (or) connects two possibilities: huk ayllu (other relatives) and masiykuna (friends).  Ayllu represents relatives, and masiykuna refers to people close to the grandparents."
@@ -190,7 +190,7 @@
                 "wedding": "kasqanku",
                 "equating": "kasqanku",
                 "Ref_Event": "kasqanku",
-                "PP3DU": "kasqanku"
+                "Ref_2_people": "kasqanku"
             },
             "comment": "Chayqa refers to \"that\" (pointing to an event or situation).  Kasqanku refers to the event being discussed, in this case, the wedding.  Punchawmi emphasizes \"the day.\""
         },
@@ -203,7 +203,7 @@
                 "INFIRM": "mana",
                 "PROCESSIVE PREDICATE": "mana",
                 "Negative Polarity": "mana...mana_2",
-                "PP1SG": "mana",
+                "Ref_speaker": "mana",
                 "thinking": "mana_2",
                 "event wildcard": "chayqa"
             },
@@ -217,7 +217,7 @@
             "concept_words": {
                 "ASSERT": "punchawpi...karqanku",
                 "ATTRIBUTIVE PREDICATE": "machu...kasqanku",
-                "PP3DU": "",
+                "Ref_2_people": "",
                 "OLDER THAN X": "aswan...machu...kaymanta",
                 "wedding": "hayk'a...punchawpi",
                 "exhibiting (an attribute)": "machu",
@@ -237,7 +237,7 @@
                 "Ref_Event": "rimanakuyninku",
                 "day": "p'unchaymi...kay",
                 "getting engaged": "rimanakuyninku",
-                "PP3DU": "rimanakuyninku"
+                "Ref_2_people": "rimanakuyninku"
             },
             "comment": "(rimanakuy = mutual agreement; idiomatic for \"engagement\"). The word karqanch\u00e1 is doing a lot of work here: asserting the past state and expressing uncertainty/inference.  rimanakuyninku is more contextually grounded (rather than simply saying \u201ccasarakuy\u201d for marriage), which fits engagement more precisely."
         },
@@ -282,8 +282,8 @@
                 "ASK": "rikurqankichu",
                 "PROCESSIVE PREDICATE": "rikurqankichu",
                 "meeting": "rikurqankichu",
-                "PP2SG": "rikurqankichu",
-                "PP3DU": "paykunata"
+                "Ref_addressee": "rikurqankichu",
+                "Ref_2_people": "paykunata"
             },
             "comment": "\"Rikurqankichu\" is a question form where \"rikur\" (to see) is transformed into a processive predicate related to meeting or encountering.  \"-kichu\" marks the second person (you), and \"paykunata\" refers to the third-person plural object, indicating the people being talked about (in this case, the grandparents)."
         },
@@ -297,7 +297,7 @@
                 "PROCESSIVE PREDICATE": "pit\u00e1",
                 "PERSON wildcard": "tayta-mamaykunata",
                 "grandparents": "tayta-mamaykunata",
-                "PP1SG": ""
+                "Ref_speaker": ""
             },
             "comment": "\"Pit\u00e1?\" is a direct question asking \"who?\" in relation to the grandparents.  \"Tayta-mamaykunata\" refers to both paternal and maternal grandparents in a plural form, with \"-kunata\" being the accusative case marking the object (grandparents)."
         },
@@ -310,7 +310,7 @@
                 "CONFIRM": "ari",
                 "PROCESSIVE PREDICATE": "rikch'api",
                 "grandparents": "tayta-mamaykita",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "photo": "rikch'api"
             },
             "comment": "Ari\" is a confirmation word, meaning \"Yes.\"  \"rikch\u2019api\" is a verb form meaning \"to see\" or \"look at.\"  \"rikukuq\" in this context seems to be linked to a visual object, likely a \"photo\" or \"picture\".  \"tayta-mamaykita\" refers specifically to \"my grandparents\", where \"-kita\" is the accusative form marking the direct object."
@@ -333,10 +333,10 @@
             "concept_words": {
                 "ASSERT": "paykunaqa...wa\u00f1urqanku",
                 "PROCESSIVE PREDICATE": "wa\u00f1urqanku",
-                "PP3DU": "paykunaqa",
+                "Ref_2_people": "paykunaqa",
                 "dying": "wa\u00f1urqanku",
                 "BEFORE X": "\u00f1awpaq",
-                "PP1SG": "\u00f1uqa",
+                "Ref_speaker": "\u00f1uqa",
                 "being born": "naciwarqay"
             },
             "comment": "\"Paykunaqa\" is the subject, referring to \"they\" (the people).  \"wa\u00f1urqanku\" is the verb for \"died\" in the past tense.  \"\u00f1uqa\" is the first-person singular pronoun \"I.\"  \"naciwarqay\" is derived from the verb \"naci\" (to be born), in the form indicating a past action (being born).  \"p\u2019unchaymanta\" refers to \"since the day,\" indicating a time reference.  \"\u00f1awpaq\" means \"before,\" indicating the time frame for the action."
@@ -349,7 +349,7 @@
             "concept_words": {
                 "ASSERT": "paykunaqa...unaymanta...naciwarqanku",
                 "ATTRIBUTIVE PREDICATE": "naciwarqanku",
-                "PP3DU": "paykunaqa",
+                "Ref_2_people": "paykunaqa",
                 "being born": "naciwarqanku",
                 "_a long time ago": "unaymanta"
             },
@@ -391,7 +391,7 @@
                 "EQUATIVE PREDICATE": "",
                 "POINTED BY SPEAKER": "kayqa",
                 "mother": "mamaymi",
-                "PP1SG": "mamaymi",
+                "Ref_speaker": "mamaymi",
                 "equating": ""
             },
             "comment": "ASSERT: This is an assertion, indicating that \"this\" (the subject) is the speaker's mother.  EQUATIVE PREDICATE: The verb is implicit in this sentence, but it functions as an equative sentence. The subject (\"this\") is equated to the speaker's mother."
@@ -404,7 +404,7 @@
             "concept_words": {
                 "ASSERT": "wawa...kachkaptin",
                 "EQUATIVE PREDICATE": "",
-                "PP3SG": "wawa",
+                "Ref_1_person": "wawa",
                 "equating": "kachkaptin",
                 "children": "wawa",
                 "time position wildcard": "kachkaptin"
@@ -419,9 +419,9 @@
             "concept_words": {
                 "EXPRESS LIKELIHOOD": "seguruch\u00e1",
                 "PROCESSIVE PREDICATE": "kutimushaspa",
-                "PP1SG": "",
+                "Ref_speaker": "",
                 "guessing": "seguruch\u00e1",
-                "PP3SG": "",
+                "Ref_1_person": "",
                 "coming": "kutimushaspa",
                 "school": "yachay"
             },
@@ -435,12 +435,12 @@
             "concept_words": {
                 "ORDER": "qhawariy",
                 "PROCESSIVE PREDICATE": "qhawariy",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "looking": "qhawariy",
                 "schoolbag": "q'epinta",
-                "PP3SG": ""
+                "Ref_1_person": ""
             },
-            "comment": "(q\u2019epi = woven bag; avoids \"mochila\").The verb \"qhawariy\" is imperative, so it's giving a command or instruction. \"q\u2019epi\" refers to a woven bag, but contextually can be used for items similar to a schoolbag.PP2SG: This would refer to the implied second person singular subject (you), even though it is not explicitly stated in the sentence, it\u2019s understood as the one being commanded to look.PP3SG: This would refer to the third person singular \"her\" \u2014 q\u2019epinta (the object of the sentence), referring to her bag."
+            "comment": "(q\u2019epi = woven bag; avoids \"mochila\").The verb \"qhawariy\" is imperative, so it's giving a command or instruction. \"q\u2019epi\" refers to a woven bag, but contextually can be used for items similar to a schoolbag.Ref_addressee: This would refer to the implied second person singular subject (you), even though it is not explicitly stated in the sentence, it\u2019s understood as the one being commanded to look.Ref_1_person: This would refer to the third person singular \"her\" \u2014 q\u2019epinta (the object of the sentence), referring to her bag."
         },
         "29": {
             "legacy index": "",
@@ -465,7 +465,7 @@
                 "small": "uchuy",
                 "boy": "warmacha",
                 "BEHIND X": "qipanpi",
-                "PP3SG": "qipanpi",
+                "Ref_1_person": "qipanpi",
                 "equating": "kaq"
             },
             "comment": "The use of kaq as the equative predicate (is) is common in questions where a subject is being identified or described."
@@ -482,9 +482,9 @@
                 "Teri": "teri",
                 "equating": "chayqa",
                 "POINTED BY SPEAKER": "chayqa",
-                "PP1SG": ""
+                "Ref_speaker": ""
             },
-            "comment": "PP1SG: Not applicable here as the sentence does not involve a first-person singular reference. The word \"chayqa\" typically translates to \"that\" or \"this\" in Quechua, pointing out or referring to something specific. \"Teri\" is a personal name, and \"tiyuy\" is a term for an uncle or older male relative, commonly used in a respectful way."
+            "comment": "Ref_speaker: Not applicable here as the sentence does not involve a first-person singular reference. The word \"chayqa\" typically translates to \"that\" or \"this\" in Quechua, pointing out or referring to something specific. \"Teri\" is a personal name, and \"tiyuy\" is a term for an uncle or older male relative, commonly used in a respectful way."
         },
         "32": {
             "legacy index": "21b",
@@ -494,10 +494,10 @@
             "concept_words": {
                 "ASSERT": "manam...rikurqankichu",
                 "PROCESSIVE PREDICATE": "rikurqankichu",
-                "PP2SG": "rikurqankichu",
+                "Ref_addressee": "rikurqankichu",
                 "never": "manam",
                 "meeting": "rikurqankichu",
-                "PP3SG": ""
+                "Ref_1_person": ""
             },
             "comment": "Manam = \"never\" or \"not\" (used to indicate negation in questions or statements)  Rikurqankichu = \"you\u2019ve met\" or \"you met\" (with rikur meaning \"to see\" or \"to meet,\" -q indicating past tense, and -nki indicating the second-person singular)."
         },
@@ -509,12 +509,12 @@
             "concept_words": {
                 "ASSERT": "pay...kawsan...karumanta",
                 "PROCESSIVE PREDICATE": "kawsan",
-                "PP3SG": "pay",
+                "Ref_1_person": "pay",
                 "residing": "kawsan",
                 "far away": "karumanta",
                 "here": "karumanta"
             },
-            "comment": "ASSERT: Karumanta kawsan (The sentence as a whole asserts that \"he lives far from here.\")  PROCESSIVE PREDICATE: Kawsan (The verb \"kawsan\" refers to the process of living or residing.)  PP3SG: Pay (Implied subject, meaning \"he\" or \"she\" in this context. If explicitly included, it would be \"Pay kawsan.\")  residing: Kawsan (The verb \"kawsan\" refers to living or residing in a place.)  far away: Karumanta (Refers to \"far\" or \"far from here.\")  here: Karumanta (The phrase \"karumanta\" implies \"far from here.\")"
+            "comment": "ASSERT: Karumanta kawsan (The sentence as a whole asserts that \"he lives far from here.\")  PROCESSIVE PREDICATE: Kawsan (The verb \"kawsan\" refers to the process of living or residing.)  Ref_1_person: Pay (Implied subject, meaning \"he\" or \"she\" in this context. If explicitly included, it would be \"Pay kawsan.\")  residing: Kawsan (The verb \"kawsan\" refers to living or residing in a place.)  far away: Karumanta (Refers to \"far\" or \"far from here.\")  here: Karumanta (The phrase \"karumanta\" implies \"far from here.\")"
         },
         "34": {
             "legacy index": "22",
@@ -525,12 +525,12 @@
                 "ASK": "may",
                 "ATTRIBUTIVE PREDICATE": "kanku",
                 "attending": "yachay...wasiman",
-                "PP3DU": "kanku",
+                "Ref_2_people": "kanku",
                 "school": "yachay...wasiman",
                 "object wildcard": "chay...pachapi",
                 "then (time)": "chay...pachapi"
             },
-            "comment": "ASK: \"May\" (This is asking \"Where?\")  ATTRIBUTIVE PREDICATE: \"kanku\" (They are [doing something]. This is the verb conjugated to express what \"they\" are doing.)  attending: \"yachay wasiman\" (This means \"to the school,\" implying the action of attending the school.)  PP3DU: \"kanku\" (This is the third-person plural form, meaning \"they,\" referring to two or more people.)  school: \"yachay wasiman\" (Refers to \"school.\")  object wildcard: \"chay pachapi\" (This phrase means \"at that time,\" where pachapi refers to \"time.\")  then (time): \"chay pachapi\" (This indicates a time reference, similar to saying \"at that time.\")"
+            "comment": "ASK: \"May\" (This is asking \"Where?\")  ATTRIBUTIVE PREDICATE: \"kanku\" (They are [doing something]. This is the verb conjugated to express what \"they\" are doing.)  attending: \"yachay wasiman\" (This means \"to the school,\" implying the action of attending the school.)  Ref_2_people: \"kanku\" (This is the third-person plural form, meaning \"they,\" referring to two or more people.)  school: \"yachay wasiman\" (Refers to \"school.\")  object wildcard: \"chay pachapi\" (This phrase means \"at that time,\" where pachapi refers to \"time.\")  then (time): \"chay pachapi\" (This indicates a time reference, similar to saying \"at that time.\")"
         },
         "35": {
             "legacy index": "23",
@@ -575,9 +575,9 @@
             "concept_words": {
                 "ORDER": "rikuway",
                 "PROCESSIVE PREDICATE": "rikuway",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "allowing": "rikuway",
-                "PP1SG": "rikuway",
+                "Ref_speaker": "rikuway",
                 "seeing": "rikuway",
                 "OTHER X": "huk",
                 "picture": "rikch'ata",
@@ -598,12 +598,12 @@
                 "POINTED BY SPEAKER": "kay",
                 "surely": "chiqapmi",
                 "mother": "mamayki",
-                "PP2SG": "mamayki",
+                "Ref_addressee": "mamayki",
                 "again": "\u00f1awpaqman...hina",
                 "carrying": "apaspa",
                 "children": "wawata",
                 "back (anatomy)": "wasanpi",
-                "PP3SG": "wasanpi",
+                "Ref_1_person": "wasanpi",
                 "equating": "mamayki"
             },
             "comment": "\u201cchiqapmi\u201d expresses likelihood/strong assertion.  \u201c\u00f1awpaqman hina\u201d serves idiomatically for \u201cagain\u201d (lit. \u201cas before\u201d).  \u201capaspa\u201d is a subordinate verb indicating simultaneous action (carrying).  The topic \u201cKay warmiqa\u201d sets up the reference to \u201cthis woman.\u201d"
@@ -617,7 +617,7 @@
                 "EXPRESS BELIEF (EPISTEMIC)": "atinich\u00e1",
                 "PROCESSIVE PREDICATE": "atinich\u00e1",
                 "EQUATIVE PREDICATE": "",
-                "PP1SG": "atinich\u00e1",
+                "Ref_speaker": "atinich\u00e1",
                 "thinking": "atinich\u00e1",
                 "knowing": "riqsiyta",
                 "PERSON wildcard": "wawataq",
@@ -636,7 +636,7 @@
                 "ASSERT": "",
                 "EQUATIVE PREDICATE": "kanki",
                 "POINTED BY SPEAKER": "chayqa",
-                "PP2SG": "qam",
+                "Ref_addressee": "qam",
                 "equating": "chayqa...qam...kanki"
             },
             "comment": ""
@@ -650,7 +650,7 @@
                 "CONFIRM": "chiqa",
                 "EQUATIVE PREDICATE": "kani",
                 "POINTED BY SPEAKER": "qam",
-                "PP1SG": "kani",
+                "Ref_speaker": "kani",
                 "equating": "qam...kani"
             },
             "comment": "Chiqa is used for strong confirmation or agreement, often translated as indeed or yes, truly.The combination qam kani expresses identification or an equation between \u201cyou\u201d and \u201cme,\u201d"
@@ -663,12 +663,12 @@
             "concept_words": {
                 "ASK": "imanasqataq",
                 "PROCESSIVE PREDICATE": "riqsirqanki",
-                "PP2SG": "riqsirqanki",
+                "Ref_addressee": "riqsirqanki",
                 "recognizing": "riqsirqanki",
-                "PP1SG": "",
+                "Ref_speaker": "",
                 "process wildcard": "riqsirqanki"
             },
-            "comment": "ASK: \"Imanasqataq\" \u2014 This is the word for \"how,\" which contributes to the concept of asking.  PROCESSIVE PREDICATE: \"riqsirqanki\" \u2014 This is the verb \"to know\" in a processive form (past tense), showing the action of recognizing or knowing.  PP2SG: \"riqsirqanki\" \u2014 This is in the second-person singular (you) form, addressing the listener.  RECOGNIZING: \"riqsirqanki\" \u2014 The verb is related to recognizing or knowing.  PP1SG: Does not apply here as the sentence is directed toward the second person (you).  PROCESS WILDCARD: The verb \"riqsirqanki\" fits here as it denotes the process of knowing or recognizing."
+            "comment": "ASK: \"Imanasqataq\" \u2014 This is the word for \"how,\" which contributes to the concept of asking.  PROCESSIVE PREDICATE: \"riqsirqanki\" \u2014 This is the verb \"to know\" in a processive form (past tense), showing the action of recognizing or knowing.  Ref_addressee: \"riqsirqanki\" \u2014 This is in the second-person singular (you) form, addressing the listener.  RECOGNIZING: \"riqsirqanki\" \u2014 The verb is related to recognizing or knowing.  Ref_speaker: Does not apply here as the sentence is directed toward the second person (you).  PROCESS WILDCARD: The verb \"riqsirqanki\" fits here as it denotes the process of knowing or recognizing."
         },
         "43": {
             "legacy index": "28a",
@@ -678,7 +678,7 @@
             "concept_words": {
                 "ASSERT": "ari",
                 "ATTRIBUTIVE PREDICATE": "huch'uy...wawaraqmi",
-                "PP2SG": "kanki",
+                "Ref_addressee": "kanki",
                 "small": "huch'uy",
                 "children": "wawaraqmi",
                 "photo": "rikch'ataqa",
@@ -697,8 +697,8 @@
                 "PROCESSIVE PREDICATE": "asirikuykiqapas",
                 "BUT": "ichaqa",
                 "recognizing": "asirikuykiqapas",
-                "PP1SG": "\u00f1awiykita",
-                "PP2SG": "\u00f1awiykita",
+                "Ref_speaker": "\u00f1awiykita",
+                "Ref_addressee": "\u00f1awiykita",
                 "eyes": "\u00f1awiykita",
                 "AND": "ichaqa",
                 "smile": "asirikuykiqapas"
@@ -713,7 +713,7 @@
             "concept_words": {
                 "ASSERT": "rikch'anki",
                 "PROCESSIVE PREDICATE": "rikch'anki",
-                "PP2SG": "rikch'anki",
+                "Ref_addressee": "rikch'anki",
                 "looking like": "rikch'anki",
                 "mischievous": "k'amirawan",
                 "picture": "rikch'api",
@@ -730,7 +730,7 @@
                 "ASSERT": "tikrakurqankichu",
                 "PROCESSIVE PREDICATE": "tikrakurqankichu",
                 "Negative Polarity": "mana...tikrakurqankichu",
-                "PP2SG": "tikrakurqankichu",
+                "Ref_addressee": "tikrakurqankichu",
                 "changing (over time)": "tikrakurqankichu",
                 "much": "askha"
             },
@@ -758,7 +758,7 @@
                 "Negative Polarity": "mana\u00f1am...wawachu",
                 "BUT": "ichaqa",
                 "AND": "",
-                "PP1SG": "kani",
+                "Ref_speaker": "kani",
                 "children": "wawachu",
                 "anymore": "mana\u00f1am",
                 "growing up": "wi\u00f1asqa\u00f1am",
@@ -777,11 +777,11 @@
                 "Negative Polarity": "manam...apawanqanchu",
                 "today": "kunan...punchawqa",
                 "mother": "mamayqa",
-                "PP1SG": "apawanqanchu",
+                "Ref_speaker": "apawanqanchu",
                 "being able to": "apawanqanchu",
                 "carrying": "apawanqanchu",
                 "back (anatomy)": "wasanpi",
-                "PP3SG": "apawanqanchu"
+                "Ref_1_person": "apawanqanchu"
             },
             "comment": "The future irrealis form -nqa shows conditional ability (would be able to).  The negative polarity is expressed using manam ... chu, which wraps around the predicate.  -wa- is the 1st person object marker (me), while -n- marks 3rd person subject (she).  This sentence is a great example of layering morphology to express subject, object, negation, and potential mood in one verb."
         },
@@ -793,12 +793,12 @@
             "concept_words": {
                 "ASSERT": "kani",
                 "PROCESSIVE PREDICATE": "kani",
-                "PP1SG": "kani",
+                "Ref_speaker": "kani",
                 "MORE X THAN Y": "aswan",
                 "AND": "llasayniymantapas",
                 "tall": "sayayniymanta",
                 "heavy": "llasayniymantapas",
-                "PP3SG": "",
+                "Ref_1_person": "",
                 "exhibiting (an attribute)": "sayayniymanta...llasayniymantapas",
                 "equating": ""
             },
@@ -823,7 +823,7 @@
             "concept_words": {
                 "ASSERT": "kanki",
                 "PROCESSIVE PREDICATE": "mikhuqmi",
-                "PP2SG": "kanki",
+                "Ref_addressee": "kanki",
                 "eating": "mikhuqmi",
                 "TOO MUCH OF X": "llunp'a"
             },

@@ -54,12 +54,12 @@
                 "ASSERT": "kachkani",
                 "ATTRIBUTIVE PREDICATE": "allinchu...kachkani",
                 "Negative Polarity": "allinchu",
-                "PP1SG": "kachkani",
+                "Ref_speaker": "kachkani",
                 "experiencing in the body": "kachkani",
                 "good": "allinchu",
                 "these days": "kunan...p'unchawkunapi"
             },
-            "comment": "ATTRIBUTIVE PREDICATE ; \u201ckachkani\u201d is a predicate (says something about the subject), and \u201callin\u201d (well/good) is the attribute describing the subject's state. NEGATIVE POLARITY :-chu\u201d = enclitic that finalizes the negative construction . PP1SG ;The verb ending \u201c-ni\u201d shows first person singular ."
+            "comment": "ATTRIBUTIVE PREDICATE ; \u201ckachkani\u201d is a predicate (says something about the subject), and \u201callin\u201d (well/good) is the attribute describing the subject's state. NEGATIVE POLARITY :-chu\u201d = enclitic that finalizes the negative construction . Ref_speaker ;The verb ending \u201c-ni\u201d shows first person singular ."
         },
         "5": {
             "legacy index": "4",
@@ -71,13 +71,13 @@
                 "EQUATIVE PREDICATE": "",
                 "event wildcard": "rikukuyta...hamuni",
                 "causality wildcard": "chayrayku",
-                "PP1SG": "hamuni",
+                "Ref_speaker": "hamuni",
                 "coming": "hamuni",
                 "seeing": "rikukuyta",
-                "PP2SG": "qamta",
+                "Ref_addressee": "qamta",
                 "equating": ""
             },
-            "comment": "EQUATIVE PREDICATE : There is no equative construction in this sentence, so this does not apply. PP1SG :\u201chamuni\u201d :Verb ending \u201c-ni\u201d = I \u2192 marks first person singular. COMING:\u201chamuni\u201d;From \u201chamu-\u201d = to come, \u201c-ni\u201d = I \u2192 I came. SEEING :\u201crikukuyta\u201d ;From \u201crikuy\u201d = to see, \u201c-kuy\u201d = reflexive or purposeful aspect, \u201c-ta\u201d = object marker \u2192 to see you. PP2SG :\u201cqamta\u201d:\u201cqam\u201d = you, \u201c-ta\u201d = object marker \u2192 you (as object)."
+            "comment": "EQUATIVE PREDICATE : There is no equative construction in this sentence, so this does not apply. Ref_speaker :\u201chamuni\u201d :Verb ending \u201c-ni\u201d = I \u2192 marks first person singular. COMING:\u201chamuni\u201d;From \u201chamu-\u201d = to come, \u201c-ni\u201d = I \u2192 I came. SEEING :\u201crikukuyta\u201d ;From \u201crikuy\u201d = to see, \u201c-kuy\u201d = reflexive or purposeful aspect, \u201c-ta\u201d = object marker \u2192 to see you. Ref_addressee :\u201cqamta\u201d:\u201cqam\u201d = you, \u201c-ta\u201d = object marker \u2192 you (as object)."
         },
         "6": {
             "legacy index": "5a",
@@ -89,9 +89,9 @@
                 "PROCESSIVE PREDICATE": "chaykuykanki",
                 "event wildcard": "chaykuykanki",
                 "happening": "chaykuykanki",
-                "PP2SG": "chaykuykanki"
+                "Ref_addressee": "chaykuykanki"
             },
-            "comment": "ASK ;_chus :\tInterrogative particle \u2192 turns sentence into a question . HAPPENING:\tchaykuy-:\tRoot verb meaning to happen, to occur .PP2SG:\t-kanki:\tVerb ending indicating you (2nd person singular)"
+            "comment": "ASK ;_chus :\tInterrogative particle \u2192 turns sentence into a question . HAPPENING:\tchaykuy-:\tRoot verb meaning to happen, to occur .Ref_addressee:\t-kanki:\tVerb ending indicating you (2nd person singular)"
         },
         "7": {
             "legacy index": "5b",
@@ -101,11 +101,11 @@
             "concept_words": {
                 "ASSERT": "rikch'akuyki",
                 "ATTRIBUTIVE PREDICATE": "unqusqa...rikch'akuyki",
-                "PP2SG": "rikch'akuyki",
+                "Ref_addressee": "rikch'akuyki",
                 "looking like": "rikch'akuyki",
                 "sick": "unqusqa"
             },
-            "comment": "PP2SG :-kuyki .SICK : From unqu = sick, -sqa = participle marker (indicating a state)."
+            "comment": "Ref_addressee :-kuyki .SICK : From unqu = sick, -sqa = participle marker (indicating a state)."
         },
         "8": {
             "legacy index": "6",
@@ -116,12 +116,12 @@
                 "ASSERT": "atinichu",
                 "PROCESSIVE PREDICATE": "atinichu",
                 "Negative Polarity": "manam...atinichu",
-                "PP1SG": "atinichu",
+                "Ref_speaker": "atinichu",
                 "being able to": "atinichu",
                 "sleeping": "pu\u00f1uyta",
                 "at night": "tutapi"
             },
-            "comment": "PP1SG :-ni in atinichu . BEING ABLE TO :atini in atinichu."
+            "comment": "Ref_speaker :-ni in atinichu . BEING ABLE TO :atini in atinichu."
         },
         "9": {
             "legacy index": "7a",
@@ -132,9 +132,9 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "ruphasqani",
                 "sweating": "ruphasqani",
-                "PP1SG": "ruphasqani"
+                "Ref_speaker": "ruphasqani"
             },
-            "comment": "SWEATING :\u201crupha-\u201d directly means to sweat. PP1SG :\u201c-ni\u201d is the first person singular suffix, meaning \"I\" (the subject performing the action)."
+            "comment": "SWEATING :\u201crupha-\u201d directly means to sweat. Ref_speaker :\u201c-ni\u201d is the first person singular suffix, meaning \"I\" (the subject performing the action)."
         },
         "10": {
             "legacy index": "7b",
@@ -144,11 +144,11 @@
             "concept_words": {
                 "ASSERT": "watukuykuni",
                 "PROCESSIVE PREDICATE": "manchakuywanmi",
-                "PP1SG": "watukuykuni",
+                "Ref_speaker": "watukuykuni",
                 "experiencing in the body": "manchakuywanmi",
                 "nightmare": "pu\u00f1uykuna"
             },
-            "comment": "ASSERT :watukuykuni =\tAsserts the speaker\u2019s experience of having nightmares. PP1SG:\t-kuni in watukuykuni=\tFirst person singular suffix indicating I (subject).NIGHTMARE :\tpu\u00f1uykuna=\tRefers to dreams, interpreted as nightmares in this context."
+            "comment": "ASSERT :watukuykuni =\tAsserts the speaker\u2019s experience of having nightmares. Ref_speaker:\t-kuni in watukuykuni=\tFirst person singular suffix indicating I (subject).NIGHTMARE :\tpu\u00f1uykuna=\tRefers to dreams, interpreted as nightmares in this context."
         },
         "11": {
             "legacy index": "7c",
@@ -158,11 +158,11 @@
             "concept_words": {
                 "ASSERT": "wi\u00f1aykamuni",
                 "PROCESSIVE PREDICATE": "wi\u00f1aykamuni",
-                "PP1SG": "wi\u00f1aykamuni",
+                "Ref_speaker": "wi\u00f1aykamuni",
                 "waking up": "wi\u00f1aykamuni",
                 "middle of the night": "tutayaypatpi"
             },
-            "comment": "ASSERT:\t\"-ni\" (in wi\u00f1aykamuni)=\t1SG declarative. PROGRESSIVE:\t(Not present)= Verb is punctual; use \"-chka-\" for progressive. PP1SG : \"-ni\" (in wi\u00f1aykamuni) = 1st person singular marker.\"Waking up\"; wi\u00f1ayka-mu-ni= Root wi\u00f1ayka- + sudden -mu-. \"Middle of night\":\ttutayay-pa-tpi\tGEN + locative middle suffix."
+            "comment": "ASSERT:\t\"-ni\" (in wi\u00f1aykamuni)=\t1SG declarative. PROGRESSIVE:\t(Not present)= Verb is punctual; use \"-chka-\" for progressive. Ref_speaker : \"-ni\" (in wi\u00f1aykamuni) = 1st person singular marker.\"Waking up\"; wi\u00f1ayka-mu-ni= Root wi\u00f1ayka- + sudden -mu-. \"Middle of night\":\ttutayay-pa-tpi\tGEN + locative middle suffix."
         },
         "12": {
             "legacy index": "8a",
@@ -172,12 +172,12 @@
             "concept_words": {
                 "ASSERT": "yuyarinuni",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "yuyarinuni",
+                "Ref_speaker": "yuyarinuni",
                 "experiencing in the body": "yuyarinuni",
                 "hot": "wakin...kutikunapi",
                 "sometimes": "rupayta"
             },
-            "comment": "ASSERT :-ni (in yuyarinuni). PROGRESSIVE PREDICATE: Not present). PP1SG; -ni (in yuyarinuni). Experiencing in the body :yuyari- (root) ."
+            "comment": "ASSERT :-ni (in yuyarinuni). PROGRESSIVE PREDICATE: Not present). Ref_speaker; -ni (in yuyarinuni). Experiencing in the body :yuyari- (root) ."
         },
         "13": {
             "legacy index": "8b",
@@ -188,11 +188,11 @@
                 "ASSERT": "yuyarinuni",
                 "PROCESSIVE PREDICATE": "",
                 "sometimes": "wakin...kutikunapi",
-                "PP1SG": "yuyarinuni",
+                "Ref_speaker": "yuyarinuni",
                 "experiencing in the body": "yuyarinuni",
                 "cold": "chirita"
             },
-            "comment": "ASSERT :-ni (in yuyarinuni) .PROGRESSIVE PREDICATE :(Not present). PP1SG:-ni (in yuyarinuni)=The -ni suffix indicates the speaker (\"I\") as subject' . experiencing in the body : yuyari- (verb root) ."
+            "comment": "ASSERT :-ni (in yuyarinuni) .PROGRESSIVE PREDICATE :(Not present). Ref_speaker:-ni (in yuyarinuni)=The -ni suffix indicates the speaker (\"I\") as subject' . experiencing in the body : yuyari- (verb root) ."
         },
         "14": {
             "legacy index": "8c",
@@ -203,7 +203,7 @@
                 "EXPRESS LIKELIHOOD": "ruphasqachu",
                 "ASK": "ruphasqachu",
                 "ATTRIBUTIVE PREDICATE": "ruphasqachu",
-                "PP1SG": "kani",
+                "Ref_speaker": "kani",
                 "experiencing in the body": "ruphasqachu",
                 "fever": "ruphasqachu"
             },
@@ -217,13 +217,13 @@
             "concept_words": {
                 "ORDER": "qhawarisaq",
                 "PROCESSIVE PREDICATE": "qhawarisaq",
-                "PP1SG": "qhawarisaq",
-                "PP2SG": "mat'iykita",
+                "Ref_speaker": "qhawarisaq",
+                "Ref_addressee": "mat'iykita",
                 "allowing": "qhawarisaq",
                 "checking": "qhawarisaq",
                 "forehead": "mat'iykita"
             },
-            "comment": "Mat\u2019iykita : mat\u2019i = forehead ,-yki = your (2nd person possessive, PP2SG),-ta = accusative marker (marks the object being looked at). 2.qhawarisaq :qhawari- = to look at / observe / examine (checking), -saq = 1st person hortative future (PP1SG) \u2014 \u201cI will / Let me\u201d"
+            "comment": "Mat\u2019iykita : mat\u2019i = forehead ,-yki = your (2nd person possessive, Ref_addressee),-ta = accusative marker (marks the object being looked at). 2.qhawarisaq :qhawari- = to look at / observe / examine (checking), -saq = 1st person hortative future (Ref_speaker) \u2014 \u201cI will / Let me\u201d"
         },
         "16": {
             "legacy index": "9b",
@@ -233,11 +233,11 @@
             "concept_words": {
                 "APPROVE": "ar\u00ed",
                 "ATTRIBUTIVE PREDICATE": "q'o\u00f1ikanki",
-                "PP2SG": "q'o\u00f1ikanki",
+                "Ref_addressee": "q'o\u00f1ikanki",
                 "experiencing in the body": "q'o\u00f1ikanki",
                 "hot": "q'o\u00f1ikanki"
             },
-            "comment": "Ay = interjection (Oh!) \u2014 adds emphasis or emotion ,Ar\u00ed = Yes (APPROVE) ,Q\u2019o\u00f1ikanki = q\u2019o\u00f1i- = hot, warm (experiencing in the body, hot) -kanki = you are (PP2SG, ATTRIBUTIVE PREDICATE)"
+            "comment": "Ay = interjection (Oh!) \u2014 adds emphasis or emotion ,Ar\u00ed = Yes (APPROVE) ,Q\u2019o\u00f1ikanki = q\u2019o\u00f1i- = hot, warm (experiencing in the body, hot) -kanki = you are (Ref_addressee, ATTRIBUTIVE PREDICATE)"
         },
         "17": {
             "legacy index": "10",
@@ -247,7 +247,7 @@
             "concept_words": {
                 "ASK": "ch'ukichkankichu",
                 "PROCESSIVE PREDICATE": "ch'ukichkankichu",
-                "PP2SG": "ch'ukichkankichu",
+                "Ref_addressee": "ch'ukichkankichu",
                 "coughing": "ch'ukichkankichu"
             },
             "comment": "Uses authentic root ch'uki- instead of Spanish-derived ,<tosay> WHICH IS MOST WIDELY USED IN QUECHUA FOR <COUGH."
@@ -261,10 +261,10 @@
                 "DISAPPROVE": "manam...ch'ukichkanichu",
                 "PROCESSIVE PREDICATE": "ch'ukichkanichu",
                 "Negative Polarity": "manam...ch'ukichkanichu",
-                "PP1SG": "ch'ukichkanichu",
+                "Ref_speaker": "ch'ukichkanichu",
                 "coughing": "ch'ukichkanichu"
             },
-            "comment": "DISAPPROVE/NEGATE : Manam...-chu .PROGRESSIVE PREDICATE\t:-chka- (infix).Negative Polarity; Manam...-chu .PP1SG (1st person) ;-ni (suffix) .coughing; ch'uki- (root)."
+            "comment": "DISAPPROVE/NEGATE : Manam...-chu .PROGRESSIVE PREDICATE\t:-chka- (infix).Negative Polarity; Manam...-chu .Ref_speaker (1st person) ;-ni (suffix) .coughing; ch'uki- (root)."
         },
         "19": {
             "legacy index": "12a",
@@ -274,7 +274,7 @@
             "concept_words": {
                 "ASSERT": "yarqaymi",
                 "PROCESSIVE PREDICATE": "nanachkani",
-                "PP1SG": "nanachkani",
+                "Ref_speaker": "nanachkani",
                 "every time": "sapa...kutilla",
                 "waking up": "wi\u00f1aykamuptiyqa",
                 "experiencing in the body": "nanachkani",
@@ -290,12 +290,12 @@
             "concept_words": {
                 "ASSERT": "munani",
                 "PROCESSIVE PREDICATE": "upyay",
-                "PP1SG": "munani",
+                "Ref_speaker": "munani",
                 "experiencing in the body": "upyay",
                 "needing": "munani",
                 "drinking": "upyay"
             },
-            "comment": "ASSERT :\tmunani =\tAssertion in the form of a desire or need, \u201cI want\u201d or \u201cI need.\u201dPROCESSIVE PREDICATE:\tUpyay=\tIndicates an ongoing action or process, like the act of drinking.PP1SG\t:munani=\tFirst person singular: \u201cI want\u201d or \u201cI need.\u201ddrinking :\tUpyay=\tThe verb root for \"to drink\" \u2014 direct reference to the action of drinking."
+            "comment": "ASSERT :\tmunani =\tAssertion in the form of a desire or need, \u201cI want\u201d or \u201cI need.\u201dPROCESSIVE PREDICATE:\tUpyay=\tIndicates an ongoing action or process, like the act of drinking.Ref_speaker\t:munani=\tFirst person singular: \u201cI want\u201d or \u201cI need.\u201ddrinking :\tUpyay=\tThe verb root for \"to drink\" \u2014 direct reference to the action of drinking."
         },
         "21": {
             "legacy index": "13a",
@@ -305,12 +305,12 @@
             "concept_words": {
                 "ASSERT": "wayq'uywanmi",
                 "ATTRIBUTIVE PREDICATE": "nanachkani",
-                "PP1SG": "nanachkani",
+                "Ref_speaker": "nanachkani",
                 "experiencing in the body": "nanachkani",
                 "pain": "nanachkani",
                 "belly": "wayq'uywanmi"
             },
-            "comment": "ASSERT=\t-mi (in wayq'uywanmi).ATTRIBUTIVE PREDICATE=\tnanachkani .PP1SG (1st person)=-ni (in nanachkani). pain=\tnana- (root)."
+            "comment": "ASSERT=\t-mi (in wayq'uywanmi).ATTRIBUTIVE PREDICATE=\tnanachkani .Ref_speaker (1st person)=-ni (in nanachkani). pain=\tnana- (root)."
         },
         "22": {
             "legacy index": "13b",
@@ -332,14 +332,14 @@
             "concept_words": {
                 "ASK": "nanachkanki",
                 "EXISTENTIAL PREDICATE": "nanachkanki",
-                "PP2SG": "nanachkanki",
+                "Ref_addressee": "nanachkanki",
                 "experiencing in the body": "nanachkanki",
                 "pain": "nanachkanki",
                 "OR": "nanachkanki",
                 "day": "p'unchawkunach\u00e1",
                 "night": "tutallapi\u00f1achu"
             },
-            "comment": "ASK =-ch\u00e1 and -chu=-ch\u00e1 marks uncertainty about daytime pain; -chu creates the alternative question.PP2SG ;-nki (in nanachkanki). experiencing in body :nana- (root) .OR=manataq...-chu."
+            "comment": "ASK =-ch\u00e1 and -chu=-ch\u00e1 marks uncertainty about daytime pain; -chu creates the alternative question.Ref_addressee ;-nki (in nanachkanki). experiencing in body :nana- (root) .OR=manataq...-chu."
         },
         "24": {
             "legacy index": "15a",
@@ -362,7 +362,7 @@
                 "ASSERT": "manam",
                 "PROCESSIVE PREDICATE": "yachanichu",
                 "Negative Polarity": "manam",
-                "PP1SG": "yachanichu",
+                "Ref_speaker": "yachanichu",
                 "knowing": "yachanichu",
                 "causality wildcard": "imataq"
             },
@@ -377,12 +377,12 @@
                 "ASSERT": "llakikuni",
                 "EXISTENTIAL PREDICATE": "llakikuni",
                 "doctor": "hampikamayuq",
-                "PP1SG": "llakikuni",
+                "Ref_speaker": "llakikuni",
                 "experiencing in the body": "llakikuni",
                 "anxiety": "llakikuni",
                 "a bit": "huk...hinalla"
             },
-            "comment": "ASSERT=-ni (in llakikuni) ,EXISTENTIAL PREDICATE=llakikuni:The verb asserts the existence of worry ,PP1SG (1st person)= -ni (in llakikuni) ,nxiety= llaki-"
+            "comment": "ASSERT=-ni (in llakikuni) ,EXISTENTIAL PREDICATE=llakikuni:The verb asserts the existence of worry ,Ref_speaker (1st person)= -ni (in llakikuni) ,nxiety= llaki-"
         },
         "27": {
             "legacy index": "16b",
@@ -405,13 +405,13 @@
             "concept_words": {
                 "ASK": "ima",
                 "PROCESSIVE PREDICATE": "mikhurqankichu",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "eating": "mikhuytapas",
                 "object wildcard": "mikhuytapas",
                 "particular": "ima",
                 "lately": "qhipa"
             },
-            "comment": "PP2SG: Not directly applicable here. The second-person singular pronoun (you) is implied by context but not explicitly used.  Eating: \"Mikhuypaqmi\" (related to eating) and \"Mikhurqa\" (has eaten) contribute to the eating concept.  Object wildcard: \"Mikhuypaqmi\" contributes to the object wildcard concept as it relates to something about eating."
+            "comment": "Ref_addressee: Not directly applicable here. The second-person singular pronoun (you) is implied by context but not explicitly used.  Eating: \"Mikhuypaqmi\" (related to eating) and \"Mikhurqa\" (has eaten) contribute to the eating concept.  Object wildcard: \"Mikhuypaqmi\" contributes to the object wildcard concept as it relates to something about eating."
         },
         "29": {
             "legacy index": "18a",
@@ -422,11 +422,11 @@
                 "ORDER": "hmm",
                 "PROCESSIVE PREDICATE": "yuyarisaq",
                 "allowing": "",
-                "PP1SG": "",
-                "PP2SG": "",
+                "Ref_speaker": "",
+                "Ref_addressee": "",
                 "remembering": "yuyarisaq"
             },
-            "comment": "Allowing: This concept is not directly represented in this sentence.PP2SG: Not applicable in this sentence since the subject is first-person singular."
+            "comment": "Allowing: This concept is not directly represented in this sentence.Ref_addressee: Not applicable in this sentence since the subject is first-person singular."
         },
         "30": {
             "legacy index": "18b",
@@ -437,11 +437,11 @@
                 "INFIRM": "manam...hinatachu",
                 "PROCESSIVE PREDICATE": "yuyaykuni",
                 "Negative Polarity": "manam...hinatachu",
-                "PP1SG": "yuyaykuni",
+                "Ref_speaker": "yuyaykuni",
                 "thinking": "yuyaykuni",
                 "event wildcard": "chay...hinatachu"
             },
-            "comment": "INFIRM =\tManam... =-chu (circumfix)\tDouble negation frame (manam + -chu) creates strong denial.PROCESSIVE PREDICATE=yuyayku- (verb root + directional)=The -ku- suffix implies ongoing mental process. PP1SG (1st person)=\t-ni (in yuyaykuni)=\tMarks \"I\" as the thinker.thinking=yuyayku-=\tDerived from yuyay (thought) + -ku (self-directed action). event wildcard\t=chay hina=\"Like that\" refers to any contextually relevant situation."
+            "comment": "INFIRM =\tManam... =-chu (circumfix)\tDouble negation frame (manam + -chu) creates strong denial.PROCESSIVE PREDICATE=yuyayku- (verb root + directional)=The -ku- suffix implies ongoing mental process. Ref_speaker (1st person)=\t-ni (in yuyaykuni)=\tMarks \"I\" as the thinker.thinking=yuyayku-=\tDerived from yuyay (thought) + -ku (self-directed action). event wildcard\t=chay hina=\"Like that\" refers to any contextually relevant situation."
         },
         "31": {
             "legacy index": "19a",
@@ -452,7 +452,7 @@
                 "ORDER": "suyay",
                 "PROCESSIVE PREDICATE": "suyay",
                 "waiting": "suyay",
-                "PP2SG": "suyay"
+                "Ref_addressee": "suyay"
             },
             "comment": ""
         },
@@ -464,10 +464,10 @@
             "concept_words": {
                 "APPROVE": "ar\u00ed",
                 "PROCESSIVE PREDICATE": "ruwarqani",
-                "PP1SG": "ruwarqani",
+                "Ref_speaker": "ruwarqani",
                 "event wildcard": "ruwarqani"
             },
-            "comment": "APPROVE: ar\u00ed=Affirmative particle expressing approval or confirmation.PROCESSIVE PREDICATE :\truwarqani=\tVerb expressing an action (with past tense and person marker).PP1SG:-ni (in ruwarqani)=\tIndicates first person singular subject. event wildcard:ruwa-\t=Root verb expressing the event or action."
+            "comment": "APPROVE: ar\u00ed=Affirmative particle expressing approval or confirmation.PROCESSIVE PREDICATE :\truwarqani=\tVerb expressing an action (with past tense and person marker).Ref_speaker:-ni (in ruwarqani)=\tIndicates first person singular subject. event wildcard:ruwa-\t=Root verb expressing the event or action."
         },
         "33": {
             "legacy index": "20",
@@ -484,7 +484,7 @@
                 "forest": "sach'amanta",
                 "fruit": "ruruta",
                 "strange": "musuq",
-                "PP1SG": "\u00f1uqaqa",
+                "Ref_speaker": "\u00f1uqaqa",
                 "seeing": "riqsirqanichu"
             },
             "comment": "\u201capamurqa\u201d is derived from apa- (bring), -mu- (toward speaker), -rqa (past), showing process and directionality.\u201cmana ... -chu\u201d is the standard negation structure in Quechua.\u201criqsirqanichu\u201d = riqsi-rqa-ni-chu \u2192 \"I had not seen\" (perfective, 1st person, negative).\u201cmusuq\u201d as \"strange\" is context-dependent; it literally means \"new\" but in this context, it conveys unfamiliarity."
@@ -497,8 +497,8 @@
             "concept_words": {
                 "ASSERT": "mikhuchirqawan",
                 "PROCESSIVE PREDICATE": "mikhuchirqawan",
-                "PP3SG": "mikhuchirqawan",
-                "PP1SG": "\u00f1uqata",
+                "Ref_1_person": "mikhuchirqawan",
+                "Ref_speaker": "\u00f1uqata",
                 "giving": "mikhuchirqawan",
                 "trying": "mikhuchirqawan",
                 "fruit": "rurutawan"
@@ -513,10 +513,10 @@
             "concept_words": {
                 "ASK": "mikhurqankichu",
                 "PROCESSIVE PREDICATE": "mikhurqankichu",
-                "PP2SG": "mikhurqankichu",
+                "Ref_addressee": "mikhurqankichu",
                 "Ref_Event": "mikhurqankichu"
             },
-            "comment": "ASK\t:-chu=\tThe -chu suffix turns the verb into a yes/no question \u2192 asking a question.PROCESSIVE PREDICATE;\tmikhurqankichu=The full verb expresses a completed action (process), in question form.PP2SG\t-nki (in mikhurqankichu)\t-nki is the personal ending for second person singular (\"you\").Ref_Event\tmikhu-\tThe root verb \"eat\" refers to the event being questioned \u2014"
+            "comment": "ASK\t:-chu=\tThe -chu suffix turns the verb into a yes/no question \u2192 asking a question.PROCESSIVE PREDICATE;\tmikhurqankichu=The full verb expresses a completed action (process), in question form.Ref_addressee\t-nki (in mikhurqankichu)\t-nki is the personal ending for second person singular (\"you\").Ref_Event\tmikhu-\tThe root verb \"eat\" refers to the event being questioned \u2014"
         },
         "36": {
             "legacy index": "23a",
@@ -526,7 +526,7 @@
             "concept_words": {
                 "APPROVE": "ar\u00ed",
                 "PROCESSIVE PREDICATE": "mikhurqani",
-                "PP1SG": "mikhurqani",
+                "Ref_speaker": "mikhurqani",
                 "Ref_Event": "mikhurqani"
             },
             "comment": "Ar\u00ed confirms or approves the statement, making it a clear answer of affirmation.  mikhurqani uses the past tense to describe a completed action of eating, indicating the speaker's past activity."
@@ -539,7 +539,7 @@
             "concept_words": {
                 "ASSERT": "cheqaqmanta",
                 "PROCESSIVE PREDICATE": "kasharqani",
-                "PP1SG": "kasharqani",
+                "Ref_speaker": "kasharqani",
                 "liking": "kasharqani",
                 "Ref_many_objects": "allin"
             },
@@ -567,7 +567,7 @@
             "concept_words": {
                 "ASSERT": "mikhurqani",
                 "PROCESSIVE PREDICATE": "mikhurqani",
-                "PP1SG": "mikhurqani",
+                "Ref_speaker": "mikhurqani",
                 "eating": "mikhurqani",
                 "Ref_many_objects": "achka",
                 "many": "achka"
@@ -586,7 +586,7 @@
                 "sick": "unqukurqani",
                 "after": "chaymantam",
                 "event wildcard": "unqukurqani",
-                "PP1SG": "unqukurqani"
+                "Ref_speaker": "unqukurqani"
             },
             "comment": "Chaymantam situates the event in time, showing it happened after a certain point (likely related to previous context).  Unqukurqani indicates the speaker's state change (becoming sick) in the past, with -rqa for the past tense and -ni marking the speaker as the subject."
         },
@@ -613,7 +613,7 @@
                 "fruit": "rurukunam",
                 "Ref_many_objects": "rurukunam",
                 "making": "unquchiwarqanki",
-                "PP2SG": "unquchiwarqanki",
+                "Ref_addressee": "unquchiwarqanki",
                 "sick": "unquchiwarqanki"
             },
             "comment": "Chay points to the specific fruits in question, which the speaker believes are responsible for the sickness.  Unquchiwarqanki expresses the hypothesis or likelihood that the fruits caused the sickness, with -warqanki indicating past tense and the possibility of the event happening."
@@ -628,7 +628,7 @@
                 "PROCESSIVE PREDICATE": "unqukurqankichu",
                 "Negative Polarity": "manam",
                 "CONDITION": "manaraq",
-                "PP2SG": "mikhuspayki",
+                "Ref_addressee": "mikhuspayki",
                 "eating": "mikhuspayki",
                 "becoming": "unqukurqankichu",
                 "so much": "achka",
@@ -655,7 +655,7 @@
                 "WISH": "mana...ruwanay...kasharqa",
                 "PROCESSIVE PREDICATE": "ruwanay",
                 "Negative Polarity": "mana",
-                "PP1SG": "kasharqa",
+                "Ref_speaker": "kasharqa",
                 "doing": "ruwanay"
             },
             "comment": "Mana is used here to negate the action, indicating that the speaker regrets or wishes they hadn\u2019t done something.  Ruwanay refers to the action of doing something, and kasharqa expresses that the speaker did this action in the past.  The sentence as a whole expresses a wish or regret, which is common in expressing \"I wish I hadn\u2019t done it\" in a hypothetical sense."
@@ -670,7 +670,7 @@
                 "ASK": "ruwanay",
                 "PROCESSIVE PREDICATE": "ruwanay",
                 "event wildcard": "ruwanay",
-                "PP1SG": "ruwanay",
+                "Ref_speaker": "ruwanay",
                 "doing": "ruwanay",
                 "now": "imata"
             },
@@ -686,7 +686,7 @@
                 "PROCESSIVE PREDICATE": "llakikuy",
                 "Negative Polarity": "ama",
                 "worrying": "llakikuy",
-                "PP2SG": "llakikuy"
+                "Ref_addressee": "llakikuy"
             },
             "comment": "Ama gives the negative command (prohibitive order), meaning \"don\u2019t\".  Llakikuy expresses the action of worrying, directed at the second person singular (you)."
         },
@@ -698,9 +698,9 @@
             "concept_words": {
                 "ASSERT": "qusaq",
                 "PROCESSIVE PREDICATE": "upyanaykipaq",
-                "PP1SG": "qusaq",
+                "Ref_speaker": "qusaq",
                 "giving": "qusaq",
-                "PP2SG": "upyanaykipaq",
+                "Ref_addressee": "upyanaykipaq",
                 "medicine": "hampiqta",
                 "drinking": "upyanaykipaq"
             },
@@ -714,7 +714,7 @@
             "concept_words": {
                 "ORDER": "upyay",
                 "PROCESSIVE PREDICATE": "upyay",
-                "PP2SG": "upyay",
+                "Ref_addressee": "upyay",
                 "taking": "upyay",
                 "twice a day": "iskay...kutilla",
                 "Ref_1_object": "upyay"
@@ -754,7 +754,7 @@
                 "ASK": "kani",
                 "ATTRIBUTIVE PREDICATE": "allin\u00f1a",
                 "then (time)": "chaymantam",
-                "PP1SG": "kani",
+                "Ref_speaker": "kani",
                 "COMP-MORE": "allin\u00f1a",
                 "healthy": "allin\u00f1a",
                 "exhibiting (an attribute)": "allin\u00f1a"
@@ -779,7 +779,7 @@
             "concept_words": {
                 "EXPRESS POTENTIAL": "utqaylla",
                 "PROCESSIVE PREDICATE": "allin\u00f1a",
-                "PP2SG": "kanki",
+                "Ref_addressee": "kanki",
                 "becoming": "allin\u00f1a",
                 "COMP-MORE": "utqaylla",
                 "healthy": "allin\u00f1a",
@@ -813,7 +813,7 @@
             "concept_words": {
                 "ORDER": "munayki",
                 "PROCESSIVE PREDICATE": "samayta",
-                "PP2SG": "samayta",
+                "Ref_addressee": "samayta",
                 "experiencing": "samayta",
                 "rest": "samayta"
             },
@@ -828,7 +828,7 @@
                 "ORDER": "ama",
                 "PROCESSIVE PREDICATE": "llamk'ayman",
                 "Negative Polarity": "ama",
-                "PP2SG": "riy",
+                "Ref_addressee": "riy",
                 "going": "riy",
                 "work": "llamk'ayman"
             },
@@ -842,7 +842,7 @@
             "concept_words": {
                 "ASSERT": "munayki",
                 "PROCESSIVE PREDICATE": "pu\u00f1uyta",
-                "PP2SG": "munayki",
+                "Ref_addressee": "munayki",
                 "needing": "munayki",
                 "sleeping": "pu\u00f1uyta"
             },
@@ -866,7 +866,7 @@
             "concept_words": {
                 "ASSERT": "hamut'arqani",
                 "PROCESSIVE PREDICATE": "hamut'arqani",
-                "PP1SG": "hamut'arqani",
+                "Ref_speaker": "hamut'arqani",
                 "understanding": "hamut'arqani"
             },
             "comment": "Hamut\u2019arqani conveys that the speaker (first person singular) has understood something. It's a simple assertion about the past action of understanding.  The suffix -arqani marks the action as completed."

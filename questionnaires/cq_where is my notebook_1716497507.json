@@ -28,7 +28,7 @@
                 "brother",
                 "seeing",
                 "notebook",
-                "PP1SG"
+                "Ref_speaker"
             ],
             "graph": {
                 "sentence": {
@@ -39,7 +39,7 @@
                         "brother",
                         "seeing",
                         "notebook",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "path": [
                         "sentence"
@@ -659,7 +659,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "notebook ORIGIN OF OBJECTS": {
                     "is_required_by": [
@@ -688,27 +688,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -781,16 +781,16 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -830,7 +830,7 @@
                     "path": [
                         "notebook"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 }
             },
             "legacy index": ""
@@ -845,7 +845,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "searching",
                 "everywhere",
                 "BUT",
@@ -859,7 +859,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "searching",
                         "everywhere",
                         "BUT",
@@ -872,27 +872,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -1009,7 +1009,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "searching ASPECT": {
                     "is_required_by": [
@@ -1292,7 +1292,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "being able to ASPECT": {
                     "is_required_by": [
@@ -1755,16 +1755,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -1922,7 +1922,7 @@
                     "path": [
                         "searching"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "searching ASPECT": {
                     "is_required_by": [
@@ -1976,7 +1976,7 @@
                     "path": [
                         "being able to"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "being able to POLARITY": {
                     "is_required_by": [
@@ -2020,7 +2020,7 @@
             ],
             "concept": [
                 "knowing",
-                "PP1SG",
+                "Ref_speaker",
                 "sister"
             ],
             "graph": {
@@ -2030,7 +2030,7 @@
                     ],
                     "requires": [
                         "knowing",
-                        "PP1SG",
+                        "Ref_speaker",
                         "sister"
                     ],
                     "path": [
@@ -2240,29 +2240,29 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -2511,16 +2511,16 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -2571,7 +2571,7 @@
                     "path": [
                         "knowing"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 }
             },
             "legacy index": "3a",
@@ -2862,7 +2862,7 @@
                 "math",
                 "equating",
                 "Ref_1_object",
-                "PP1SG"
+                "Ref_speaker"
             ],
             "graph": {
                 "sentence": {
@@ -2874,7 +2874,7 @@
                         "math",
                         "equating",
                         "Ref_1_object",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "path": [
                         "sentence"
@@ -3071,7 +3071,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "book ORIGIN OF OBJECTS": {
                     "is_required_by": [
@@ -3716,27 +3716,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -3829,16 +3829,16 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -3870,7 +3870,7 @@
                     "path": [
                         "book"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "equating AGENT": {
                     "is_required_by": [
@@ -4533,7 +4533,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP2SG",
+                "Ref_addressee",
                 "seeing",
                 "already",
                 "Ref_1_object"
@@ -4544,7 +4544,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP2SG",
+                        "Ref_addressee",
                         "seeing",
                         "already",
                         "Ref_1_object"
@@ -4554,27 +4554,27 @@
                     ],
                     "value": ""
                 },
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
-                "PP2SG QUANTIFIER": {
+                "Ref_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP2SG",
+                        "Ref_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -4691,7 +4691,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "seeing ASPECT": {
                     "is_required_by": [
@@ -4961,16 +4961,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
@@ -5056,7 +5056,7 @@
                     "path": [
                         "seeing"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "seeing PATIENT": {
                     "is_required_by": [
@@ -5081,7 +5081,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "doing",
                 "homework",
                 "last night",
@@ -5094,7 +5094,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "doing",
                         "homework",
                         "last night",
@@ -5106,27 +5106,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -5301,7 +5301,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "doing ASPECT": {
                     "is_required_by": [
@@ -5637,7 +5637,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "homework ORIGIN OF OBJECTS": {
                     "is_required_by": [
@@ -6105,16 +6105,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -6271,7 +6271,7 @@
                     "path": [
                         "doing"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "doing PATIENT": {
                     "is_required_by": [
@@ -6289,7 +6289,7 @@
                     "path": [
                         "homework"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 }
             },
             "legacy index": "6",
@@ -6305,7 +6305,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP2SG",
+                "Ref_addressee",
                 "leaving (transitive)",
                 "probably",
                 "Ref_1_object",
@@ -6317,7 +6317,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP2SG",
+                        "Ref_addressee",
                         "leaving (transitive)",
                         "probably",
                         "Ref_1_object",
@@ -6328,27 +6328,27 @@
                     ],
                     "value": ""
                 },
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
-                "PP2SG QUANTIFIER": {
+                "Ref_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP2SG",
+                        "Ref_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -6544,7 +6544,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "leaving (transitive) OBLIQUE ROLE OBJECTIVE": {
                     "is_required_by": [
@@ -6774,16 +6774,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
@@ -6914,7 +6914,7 @@
                     "path": [
                         "leaving (transitive)"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 }
             },
             "legacy index": "7",
@@ -6945,7 +6945,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "putting",
                 "schoolbag",
                 "BEFORE X",
@@ -6959,7 +6959,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "putting",
                         "schoolbag",
                         "BEFORE X",
@@ -6972,27 +6972,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -7216,7 +7216,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "putting OBLIQUE ROLE OBJECTIVE": {
                     "is_required_by": [
@@ -7435,7 +7435,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "schoolbag QUALIFIER": {
                     "is_required_by": [
@@ -8104,16 +8104,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -8302,7 +8302,7 @@
                     "path": [
                         "putting"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "schoolbag POSSESSOR": {
                     "is_required_by": [
@@ -8311,7 +8311,7 @@
                     "path": [
                         "schoolbag"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "going OBLIQUE ROLE DESTINATION": {
                     "is_required_by": [
@@ -8337,7 +8337,7 @@
             ],
             "concept": [
                 "thinking",
-                "PP1SG"
+                "Ref_speaker"
             ],
             "graph": {
                 "sentence": {
@@ -8346,7 +8346,7 @@
                     ],
                     "requires": [
                         "thinking",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "path": [
                         "sentence"
@@ -8555,29 +8555,29 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -8606,16 +8606,16 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -8635,7 +8635,7 @@
                     "path": [
                         "thinking"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 }
             },
             "legacy index": "8c",
@@ -8651,7 +8651,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP2SG",
+                "Ref_addressee",
                 "searching",
                 "ZOOM IN",
                 "bedroom",
@@ -8664,7 +8664,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP2SG",
+                        "Ref_addressee",
                         "searching",
                         "ZOOM IN",
                         "bedroom",
@@ -8676,27 +8676,27 @@
                     ],
                     "value": ""
                 },
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
-                "PP2SG QUANTIFIER": {
+                "Ref_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP2SG",
+                        "Ref_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -8903,7 +8903,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "ZOOM IN": {
                     "is_required_by": [
@@ -9163,7 +9163,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "bedroom ORIGIN OF OBJECTS": {
                     "is_required_by": [
@@ -9407,7 +9407,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "bed ORIGIN OF OBJECTS": {
                     "is_required_by": [
@@ -9438,16 +9438,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
@@ -9590,7 +9590,7 @@
                     "path": [
                         "searching"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "ZOOM IN ZOOMING NARROW": {
                     "is_required_by": [
@@ -9617,7 +9617,7 @@
                     "path": [
                         "bedroom"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "bed POSSESSOR": {
                     "is_required_by": [
@@ -9626,7 +9626,7 @@
                     "path": [
                         "bed"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 }
             },
             "legacy index": "9",
@@ -11561,7 +11561,7 @@
                 "LOCATIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "being able to",
                 "finding",
                 "Ref_1_object"
@@ -11572,7 +11572,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "being able to",
                         "finding",
                         "Ref_1_object"
@@ -11582,27 +11582,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -11770,7 +11770,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "being able to ASPECT": {
                     "is_required_by": [
@@ -12182,16 +12182,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -12287,7 +12287,7 @@
                     "path": [
                         "being able to"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "being able to COMPLEMENT": {
                     "is_required_by": [
@@ -12321,7 +12321,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "searching",
                 "kitchen"
             ],
@@ -12331,7 +12331,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "searching",
                         "kitchen"
                     ],
@@ -12340,27 +12340,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -12567,7 +12567,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "kitchen": {
                     "is_required_by": [
@@ -12790,16 +12790,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -12873,7 +12873,7 @@
                     "path": [
                         "searching"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 }
             },
             "legacy index": "13a",
@@ -13397,7 +13397,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "needing",
                 "school class",
                 "today",
@@ -13409,7 +13409,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "needing",
                         "school class",
                         "today",
@@ -13420,27 +13420,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -13664,7 +13664,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "needing OBLIQUE ROLE OBJECTIVE": {
                     "is_required_by": [
@@ -14116,16 +14116,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -14236,7 +14236,7 @@
                     "path": [
                         "needing"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "needing OBLIQUE ROLE OBJECTIVE": {
                     "is_required_by": [
@@ -14273,7 +14273,7 @@
                 "teacher",
                 "angry",
                 "CONDITION",
-                "PP1SG",
+                "Ref_speaker",
                 "possessing",
                 "notebook",
                 "exhibiting (an attribute)"
@@ -14287,7 +14287,7 @@
                         "teacher",
                         "angry",
                         "CONDITION",
-                        "PP1SG",
+                        "Ref_speaker",
                         "possessing",
                         "notebook",
                         "exhibiting (an attribute)"
@@ -14609,27 +14609,27 @@
                     ],
                     "value": "possessing"
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -14680,7 +14680,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "possessing TIME INFORMATION": {
                     "is_required_by": [
@@ -14977,7 +14977,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "notebook POSSESSEE": {
                     "is_required_by": [
@@ -15313,16 +15313,16 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -15438,7 +15438,7 @@
                     "path": [
                         "possessing"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "possessing PATIENT": {
                     "is_required_by": [
@@ -15465,7 +15465,7 @@
                     "path": [
                         "notebook"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "exhibiting (an attribute) AGENT": {
                     "is_required_by": [
@@ -15508,9 +15508,9 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP3SG",
+                "Ref_1_person",
                 "thinking",
-                "PP1SG",
+                "Ref_speaker",
                 "doing",
                 "homework"
             ],
@@ -15520,9 +15520,9 @@
                         "self"
                     ],
                     "requires": [
-                        "PP3SG",
+                        "Ref_1_person",
                         "thinking",
-                        "PP1SG",
+                        "Ref_speaker",
                         "doing",
                         "homework"
                     ],
@@ -15531,40 +15531,40 @@
                     ],
                     "value": ""
                 },
-                "PP3SG": {
+                "Ref_1_person": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER",
-                        "PP3SG SEX-BASED GENDER"
+                        "Ref_1_person QUANTIFIER",
+                        "Ref_1_person SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "value": ""
                 },
-                "PP3SG QUANTIFIER": {
+                "Ref_1_person QUANTIFIER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "QUANTIFIER"
                     ],
                     "value": ""
                 },
-                "PP3SG SEX-BASED GENDER": {
+                "Ref_1_person SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "SEX-BASED GENDER"
                     ],
                     "value": "male"
@@ -15615,7 +15615,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP3SG"
+                    "value": "Ref_1_person"
                 },
                 "thinking ASPECT": {
                     "is_required_by": [
@@ -15773,40 +15773,40 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER",
-                        "PP1SG SEX-BASED GENDER"
+                        "Ref_speaker QUANTIFIER",
+                        "Ref_speaker SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
                 },
-                "PP1SG SEX-BASED GENDER": {
+                "Ref_speaker SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "SEX-BASED GENDER"
                     ],
                     "value": ""
@@ -15861,7 +15861,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "doing ASPECT": {
                     "is_required_by": [
@@ -16348,17 +16348,17 @@
                 }
             },
             "trimmed_graph": {
-                "PP3SG": {
+                "Ref_1_person": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER",
-                        "PP3SG SEX-BASED GENDER"
+                        "Ref_1_person QUANTIFIER",
+                        "Ref_1_person SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "sentence"
                     ],
                     "value": ""
@@ -16387,17 +16387,17 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER",
-                        "PP1SG SEX-BASED GENDER"
+                        "Ref_speaker QUANTIFIER",
+                        "Ref_speaker SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -16467,12 +16467,12 @@
                     ],
                     "value": ""
                 },
-                "PP3SG SEX-BASED GENDER": {
+                "Ref_1_person SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "path": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "value": "male"
                 },
@@ -16483,7 +16483,7 @@
                     "path": [
                         "thinking"
                     ],
-                    "value": "PP3SG"
+                    "value": "Ref_1_person"
                 },
                 "thinking PATIENT": {
                     "is_required_by": [
@@ -16510,7 +16510,7 @@
                     "path": [
                         "doing"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "doing PATIENT": {
                     "is_required_by": [
@@ -16553,7 +16553,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "thinking",
                 "finding",
                 "Ref_1_object"
@@ -16564,7 +16564,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "thinking",
                         "finding",
                         "Ref_1_object"
@@ -16574,27 +16574,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -16789,7 +16789,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "thinking ASPECT": {
                     "is_required_by": [
@@ -16993,7 +16993,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "finding ASPECT": {
                     "is_required_by": [
@@ -17174,16 +17174,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -17279,7 +17279,7 @@
                     "path": [
                         "thinking"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "finding PATIENT": {
                     "is_required_by": [
@@ -17297,7 +17297,7 @@
                     "path": [
                         "finding"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 }
             },
             "legacy index": "17",
@@ -17389,9 +17389,9 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP2SG",
+                "Ref_addressee",
                 "looking",
-                "PP1INCDU",
+                "Ref_speaker_and_addressee",
                 "little brother",
                 "out there",
                 "garden",
@@ -17404,9 +17404,9 @@
                         "self"
                     ],
                     "requires": [
-                        "PP2SG",
+                        "Ref_addressee",
                         "looking",
-                        "PP1INCDU",
+                        "Ref_speaker_and_addressee",
                         "little brother",
                         "out there",
                         "garden",
@@ -17418,27 +17418,27 @@
                     ],
                     "value": ""
                 },
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
-                "PP2SG QUANTIFIER": {
+                "Ref_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP2SG",
+                        "Ref_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -17645,29 +17645,29 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
-                "PP1INCDU": {
+                "Ref_speaker_and_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1INCDU QUANTIFIER"
+                        "Ref_speaker_and_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "value": ""
                 },
-                "PP1INCDU QUANTIFIER": {
+                "Ref_speaker_and_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1INCDU",
+                        "Ref_speaker_and_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -17862,7 +17862,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "little brother ORIGIN OF OBJECTS": {
                     "is_required_by": [
@@ -18216,16 +18216,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
@@ -18253,16 +18253,16 @@
                     ],
                     "value": ""
                 },
-                "PP1INCDU": {
+                "Ref_speaker_and_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1INCDU QUANTIFIER"
+                        "Ref_speaker_and_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "value": ""
                 },
@@ -18394,7 +18394,7 @@
                     "path": [
                         "looking"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "little brother POSSESSOR": {
                     "is_required_by": [
@@ -18403,7 +18403,7 @@
                     "path": [
                         "little brother"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "garden DEFINITENESS": {
                     "is_required_by": [
@@ -18448,7 +18448,7 @@
             "concept": [
                 "holding",
                 "object wildcard",
-                "PP3SG"
+                "Ref_1_person"
             ],
             "graph": {
                 "sentence": {
@@ -18458,7 +18458,7 @@
                     "requires": [
                         "holding",
                         "object wildcard",
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "path": [
                         "sentence"
@@ -18514,7 +18514,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP3SG"
+                    "value": "Ref_1_person"
                 },
                 "holding ASPECT": {
                     "is_required_by": [
@@ -18972,40 +18972,40 @@
                     ],
                     "value": ""
                 },
-                "PP3SG": {
+                "Ref_1_person": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER",
-                        "PP3SG SEX-BASED GENDER"
+                        "Ref_1_person QUANTIFIER",
+                        "Ref_1_person SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "value": ""
                 },
-                "PP3SG QUANTIFIER": {
+                "Ref_1_person QUANTIFIER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "QUANTIFIER"
                     ],
                     "value": ""
                 },
-                "PP3SG SEX-BASED GENDER": {
+                "Ref_1_person SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "SEX-BASED GENDER"
                     ],
                     "value": "male"
@@ -19059,17 +19059,17 @@
                     ],
                     "value": ""
                 },
-                "PP3SG": {
+                "Ref_1_person": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER",
-                        "PP3SG SEX-BASED GENDER"
+                        "Ref_1_person QUANTIFIER",
+                        "Ref_1_person SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "sentence"
                     ],
                     "value": ""
@@ -19092,7 +19092,7 @@
                     "path": [
                         "holding"
                     ],
-                    "value": "PP3SG"
+                    "value": "Ref_1_person"
                 },
                 "holding PATIENT": {
                     "is_required_by": [
@@ -19103,12 +19103,12 @@
                     ],
                     "value": "object wildcard"
                 },
-                "PP3SG SEX-BASED GENDER": {
+                "Ref_1_person SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "path": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "value": "male"
                 }
@@ -19129,7 +19129,7 @@
                 "notebook",
                 "Ref_1_object",
                 "equating",
-                "PP2SG"
+                "Ref_addressee"
             ],
             "graph": {
                 "sentence": {
@@ -19140,7 +19140,7 @@
                         "notebook",
                         "Ref_1_object",
                         "equating",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "path": [
                         "sentence"
@@ -19286,7 +19286,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "notebook POSSESSEE": {
                     "is_required_by": [
@@ -19763,27 +19763,27 @@
                     ],
                     "value": ""
                 },
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
-                "PP2SG QUANTIFIER": {
+                "Ref_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP2SG",
+                        "Ref_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -19854,16 +19854,16 @@
                     ],
                     "value": ""
                 },
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
@@ -19885,7 +19885,7 @@
                     "path": [
                         "notebook"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "equating AGENT": {
                     "is_required_by": [
@@ -19936,7 +19936,7 @@
             ],
             "concept": [
                 "shredding",
-                "PP3SG",
+                "Ref_1_person",
                 "pieces",
                 "Ref_1_object"
             ],
@@ -19947,7 +19947,7 @@
                     ],
                     "requires": [
                         "shredding",
-                        "PP3SG",
+                        "Ref_1_person",
                         "pieces",
                         "Ref_1_object"
                     ],
@@ -20030,7 +20030,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP3SG"
+                    "value": "Ref_1_person"
                 },
                 "shredding ASPECT": {
                     "is_required_by": [
@@ -20188,40 +20188,40 @@
                     ],
                     "value": ""
                 },
-                "PP3SG": {
+                "Ref_1_person": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER",
-                        "PP3SG SEX-BASED GENDER"
+                        "Ref_1_person QUANTIFIER",
+                        "Ref_1_person SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "value": ""
                 },
-                "PP3SG QUANTIFIER": {
+                "Ref_1_person QUANTIFIER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "QUANTIFIER"
                     ],
                     "value": ""
                 },
-                "PP3SG SEX-BASED GENDER": {
+                "Ref_1_person SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "SEX-BASED GENDER"
                     ],
                     "value": "male"
@@ -20651,17 +20651,17 @@
                     ],
                     "value": ""
                 },
-                "PP3SG": {
+                "Ref_1_person": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER",
-                        "PP3SG SEX-BASED GENDER"
+                        "Ref_1_person QUANTIFIER",
+                        "Ref_1_person SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "sentence"
                     ],
                     "value": ""
@@ -20735,7 +20735,7 @@
                     "path": [
                         "shredding"
                     ],
-                    "value": "PP3SG"
+                    "value": "Ref_1_person"
                 },
                 "shredding PATIENT": {
                     "is_required_by": [
@@ -20755,12 +20755,12 @@
                     ],
                     "value": "GENERIC PAST"
                 },
-                "PP3SG SEX-BASED GENDER": {
+                "Ref_1_person SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "path": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "value": "male"
                 }
@@ -20779,7 +20779,7 @@
             ],
             "concept": [
                 "playing",
-                "PP3SG",
+                "Ref_1_person",
                 "morning",
                 "ALL",
                 "Ref_1_object"
@@ -20791,7 +20791,7 @@
                     ],
                     "requires": [
                         "playing",
-                        "PP3SG",
+                        "Ref_1_person",
                         "morning",
                         "ALL",
                         "Ref_1_object"
@@ -20848,7 +20848,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP3SG"
+                    "value": "Ref_1_person"
                 },
                 "playing ASPECT": {
                     "is_required_by": [
@@ -21033,40 +21033,40 @@
                     ],
                     "value": "Ref_1_object"
                 },
-                "PP3SG": {
+                "Ref_1_person": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER",
-                        "PP3SG SEX-BASED GENDER"
+                        "Ref_1_person QUANTIFIER",
+                        "Ref_1_person SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "value": ""
                 },
-                "PP3SG QUANTIFIER": {
+                "Ref_1_person QUANTIFIER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "QUANTIFIER"
                     ],
                     "value": ""
                 },
-                "PP3SG SEX-BASED GENDER": {
+                "Ref_1_person SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "SEX-BASED GENDER"
                     ],
                     "value": "male"
@@ -21312,17 +21312,17 @@
                     ],
                     "value": ""
                 },
-                "PP3SG": {
+                "Ref_1_person": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP3SG QUANTIFIER",
-                        "PP3SG SEX-BASED GENDER"
+                        "Ref_1_person QUANTIFIER",
+                        "Ref_1_person SEX-BASED GENDER"
                     ],
                     "path": [
                         "sentence",
-                        "PP3SG",
+                        "Ref_1_person",
                         "sentence"
                     ],
                     "value": ""
@@ -21393,7 +21393,7 @@
                     "path": [
                         "playing"
                     ],
-                    "value": "PP3SG"
+                    "value": "Ref_1_person"
                 },
                 "playing TIME INFORMATION": {
                     "is_required_by": [
@@ -21413,12 +21413,12 @@
                     ],
                     "value": "Ref_1_object"
                 },
-                "PP3SG SEX-BASED GENDER": {
+                "Ref_1_person SEX-BASED GENDER": {
                     "is_required_by": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "path": [
-                        "PP3SG"
+                        "Ref_1_person"
                     ],
                     "value": "male"
                 },
@@ -21448,7 +21448,7 @@
                 "happening",
                 "event wildcard",
                 "homework",
-                "PP1SG"
+                "Ref_speaker"
             ],
             "graph": {
                 "sentence": {
@@ -21459,7 +21459,7 @@
                         "happening",
                         "event wildcard",
                         "homework",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "path": [
                         "sentence"
@@ -22064,7 +22064,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "homework ORIGIN OF OBJECTS": {
                     "is_required_by": [
@@ -22093,27 +22093,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -22187,16 +22187,16 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -22246,7 +22246,7 @@
                     "path": [
                         "homework"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 }
             },
             "legacy index": "24",
@@ -22265,7 +22265,7 @@
                 "now",
                 "needing",
                 "buying",
-                "PP1SG",
+                "Ref_speaker",
                 "notebook",
                 "new"
             ],
@@ -22278,7 +22278,7 @@
                         "now",
                         "needing",
                         "buying",
-                        "PP1SG",
+                        "Ref_speaker",
                         "notebook",
                         "new"
                     ],
@@ -22372,7 +22372,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "needing QUALIFIER": {
                     "is_required_by": [
@@ -22776,27 +22776,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -23094,16 +23094,16 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -23162,7 +23162,7 @@
                     "path": [
                         "needing"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "needing TIME INFORMATION": {
                     "is_required_by": [
@@ -23214,7 +23214,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1SG",
+                "Ref_speaker",
                 "needing",
                 "starting",
                 "homework",
@@ -23227,7 +23227,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1SG",
+                        "Ref_speaker",
                         "needing",
                         "starting",
                         "homework",
@@ -23239,27 +23239,27 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
-                "PP1SG QUANTIFIER": {
+                "Ref_speaker QUANTIFIER": {
                     "is_required_by": [
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -23324,7 +23324,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "needing QUALIFIER": {
                     "is_required_by": [
@@ -24056,16 +24056,16 @@
             },
             "legacy index": "26",
             "trimmed_graph": {
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1SG QUANTIFIER"
+                        "Ref_speaker QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 },
@@ -24188,7 +24188,7 @@
                     "path": [
                         "needing"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "needing PATIENT": {
                     "is_required_by": [

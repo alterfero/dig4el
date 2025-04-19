@@ -25,7 +25,7 @@
                 "brother": "fr\u00e8re",
                 "seeing": "as...vu",
                 "notebook": "cahier",
-                "PP1SG": "mon"
+                "Ref_speaker": "mon"
             },
             "comment": ""
         },
@@ -38,7 +38,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "searching": "ai...cherch\u00e9",
                 "everywhere": "partout",
                 "BUT": "mais",
@@ -58,7 +58,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
                 "knowing": "sais",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "sister": "soeur"
             },
             "comment": ""
@@ -87,7 +87,7 @@
                 "math": "maths",
                 "equating": "est",
                 "Ref_1_object": "c",
-                "PP1SG": "mon"
+                "Ref_speaker": "mon"
             },
             "comment": ""
         },
@@ -115,7 +115,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "tu",
+                "Ref_addressee": "tu",
                 "seeing": "vu",
                 "already": "d\u00e9j\u00e0",
                 "Ref_1_object": "l"
@@ -130,7 +130,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "doing": "faisais",
                 "homework": "devoirs",
                 "last night": "hier...soir",
@@ -147,7 +147,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "tu",
+                "Ref_addressee": "tu",
                 "leaving (transitive)": "as...laiss\u00e9",
                 "probably": "s\u00fbrement",
                 "Ref_1_object": "l",
@@ -174,7 +174,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "putting": "ai...rang\u00e9",
                 "schoolbag": "sac...d...\u00e9cole",
                 "BEFORE X": "avant",
@@ -193,7 +193,7 @@
                 "EXPRESS LIKELIHOOD": "pense",
                 "PROCESSIVE PREDICATE": "",
                 "thinking": "pense",
-                "PP1SG": "je"
+                "Ref_speaker": "je"
             },
             "comment": ""
         },
@@ -205,7 +205,7 @@
             "concept_words": {
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "tu",
+                "Ref_addressee": "tu",
                 "searching": "as...regard\u00e9",
                 "ZOOM IN": "",
                 "bedroom": "chambre",
@@ -293,7 +293,7 @@
                 "INFIRM": "ne...pas",
                 "LOCATIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "being able to": "",
                 "finding": "trouve",
                 "Ref_1_object": "le"
@@ -308,7 +308,7 @@
             "concept_words": {
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "searching": "regarde",
                 "kitchen": "cuisine"
             },
@@ -337,7 +337,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "j",
+                "Ref_speaker": "j",
                 "needing": "ai...besoin",
                 "school class": "cours",
                 "today": "aujourd...hui",
@@ -357,7 +357,7 @@
                 "teacher": "prof",
                 "angry": "en...col\u00e8re",
                 "CONDITION": "si",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "possessing": "ai",
                 "notebook": "cahier",
                 "exhibiting (an attribute)": "\u00eatre"
@@ -373,9 +373,9 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "n...pas",
-                "PP3SG": "il",
+                "Ref_1_person": "il",
                 "thinking": "va...penser",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "doing": "fait",
                 "homework": "devoirs"
             },
@@ -389,7 +389,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "thinking": "crois",
                 "finding": "trouv\u00e9",
                 "Ref_1_object": "l"
@@ -426,9 +426,9 @@
             "concept_words": {
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "looking": "regarde",
-                "PP1INCDU": "notre",
+                "Ref_speaker_and_addressee": "notre",
                 "little brother": "petit...fr\u00e8re",
                 "out there": "",
                 "garden": "jardin",
@@ -447,7 +447,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "holding": "tient",
                 "object wildcard": "qu_2",
-                "PP3SG": "il"
+                "Ref_1_person": "il"
             },
             "comment": ""
         },
@@ -462,7 +462,7 @@
                 "notebook": "cahier",
                 "Ref_1_object": "ce",
                 "equating": "est",
-                "PP2SG": ""
+                "Ref_addressee": ""
             },
             "comment": ""
         },
@@ -487,7 +487,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "shredding": "d\u00e9chir\u00e9",
-                "PP3SG": "il",
+                "Ref_1_person": "il",
                 "pieces": "mille...morceaux",
                 "Ref_1_object": "l"
             },
@@ -502,7 +502,7 @@
                 "EXPRESS LIKELIHOOD": "on...dirait",
                 "PROCESSIVE PREDICATE": "",
                 "playing": "a...jou\u00e9",
-                "PP3SG": "il",
+                "Ref_1_person": "il",
                 "morning": "matin\u00e9e",
                 "ALL": "toute",
                 "Ref_1_object": "avec"
@@ -520,7 +520,7 @@
                 "happening": "est...arriv\u00e9",
                 "event wildcard": "qu",
                 "homework": "devoirs",
-                "PP1SG": "mes"
+                "Ref_speaker": "mes"
             },
             "comment": ""
         },
@@ -535,7 +535,7 @@
                 "now": "maintenant",
                 "needing": "il...faut",
                 "buying": "ach\u00e8te",
-                "PP1SG": "j",
+                "Ref_speaker": "j",
                 "notebook": "cahier",
                 "new": "nouveau"
             },
@@ -549,7 +549,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "needing": "dois",
                 "starting": "refaire",
                 "homework": "devoirs",

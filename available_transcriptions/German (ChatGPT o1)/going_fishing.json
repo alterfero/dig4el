@@ -43,7 +43,7 @@
                 "ASK": "wie",
                 "GREET": "",
                 "PROCESSIVE PREDICATE": "geht...dir",
-                "PP2SG": "dir"
+                "Ref_addressee": "dir"
             },
             "comment": ""
         },
@@ -57,8 +57,8 @@
                 "ASK": "",
                 "GREET": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "mir",
-                "PP2DU": "dir"
+                "Ref_speaker": "mir",
+                "Ref_2_people_including_addressee": "dir"
             },
             "comment": ""
         },
@@ -70,7 +70,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "uns"
+                "Ref_speaker_plus_person_excluding_addressee": "uns"
             },
             "comment": ""
         },
@@ -84,7 +84,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "spatial position wildcard": "wohin",
                 "going": "geht",
-                "PP2DU": "ihr"
+                "Ref_2_people_including_addressee": "ihr"
             },
             "comment": ""
         },
@@ -96,7 +96,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "wir",
+                "Ref_speaker_plus_person_excluding_addressee": "wir",
                 "walking": "gehen...hinunter",
                 "river": "fluss"
             },
@@ -122,7 +122,7 @@
             "concept_words": {
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2DU": "ihr",
+                "Ref_2_people_including_addressee": "ihr",
                 "bathing": "baden...gehen"
             },
             "comment": ""
@@ -137,7 +137,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
                 "bathing": "baden",
-                "PP1EXCDU": "wir"
+                "Ref_speaker_plus_person_excluding_addressee": "wir"
             },
             "comment": ""
         },
@@ -149,7 +149,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "wir",
+                "Ref_speaker_plus_person_excluding_addressee": "wir",
                 "going": "gehen",
                 "fishing": "angeln"
             },
@@ -163,7 +163,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "wir",
+                "Ref_speaker_plus_person_excluding_addressee": "wir",
                 "trying": "versuchen",
                 "catching": "fangen",
                 "fish": "flussfische",
@@ -205,7 +205,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
                 "knowing": "wusste",
-                "PP1SG": "ich"
+                "Ref_speaker": "ich"
             },
             "comment": ""
         },
@@ -230,7 +230,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "wir",
+                "Ref_speaker_plus_person_excluding_addressee": "wir",
                 "needing": "brauchen",
                 "food": "essen",
                 "family": "familie"
@@ -245,7 +245,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "meine",
+                "Ref_speaker": "meine",
                 "wife": "frau",
                 "buying": "hatte...gekauft",
                 "chicken": "huhn",
@@ -266,7 +266,7 @@
                 "children": "kinder",
                 "eating": "haben...aufgegessen",
                 "already": "schon",
-                "PP1EXCDU": "",
+                "Ref_speaker_plus_person_excluding_addressee": "",
                 "Ref_1_object": "es"
             },
             "comment": ""
@@ -279,7 +279,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "wir",
+                "Ref_speaker_plus_person_excluding_addressee": "wir",
                 "possessing": "haben",
                 "nothing left": "nichts...mehr",
                 "home": "zu...hause"
@@ -295,7 +295,7 @@
                 "ASSERT": "",
                 "EXISTENTIAL PREDICATE": "",
                 "Negative Polarity": "kein...mehr",
-                "PP1EXCDU": "wir",
+                "Ref_speaker_plus_person_excluding_addressee": "wir",
                 "possessing": "haben",
                 "money": "geld",
                 "anymore": "mehr"
@@ -310,7 +310,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "wir",
+                "Ref_speaker_plus_person_excluding_addressee": "wir",
                 "having to": "müssen",
                 "fishing": "angeln",
                 "going": "gehen",
@@ -336,8 +336,8 @@
             "concept_words": {
                 "ATTRIBUTIVE PREDICATE": "tut...mir...leid",
                 "Negative Polarity": "nichts...mehr",
-                "PP1SG": "mir",
-                "PP2PLU": "ihr",
+                "Ref_speaker": "mir",
+                "Ref_many_people_including_addressee": "ihr",
                 "being sorry": "tut...mir...leid",
                 "possessing": "habt",
                 "food": "zu...essen"
@@ -352,10 +352,10 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "being able to": "kann",
                 "helping": "helfen",
-                "PP2DU": "euch"
+                "Ref_2_people_including_addressee": "euch"
             },
             "comment": ""
         },
@@ -369,11 +369,11 @@
                 "ATTRIBUTIVE PREDICATE": "haben",
                 "AND": "und",
                 "husband": "mann",
-                "PP1SG": "ich",
+                "Ref_speaker": "ich",
                 "possessing": "haben",
                 "vegetables": "gemüse",
                 "garden": "garten",
-                "PP1EXCDU": ""
+                "Ref_speaker_plus_person_excluding_addressee": ""
             },
             "comment": ""
         },
@@ -385,7 +385,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP3SG": "er",
+                "Ref_1_person": "er",
                 "harvesting": "geerntet",
                 "AND": "und",
                 "bringing": "gebracht",
@@ -404,9 +404,9 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "CONDITION": "wenn",
-                "PP2DU": "ihr",
+                "Ref_2_people_including_addressee": "ihr",
                 "wanting": "wollt",
-                "PP1EXCDU": "wir",
+                "Ref_speaker_plus_person_excluding_addressee": "wir",
                 "being able to": "können",
                 "giving": "geben",
                 "Ref_many_objects": "",
@@ -442,8 +442,8 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2DU": "ihr",
-                "PP1PLU": "uns",
+                "Ref_2_people_including_addressee": "ihr",
+                "Ref_speaker_plus_many_including_addressee": "uns",
                 "giving": "werdet...geben",
                 "vegetables": "gemüse"
             },
@@ -457,8 +457,8 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "wir",
-                "PP2PLU": "euch",
+                "Ref_speaker_plus_person_excluding_addressee": "wir",
+                "Ref_many_people_including_addressee": "euch",
                 "fish": "fisch",
                 "AND": "und",
                 "giving": "werden...geben"
@@ -474,7 +474,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "tonight": "heute...abend",
-                "PP1PLU": "wir",
+                "Ref_speaker_plus_many_including_addressee": "wir",
                 "eating": "essen",
                 "together": "alle...zusammen"
             },

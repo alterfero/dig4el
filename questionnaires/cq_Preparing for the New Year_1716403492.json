@@ -768,7 +768,7 @@
                 "village X",
                 "coming",
                 "community",
-                "PP1PLU"
+                "Ref_speaker_plus_many_including_addressee"
             ],
             "graph": {
                 "sentence": {
@@ -781,7 +781,7 @@
                         "village X",
                         "coming",
                         "community",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "path": [
                         "sentence"
@@ -1591,7 +1591,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "community QUALIFIER": {
                     "is_required_by": [
@@ -1632,14 +1632,14 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 }
@@ -1746,14 +1746,14 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "sentence"
                     ],
                     "value": ""
@@ -1826,7 +1826,7 @@
                     "path": [
                         "community"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 }
             },
             "legacy index": "2b",
@@ -3054,9 +3054,9 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1PLU",
+                "Ref_speaker_plus_many_including_addressee",
                 "welcoming",
-                "PP3PLU",
+                "Ref_many_people",
                 "friendly way"
             ],
             "graph": {
@@ -3065,9 +3065,9 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "welcoming",
-                        "PP3PLU",
+                        "Ref_many_people",
                         "friendly way"
                     ],
                     "path": [
@@ -3075,14 +3075,14 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
@@ -3160,7 +3160,7 @@
                         "PATIENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP3PLU"
+                    "value": "Ref_many_people"
                 },
                 "welcoming QUANTIFIER": {
                     "is_required_by": [
@@ -3199,7 +3199,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "welcoming EVENT TENSE": {
                     "is_required_by": [
@@ -3318,14 +3318,14 @@
                     ],
                     "value": ""
                 },
-                "PP3PLU": {
+                "Ref_many_people": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3PLU"
+                        "Ref_many_people"
                     ],
                     "value": ""
                 },
@@ -3522,14 +3522,14 @@
                 }
             },
             "trimmed_graph": {
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "sentence"
                     ],
                     "value": ""
@@ -3559,14 +3559,14 @@
                     ],
                     "value": ""
                 },
-                "PP3PLU": {
+                "Ref_many_people": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3PLU",
+                        "Ref_many_people",
                         "sentence"
                     ],
                     "value": ""
@@ -3611,7 +3611,7 @@
                     "path": [
                         "welcoming"
                     ],
-                    "value": "PP3PLU"
+                    "value": "Ref_many_people"
                 },
                 "welcoming AGENT": {
                     "is_required_by": [
@@ -3620,7 +3620,7 @@
                     "path": [
                         "welcoming"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "welcoming OBLIQUE ROLE MANNER": {
                     "is_required_by": [
@@ -3647,8 +3647,8 @@
             "concept": [
                 "COMP-EQUAL",
                 "doing",
-                "PP1PLU",
-                "PP3PLU",
+                "Ref_speaker_plus_many_including_addressee",
+                "Ref_many_people",
                 "last year",
                 "event wildcard"
             ],
@@ -3660,8 +3660,8 @@
                     "requires": [
                         "COMP-EQUAL",
                         "doing",
-                        "PP1PLU",
-                        "PP3PLU",
+                        "Ref_speaker_plus_many_including_addressee",
+                        "Ref_many_people",
                         "last year"
                     ],
                     "path": [
@@ -3852,7 +3852,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP3PLU"
+                    "value": "Ref_many_people"
                 },
                 "doing EVENT TENSE": {
                     "is_required_by": [
@@ -3942,7 +3942,7 @@
                         "OBLIQUE ROLE DESTINATION",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "doing OBLIQUE ROLE MANNER": {
                     "is_required_by": [
@@ -4025,25 +4025,25 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
-                "PP3PLU": {
+                "Ref_many_people": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3PLU"
+                        "Ref_many_people"
                     ],
                     "value": ""
                 },
@@ -4104,26 +4104,26 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "sentence"
                     ],
                     "value": ""
                 },
-                "PP3PLU": {
+                "Ref_many_people": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3PLU",
+                        "Ref_many_people",
                         "sentence"
                     ],
                     "value": ""
@@ -4182,7 +4182,7 @@
                     "path": [
                         "doing"
                     ],
-                    "value": "PP3PLU"
+                    "value": "Ref_many_people"
                 },
                 "doing EVENT TENSE": {
                     "is_required_by": [
@@ -4209,7 +4209,7 @@
                     "path": [
                         "doing"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 }
             },
             "legacy index": "5",
@@ -4241,7 +4241,7 @@
             ],
             "concept": [
                 "COMP-EQUAL",
-                "PP1PLU",
+                "Ref_speaker_plus_many_including_addressee",
                 "doing",
                 "always",
                 "event wildcard"
@@ -4253,7 +4253,7 @@
                     ],
                     "requires": [
                         "COMP-EQUAL",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "doing",
                         "always",
                         "event wildcard"
@@ -4331,14 +4331,14 @@
                     ],
                     "value": "doing"
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
@@ -4457,7 +4457,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "doing EVENT TENSE": {
                     "is_required_by": [
@@ -4876,14 +4876,14 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "sentence"
                     ],
                     "value": ""
@@ -4987,7 +4987,7 @@
                     "path": [
                         "doing"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "doing TIME INFORMATION": {
                     "is_required_by": [
@@ -5012,7 +5012,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1PLU",
+                "Ref_speaker_plus_many_including_addressee",
                 "leaders",
                 "starting",
                 "welcome speech",
@@ -5024,7 +5024,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "leaders",
                         "starting",
                         "welcome speech",
@@ -5035,27 +5035,27 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
-                "PP1PLU QUANTIFIER": {
+                "Ref_speaker_plus_many_including_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -5145,7 +5145,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "leaders TIME INFORMATION": {
                     "is_required_by": [
@@ -5869,16 +5869,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
@@ -5988,7 +5988,7 @@
                     "path": [
                         "leaders"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "starting AGENT": {
                     "is_required_by": [
@@ -6630,7 +6630,7 @@
                 "AFTER X",
                 "lunch",
                 "together",
-                "PP1PLU",
+                "Ref_speaker_plus_many_including_addressee",
                 "Ref_Event",
                 "sharing"
             ],
@@ -6643,7 +6643,7 @@
                         "AFTER X",
                         "lunch",
                         "together",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "Ref_Event",
                         "sharing"
                     ],
@@ -6907,27 +6907,27 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
-                "PP1PLU QUANTIFIER": {
+                "Ref_speaker_plus_many_including_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -7117,7 +7117,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "sharing OBLIQUE ROLE": {
                     "is_required_by": [
@@ -7378,16 +7378,16 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
@@ -7456,7 +7456,7 @@
                     "path": [
                         "sharing"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "sharing TIME INFORMATION": {
                     "is_required_by": [
@@ -7505,7 +7505,7 @@
                 "songs",
                 "dances",
                 "AND",
-                "PP1SG"
+                "Ref_speaker"
             ],
             "graph": {
                 "sentence": {
@@ -7519,7 +7519,7 @@
                         "songs",
                         "dances",
                         "AND",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "path": [
                         "sentence"
@@ -7663,7 +7663,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "hoping EVENT TENSE": {
                     "is_required_by": [
@@ -8493,14 +8493,14 @@
                     ],
                     "value": "songs"
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG"
+                        "Ref_speaker"
                     ],
                     "value": ""
                 }
@@ -8624,14 +8624,14 @@
                     ],
                     "value": ""
                 },
-                "PP1SG": {
+                "Ref_speaker": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1SG",
+                        "Ref_speaker",
                         "sentence"
                     ],
                     "value": ""
@@ -8667,7 +8667,7 @@
                     "path": [
                         "hoping"
                     ],
-                    "value": "PP1SG"
+                    "value": "Ref_speaker"
                 },
                 "experiencing PATIENT": {
                     "is_required_by": [
@@ -8720,7 +8720,7 @@
             ],
             "concept": [
                 "people",
-                "PP3PLU",
+                "Ref_many_people",
                 "AND",
                 "singing",
                 "songs",
@@ -8735,7 +8735,7 @@
                     ],
                     "requires": [
                         "people",
-                        "PP3PLU",
+                        "Ref_many_people",
                         "AND",
                         "singing",
                         "songs",
@@ -8939,14 +8939,14 @@
                     ],
                     "value": ""
                 },
-                "PP3PLU": {
+                "Ref_many_people": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3PLU"
+                        "Ref_many_people"
                     ],
                     "value": ""
                 },
@@ -9372,7 +9372,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP3PLU"
+                    "value": "Ref_many_people"
                 },
                 "songs QUALIFIER": {
                     "is_required_by": [
@@ -9767,7 +9767,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP3PLU"
+                    "value": "Ref_many_people"
                 },
                 "dances QUALIFIER": {
                     "is_required_by": [
@@ -10022,14 +10022,14 @@
                     ],
                     "value": ""
                 },
-                "PP3PLU": {
+                "Ref_many_people": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3PLU",
+                        "Ref_many_people",
                         "sentence"
                     ],
                     "value": ""
@@ -10228,7 +10228,7 @@
                     "path": [
                         "songs"
                     ],
-                    "value": "PP3PLU"
+                    "value": "Ref_many_people"
                 },
                 "dancing PATIENT": {
                     "is_required_by": [
@@ -10255,7 +10255,7 @@
                     "path": [
                         "dances"
                     ],
-                    "value": "PP3PLU"
+                    "value": "Ref_many_people"
                 }
             },
             "legacy index": "11",
@@ -10271,7 +10271,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1PLU",
+                "Ref_speaker_plus_many_including_addressee",
                 "too",
                 "singing",
                 "songs",
@@ -10285,7 +10285,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "too",
                         "singing",
                         "songs",
@@ -10298,14 +10298,14 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
@@ -10432,7 +10432,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "singing EVENT TENSE": {
                     "is_required_by": [
@@ -10674,7 +10674,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "songs QUALIFIER": {
                     "is_required_by": [
@@ -10827,7 +10827,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "dancing EVENT TENSE": {
                     "is_required_by": [
@@ -11069,7 +11069,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "dances QUALIFIER": {
                     "is_required_by": [
@@ -11180,14 +11180,14 @@
                 }
             },
             "trimmed_graph": {
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "sentence"
                     ],
                     "value": ""
@@ -11346,7 +11346,7 @@
                     "path": [
                         "singing"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "singing QUALIFIER": {
                     "is_required_by": [
@@ -11364,7 +11364,7 @@
                     "path": [
                         "songs"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "dancing PATIENT": {
                     "is_required_by": [
@@ -11382,7 +11382,7 @@
                     "path": [
                         "dancing"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "dancing QUALIFIER": {
                     "is_required_by": [
@@ -11400,7 +11400,7 @@
                     "path": [
                         "dances"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "AND AND_TERM2": {
                     "is_required_by": [
@@ -12480,7 +12480,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1PLU",
+                "Ref_speaker_plus_many_including_addressee",
                 "elders",
                 "telling",
                 "stories",
@@ -12493,7 +12493,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "elders",
                         "telling",
                         "stories",
@@ -12505,14 +12505,14 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
@@ -12694,7 +12694,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "elders QUALIFIER": {
                     "is_required_by": [
@@ -13639,14 +13639,14 @@
                 }
             },
             "trimmed_graph": {
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "sentence"
                     ],
                     "value": ""
@@ -13786,7 +13786,7 @@
                     "path": [
                         "elders"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "telling PATIENT": {
                     "is_required_by": [
@@ -13862,7 +13862,7 @@
                 "ATTRIBUTIVE PREDICATE"
             ],
             "concept": [
-                "PP3PLU",
+                "Ref_many_people",
                 "knowing",
                 "so many",
                 "stories"
@@ -13873,7 +13873,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP3PLU",
+                        "Ref_many_people",
                         "knowing",
                         "so many",
                         "stories"
@@ -13883,14 +13883,14 @@
                     ],
                     "value": ""
                 },
-                "PP3PLU": {
+                "Ref_many_people": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3PLU"
+                        "Ref_many_people"
                     ],
                     "value": ""
                 },
@@ -14006,7 +14006,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP3PLU"
+                    "value": "Ref_many_people"
                 },
                 "knowing EVENT TENSE": {
                     "is_required_by": [
@@ -14330,14 +14330,14 @@
                 }
             },
             "trimmed_graph": {
-                "PP3PLU": {
+                "Ref_many_people": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP3PLU",
+                        "Ref_many_people",
                         "sentence"
                     ],
                     "value": ""
@@ -14428,7 +14428,7 @@
                     "path": [
                         "knowing"
                     ],
-                    "value": "PP3PLU"
+                    "value": "Ref_many_people"
                 },
                 "stories QUANTIFIER": {
                     "is_required_by": [
@@ -15811,8 +15811,8 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP2SG",
-                "PP1INCDU",
+                "Ref_addressee",
+                "Ref_speaker_and_addressee",
                 "remembering",
                 "being in charge of",
                 "organization",
@@ -15824,8 +15824,8 @@
                         "self"
                     ],
                     "requires": [
-                        "PP2SG",
-                        "PP1INCDU",
+                        "Ref_addressee",
+                        "Ref_speaker_and_addressee",
                         "remembering",
                         "being in charge of",
                         "organization",
@@ -15836,25 +15836,25 @@
                     ],
                     "value": ""
                 },
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
-                "PP1INCDU": {
+                "Ref_speaker_and_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "value": ""
                 },
@@ -15970,7 +15970,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "remembering EVENT TENSE": {
                     "is_required_by": [
@@ -16174,7 +16174,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "being in charge of EVENT TENSE": {
                     "is_required_by": [
@@ -16469,26 +16469,26 @@
                 }
             },
             "trimmed_graph": {
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP2SG",
+                        "Ref_addressee",
                         "sentence"
                     ],
                     "value": ""
                 },
-                "PP1INCDU": {
+                "Ref_speaker_and_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1INCDU",
+                        "Ref_speaker_and_addressee",
                         "sentence"
                     ],
                     "value": ""
@@ -16604,7 +16604,7 @@
                     "path": [
                         "remembering"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "being in charge of PATIENT": {
                     "is_required_by": [
@@ -16622,7 +16622,7 @@
                     "path": [
                         "being in charge of"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "being in charge of TIME INFORMATION": {
                     "is_required_by": [
@@ -16647,7 +16647,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1INCDU",
+                "Ref_speaker_and_addressee",
                 "organizing",
                 "meeting",
                 "community",
@@ -16662,7 +16662,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1INCDU",
+                        "Ref_speaker_and_addressee",
                         "organizing",
                         "meeting",
                         "community",
@@ -16676,14 +16676,14 @@
                     ],
                     "value": ""
                 },
-                "PP1INCDU": {
+                "Ref_speaker_and_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "value": ""
                 },
@@ -16800,7 +16800,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "organizing EVENT TENSE": {
                     "is_required_by": [
@@ -17780,7 +17780,7 @@
                         "POSSESSOR",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "people QUALIFIER": {
                     "is_required_by": [
@@ -18315,14 +18315,14 @@
                 }
             },
             "trimmed_graph": {
-                "PP1INCDU": {
+                "Ref_speaker_and_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1INCDU",
+                        "Ref_speaker_and_addressee",
                         "sentence"
                     ],
                     "value": ""
@@ -18532,7 +18532,7 @@
                     "path": [
                         "organizing"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "organizing OBLIQUE ROLE OBJECTIVE": {
                     "is_required_by": [
@@ -18568,7 +18568,7 @@
                     "path": [
                         "people"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "doing PATIENT": {
                     "is_required_by": [
@@ -18602,7 +18602,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1PLU",
+                "Ref_speaker_plus_many_including_addressee",
                 "cleaning",
                 "village"
             ],
@@ -18612,7 +18612,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "cleaning",
                         "village"
                     ],
@@ -18621,27 +18621,27 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
-                "PP1PLU QUANTIFIER": {
+                "Ref_speaker_plus_many_including_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "QUANTIFIER"
                     ],
                     "value": "some"
@@ -18758,7 +18758,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "cleaning EVENT TENSE": {
                     "is_required_by": [
@@ -19071,16 +19071,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "sentence"
                     ],
                     "value": ""
@@ -19142,12 +19142,12 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU QUANTIFIER": {
+                "Ref_speaker_plus_many_including_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "path": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": "some"
                 },
@@ -19167,7 +19167,7 @@
                     "path": [
                         "cleaning"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "cleaning EVENT TENSE": {
                     "is_required_by": [
@@ -20430,7 +20430,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1PLU",
+                "Ref_speaker_plus_many_including_addressee",
                 "having to",
                 "choosing",
                 "dances",
@@ -20442,7 +20442,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "having to",
                         "choosing",
                         "dances",
@@ -20453,27 +20453,27 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
-                "PP1PLU QUANTIFIER": {
+                "Ref_speaker_plus_many_including_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -20536,7 +20536,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "having to QUALIFIER": {
                     "is_required_by": [
@@ -21311,16 +21311,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
@@ -21431,7 +21431,7 @@
                     "path": [
                         "having to"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "having to PATIENT": {
                     "is_required_by": [
@@ -21477,7 +21477,7 @@
                 "having to",
                 "rehearsing",
                 "Ref_many_objects",
-                "PP1PLU"
+                "Ref_speaker_plus_many_including_addressee"
             ],
             "graph": {
                 "sentence": {
@@ -21488,7 +21488,7 @@
                         "having to",
                         "rehearsing",
                         "Ref_many_objects",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "path": [
                         "sentence"
@@ -21553,7 +21553,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "having to QUALIFIER": {
                     "is_required_by": [
@@ -21914,27 +21914,27 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
-                "PP1PLU QUANTIFIER": {
+                "Ref_speaker_plus_many_including_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -21998,16 +21998,16 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
@@ -22030,7 +22030,7 @@
                     "path": [
                         "having to"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "having to PATIENT": {
                     "is_required_by": [
@@ -22064,7 +22064,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP2SG",
+                "Ref_addressee",
                 "forgetting"
             ],
             "graph": {
@@ -22073,7 +22073,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP2SG",
+                        "Ref_addressee",
                         "forgetting"
                     ],
                     "path": [
@@ -22081,27 +22081,27 @@
                     ],
                     "value": ""
                 },
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
-                "PP2SG QUANTIFIER": {
+                "Ref_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP2SG",
+                        "Ref_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -22218,7 +22218,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "forgetting EVENT TENSE": {
                     "is_required_by": [
@@ -22312,16 +22312,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP2SG": {
+                "Ref_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP2SG QUANTIFIER"
+                        "Ref_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP2SG"
+                        "Ref_addressee"
                     ],
                     "value": ""
                 },
@@ -22365,7 +22365,7 @@
                     "path": [
                         "forgetting"
                     ],
-                    "value": "PP2SG"
+                    "value": "Ref_addressee"
                 },
                 "forgetting POLARITY": {
                     "is_required_by": [
@@ -22390,7 +22390,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1PLU",
+                "Ref_speaker_plus_many_including_addressee",
                 "having to",
                 "preparing",
                 "food",
@@ -22403,7 +22403,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "having to",
                         "preparing",
                         "food",
@@ -22415,27 +22415,27 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
-                "PP1PLU QUANTIFIER": {
+                "Ref_speaker_plus_many_including_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -22552,7 +22552,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "having to EVENT TENSE": {
                     "is_required_by": [
@@ -23327,16 +23327,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
@@ -23474,7 +23474,7 @@
                     "path": [
                         "having to"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "having to EVENT TENSE": {
                     "is_required_by": [
@@ -23527,7 +23527,7 @@
             ],
             "concept": [
                 "work",
-                "PP1PLU",
+                "Ref_speaker_plus_many_including_addressee",
                 "equating",
                 "Ref_Event",
                 "so much"
@@ -23539,7 +23539,7 @@
                     ],
                     "requires": [
                         "work",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "equating",
                         "Ref_Event",
                         "so much"
@@ -23768,27 +23768,27 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": ""
                 },
-                "PP1PLU QUANTIFIER": {
+                "Ref_speaker_plus_many_including_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "QUANTIFIER"
                     ],
                     "value": "ALL"
@@ -23984,7 +23984,7 @@
                         "OBLIQUE ROLE DESTINATION",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 },
                 "equating POLARITY": {
                     "is_required_by": [
@@ -24071,16 +24071,16 @@
                     ],
                     "value": ""
                 },
-                "PP1PLU": {
+                "Ref_speaker_plus_many_including_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1PLU QUANTIFIER"
+                        "Ref_speaker_plus_many_including_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1PLU",
+                        "Ref_speaker_plus_many_including_addressee",
                         "sentence"
                     ],
                     "value": ""
@@ -24158,12 +24158,12 @@
                     ],
                     "value": "so much"
                 },
-                "PP1PLU QUANTIFIER": {
+                "Ref_speaker_plus_many_including_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "path": [
-                        "PP1PLU"
+                        "Ref_speaker_plus_many_including_addressee"
                     ],
                     "value": "ALL"
                 },
@@ -24192,7 +24192,7 @@
                     "path": [
                         "equating"
                     ],
-                    "value": "PP1PLU"
+                    "value": "Ref_speaker_plus_many_including_addressee"
                 }
             },
             "legacy index": "28",
@@ -24223,7 +24223,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1INCDU",
+                "Ref_speaker_and_addressee",
                 "starting",
                 "today"
             ],
@@ -24233,7 +24233,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1INCDU",
+                        "Ref_speaker_and_addressee",
                         "starting",
                         "today"
                     ],
@@ -24242,27 +24242,27 @@
                     ],
                     "value": ""
                 },
-                "PP1INCDU": {
+                "Ref_speaker_and_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1INCDU QUANTIFIER"
+                        "Ref_speaker_and_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "value": ""
                 },
-                "PP1INCDU QUANTIFIER": {
+                "Ref_speaker_and_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1INCDU",
+                        "Ref_speaker_and_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -24382,7 +24382,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "starting EVENT TENSE": {
                     "is_required_by": [
@@ -24568,16 +24568,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1INCDU": {
+                "Ref_speaker_and_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1INCDU QUANTIFIER"
+                        "Ref_speaker_and_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "value": ""
                 },
@@ -24637,7 +24637,7 @@
                     "path": [
                         "starting"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "starting TIME INFORMATION": {
                     "is_required_by": [
@@ -24662,7 +24662,7 @@
                 "PROCESSIVE PREDICATE"
             ],
             "concept": [
-                "PP1INCDU",
+                "Ref_speaker_and_addressee",
                 "starting",
                 "today"
             ],
@@ -24672,7 +24672,7 @@
                         "self"
                     ],
                     "requires": [
-                        "PP1INCDU",
+                        "Ref_speaker_and_addressee",
                         "starting",
                         "today"
                     ],
@@ -24681,27 +24681,27 @@
                     ],
                     "value": ""
                 },
-                "PP1INCDU": {
+                "Ref_speaker_and_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1INCDU QUANTIFIER"
+                        "Ref_speaker_and_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "value": ""
                 },
-                "PP1INCDU QUANTIFIER": {
+                "Ref_speaker_and_addressee QUANTIFIER": {
                     "is_required_by": [
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "requires": [],
                     "path": [
                         "sentence",
-                        "PP1INCDU",
+                        "Ref_speaker_and_addressee",
                         "QUANTIFIER"
                     ],
                     "value": ""
@@ -24821,7 +24821,7 @@
                         "AGENT",
                         "REFERENCE TO CONCEPT"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "starting EVENT TENSE": {
                     "is_required_by": [
@@ -25007,16 +25007,16 @@
                 }
             },
             "trimmed_graph": {
-                "PP1INCDU": {
+                "Ref_speaker_and_addressee": {
                     "is_required_by": [
                         "sentence"
                     ],
                     "requires": [
-                        "PP1INCDU QUANTIFIER"
+                        "Ref_speaker_and_addressee QUANTIFIER"
                     ],
                     "path": [
                         "sentence",
-                        "PP1INCDU"
+                        "Ref_speaker_and_addressee"
                     ],
                     "value": ""
                 },
@@ -25076,7 +25076,7 @@
                     "path": [
                         "starting"
                     ],
-                    "value": "PP1INCDU"
+                    "value": "Ref_speaker_and_addressee"
                 },
                 "starting TIME INFORMATION": {
                     "is_required_by": [

@@ -55,7 +55,7 @@
                 "ASSERT": "",
                 "ATTRIBUTIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
-                "PP1SG": "je...me",
+                "Ref_speaker": "je...me",
                 "experiencing in the body": "sens",
                 "good": "bien",
                 "these days": "ces...jours-ci"
@@ -72,10 +72,10 @@
                 "EQUATIVE PREDICATE": "",
                 "event wildcard": "c",
                 "causality wildcard": "pour...\u00e7a",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "coming": "suis...venu",
                 "seeing": "voir",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "equating": "est"
             },
             "comment": ""
@@ -90,7 +90,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "event wildcard": "qu",
                 "happening": "arrive",
-                "PP2SG": "vous"
+                "Ref_addressee": "vous"
             },
             "comment": ""
         },
@@ -102,7 +102,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "ATTRIBUTIVE PREDICATE": "avez...l...air",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "looking like": "avez...l...air",
                 "sick": "malade"
             },
@@ -117,7 +117,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "being able to": "",
                 "sleeping": "dors",
                 "at night": "la...nuit"
@@ -133,7 +133,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "sweating": "transpire",
-                "PP1SG": "je"
+                "Ref_speaker": "je"
             },
             "comment": ""
         },
@@ -145,7 +145,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "experiencing in the body": "fais",
                 "nightmare": "cauchemars"
             },
@@ -159,7 +159,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "waking up": "r\u00e9veille",
                 "middle of the night": "au...milieu...de...la...nuit"
             },
@@ -173,7 +173,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "j",
+                "Ref_speaker": "j",
                 "experiencing in the body": "ai",
                 "hot": "chaud",
                 "sometimes": "parfois"
@@ -189,7 +189,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "sometimes": "parfois",
-                "PP1SG": "j",
+                "Ref_speaker": "j",
                 "experiencing in the body": "ai",
                 "cold": "froid"
             },
@@ -204,7 +204,7 @@
                 "EXPRESS LIKELIHOOD": "dois...avoir",
                 "ASK": "",
                 "ATTRIBUTIVE PREDICATE": "avoir",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "experiencing in the body": "avoir",
                 "fever": "fi\u00e8vre"
             },
@@ -218,8 +218,8 @@
             "concept_words": {
                 "ORDER": "laissez",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "moi",
-                "PP2SG": "",
+                "Ref_speaker": "moi",
+                "Ref_addressee": "",
                 "allowing": "laissez",
                 "checking": "toucher",
                 "forehead": "front"
@@ -234,7 +234,7 @@
             "concept_words": {
                 "APPROVE": "oh...oui",
                 "ATTRIBUTIVE PREDICATE": "\u00eates",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "experiencing in the body": "\u00eates",
                 "hot": "chaud"
             },
@@ -248,7 +248,7 @@
             "concept_words": {
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "coughing": "toussez"
             },
             "comment": ""
@@ -262,7 +262,7 @@
                 "DISAPPROVE": "non",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "coughing": "tousse"
             },
             "comment": ""
@@ -275,7 +275,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "every time": "chaque...fois",
                 "waking up": "r\u00e9veille...me",
                 "experiencing in the body": "ai",
@@ -291,7 +291,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "experiencing in the body": "sens",
                 "needing": "ai...besoin",
                 "drinking": "boire"
@@ -306,7 +306,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "ATTRIBUTIVE PREDICATE": "",
-                "PP1SG": "j",
+                "Ref_speaker": "j",
                 "experiencing in the body": "ai",
                 "pain": "mal",
                 "belly": "ventre"
@@ -333,7 +333,7 @@
             "concept_words": {
                 "ASK": "",
                 "EXISTENTIAL PREDICATE": "fait",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "experiencing in the body": "fait",
                 "pain": "mal",
                 "OR": "ou",
@@ -363,7 +363,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "knowing": "sais",
                 "causality wildcard": "pourquoi"
             },
@@ -378,7 +378,7 @@
                 "ASSERT": "",
                 "EXISTENTIAL PREDICATE": "suis",
                 "doctor": "docteur",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "experiencing in the body": "suis",
                 "anxiety": "inquiet",
                 "a bit": ""
@@ -406,7 +406,7 @@
             "concept_words": {
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "eating": "avez...mang\u00e9",
                 "object wildcard": "quelque...chose",
                 "particular": "particulier",
@@ -423,8 +423,8 @@
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
                 "allowing": "",
-                "PP1SG": "je",
-                "PP2SG": "",
+                "Ref_speaker": "je",
+                "Ref_addressee": "",
                 "remembering": "r\u00e9fl\u00e9chis"
             },
             "comment": ""
@@ -438,7 +438,7 @@
                 "INFIRM": "non",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "thinking": "pense",
                 "event wildcard": ""
             },
@@ -453,7 +453,7 @@
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
                 "waiting": "attendez",
-                "PP2SG": ""
+                "Ref_addressee": ""
             },
             "comment": ""
         },
@@ -465,7 +465,7 @@
             "concept_words": {
                 "APPROVE": "oui",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "",
+                "Ref_speaker": "",
                 "event wildcard": ""
             },
             "comment": ""
@@ -485,7 +485,7 @@
                 "forest": "for\u00eat",
                 "fruit": "fruits",
                 "strange": "bizarres",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "seeing": "avais...vu"
             },
             "comment": ""
@@ -498,8 +498,8 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP3SG": "il",
-                "PP1SG": "m",
+                "Ref_1_person": "il",
+                "Ref_speaker": "m",
                 "giving": "a...donn\u00e9",
                 "trying": "go\u00fbte",
                 "fruit": "fruits"
@@ -514,7 +514,7 @@
             "concept_words": {
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "Ref_Event": "l"
             },
             "comment": ""
@@ -527,7 +527,7 @@
             "concept_words": {
                 "APPROVE": "oui",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "",
+                "Ref_speaker": "",
                 "Ref_Event": ""
             },
             "comment": ""
@@ -540,7 +540,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "liking": "ai...aim\u00e9s",
                 "Ref_many_objects": "les"
             },
@@ -568,7 +568,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "j",
+                "Ref_speaker": "j",
                 "eating": "ai...mang\u00e9",
                 "Ref_many_objects": "en",
                 "many": "beaucoup"
@@ -587,7 +587,7 @@
                 "sick": "malade",
                 "after": "apr\u00e8s",
                 "event wildcard": "",
-                "PP1SG": "je"
+                "Ref_speaker": "je"
             },
             "comment": ""
         },
@@ -614,7 +614,7 @@
                 "fruit": "fruits",
                 "Ref_many_objects": "qui",
                 "making": "ont...rendu",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "sick": "malade"
             },
             "comment": ""
@@ -629,7 +629,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "n...pas",
                 "CONDITION": "si",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "eating": "aviez...mang\u00e9",
                 "becoming": "auriez...\u00e9t\u00e9",
                 "so much": "autant",
@@ -656,7 +656,7 @@
                 "WISH": "aurais...d\u00fb",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "n...pas",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "doing": "aurais...d\u00fb"
             },
             "comment": ""
@@ -671,7 +671,7 @@
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
                 "event wildcard": "qu",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "doing": "dois...faire",
                 "now": "maintenant"
             },
@@ -687,7 +687,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
                 "worrying": "inqui\u00e9tez",
-                "PP2SG": "vous"
+                "Ref_addressee": "vous"
             },
             "comment": ""
         },
@@ -699,9 +699,9 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "giving": "vais...donner",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "medicine": "m\u00e9dicaments",
                 "drinking": "boire"
             },
@@ -715,7 +715,7 @@
             "concept_words": {
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "taking": "prenez",
                 "twice a day": "deux...fois...par...jour",
                 "Ref_1_object": "les"
@@ -755,7 +755,7 @@
                 "ASK": "",
                 "ATTRIBUTIVE PREDICATE": "irai",
                 "then (time)": "apr\u00e8s",
-                "PP1SG": "j",
+                "Ref_speaker": "j",
                 "COMP-MORE": "mieux",
                 "healthy": "",
                 "exhibiting (an attribute)": "irai"
@@ -780,7 +780,7 @@
             "concept_words": {
                 "EXPRESS POTENTIAL": "devriez",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "becoming": "devriez...aller",
                 "COMP-MORE": "mieux",
                 "healthy": "",
@@ -814,7 +814,7 @@
             "concept_words": {
                 "ORDER": "devez",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "experiencing": "",
                 "rest": "reposer"
             },
@@ -829,7 +829,7 @@
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "n...pas",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "going": "allez",
                 "work": "travail"
             },
@@ -843,7 +843,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "vous",
+                "Ref_addressee": "vous",
                 "needing": "avez...besoin",
                 "sleeping": "dormir"
             },
@@ -867,7 +867,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "understanding": "comprends"
             },
             "comment": ""

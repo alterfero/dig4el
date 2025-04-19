@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+import copy
 import re
 import os
 import json
@@ -157,25 +157,87 @@ def replace_concept_name_in_tree(old_concept_name, new_concept_name, root_direct
                     print(f"Replaced in {full_path}")
 
 
-def replace_concept_name_everywhere(old_concept_name, new_concept_name):
+def replace_concept_names_everywhere():
 
-    print(f"!!! Replacing {old_concept_name} by {new_concept_name} everywhere.")
+    print("Loading concept_name_update.json")
+    with open("../data/lookup_tables/concept_name_update.json", "r") as f:
+        concept_name_update = json.load(f)
+        print("Loaded concept_name_update.json")
+
+        # 2. Flatten updates to a list of (old, new) tuples
+        updates = []
+        for entry in concept_name_update:
+            if len(entry) != 1:
+                raise ValueError(f"Expected single-key dict, got {entry}")
+            old, new = next(iter(entry.items()))
+            updates.append((old, new))
+
+        # 3. Sort by descending length of the old key
+        updates.sort(key=lambda pair: len(pair[0]), reverse=True)
 
     print("CQ files")
-    cq_files = list_json_files("./questionnaires")
+    cq_files = list_json_files("../questionnaires")
     for cq_file in cq_files:
-        if replace_in_file(cq_file, old_concept_name, new_concept_name):
-            print(f"replacement successful in {cq_file}")
+        full_filename = os.path.join("../questionnaires", cq_file)
+        for old_name, new_name in updates:
+            if replace_in_file(full_filename, old_name, new_name):
+                print(f"replacement of {old_name} to {new_name} successful in {cq_file}")
 
     print("available transcriptions")
-    replace_concept_name_in_tree(old_concept_name, new_concept_name, "./available_transcriptions")
+    for old_name, new_name in updates:
+        replace_concept_name_in_tree(old_name, new_name, "../available_transcriptions")
+
+    print("other transcriptions")
+    for old_name, new_name in updates:
+        replace_concept_name_in_tree(old_name, new_name, "../CQ_transcriptions_not_shared")
 
     print("concepts.json")
-    if replace_in_file("./data/concepts.json", old_concept_name, new_concept_name):
-        print(f"replacement successful in concept.json")
+    for old_name, new_name in updates:
+        if replace_in_file("../data/concepts.json", old_name, new_name):
+            print(f"replacement successful in concepts.json")
 
 
+def update_concept_names_in_transcription(transcription):
+    """
+    As concept names change, we need to update the transcriptions users upload before they're processed,
+    using the concept_name_update.json lookup table. The table is sorted by length (longer first) before use to avoid
+    replacing in-name sequences.
+    :param transcription: dict  # parsed JSON
+    :return: dict               # updated copy
+    """
+    # 1. Load and sort the lookup table
+    lookup_path = os.path.join(".", "data", "lookup_tables", "concept_name_update.json")
+    with open(lookup_path, "r", encoding="utf-8") as f:
+        raw_list = json.load(f)
 
+    updates = []
+    for entry in raw_list:
+        if len(entry) != 1:
+            raise ValueError(f"Expected single-key dict, got {entry!r}")
+        old, new = next(iter(entry.items()))
+        updates.append((old, new))
+    # Sort so longest old‑names go first
+    updates.sort(key=lambda t: len(t[0]), reverse=True)
+
+    # 2. Deep-copy the transcription so we don't mutate the original
+    new_transcription = copy.deepcopy(transcription)
+
+    # 3. Walk through each item and rename keys in concept_words
+    found_some = False
+    for idx, content in new_transcription.get("data", {}).items():
+        cw = content.get("concept_words")
+        if not isinstance(cw, dict):
+            continue  # skip if missing or malformed
+        for old_name, new_name in updates:
+            if old_name in cw:
+                found_some = True
+                # optional: warn if new_name already existed
+                if new_name in cw:
+                    print(f"Warning: overwriting '{new_name}' in entry {idx}")
+                # pop only the single key
+                cw[new_name] = cw.pop(old_name)
+
+    return new_transcription, found_some
 
 # def get_word_stats(recordings_list):
 #     word_stats = {}

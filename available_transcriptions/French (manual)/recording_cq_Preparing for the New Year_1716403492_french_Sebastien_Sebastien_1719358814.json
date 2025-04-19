@@ -63,7 +63,7 @@
                 "village X": "village...x",
                 "coming": "viennent",
                 "community": "chez...nous",
-                "PP1PLU": "nous"
+                "Ref_speaker_plus_many_including_addressee": "nous"
             },
             "comment": ""
         },
@@ -91,9 +91,9 @@
             "concept_words": {
                 "EXPRESS DUTY (DEONTIC)": "il...faut",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "",
+                "Ref_speaker_plus_many_including_addressee": "",
                 "welcoming": "accueillir",
-                "PP3PLU": "les",
+                "Ref_many_people": "les",
                 "friendly way": "chaleureusement"
             },
             "comment": ""
@@ -108,8 +108,8 @@
                 "PROCESSIVE PREDICATE": "",
                 "COMP-EQUAL": "comme",
                 "doing": "ont...fait",
-                "PP1PLU": "nous",
-                "PP3PLU": "ils",
+                "Ref_speaker_plus_many_including_addressee": "nous",
+                "Ref_many_people": "ils",
                 "last year": "ann\u00e9e...derni\u00e8re",
                 "event wildcard": ""
             },
@@ -135,7 +135,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "COMP-EQUAL": "comme",
-                "PP1PLU": "on",
+                "Ref_speaker_plus_many_including_addressee": "on",
                 "doing": "fait",
                 "always": "\u00e0...chaque...fois",
                 "event wildcard": ""
@@ -150,7 +150,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "nos",
+                "Ref_speaker_plus_many_including_addressee": "nos",
                 "leaders": "chefs",
                 "starting": "commenceront",
                 "welcome speech": "discours...de...bienvenue",
@@ -184,7 +184,7 @@
                 "AFTER X": "apr\u00e8s",
                 "lunch": "d\u00e9jeuner",
                 "together": "",
-                "PP1PLU": "nous",
+                "Ref_speaker_plus_many_including_addressee": "nous",
                 "Ref_Event": "\u00e7a",
                 "sharing": "partagerons"
             },
@@ -204,7 +204,7 @@
                 "songs": "chants",
                 "dances": "danses",
                 "AND": "et",
-                "PP1SG": "j"
+                "Ref_speaker": "j"
             },
             "comment": ""
         },
@@ -217,7 +217,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "people": "gens",
-                "PP3PLU": "les...gens",
+                "Ref_many_people": "les...gens",
                 "AND": "",
                 "singing": "chanterons",
                 "songs": "chansons",
@@ -235,7 +235,7 @@
             "concept_words": {
                 "EXPRESS DUTY (DEONTIC)": "devrait",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "on",
+                "Ref_speaker_plus_many_including_addressee": "on",
                 "too": "aussi",
                 "singing": "chanter",
                 "songs": "chansons",
@@ -280,7 +280,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "nos",
+                "Ref_speaker_plus_many_including_addressee": "nos",
                 "elders": "a\u00een\u00e9s",
                 "telling": "raconteront",
                 "stories": "histoires",
@@ -308,7 +308,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "ATTRIBUTIVE PREDICATE": "",
-                "PP3PLU": "ils",
+                "Ref_many_people": "ils",
                 "knowing": "connaissent",
                 "so many": "tellement",
                 "stories": "histoires"
@@ -355,8 +355,8 @@
             "concept_words": {
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "tu",
-                "PP1INCDU": "nous",
+                "Ref_addressee": "tu",
+                "Ref_speaker_and_addressee": "nous",
                 "remembering": "souviens",
                 "being in charge of": "sommes...responsables...de",
                 "organization": "organisation",
@@ -372,7 +372,7 @@
             "concept_words": {
                 "EXPRESS DUTY (DEONTIC)": "devrait",
                 "PROCESSIVE PREDICATE": "",
-                "PP1INCDU": "on",
+                "Ref_speaker_and_addressee": "on",
                 "organizing": "organiser",
                 "meeting": "r\u00e9union",
                 "community": "",
@@ -391,7 +391,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "certains",
+                "Ref_speaker_plus_many_including_addressee": "certains",
                 "cleaning": "nettoieront",
                 "village": "village"
             },
@@ -421,7 +421,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "nous",
+                "Ref_speaker_plus_many_including_addressee": "nous",
                 "having to": "devons",
                 "choosing": "choisir",
                 "dances": "danses",
@@ -440,7 +440,7 @@
                 "having to": "devons",
                 "rehearsing": "r\u00e9p\u00e9ter",
                 "Ref_many_objects": "les",
-                "PP1PLU": "nous"
+                "Ref_speaker_plus_many_including_addressee": "nous"
             },
             "comment": ""
         },
@@ -453,7 +453,7 @@
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "n...pas",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "forgetting": "oublie"
             },
             "comment": ""
@@ -466,7 +466,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "nous",
+                "Ref_speaker_plus_many_including_addressee": "nous",
                 "having to": "devrons",
                 "preparing": "pr\u00e9parer",
                 "food": "nourriture",
@@ -484,7 +484,7 @@
                 "ASSERT": "",
                 "EQUATIVE PREDICATE": "\u00e7a...va...faire",
                 "work": "travail",
-                "PP1PLU": "",
+                "Ref_speaker_plus_many_including_addressee": "",
                 "equating": "va...faire",
                 "Ref_Event": "\u00e7a",
                 "so much": "beaucoup"
@@ -510,7 +510,7 @@
             "concept_words": {
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1INCDU": "",
+                "Ref_speaker_and_addressee": "",
                 "starting": "commen\u00e7ons",
                 "today": "aujourd...hui"
             },

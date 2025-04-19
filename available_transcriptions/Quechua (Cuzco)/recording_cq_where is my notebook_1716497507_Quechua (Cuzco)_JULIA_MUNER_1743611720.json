@@ -24,7 +24,7 @@
                 "brother": "wawqey",
                 "seeing": "rikurqankichu",
                 "notebook": "qillqana...p'anqayta",
-                "PP1SG": "p'anqayta"
+                "Ref_speaker": "p'anqayta"
             },
             "comment": "The \"-y\" suffix in Quechua, meaning \"my.\"The ASK is carried by -chu in the verb"
         },
@@ -37,7 +37,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "mana...tarirqanichu",
-                "PP1SG": "mask'arqani",
+                "Ref_speaker": "mask'arqani",
                 "searching": "mask'arqani",
                 "everywhere": "tukuy...hinantinpi",
                 "BUT": "icha",
@@ -57,10 +57,10 @@
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "mana",
                 "knowing": "yachanichu",
-                "PP1SG": "yachanichu",
+                "Ref_speaker": "yachanichu",
                 "sister": "\u00f1a\u00f1ay"
             },
-            "comment": "Negation Structure : Mana (negator) + yacha- (know) + -ni (I) + -chu (neg. terminator)  = \"I don't know\" (lit. \"Not know I not\").Vocative Address  \u00d1a\u00f1ay = \"sister\" + -y (PP1SG \"my\")."
+            "comment": "Negation Structure : Mana (negator) + yacha- (know) + -ni (I) + -chu (neg. terminator)  = \"I don't know\" (lit. \"Not know I not\").Vocative Address  \u00d1a\u00f1ay = \"sister\" + -y (Ref_speaker \"my\")."
         },
         "4": {
             "legacy index": "3b",
@@ -86,7 +86,7 @@
                 "math": "yupay",
                 "equating": "",
                 "Ref_1_object": "qillqana",
-                "PP1SG": "\u00f1uqap"
+                "Ref_speaker": "\u00f1uqap"
             },
             "comment": "equating: Copula implied (Quechua often drops \"is\" in equational sentences.)The whole sentence functions as an assertion."
         },
@@ -114,7 +114,7 @@
             "concept_words": {
                 "ASSERT": "qam...\u00f1a...rikurqusqa",
                 "PROCESSIVE PREDICATE": "rikurqusqa",
-                "PP2SG": "qam",
+                "Ref_addressee": "qam",
                 "seeing": "rikurqusqa",
                 "already": "\u00f1a",
                 "Ref_1_object": ""
@@ -129,7 +129,7 @@
             "concept_words": {
                 "ASSERT": "ch'isi...tuta...\u00f1uqaqa...yanuy...wasiypi...chaypi...yupay...llamk'ayta...ruwanqani",
                 "PROCESSIVE PREDICATE": "ruwanqani",
-                "PP1SG": "\u00f1uqaqa",
+                "Ref_speaker": "\u00f1uqaqa",
                 "doing": "ruwanqani",
                 "homework": "yupay...llamk'ayta",
                 "last night": "ch'isi...tuta",
@@ -146,13 +146,13 @@
             "concept_words": {
                 "ASSERT": "ari...chaypi...saqerqanki...chaynaqmi",
                 "PROCESSIVE PREDICATE": "saqerqanki",
-                "PP2SG": "saqerqanki",
+                "Ref_addressee": "saqerqanki",
                 "leaving (transitive)": "saqerqanki",
                 "probably": "chaynaqmi",
                 "Ref_1_object": "",
                 "Ref_location": "chaypi"
             },
-            "comment": "ASSERT: The whole sentence is asserting something about the object being left in a location.  PROCESSIVE PREDICATE: \"Saqerqanki\" indicates the action of leaving.  PP2SG: \"Saqerqanki\" uses the second-person singular marker \"-nki.\"  Leaving (transitive): \"Saqerqanki\" indicates the action of leaving in a transitive form.  Probably: \"Chaynaqmi\" suggests the probability or assumption of the action.  Ref_1_object: Implied but not explicitly stated (the object being left).  Ref_location: \"Chaypi\" refers to the location (\"there\")."
+            "comment": "ASSERT: The whole sentence is asserting something about the object being left in a location.  PROCESSIVE PREDICATE: \"Saqerqanki\" indicates the action of leaving.  Ref_addressee: \"Saqerqanki\" uses the second-person singular marker \"-nki.\"  Leaving (transitive): \"Saqerqanki\" indicates the action of leaving in a transitive form.  Probably: \"Chaynaqmi\" suggests the probability or assumption of the action.  Ref_1_object: Implied but not explicitly stated (the object being left).  Ref_location: \"Chaypi\" refers to the location (\"there\")."
         },
         "10": {
             "legacy index": "8a",
@@ -173,7 +173,7 @@
             "concept_words": {
                 "ASSERT": "\u00f1awpaqmi",
                 "PROCESSIVE PREDICATE": "churaykurqani",
-                "PP1SG": "churaykurqani",
+                "Ref_speaker": "churaykurqani",
                 "putting": "churaykurqani",
                 "schoolbag": "yachana...wayaqaypi",
                 "BEFORE X": "\u00f1awpaqmi",
@@ -192,7 +192,7 @@
                 "EXPRESS LIKELIHOOD": "yuyaychani",
                 "PROCESSIVE PREDICATE": "yuyaychani",
                 "thinking": "yuyaychani",
-                "PP1SG": "yuyaychani"
+                "Ref_speaker": "yuyaychani"
             },
             "comment": "Yuyaychani. (\u201cI probably think.\u201d / \u201cI might think.\u201d) Breakdown:  Yuyay \u2192 \"thinking\" (root verb)  -cha \u2192 expresses probability, assumption, or likelihood  -ni \u2192 first-person singular marker (\"I\")"
         },
@@ -204,14 +204,14 @@
             "concept_words": {
                 "ASK": "rikurkankichu",
                 "PROCESSIVE PREDICATE": "rikurkankichu",
-                "PP2SG": "rikurkankichu",
+                "Ref_addressee": "rikurkankichu",
                 "searching": "rikurkankichu",
                 "ZOOM IN": "wasiykipi",
                 "bedroom": "wasiykipi",
                 "beside": "patanpi",
                 "bed": "pu\u00f1una"
             },
-            "comment": "1. ASK: Word: \"-chu\"  Explanation: The suffix \"-chu\" is the yes/no question marker in Quechua. 2. PROCESSIVE PREDICATE: Word: \"rikurkankichu\"  Explanation: A predicate expresses the action or state of the subject.3. PP2SG (Second-person singular personal pronoun marker): Word: \"-nki\" in \"rikurkankichu\"  Explanation:  The \"-nki\" suffix indicates that the action is performed by \"you\" (second-person singular).4. SEARCHING: Word: \"rikurkankichu\"  Explanation:  \"Rikur\" means \"to look for\" or \"to search.\""
+            "comment": "1. ASK: Word: \"-chu\"  Explanation: The suffix \"-chu\" is the yes/no question marker in Quechua. 2. PROCESSIVE PREDICATE: Word: \"rikurkankichu\"  Explanation: A predicate expresses the action or state of the subject.3. Ref_addressee (Second-person singular personal pronoun marker): Word: \"-nki\" in \"rikurkankichu\"  Explanation:  The \"-nki\" suffix indicates that the action is performed by \"you\" (second-person singular).4. SEARCHING: Word: \"rikurkankichu\"  Explanation:  \"Rikur\" means \"to look for\" or \"to search.\""
         },
         "14": {
             "legacy index": "10a",
@@ -292,7 +292,7 @@
                 "INFIRM": "manam",
                 "LOCATIVE PREDICATE": "",
                 "Negative Polarity": "manam",
-                "PP1SG": "tarinichu",
+                "Ref_speaker": "tarinichu",
                 "being able to": "",
                 "finding": "tarinichu",
                 "Ref_1_object": ""
@@ -307,7 +307,7 @@
             "concept_words": {
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "maskhasaq",
-                "PP1SG": "maskhasaq",
+                "Ref_speaker": "maskhasaq",
                 "searching": "maskhasaq",
                 "kitchen": "mikhuna...wasipi"
             },
@@ -336,13 +336,13 @@
             "concept_words": {
                 "ASSERT": "claseypaqmi",
                 "PROCESSIVE PREDICATE": "necesitachkani",
-                "PP1SG": "necesitachkani",
+                "Ref_speaker": "necesitachkani",
                 "needing": "necesitachkani",
                 "school class": "matem\u00e1ticas...claseypaqmi",
                 "today": "kunan...p'unchaw",
                 "Ref_1_object": ""
             },
-            "comment": "ASSERT:\t-mi (in claseypaqmi). PROCESSIVE PREDICATE:-chka- (in necesitachkani) .PP1SG:-ni (in necesitachkani).needing:\tnecesita- (root).Ref_1_object:\t(implied -ni)."
+            "comment": "ASSERT:\t-mi (in claseypaqmi). PROCESSIVE PREDICATE:-chka- (in necesitachkani) .Ref_speaker:-ni (in necesitachkani).needing:\tnecesita- (root).Ref_1_object:\t(implied -ni)."
         },
         "23": {
             "legacy index": "15",
@@ -356,7 +356,7 @@
                 "teacher": "yachachiqqa",
                 "angry": "phi\u00f1akunqa",
                 "CONDITION": "kaptinqa",
-                "PP1SG": "k'itiy",
+                "Ref_speaker": "k'itiy",
                 "possessing": "kaptinqa",
                 "notebook": "qillqana...k'itiy",
                 "exhibiting (an attribute)": "ancha...phi\u00f1akunqa"
@@ -372,9 +372,9 @@
                 "ASSERT": "yuyanqam",
                 "PROCESSIVE PREDICATE": "ruwasqayta",
                 "Negative Polarity": "mana",
-                "PP3SG": "payqa",
+                "Ref_1_person": "payqa",
                 "thinking": "yuyanqam",
-                "PP1SG": "ruwasqayta",
+                "Ref_speaker": "ruwasqayta",
                 "doing": "ruwasqayta",
                 "homework": "yach'achisqayta"
             },
@@ -388,7 +388,7 @@
             "concept_words": {
                 "ASSERT": "yaw",
                 "PROCESSIVE PREDICATE": "tarisqayta",
-                "PP1SG": "yuyani",
+                "Ref_speaker": "yuyani",
                 "thinking": "yuyani",
                 "finding": "tarisqayta",
                 "Ref_1_object": "tarisqayta"
@@ -425,16 +425,16 @@
             "concept_words": {
                 "ORDER": "qhawariy",
                 "PROCESSIVE PREDICATE": "qhawariy",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "looking": "qhawariy",
-                "PP1INCDU": "wawqenchista",
+                "Ref_speaker_and_addressee": "wawqenchista",
                 "little brother": "huch'uy...wawqenchista",
                 "out there": "",
                 "garden": "yapuy...allpanpi",
                 "ZOOM IN": "allpanpi",
                 "DIRECTION": ""
             },
-            "comment": "PROCESSIVE PREDICATE:  -riy (in qhawariy)  2.looking:\tQhawa- 3.PP1INCDU :-nchis (in wawqenchista) 4.little brother: huch'uy wawqe- 5.ZOOM IN: -pi (in allpanpi) 6.Missing Concepts:  PP2SG: Not present (no \"you\" form used)  DIRECTION: Not explicitly marked (implied by context)  out there: Implied by allpanpi (no need for separate term)"
+            "comment": "PROCESSIVE PREDICATE:  -riy (in qhawariy)  2.looking:\tQhawa- 3.Ref_speaker_and_addressee :-nchis (in wawqenchista) 4.little brother: huch'uy wawqe- 5.ZOOM IN: -pi (in allpanpi) 6.Missing Concepts:  Ref_addressee: Not present (no \"you\" form used)  DIRECTION: Not explicitly marked (implied by context)  out there: Implied by allpanpi (no need for separate term)"
         },
         "29": {
             "legacy index": "20",
@@ -446,9 +446,9 @@
                 "PROCESSIVE PREDICATE": "hap'ichkan",
                 "holding": "hap'ichkan",
                 "object wildcard": "imatataq",
-                "PP3SG": "hap'ichkan...maqanpi"
+                "Ref_1_person": "hap'ichkan...maqanpi"
             },
-            "comment": "Imatataq  Ima = \"what\" (object wildcard)  -taq = emphasis marker (\"exactly what?\") \u2192 ASK  Maqanpi  Maqa = \"hand\" (pure Quechua)  -n = 3rd person possessive (\"his\") \u2192 PP3SG  -pi = locative (\"in\")  Hap\u2019ichkan  Hap\u2019i- = \"to hold/grasp\" \u2192 holding  -chka- = progressive \u2192 PROCESSIVE PREDICATE  -n = 3rd person (\"he\") \u2192 PP3SG"
+            "comment": "Imatataq  Ima = \"what\" (object wildcard)  -taq = emphasis marker (\"exactly what?\") \u2192 ASK  Maqanpi  Maqa = \"hand\" (pure Quechua)  -n = 3rd person possessive (\"his\") \u2192 Ref_1_person  -pi = locative (\"in\")  Hap\u2019ichkan  Hap\u2019i- = \"to hold/grasp\" \u2192 holding  -chka- = progressive \u2192 PROCESSIVE PREDICATE  -n = 3rd person (\"he\") \u2192 Ref_1_person"
         },
         "30": {
             "legacy index": "21",
@@ -461,9 +461,9 @@
                 "notebook": "qillqana...k'itiyki",
                 "Ref_1_object": "kayqa",
                 "equating": "manachu",
-                "PP2SG": "k'itiyki"
+                "Ref_addressee": "k'itiyki"
             },
-            "comment": "Manachu  Mana = \"not\"  -chu = question suffix \u2192 ASK  Kayqa  Kay = \"this\" \u2192 Ref_1_object  -qa = topic marker \u2192 EQUATIVE PREDICATE (implies \"=\")  Qillqana k'itiyki  Qillqa = \"write\"  -na = nominalizer \u2192 notebook (\"thing for writing\")  K'iti = \"sheet\"  -yki = 2nd person possessive \u2192 PP2SG (\"your\").The mixed term \"cuadernoyki\" (from Spanish cuaderno + Quechua -yki) is widely understood in urban areas for word <notebook>,but  we prioritize pure Quechua in this context."
+            "comment": "Manachu  Mana = \"not\"  -chu = question suffix \u2192 ASK  Kayqa  Kay = \"this\" \u2192 Ref_1_object  -qa = topic marker \u2192 EQUATIVE PREDICATE (implies \"=\")  Qillqana k'itiyki  Qillqa = \"write\"  -na = nominalizer \u2192 notebook (\"thing for writing\")  K'iti = \"sheet\"  -yki = 2nd person possessive \u2192 Ref_addressee (\"your\").The mixed term \"cuadernoyki\" (from Spanish cuaderno + Quechua -yki) is widely understood in urban areas for word <notebook>,but  we prioritize pure Quechua in this context."
         },
         "31": {
             "legacy index": "22a",
@@ -486,11 +486,11 @@
                 "ASSERT": "ruwarqan",
                 "PROCESSIVE PREDICATE": "ruwarqan",
                 "shredding": "ruwarqan",
-                "PP3SG": "ruwarqan",
+                "Ref_1_person": "ruwarqan",
                 "pieces": "p'aki...p'aki_2",
                 "Ref_1_object": "chayta"
             },
-            "comment": "Ichaqa  Contrastive connector (\"but\")  Chay-ta  Chay = \"that\"  -ta = accusative marker \u2192 \"it\"  P\u2019aki-p\u2019aki  Reduplication of p\u2019aki (\"piece\") \u2192 pieces  Mimics sound/action of shredding  Ruwa-rqa-n  Ruwa- = \"to do/make\" \u2192 shredding  -rqa- = past tense \u2192 PROCESSIVE PREDICATE  -n = 3rd person \u2192 PP3SG"
+            "comment": "Ichaqa  Contrastive connector (\"but\")  Chay-ta  Chay = \"that\"  -ta = accusative marker \u2192 \"it\"  P\u2019aki-p\u2019aki  Reduplication of p\u2019aki (\"piece\") \u2192 pieces  Mimics sound/action of shredding  Ruwa-rqa-n  Ruwa- = \"to do/make\" \u2192 shredding  -rqa- = past tense \u2192 PROCESSIVE PREDICATE  -n = 3rd person \u2192 Ref_1_person"
         },
         "33": {
             "legacy index": "23",
@@ -501,12 +501,12 @@
                 "EXPRESS LIKELIHOOD": "pukllachkan",
                 "PROCESSIVE PREDICATE": "pukllachkan",
                 "playing": "pukllachkan",
-                "PP3SG": "pukllachkan",
+                "Ref_1_person": "pukllachkan",
                 "morning": "paqarin...p'unchaymantapacha",
                 "ALL": "p'unchaymantapacha",
                 "Ref_1_object": "chaywan"
             },
-            "comment": "Paqarin p\u2019unchay-manta-pacha  Paqarin = \"morning\"  P\u2019unchay = \"day\"  -manta = ablative (\"from\")  -pacha = temporal emphasis (\"since/throughout\") \u2192 ALL  Chay-wan  Chay = \"that\" \u2192 Ref_1_object  -wan = comitative (\"with\")  Puklla-chka-n  Puklla- = \"to play\" \u2192 playing  -chka- = progressive \u2192 PROCESSIVE PREDICATE + EXPRESS LIKELIHOOD  -n = 3rd person \u2192 PP3SG"
+            "comment": "Paqarin p\u2019unchay-manta-pacha  Paqarin = \"morning\"  P\u2019unchay = \"day\"  -manta = ablative (\"from\")  -pacha = temporal emphasis (\"since/throughout\") \u2192 ALL  Chay-wan  Chay = \"that\" \u2192 Ref_1_object  -wan = comitative (\"with\")  Puklla-chka-n  Puklla- = \"to play\" \u2192 playing  -chka- = progressive \u2192 PROCESSIVE PREDICATE + EXPRESS LIKELIHOOD  -n = 3rd person \u2192 Ref_1_person"
         },
         "34": {
             "legacy index": "24",
@@ -519,9 +519,9 @@
                 "happening": "pasarqa",
                 "event wildcard": "\u00bfimatataq",
                 "homework": "yach'achisqaywan",
-                "PP1SG": "yach'achisqaywan"
+                "Ref_speaker": "yach'achisqaywan"
             },
-            "comment": "Yaw!  Native interjection (emotional context, not a concept carrier)  \u00bfImatataq?  Ima = \"what\" \u2192 event wildcard  -taq = emphasis \u2192 ASK (intensifies question)  Yach'achisqaywan  Yach'achi- = \"to assign\"  -sqa = past participle (\"assigned\")  -y = 1st person \u2192 PP1SG (\"my\")  -wan = comitative (\"with\") \u2192 homework  Pasarqa  Pasa- = \"to happen\" \u2192 happening  -rqa = past tense \u2192 PROCESSIVE PREDICATE.While modern Quechua we  often use mixed terms like:  \"\u00a1Ay kuyasqay!\" (from Spanish \u00a1ay! + Quechua kuyasqay \"my loved one\") for \"Oh dear!\"  \"tareay\" (from Spanish tarea) for \"homework\"  We prioritize pure Quechua in educational/rural contexts to preserve linguistic integrity."
+            "comment": "Yaw!  Native interjection (emotional context, not a concept carrier)  \u00bfImatataq?  Ima = \"what\" \u2192 event wildcard  -taq = emphasis \u2192 ASK (intensifies question)  Yach'achisqaywan  Yach'achi- = \"to assign\"  -sqa = past participle (\"assigned\")  -y = 1st person \u2192 Ref_speaker (\"my\")  -wan = comitative (\"with\") \u2192 homework  Pasarqa  Pasa- = \"to happen\" \u2192 happening  -rqa = past tense \u2192 PROCESSIVE PREDICATE.While modern Quechua we  often use mixed terms like:  \"\u00a1Ay kuyasqay!\" (from Spanish \u00a1ay! + Quechua kuyasqay \"my loved one\") for \"Oh dear!\"  \"tareay\" (from Spanish tarea) for \"homework\"  We prioritize pure Quechua in educational/rural contexts to preserve linguistic integrity."
         },
         "35": {
             "legacy index": "25",
@@ -534,11 +534,11 @@
                 "now": "kunanqa",
                 "needing": "rantinay",
                 "buying": "rantinay",
-                "PP1SG": "rantinay",
+                "Ref_speaker": "rantinay",
                 "notebook": "qillqana...k'ititam",
                 "new": "musuq"
             },
-            "comment": "Qillqana k\u2019ititam: Qillqa- = \"to write\" -na = nominalizer (\"thing for writing\") \u2192 notebook K\u2019iti = \"sheet/leaf\" -ta = accusative case (marks direct object) -m = assertive focus \u2192 ASSERT (urgency)  Rantinay: Ranti- = \"to buy\" \u2192 buying -na = obligative (\"must/need to\") \u2192 needing -y = 1st person singular \u2192 PP1SG (\"I\") Natural Flow:  Kunanqa (\"now\") links directly to the prior discovery of damaged homework. -m in k\u2019ititam emphasizes the new notebook as the urgent focus. Pure Quechua Terms: Qillqana k\u2019iti (not cuaderno) Rantinay (not compranay from Spanish comprar) Obligative Nuance: -na- in rantinay conveys compulsion (\"no choice but to buy\"). Rural vs. Urban Usage: Rural: Qillqana k\u2019iti + rantinay (pure terms) Urban: Cuadernota + compranay (mixed terms)"
+            "comment": "Qillqana k\u2019ititam: Qillqa- = \"to write\" -na = nominalizer (\"thing for writing\") \u2192 notebook K\u2019iti = \"sheet/leaf\" -ta = accusative case (marks direct object) -m = assertive focus \u2192 ASSERT (urgency)  Rantinay: Ranti- = \"to buy\" \u2192 buying -na = obligative (\"must/need to\") \u2192 needing -y = 1st person singular \u2192 Ref_speaker (\"I\") Natural Flow:  Kunanqa (\"now\") links directly to the prior discovery of damaged homework. -m in k\u2019ititam emphasizes the new notebook as the urgent focus. Pure Quechua Terms: Qillqana k\u2019iti (not cuaderno) Rantinay (not compranay from Spanish comprar) Obligative Nuance: -na- in rantinay conveys compulsion (\"no choice but to buy\"). Rural vs. Urban Usage: Rural: Qillqana k\u2019iti + rantinay (pure terms) Urban: Cuadernota + compranay (mixed terms)"
         },
         "36": {
             "legacy index": "26",
@@ -548,14 +548,14 @@
             "concept_words": {
                 "ASSERT": "\u00f1awpaqmantataq",
                 "PROCESSIVE PREDICATE": "qallarinay",
-                "PP1SG": "qallarinay",
+                "Ref_speaker": "qallarinay",
                 "needing": "qallarinay",
                 "starting": "qallarinay",
                 "homework": "llamkayta",
                 "again": "\u00f1awpaqmantataq",
                 "all over": "\u00f1awpaqmantataq"
             },
-            "comment": "\u00d1awpaq-manta-taq  \u00d1awpaq = \"before/first\" \u2192 all over  -manta = ablative (\"from\")  -taq = additive \u2192 again + ASSERT  Llamkay-ta  Llamkay = \"work\" \u2192 homework (contextual)  -ta = accusative (direct object)  Qallari-na-y  Qallari- = \"to start\" \u2192 starting  -na- = obligative \u2192 needing  -y = 1st person \u2192 PP1SG"
+            "comment": "\u00d1awpaq-manta-taq  \u00d1awpaq = \"before/first\" \u2192 all over  -manta = ablative (\"from\")  -taq = additive \u2192 again + ASSERT  Llamkay-ta  Llamkay = \"work\" \u2192 homework (contextual)  -ta = accusative (direct object)  Qallari-na-y  Qallari- = \"to start\" \u2192 starting  -na- = obligative \u2192 needing  -y = 1st person \u2192 Ref_speaker"
         }
     },
     "interviewer": "JULIA",

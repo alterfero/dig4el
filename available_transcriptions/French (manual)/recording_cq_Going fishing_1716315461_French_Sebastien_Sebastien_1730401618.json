@@ -43,7 +43,7 @@
                 "ASK": "comment",
                 "GREET": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "tu"
+                "Ref_addressee": "tu"
             },
             "comment": ""
         },
@@ -57,8 +57,8 @@
                 "ASK": "",
                 "GREET": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
-                "PP2DU": "vous"
+                "Ref_speaker": "je",
+                "Ref_2_people_including_addressee": "vous"
             },
             "comment": ""
         },
@@ -70,7 +70,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "nous"
+                "Ref_speaker_plus_person_excluding_addressee": "nous"
             },
             "comment": ""
         },
@@ -84,7 +84,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "spatial position wildcard": "o\u00f9",
                 "going": "allez",
-                "PP2DU": "vous"
+                "Ref_2_people_including_addressee": "vous"
             },
             "comment": ""
         },
@@ -96,7 +96,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "on",
+                "Ref_speaker_plus_person_excluding_addressee": "on",
                 "walking": "descend",
                 "river": "rivi\u00e8re"
             },
@@ -122,7 +122,7 @@
             "concept_words": {
                 "ASK": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2DU": "vous",
+                "Ref_2_people_including_addressee": "vous",
                 "bathing": "baigner...allez"
             },
             "comment": ""
@@ -137,7 +137,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
                 "bathing": "va...se...baigner",
-                "PP1EXCDU": "on"
+                "Ref_speaker_plus_person_excluding_addressee": "on"
             },
             "comment": ""
         },
@@ -149,7 +149,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "on",
+                "Ref_speaker_plus_person_excluding_addressee": "on",
                 "going": "va",
                 "fishing": "p\u00eacher"
             },
@@ -163,7 +163,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "on",
+                "Ref_speaker_plus_person_excluding_addressee": "on",
                 "trying": "va...essayer",
                 "catching": "p\u00eacher",
                 "fish": "poisson",
@@ -205,7 +205,7 @@
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "ne...pas",
                 "knowing": "savais",
-                "PP1SG": "je"
+                "Ref_speaker": "je"
             },
             "comment": ""
         },
@@ -230,7 +230,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "on",
+                "Ref_speaker_plus_person_excluding_addressee": "on",
                 "needing": "a...besoin",
                 "food": "nourriture",
                 "family": "famille"
@@ -245,7 +245,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "ma",
+                "Ref_speaker": "ma",
                 "wife": "femme",
                 "buying": "avait...achet\u00e9",
                 "chicken": "poulet",
@@ -266,7 +266,7 @@
                 "children": "enfants",
                 "eating": "ont...mang\u00e9",
                 "already": "d\u00e9j\u00e0",
-                "PP1EXCDU": "",
+                "Ref_speaker_plus_person_excluding_addressee": "",
                 "Ref_1_object": "l"
             },
             "comment": ""
@@ -279,7 +279,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "nous",
+                "Ref_speaker_plus_person_excluding_addressee": "nous",
                 "possessing": "avons",
                 "nothing left": "plus...rien",
                 "home": "maison"
@@ -295,7 +295,7 @@
                 "ASSERT": "",
                 "EXISTENTIAL PREDICATE": "a",
                 "Negative Polarity": "n...plus_2",
-                "PP1EXCDU": "on",
+                "Ref_speaker_plus_person_excluding_addressee": "on",
                 "possessing": "a",
                 "money": "argent",
                 "anymore": "plus"
@@ -310,7 +310,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "on",
+                "Ref_speaker_plus_person_excluding_addressee": "on",
                 "having to": "il...faut",
                 "fishing": "p\u00eacher",
                 "going": "aille",
@@ -336,8 +336,8 @@
             "concept_words": {
                 "ATTRIBUTIVE PREDICATE": "suis",
                 "Negative Polarity": "n...plus",
-                "PP1SG": "je",
-                "PP2PLU": "vous",
+                "Ref_speaker": "je",
+                "Ref_many_people_including_addressee": "vous",
                 "being sorry": "suis...d\u00e9sol\u00e9e",
                 "possessing": "ayez",
                 "food": "\u00e0...manger"
@@ -352,10 +352,10 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1SG": "je",
+                "Ref_speaker": "je",
                 "being able to": "peux",
                 "helping": "aider",
-                "PP2DU": "vous"
+                "Ref_2_people_including_addressee": "vous"
             },
             "comment": ""
         },
@@ -369,11 +369,11 @@
                 "ATTRIBUTIVE PREDICATE": "a",
                 "AND": "et",
                 "husband": "mari",
-                "PP1SG": "moi",
+                "Ref_speaker": "moi",
                 "possessing": "a",
                 "vegetables": "l\u00e9gumes",
                 "garden": "jardin",
-                "PP1EXCDU": ""
+                "Ref_speaker_plus_person_excluding_addressee": ""
             },
             "comment": ""
         },
@@ -385,7 +385,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP3SG": "il",
+                "Ref_1_person": "il",
                 "harvesting": "cueilli",
                 "AND": "et",
                 "bringing": "ramen\u00e9",
@@ -404,9 +404,9 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "CONDITION": "si",
-                "PP2DU": "vous",
+                "Ref_2_people_including_addressee": "vous",
                 "wanting": "voulez",
-                "PP1EXCDU": "on",
+                "Ref_speaker_plus_person_excluding_addressee": "on",
                 "being able to": "peut",
                 "giving": "donner",
                 "Ref_many_objects": "en",
@@ -442,8 +442,8 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2DU": "vous",
-                "PP1PLU": "nous",
+                "Ref_2_people_including_addressee": "vous",
+                "Ref_speaker_plus_many_including_addressee": "nous",
                 "giving": "donnerez",
                 "vegetables": "l\u00e9gumes"
             },
@@ -457,8 +457,8 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1EXCDU": "on",
-                "PP2PLU": "vous",
+                "Ref_speaker_plus_person_excluding_addressee": "on",
+                "Ref_many_people_including_addressee": "vous",
                 "fish": "poisson",
                 "AND": "et",
                 "giving": "donnera"
@@ -474,7 +474,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "tonight": "ce...soir",
-                "PP1PLU": "on",
+                "Ref_speaker_plus_many_including_addressee": "on",
                 "eating": "mangera",
                 "together": "tous...ensemble"
             },

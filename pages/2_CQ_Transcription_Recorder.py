@@ -126,13 +126,7 @@ with st.popover("i"):
                 - Fields can be left empty.
                 - Multiple words from the drop-down list can be associated with a single concept.
                 - The same word can be associated with several concepts.
-                
-                Regarding concepts:
-                - PPxxx as PP1SG indicates the reference in the segment to humans or humanized entities.
-                - Ref_x_obj indicates the reference in the segment to x non-human objects. 
-                - Wildcards: Wildcards indicate that there is a pointer in the segment to a concept not previously mentioned, as an interrogative word does. 
-                - Pointed by speaker: There is in the segment a pointing action from the speaker, which can be translated into words, as 'this' in English.
-                
+      
                 Watch the tutorial:
                 """)
     st.video("https://youtu.be/QTmukcvL3fU")
@@ -160,6 +154,11 @@ if not st.session_state["loaded_existing_transcription"]:
             st.session_state["recording"] = json.load(existing_recording)
             print("Existing recording loaded: ", existing_recording.name)
             st.session_state["existing_filename"] = existing_recording.name
+            # update concept labels
+            st.session_state["recording"], found_old_labels = utils.update_concept_names_in_transcription(
+                st.session_state["recording"])
+            if found_old_labels:
+                st.write("Some concept labels have been updated to the latest version.")
             st.session_state["loaded_existing_transcription"] = True
 
 if st.session_state["loaded_existing_transcription"]:

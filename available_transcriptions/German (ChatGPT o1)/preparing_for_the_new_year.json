@@ -63,7 +63,7 @@
                 "village X": "dorf...x",
                 "coming": "kommen...werden",
                 "community": "gemeinschaft",
-                "PP1PLU": "unsere"
+                "Ref_speaker_plus_many_including_addressee": "unsere"
             },
             "comment": ""
         },
@@ -91,9 +91,9 @@
             "concept_words": {
                 "EXPRESS DUTY (DEONTIC)": "sollten",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "wir",
+                "Ref_speaker_plus_many_including_addressee": "wir",
                 "welcoming": "empfangen",
-                "PP3PLU": "sie",
+                "Ref_many_people": "sie",
                 "friendly way": "herzlich"
             },
             "comment": ""
@@ -108,8 +108,8 @@
                 "PROCESSIVE PREDICATE": "",
                 "COMP-EQUAL": "so...wie",
                 "doing": "getan...haben",
-                "PP1PLU": "uns",
-                "PP3PLU": "sie",
+                "Ref_speaker_plus_many_including_addressee": "uns",
+                "Ref_many_people": "sie",
                 "last year": "letztes...jahr",
                 "event wildcard": ""
             },
@@ -135,7 +135,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "COMP-EQUAL": "so...wie",
-                "PP1PLU": "wir",
+                "Ref_speaker_plus_many_including_addressee": "wir",
                 "doing": "machen",
                 "always": "immer",
                 "event wildcard": "es"
@@ -150,7 +150,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "unsere",
+                "Ref_speaker_plus_many_including_addressee": "unsere",
                 "leaders": "anführer",
                 "starting": "werden...beginnen",
                 "welcome speech": "willkommensrede",
@@ -184,7 +184,7 @@
                 "AFTER X": "danach",
                 "lunch": "zu...mittag",
                 "together": "alle...zusammen",
-                "PP1PLU": "wir",
+                "Ref_speaker_plus_many_including_addressee": "wir",
                 "Ref_Event": "",
                 "sharing": "essen...werden"
             },
@@ -204,7 +204,7 @@
                 "songs": "lieder",
                 "dances": "tänze",
                 "AND": "und",
-                "PP1SG": "ich"
+                "Ref_speaker": "ich"
             },
             "comment": ""
         },
@@ -217,7 +217,7 @@
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
                 "people": "leute",
-                "PP3PLU": "die...leute",
+                "Ref_many_people": "die...leute",
                 "AND": "und",
                 "singing": "lieder...singen",
                 "songs": "lieder",
@@ -235,7 +235,7 @@
             "concept_words": {
                 "EXPRESS DUTY (DEONTIC)": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "wir",
+                "Ref_speaker_plus_many_including_addressee": "wir",
                 "too": "auch",
                 "singing": "lieder...singen",
                 "songs": "lieder",
@@ -280,7 +280,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "unsere",
+                "Ref_speaker_plus_many_including_addressee": "unsere",
                 "elders": "ältesten",
                 "telling": "erzählen...werden",
                 "stories": "geschichten",
@@ -308,7 +308,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "ATTRIBUTIVE PREDICATE": "",
-                "PP3PLU": "sie",
+                "Ref_many_people": "sie",
                 "knowing": "kennen",
                 "so many": "so...viele",
                 "stories": "geschichten"
@@ -355,8 +355,8 @@
             "concept_words": {
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP2SG": "du",
-                "PP1INCDU": "ich...(wir)",
+                "Ref_addressee": "du",
+                "Ref_speaker_and_addressee": "ich...(wir)",
                 "remembering": "denk...daran",
                 "being in charge of": "verantwortlich...sind",
                 "organization": "organisation",
@@ -372,7 +372,7 @@
             "concept_words": {
                 "EXPRESS DUTY (DEONTIC)": "sollten",
                 "PROCESSIVE PREDICATE": "",
-                "PP1INCDU": "wir",
+                "Ref_speaker_and_addressee": "wir",
                 "organizing": "organisieren",
                 "meeting": "versammlung",
                 "community": "",
@@ -391,7 +391,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "uns",
+                "Ref_speaker_plus_many_including_addressee": "uns",
                 "cleaning": "reinigen",
                 "village": "dorf"
             },
@@ -421,7 +421,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "wir",
+                "Ref_speaker_plus_many_including_addressee": "wir",
                 "having to": "müssen",
                 "choosing": "auswählen",
                 "dances": "tänze",
@@ -440,7 +440,7 @@
                 "having to": "müssen",
                 "rehearsing": "proben",
                 "Ref_many_objects": "sie",
-                "PP1PLU": "wir"
+                "Ref_speaker_plus_many_including_addressee": "wir"
             },
             "comment": ""
         },
@@ -453,7 +453,7 @@
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
                 "Negative Polarity": "nicht",
-                "PP2SG": "",
+                "Ref_addressee": "",
                 "forgetting": "vergiss"
             },
             "comment": ""
@@ -466,7 +466,7 @@
             "concept_words": {
                 "ASSERT": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1PLU": "wir",
+                "Ref_speaker_plus_many_including_addressee": "wir",
                 "having to": "müssen",
                 "preparing": "vorbereiten...werden",
                 "food": "essen",
@@ -484,7 +484,7 @@
                 "ASSERT": "",
                 "EQUATIVE PREDICATE": "wird...sein",
                 "work": "arbeit",
-                "PP1PLU": "uns",
+                "Ref_speaker_plus_many_including_addressee": "uns",
                 "equating": "wird...sein",
                 "Ref_Event": "das",
                 "so much": "so...viel"
@@ -510,7 +510,7 @@
             "concept_words": {
                 "ORDER": "",
                 "PROCESSIVE PREDICATE": "",
-                "PP1INCDU": "wir",
+                "Ref_speaker_and_addressee": "wir",
                 "starting": "fangen...an",
                 "today": "noch...heute"
             },
