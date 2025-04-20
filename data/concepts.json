@@ -85,14 +85,14 @@
         "gramprop": []
     },
     "ABSOLUTE TIME REFERENCES": {
-        "description": "A pointer to a time in the future or past defined without reference to the speaker's time.",
+        "description": "A pointer to a time in the future or past defined without reference to the time of enunciation.",
         "type": "concept",
         "ontological parent": "TIME",
         "requires": [],
         "gramprop": []
     },
     "RELATIVE TIME REFERENCE": {
-        "description": "A time in the future or past defined by reference to the speaker's time.",
+        "description": "A time in the future or past defined by reference to the time of enunciation.",
         "type": "concept",
         "ontological parent": "TIME",
         "requires": [
@@ -101,7 +101,7 @@
         "gramprop": []
     },
     "EVENT TENSE": {
-        "description": "The general position in time at which an event occurs, relative to the real or imaginary speaker's time.",
+        "description": "The general position in time at which an event occurs, relative to the time of enunciation.",
         "type": "concept",
         "ontological parent": "CONCEPT ATTRIBUTES",
         "requires": [],
@@ -1602,7 +1602,7 @@
         "gramprop": []
     },
     "ASK": {
-        "description": "ASK",
+        "description": "Asking a question",
         "type": "concept",
         "ontological parent": "INTENT",
         "requires": [],
@@ -1637,35 +1637,35 @@
         "gramprop": []
     },
     "ASSERT": {
-        "description": "Assert",
+        "description": "Asserting (affirming)",
         "type": "concept",
         "ontological parent": "INTENT",
         "requires": [],
         "gramprop": []
     },
     "GREET": {
-        "description": "Greet",
+        "description": "Greeting",
         "type": "concept",
         "ontological parent": "INTENT",
         "requires": [],
         "gramprop": []
     },
     "PART": {
-        "description": "Part",
+        "description": "Parting",
         "type": "concept",
         "ontological parent": "INTENT",
         "requires": [],
         "gramprop": []
     },
     "THANK": {
-        "description": "Thank",
+        "description": "Thanking",
         "type": "concept",
         "ontological parent": "INTENT",
         "requires": [],
         "gramprop": []
     },
     "WISH": {
-        "description": "Wish",
+        "description": "Wishing",
         "type": "concept",
         "ontological parent": "INTENT",
         "requires": [],
@@ -4136,5 +4136,12 @@
         "requires": [
             "PATIENT"
         ]
+    },
+    "Negative Polarity": {
+        "description": "Negative Polarity (Negation)",
+        "type": "concept",
+        "ontological parent": "LOGIC",
+        "gramprop": [],
+        "requires": []
     }
 }

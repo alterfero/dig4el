@@ -635,10 +635,13 @@ if st.session_state["knowledge_graph"] != {}:
             if selected["selection"]["rows"] != []:
                 selected_cdict_entry = st.session_state["cdict"][st.session_state["selected_concept"]][(selected["selection"]["rows"][0])]
                 kg_entry = selected_cdict_entry["kg_entry"]
-
+                # st.write(selected_cdict_entry)
                 # Supergloss
+                st.markdown(f'**{selected_cdict_entry["target_sentence"]}**')
+                st.markdown(f'*{selected_cdict_entry["pivot_sentence"]}*')
                 supergloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kg_entry, st.session_state["delimiters"])
                 gloss_selection = st.dataframe(supergloss, use_container_width=True, selection_mode="single-column", on_select="rerun", key="supergloss_df")
+                st.markdown(f'**Comments**: {selected_cdict_entry["comment"]}')
                 # show sentences with the selected word if any
                 if gloss_selection["selection"]["columns"] != []:
                     tw = gloss_selection["selection"]["columns"][0].split("_")[0]

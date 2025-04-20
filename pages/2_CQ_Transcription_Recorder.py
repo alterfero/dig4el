@@ -79,6 +79,11 @@ concepts_kson = json.load(open("./data/concepts.json"))
 available_pivot_languages = list(wu.language_pk_id_by_name.keys())
 questionnaires_folder = "./questionnaires"
 
+if "concepts" not in st.session_state:
+    with open("./data/concepts.json", "r") as f:
+        st.session_state["concepts"] = json.load(f)
+if "predicates_list" not in st.session_state:
+    st.session_state["predicates_list"] = graphs_utils.get_leaves_from_node(st.session_state["concepts"], "PREDICATE")
 if "current_cq" not in st.session_state:
     st.session_state["current_cq"] = cq_list[0]
 if "cq_is_chosen" not in st.session_state:
@@ -110,7 +115,6 @@ if "cq_id_dict" not in st.session_state:
         cq_json = json.load(open(join(questionnaires_folder, cq)))
         cq_id_dict[cq_json["uid"]] = {"filename": cq, "content": cq_json}
     st.session_state["cq_id_dict"] = cq_id_dict
-
 
 st.title("Transcription Recorder")
 
@@ -177,11 +181,11 @@ if st.session_state["loaded_existing_transcription"]:
     if default_pivot_language == "english":
         default_pivot_language = "English"
         st.session_state["recording"]["pivot language"] = "English"
-        
+
     default_cq_uid = st.session_state["recording"]["cq_uid"]
     default_data = st.session_state["recording"]["data"]
-    
-else: ## if not loaded_existing_transcription
+
+else:  ## if not loaded_existing_transcription
     default_target_language = "English"
     default_delimiters = delimiters["English"]
     if st.session_state["recording"]["interviewer"] == "":
@@ -207,18 +211,19 @@ else: ## if not loaded_existing_transcription
 
 with st.expander("Start a new transcription or edit the header of an existing one"):
     st.markdown(
-    """***Don't forget to save your transcription using the 'Save' button at the bottom of the page. 
+        """***Don't forget to save your transcription using the 'Save' button at the bottom of the page. 
     Nothing is saved on the server.***""")
-    interviewer = st.text_input("Interviewer", value=default_interviewer, key="interviewer"+str(key_counter))
+    interviewer = st.text_input("Interviewer", value=default_interviewer, key="interviewer" + str(key_counter))
     key_counter += 1
     st.session_state["recording"]["interviewer"] = interviewer
 
-    interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee"+str(key_counter))
+    interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee" + str(key_counter))
     key_counter += 1
     st.session_state["recording"]["interviewee"] = interviewee
 
     tl = st.selectbox("Choose a target language", ["not in the list"] + st.session_state["available_target_languages"],
-                      index=st.session_state["available_target_languages"].index(st.session_state["target_language"])+1)
+                      index=st.session_state["available_target_languages"].index(
+                          st.session_state["target_language"]) + 1)
     if tl != st.session_state["target_language"]:
         if tl == "not in the list":
             new_tl = st.text_input("Enter the name of the target language")
@@ -232,7 +237,8 @@ with st.expander("Start a new transcription or edit the header of an existing on
             st.session_state["recording"]["target language"] = tl
         st.session_state["cq_is_chosen"] = False
 
-    st.session_state["recording"]["delimiters"] = st.multiselect("verify and edit word separators if needed", delimiters_bank, default=default_delimiters)
+    st.session_state["recording"]["delimiters"] = st.multiselect("verify and edit word separators if needed",
+                                                                 delimiters_bank, default=default_delimiters)
     st.session_state["delimiters"] = st.session_state["recording"]["delimiters"]
     st.write("Active delimiters: {}".format(st.session_state["recording"]["delimiters"]))
 
@@ -261,7 +267,8 @@ if st.session_state["cq_is_chosen"]:
 
     st.session_state["recording"]["recording_uid"] = str(int(time.time()))
 
-    docx_file = ogu.generate_transcription_doc(cq, st.session_state["target_language"], st.session_state["pivot_language"])
+    docx_file = ogu.generate_transcription_doc(cq, st.session_state["target_language"],
+                                               st.session_state["pivot_language"])
     with st.sidebar:
         st.download_button(
             label="📥 Download an EMPTY transcription sheet for this CQ as .docx",
@@ -282,7 +289,7 @@ if st.session_state["cq_is_chosen"]:
         if cq["dialog"][str(st.session_state["counter"])]["legacy index"] != "":
             counter_string += ", legacy index {}".format(cq["dialog"][str(st.session_state["counter"])]["legacy index"])
     #st.write(st.write(f'Current position: {counter_string}.'))
-    colq, colw, cole = st.columns([1,3,1])
+    colq, colw, cole = st.columns([1, 3, 1])
     if colq.button("Previous"):
         if st.session_state["counter"] > 1:
             st.session_state["counter"] = st.session_state["counter"] - 1
@@ -299,7 +306,8 @@ if st.session_state["cq_is_chosen"]:
         st.rerun()
 
     colz, colx = st.columns(2, gap="large")
-    colz.subheader(cq["dialog"][str(st.session_state["counter"])]["speaker"] + ' says: "' + cq["dialog"][str(st.session_state["counter"])]["text"] + '"')
+    colz.subheader(cq["dialog"][str(st.session_state["counter"])]["speaker"] + ' says: "' +
+                   cq["dialog"][str(st.session_state["counter"])]["text"] + '"')
     # create the dialog context view on the right column
     colx.markdown("#### Local dialog context")
     start_index = max(1, st.session_state["counter"] - 2)
@@ -309,7 +317,6 @@ if st.session_state["cq_is_chosen"]:
             colx.markdown(f'**{cq["dialog"][str(i)]["speaker"] + ": " + cq["dialog"][str(i)]["text"]}**')
         else:
             colx.markdown(f'{cq["dialog"][str(i)]["speaker"] + ": " + cq["dialog"][str(i)]["text"]}')
-
 
     # a recording exists at this index
     if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
@@ -336,13 +343,15 @@ if st.session_state["cq_is_chosen"]:
     # if pivot language is not english, store the pivot form
     if st.session_state["pivot_language"] != "English":
         alternate_pivot = colz.text_input(
-            "Enter here the expression you used in {}".format(st.session_state["pivot_language"], value=alternate_pivot_default),
+            "Enter here the expression you used in {}".format(st.session_state["pivot_language"],
+                                                              value=alternate_pivot_default),
             value=alternate_pivot_default)
     else:
         alternate_pivot = ""
 
     translation_raw = colz.text_input("Equivalent in {}".format(st.session_state["target_language"]),
-                                value=translation_default, key=str(st.session_state["counter"])+str(key_counter))
+                                      value=translation_default,
+                                      key=str(st.session_state["counter"]) + str(key_counter))
     key_counter += 1
     translation = utils.normalize_sentence(translation_raw)
     segmented_target_sentence = stats.custom_split(translation, st.session_state["recording"]["delimiters"])
@@ -353,7 +362,8 @@ if st.session_state["cq_is_chosen"]:
     colz.write(
         "In this sentence, would you know which word(s) would contribute to the expression the following concepts?")
     concept_list = cq["dialog"][str(st.session_state["counter"])]["intent"]
-    concept_list += cq["dialog"][str(st.session_state["counter"])]["predicate"]
+
+    # Concepts
     is_negative_polarity = False
     for concept, properties in cq["dialog"][str(st.session_state["counter"])]["graph"].items():
         if concept[-8:] == "POLARITY":
@@ -364,16 +374,54 @@ if st.session_state["cq_is_chosen"]:
         concept_default = []
         if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
             if concept in st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"].keys():
-                target_word_list = utils.listify(st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"][concept])
+                target_word_list = utils.listify(
+                    st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"][concept])
                 if all(element in segmented_target_sentence for element in target_word_list):
                     concept_default = target_word_list
         else:
             concept_default = []
-        concept_translation_list = colz.multiselect("{} : ".format(concept), segmented_target_sentence, default=concept_default, key=concept+str(st.session_state["counter"])+str(key_counter))
+        # Multiselect input. The displayed concept string is the description of the concept from concept.json
+        concept_translation_list = colz.multiselect("{} : ".format(concepts_kson[concept]["description"]),
+                                                    segmented_target_sentence, default=concept_default,
+                                                    key=concept + str(st.session_state["counter"]) + str(key_counter))
         key_counter += 1
         concept_words[concept] = "...".join(concept_translation_list)
+
+    # Predicate
+    predicate_default = ""
+    predicate_index_default = st.session_state["predicates_list"].index("PROCESSIVE PREDICATE")
+    predicate_words_default = []
+    if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
+        # identify the predicate key in the concept_words dict
+        for k in st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"]:
+            if k in st.session_state["predicates_list"]:
+                predicate_default = k
+                predicate_index_default = st.session_state["predicates_list"].index(predicate_default)
+                predicate_words_list = \
+                    utils.listify(
+                        st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"][k])
+                if all(element in segmented_target_sentence for element in predicate_words_default):
+                    predicate_words_default = predicate_words_list
+                    if "" in predicate_words_list:
+                        predicate_words_list.remove("")
+
+    type_of_predicate = colz.selectbox(
+        "If it makes sense, select the type of predicate used in the sentence in {}".format(
+            st.session_state["target_language"]),
+        st.session_state["predicates_list"],
+        index=predicate_index_default)
+
+    predicate_words = colz.multiselect("Which word(s) indicate(s) the type of predicate?",
+                                       segmented_target_sentence, default=predicate_words_default,
+                                       key="predicate_" + str(st.session_state["counter"]) + str(key_counter))
+    concept_words[type_of_predicate] = "...".join(predicate_words)
+    if type_of_predicate != predicate_default and predicate_default in concept_words.keys():
+        del concept_words[predicate_default]
+
+    # Comments
     comment = colz.text_input("Comments/Notes", value=default_comment, key="comment" + str(st.session_state["counter"]))
 
+    # Validate Sentence
     if colz.button("Validate sentence"):
         st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
             "legacy index": cq["dialog"][str(st.session_state["counter"])]["legacy index"],
@@ -399,12 +447,10 @@ if st.session_state["cq_is_chosen"]:
                 + st.session_state["recording"]["interviewee"] + "_"
                 + str(int(time.time())) + ".json")
     colf, colg = st.columns(2)
-    colf.download_button(label="**download your transcription as it is now**", data=json.dumps(st.session_state["recording"], indent=4), file_name=filename)
+    colf.download_button(label="**download your transcription as it is now**",
+                         data=json.dumps(st.session_state["recording"], indent=4), file_name=filename)
     colf.markdown("""Downloading the transcription saves your transcription on your computer.""")
     colg.markdown("""
                 Nothing is stored on the server -> **Save your work!**
                 DIG4EL creates one file per questionnaire, that you can then re-load to continue working on it, or share with anyone you want.  
                   """)
-
-
-
