@@ -84,10 +84,9 @@ parameter_name_list_filtered = list(st.session_state["parameter_pk_by_name_filte
 
 # param blacklist to , to be automated and put in an external  file.
 param_pk_blacklist = ["180"]
-de_pk_blacklist = []
 for ppk in param_pk_blacklist:
     for depk in st.session_state["domain_elements_pk_by_parameter_pk"][ppk]:
-        de_pk_blacklist.append(depk)
+        de_blacklist.append(depk)
 
 with st.sidebar:
     st.subheader("DIG4EL")
@@ -127,8 +126,8 @@ with (st.expander("Explore chains of conditional probabilities associated with a
         if selected_value == "ALL":
             st.session_state["selected_values"] = list(set(st.session_state["selected_values"] + available_de_pks))
         else:
-            if available_de_pks[available_de_names.index(selected_value)] not in st.session_state["selected_values"]:
-                st.session_state["selected_values"].append(available_de_pks[available_de_names.index(selected_value)])
+            if available_de_pks[available_de_names.index(selected_value) - 1] not in st.session_state["selected_values"]:
+                st.session_state["selected_values"].append(available_de_pks[available_de_names.index(selected_value) -1])
     st.write("Currently selected value(s): **{}**".format(", ".join([wu.get_careful_name_of_de_pk(depk) for depk in st.session_state["selected_values"]])))
     if st.button("Update the graph"):
         st.session_state["inference_graph"], st.session_state["beliefs"] = pu.inference_graph_from_cpt_with_belief_propagation(wu.cpt,
