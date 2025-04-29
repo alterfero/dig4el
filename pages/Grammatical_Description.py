@@ -16,6 +16,7 @@
 import streamlit as st
 import math
 import os
+import re
 import pandas as pd
 from libs import utils as u, wals_utils as wu, general_agents, grambank_utils as gu
 from libs import grambank_wals_utils as gwu
@@ -52,8 +53,8 @@ if "loaded_existing" not in st.session_state:
     st.session_state["loaded_existing"] = ""
 if "cq_transcriptions" not in st.session_state:
     st.session_state["cq_transcriptions"] = []
-if "consolidated_transcriptions" not in st.session_state:
-    st.session_state["consolidated_transcriptions"] = {}
+if "kg" not in st.session_state:
+    st.session_state["kg"] = {}
 if "tl_knowledge" not in st.session_state:
     st.session_state["tl_knowledge"] = {
         "known_wals":{},
@@ -87,6 +88,8 @@ if "results_approved" not in st.session_state:
     st.session_state["results_approved"] = False
 if "prompt_content" not in st.session_state:
     st.session_state["prompt_content"] = {}
+if "output" not in st.session_state:
+    st.session_state["output"] = {}
 
 topics = {
 "ga_topics": {
@@ -311,7 +314,7 @@ with st.expander("Inputs"):
             st.session_state["selected_topics"] = []
             st.session_state["loaded_existing"] = ""
             st.session_state["cq_transcriptions"] = []
-            st.session_state["consolidated_transcriptions"] = {}
+            st.session_state["kg"] = {}
             st.session_state["tl_knowledge"] = {
                 "known_wals": {},
                 "known_wals_pk": {},
@@ -363,15 +366,14 @@ with st.expander("Inputs"):
     if st.session_state["loaded_existing"]:
         if st.session_state["cq_transcriptions"] != []:
             # Consolidating transcriptions - Knowledge Graph
-            st.session_state[
-                "consolidated_transcriptions"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
+            st.session_state["kg"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
                 st.session_state["cq_transcriptions"],
                 st.session_state["tl_name"],
                 st.session_state["delimiters"])
             with open("./data/knowledge/current_kg.json", "w") as f:
-                json.dump(st.session_state["consolidated_transcriptions"], f, indent=4)
+                json.dump(st.session_state["kg"], f, indent=4)
             st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
-                len(st.session_state["cq_transcriptions"]), len(st.session_state["consolidated_transcriptions"]),
+                len(st.session_state["cq_transcriptions"]), len(st.session_state["kg"]),
                 total_target_word_count, len(unique_words)))
             # managing language input
             st.session_state["tl_name"] = st.session_state["cq_transcriptions"][0]["target language"]
@@ -448,7 +450,7 @@ if st.session_state["tl_name"] != "":
 
 # OBSERVATIONS =================================================================
 
-if st.session_state["consolidated_transcriptions"] != {}:
+if st.session_state["kg"] != {}:
     # run observers
     for topic_name in st.session_state["selected_topics"]:
         if topic_name in topics["ga_topics"].keys():
@@ -456,7 +458,7 @@ if st.session_state["consolidated_transcriptions"] != {}:
                 if param_info["observer"] is not None:
                     (func, canonical) = param_info["observer"]
                     st.session_state["obs"][param_name] = func(
-                        st.session_state["consolidated_transcriptions"],
+                        st.session_state["kg"],
                         st.session_state["tl_name"],
                         st.session_state["delimiters"],
                         canonical=canonical
@@ -468,7 +470,7 @@ if st.session_state["consolidated_transcriptions"] != {}:
                 if param_info["observer"] is not None:
                     (func, canonical) = param_info["observer"]
                     st.session_state["obs"][param_name] = func(
-                        st.session_state["consolidated_transcriptions"],
+                        st.session_state["kg"],
                         st.session_state["tl_name"],
                         st.session_state["delimiters"],
                         canonical=canonical
@@ -495,9 +497,9 @@ if st.session_state["consolidated_transcriptions"] != {}:
                             st.write("---------------------------------------------")
                             st.write("**{}** in ".format(de_name))
                             for occurrence_index, context in details["details"].items():
-                                st.markdown("- ***{}***".format(st.session_state["consolidated_transcriptions"][occurrence_index]["recording_data"]["translation"]))
-                                st.write(st.session_state["consolidated_transcriptions"][occurrence_index]["sentence_data"]["text"])
-                                gdf = kgu.build_gloss_df(st.session_state["consolidated_transcriptions"], occurrence_index, st.session_state["delimiters"])
+                                st.markdown("- ***{}***".format(st.session_state["kg"][occurrence_index]["recording_data"]["translation"]))
+                                st.write(st.session_state["kg"][occurrence_index]["sentence_data"]["text"])
+                                gdf = kgu.build_gloss_df(st.session_state["kg"], occurrence_index, st.session_state["delimiters"])
                                 st.dataframe(gdf)
                                 st.write("context: {}".format(context))
                     st.markdown("-------------------------------------")
@@ -529,7 +531,8 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
     else:
         l_filter = {}
 
-    # PREPARING AND RUNNING GENERAL AGENT
+    # PREPARING AND RUNNING GENERAL AGENT ==================================================================
+
     st.markdown("#### Generating Grammar")
     if st.button("Launch inferential process"):
         st.session_state["run_ga"] = True
@@ -812,6 +815,8 @@ if st.session_state["ga_output_available"]:
                     st.warning("Belief manually edited: {}:{}".format(pname, selected_winning_vname))
 
             if st.button("Approve beliefs"):
+
+                # flag result approved
                 st.session_state["results_approved"] = True
 
 # GRAMMATICAL DESCRIPTION CONTENT
@@ -833,21 +838,23 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                             if  vname not in st.session_state["prompt_content"][topic][pname]["examples by value"].keys():
                                 st.session_state["prompt_content"][topic][pname]["examples by value"][vname] = []
                             for occurrence_index, context in details["details"].items():
-                                gdf = kgu.build_super_gloss_df(st.session_state["consolidated_transcriptions"],
+                                gdf = kgu.build_super_gloss_df(st.session_state["kg"],
                                                          occurrence_index,
                                                          st.session_state["delimiters"])
                                 st.session_state["prompt_content"][topic][pname]["examples by value"][vname].append({
                                     "english sentence":
-                                        st.session_state["consolidated_transcriptions"][occurrence_index][
+                                        st.session_state["kg"][occurrence_index][
                                             "sentence_data"]["text"],
-                                    "translation": st.session_state["consolidated_transcriptions"][occurrence_index][
+                                    "translation": st.session_state["kg"][occurrence_index][
                                         "recording_data"][
                                         "translation"],
                                     "gloss": gdf.to_dict(),
                                     "context": context
                                 })
     st.markdown("#### Download raw grammatical description with examples as a json file.")
-    st.download_button("Download raw description as a json file.", json.dumps(st.session_state["prompt_content"], indent=4), file_name="grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
+    st.download_button("Download raw description as a json file.",
+                       json.dumps(st.session_state["prompt_content"], indent=4),
+                       file_name="grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
     with open("./data/current_gram.json", "w") as f:
         json.dump(st.session_state["prompt_content"], f, indent=4)
     st.session_state["generate_description"] = True
@@ -858,31 +865,146 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         file_name=f'{st.session_state["tl_name"]}_grammar_elements.docx',
         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
-# PLAIN TEXT GRAMMATICAL DESCRIPTION
+# HYBRID LLM GRAMMATICAL DESCRIPTION
 if st.session_state["ga_output_available"] and st.session_state["results_approved"] and st.session_state["generate_description"]:
     st.markdown("#### Generate customized grammatical descriptions by topic.")
-    lesson_topic = st.selectbox("Choose a topic", st.session_state["selected_topics"])
-    lesson_audience = st.selectbox("Choose an audience", ["Adult L2 beginners", "L2 Teachers", "Primary school student", "Middle school student", "High school student", "Linguists"])
-    lesson_format = st.selectbox("Choose a format", ["Display here", "Markdown"])
 
-    doc_format_prompt = {
-        "Display here": {"prompt": "Your lesson should be formatted with the github-flavored markdown as a string to display with Streamlit. the output should be correctly displayed when using the streamlit.markdown() function. Don't put the '''markdown''' in the output.", "extension": "txt"},
-        "Markdown":  {"prompt": "Your lesson should be formatted with the github-flavored markdown as a string to display with Streamlit. the output should be correctly displayed when using the streamlit.markdown() function. Don't put the '''markdown''' in the output.", "extension": "txt"}
+    # build prompt data
+    # create final result_list
+    result_list = []
+    for pname, P in st.session_state["ga"].language_parameters.items():
+        if pname in st.session_state["tl_knowledge"]["known_wals"]:
+            origin = "Known"
+        elif pname in st.session_state["tl_knowledge"]["known_grambank"]:
+            origin = "Known"
+        elif pname in st.session_state["tl_knowledge"]["observed"]:
+            origin = "Observed"
+        else:
+            origin = "Inferred"
+        examples_by_value = {}
+        for domain in st.session_state["prompt_content"]:
+            for param in st.session_state["prompt_content"][domain].keys():
+                if param == pname:
+                    examples_by_value = st.session_state["prompt_content"][domain][param]["examples by value"]
+        result_list.append({"Parameter": pname,
+                            "Origin": origin,
+                            "Winner": P.get_winning_belief_name(),
+                            "Confidence": round(100 * (1 - P.entropy)),
+                            "Examples by value": examples_by_value})
+    # build sentence_data_list
+    sentence_data_list = kgu.build_alterlingua_list_from_kg(st.session_state["kg"],
+                                                            st.session_state["delimiters"])
+    json_blob = {
+        "sentences": sentence_data_list,  # lower-case, no spaces
+        "grammar_priors": result_list
     }
 
-    prompt = "Based on the following information, create a short well-organized grammar chapter about " + lesson_topic +  "  in the " + st.session_state["tl_name"] + " language "
-    prompt += "for " + lesson_audience + "."
-    prompt += "Don't use jargon or complicated words. Use simple, non-technical words. Don't use acronyms."
-    prompt += "Compare the {} language to English to help readers understand the differences."
-    prompt += "Use only on the material and examples provided. Do not use or infer any additional information, examples, or rules beyond what I give. If something is unclear or missing from the input, don't fill the gaps. Focus on explaining the rules and providing examples from the material I supply."
-    prompt += "If there is no knowledge and no example on a topic, ignore it."
-    prompt += "Use all and only the examples provided. Use the gloss information to explain which word in target language means what using horizontal tables showing the correspondence between English words and {} words.".format(st.session_state["tl_name"])
-    prompt += "Here are the information (use only this information): "
-    prompt += str(st.session_state["prompt_content"][lesson_topic]) + "."
-    prompt += "Don't add encouragement or personal comment."
-    prompt += doc_format_prompt[lesson_format]["prompt"]
+    # st.write("Data pacakged for LLM")
+    # st.write(json_blob)
 
-    use_openai = st.toggle("Use OpenAI to write a short chapter about {} in {}".format(lesson_topic, st.session_state["tl_name"]))
+    PROMPT_TEMPLATE = """
+    SYSTEM
+    You are "DIG4EL", a generator of grammatical learning material for adult L2 beginners learning the {{language_name}} language.
+    • Treat the JSON object you receive as ground truth; never invent extra facts.
+    • Use ONLY information present in the JSON; never hallucinate extra facts.
+    • Do not invent examples, fact or gloss about the target language: Use examples from the JSON.
+    • Use comments to infer grammatical rules and to illustrate examples.
+    • Combine grammar_priors and sentences to infer grammatical rules.
+    • Output must match the EXACT JSON schema shown below – no comments, no extra keys, no trailing commas.
+    • Preserve target langauge orthography and punctuation.
+    • Gloss must be the alterlingua version as presented in the data, unchanged.
+    
+    FOCUS AREAS (fixed order)
+      1. General Introduction
+      2. Word Order
+      3. Personal Pronouns
+      4. Possession
+      5. Expression of Polarity
+    
+    STRICT-JSON-SCHEMA  (copy exactly):
+    {
+      "introduction": {
+        "title": "General Introduction",
+        "description": ""
+      },
+      "chapters": [
+        {
+          "title": "Word Order",
+          "explanation": "",
+          "examples": [
+            { "english": "", 
+            "target": "", 
+            "gloss": "" 
+            }
+          ]
+        },
+        {
+          "title": "Personal Pronouns",
+          "explanation": "",
+          "examples": [
+            { "english": "", 
+            "target": "", 
+            "gloss": "" }
+          ]
+        },
+        {
+          "title": "Possession",
+          "explanation": "",
+          "examples": [
+            { "english": "", 
+            "target": "", 
+            "gloss": "" }
+          ]
+        },
+        {
+          "title": "Expression of Polarity",
+          "explanation": "",
+          "examples": [
+            { "english": "", 
+            "target": "", 
+            "gloss": "" }
+          ]
+        }
+      ]
+    }
+    
+    ALLOWED TOOL (optional)
+    Use ⟨define morpheme="-y": "1SG.POSS"⟩ inline inside an *explanation* if needed.
+    
+    USER
+    Here is the lesson data:
+    <<<DATA
+    {{json_blob}}
+    >>>
+    
+    TASKS
+    1. Parse all `sentences[*]` and `grammar_priors`.
+    2. For each focus area, pick up to three sentences that illustrate it best.
+    3. Fill the JSON template:
+       – `description` in the introduction (≤250 words).  
+       – `explanation` for each chapter (≤250 words).  
+       – Populate `examples` with the chosen sentences (preserve order).
+       - Gloss should be exactly the alterlingua gloss from the data.
+    4. If no example fits a chapter, leave its `examples` array empty and set `explanation` to "No examples available yet".
+    5. Output **only** the JSON object that conforms to STRICT-JSON-SCHEMA. Do not wrap it in Markdown fences or add any prose.
+    
+    END OF PROMPT
+
+    """
+
+    system_prompt = PROMPT_TEMPLATE
+    user_payload = json.dumps(json_blob, ensure_ascii=False)
+
+    prompt = PROMPT_TEMPLATE.replace("{{json_blob}}", json.dumps(json_blob, ensure_ascii=False))
+    prompt = prompt.replace("{{language_name}}", st.session_state["tl_name"])
+
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_payload}
+    ]
+
+
+    use_openai = st.button("Use OpenAI to write a short description of {}".format(st.session_state["tl_name"]))
     if use_openai:
         # Check if 'OPENAI_API_KEY' is available in st.secrets (i.e., running on Streamlit Cloud)
         if "OPEN_AI_KEY" in st.secrets:
@@ -891,33 +1013,74 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
             # Fallback to environment variable for local development
             openai.api_key = os.getenv("OPEN_AI_KEY")
 
-        #print(openai.models.list())
         response = openai.chat.completions.create(
-            model="chatgpt-4o-latest",
-            messages = [
-                {
-                    "role": "system",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "You are an assistant that writes short and engaging grammar book chapters for {}. Use only the information provided by the user. Use all the examples provided by the user. Do not introduce any additional material, even if it seems relevant. If the user-provided material is incomplete or ambiguous, omit content. ".format(lesson_audience)
-                        }
-                    ]
-                },
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": prompt
-                        }
-                    ]
-                }
-            ])
-        st.session_state["redacted"] = response.choices[0].message.content
-        st.markdown(response.choices[0].message.content)
-        print(response.choices[0].message.content)
+            model="gpt-4.1",
+            messages=messages,
+            temperature=0.3,
+            max_tokens=3000
+        ).choices[0].message.content
 
-        st.download_button("Download lesson", st.session_state["redacted"], file_name="generated_grammar_lesson_{}_in{}".format(st.session_state["tl_name"], lesson_topic)+doc_format_prompt[lesson_format]["extension"])
+        print("Response received")
 
+        print("Loading as json")
+        jsload_success = False
+        # ---------- decode with pre-clean ----------
+        def safe_json(text: str) -> str:
+            """
+            Escape raw newlines and stray unescaped quotes that appear
+            *inside* double-quoted values.
+            """
+            # 1) replace CR/LF inside quoted strings with \n
+            text = re.sub(r'(".*?)(\r?\n)(.*?")',
+                          lambda m: m.group(1) + "\\n" + m.group(3),
+                          text, flags=re.S)
+            # 2) escape naked " inside values → \"
+            text = re.sub(r'(".*?[^\\])"(.*?")',
+                          lambda m: m.group(1) + '\\"' + m.group(2),
+                          text, flags=re.S)
+            return text
+        def decode(raw):
+            try:
+                return json.loads(raw)
+            except json.JSONDecodeError:
+                return json.loads(safe_json(raw))
+        # if the json returned is not well-formed, we send it back to GPT3.5 for cleaning.
+        try:
+            st.session_state["output"] = decode(response)
+            jsload_success = True
+            #st.write(output)
+        except json.decoder.JSONDecodeError:
+            st.write("Issue decoding json, sending back for a fix")
+            print("Raw Response")
+            print(response)
+            fixed_response = openai.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "system", "content": "SYSTEM: The previous response was not valid JSON. "
+                                                        "Return exactly the same content but formatted as valid JSON. "
+                                                        "Do not add any extra keys, comments, or prose."},
+                          {"role": "user", "content": response}],
+                temperature=0.0,
+                max_tokens=800
+            ).choices[0].message.content
+            try:
+                fixed_output = decode(fixed_response)
+                jsload_success = True
+                st.session_state["output"] = fixed_output
+                # st.write(fixed_output)
+            except json.decoder.JSONDecodeError:
+                print(fixed_response)
+                st.write("Failed to generate a well-formed response, see termnimal for raw response.")
+
+
+        if st.session_state["output"] != {}:
+            docx_file = ogu.generate_docx_from_hybrid_output(st.session_state["output"], st.session_state["tl_name"])
+            st.download_button(
+                label="📥 Download DOCX",
+                data=docx_file,
+                file_name=f'export_hybrid_grammar_of_{st.session_state["tl_name"]}.docx',
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
+            st.download_button("Download JSON",
+                               json.dumps(st.session_state["output"], indent=4),
+                               file_name="hybrid_grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
 

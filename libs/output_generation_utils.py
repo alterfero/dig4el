@@ -1,9 +1,10 @@
 import json
 from docx import Document
-from docx.shared import Pt
-from docx.enum.text import WD_ALIGN_PARAGRAPH
 from libs import knowledge_graph_utils as kgu
 from io import BytesIO
+import re
+from collections import defaultdict
+import pandas as pd
 
 import jinja2
 
@@ -147,6 +148,48 @@ def generate_docx_from_kg_index_list(kg, delimiters, kg_index_list):
 
     return docx_buffer
 
+
+def generate_docx_from_hybrid_output(content, language):
+    document = Document()
+    document.add_heading('Learning {}: Elements of grammar.'.format(language), 0)
+    document.add_heading('Introduction', 1)
+    document.add_paragraph(content["introduction"]["description"])
+    for chapter in content["chapters"]:
+        document.add_heading(chapter["title"], 1)
+        document.add_paragraph(chapter["explanation"])
+        e_counter = 0
+        for example in chapter["examples"]:
+            e_counter += 1
+            document.add_paragraph("""Example {}""".format(e_counter), style='List Bullet')
+            pex = document.add_paragraph(" ", "Normal")
+            pex.add_run(f'{example["target"]}', style='Strong')
+            document.add_paragraph(f'{example["english"]}', "Normal")
+
+            df = parse_alterlingua(example["gloss"])
+
+            table = document.add_table(rows=1, cols=len(df.columns), style="Light Shading Accent 1")
+
+            # Add headers
+            hdr_cells = table.rows[0].cells
+            for i, column_name in enumerate(df.columns):
+                hdr_cells[i].text = column_name
+
+            # Add rows
+            for _, row in df.iterrows():
+                cells = table.add_row().cells
+                for i, value in enumerate(row):
+                    cells[i].text = str(value)
+
+            document.add_paragraph("""   """)
+
+    # Save to a BytesIO buffer instead of disk
+    docx_buffer = BytesIO()
+    document.save(docx_buffer)
+    docx_buffer.seek(0)  # Reset buffer position
+
+    return docx_buffer
+
+
 def generate_docx_from_grammar_json(grammar_json, language):
     h1_index = 0
     h2_index = 0
@@ -197,7 +240,43 @@ def generate_docx_from_grammar_json(grammar_json, language):
         docx_buffer = BytesIO()
         document.save(docx_buffer)
         docx_buffer.seek(0)  # Reset buffer position
-
         return docx_buffer
     return None
+
+
+def parse_alterlingua(text):
+    # Regex to find all target word blocks
+    word_blocks = re.findall(r'(\S+)<([^>]*)>', text)
+
+    results = []
+
+    for target_word, content in word_blocks:
+        if not content.strip():
+            continue  # skip empty concept blocks
+
+        # Split multiple concepts joined by '&'
+        concepts = [c.strip() for c in content.split('&')]
+
+        for idx, concept in enumerate(concepts, start=1):
+            # Regex to extract the concept name and its IP / RP fields
+            concept_match = re.match(r'([^()]+)\(([^)]*)\)', concept)
+            if concept_match:
+                concept_name, fields = concept_match.groups()
+                concept_name = concept_name.strip()
+
+                # Extract IP and RP using regex or string methods
+                ip_match = re.search(r'IP:\s*([^|]*)', fields)
+                rp_match = re.search(r'RP:\s*([^|]*)', fields)
+                ip = ip_match.group(1).strip() if ip_match else ""
+                rp = rp_match.group(1).strip() if rp_match else ""
+
+                entry = {
+                    "target_word": f"{target_word}({idx})" if len(concepts) > 1 else target_word,
+                    "concept": concept_name,
+                    "IP": ip,
+                    "RP": rp
+                }
+                results.append(entry)
+
+    return pd.DataFrame(results)
 

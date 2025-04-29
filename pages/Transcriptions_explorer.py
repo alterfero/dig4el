@@ -644,7 +644,7 @@ if st.session_state["knowledge_graph"] != {}:
                 st.markdown(f'**Comments**: {selected_cdict_entry["comment"]}')
                 # show sentences with the selected word if any
                 if gloss_selection["selection"]["columns"] != []:
-                    tw = gloss_selection["selection"]["columns"][0].split("_")[0]
+                    tw = gloss_selection["selection"]["columns"][0].split("_")[0].split("(")[0]
                     kg_entries_with_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
                                                                        tw,
                                                                        st.session_state["delimiters"])
@@ -698,10 +698,10 @@ if st.session_state["knowledge_graph"] != {}:
                             st.rerun()
 
                     if s_concept != "" and s_concept != "undefined":
-                        st.write("#### Sentences with *{}* contributing to the expression of **{}**".format(gloss_selection["selection"]["columns"][0], s_concept))
+                        st.write("#### Sentences with *{}* contributing to the expression of **{}**".format(tw, s_concept))
                     else:
                         st.write("#### Sentences with *{}*".format(
-                            gloss_selection["selection"]["columns"][0], s_concept))
+                            tw, s_concept))
                     gloss_counter = 0
                     for kge in kg_entries_with_word:
                         kgc = st.session_state["knowledge_graph"][kge]
@@ -710,8 +710,10 @@ if st.session_state["knowledge_graph"] != {}:
                                 gloss_counter += 1
                                 gloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kge,
                                                            st.session_state["delimiters"])
+                                st.markdown(f'**{st.session_state["knowledge_graph"][kge]["recording_data"]["translation"]}**')
                                 st.write(st.session_state["knowledge_graph"][kge]["sentence_data"]["text"])
                                 st.dataframe(gloss, key="subgloss"+str(gloss_counter), use_container_width=True)
+                                st.write(st.session_state["knowledge_graph"][kge]["recording_data"]["comment"])
                         else:
                             gloss_counter += 1
                             gloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kge,
@@ -729,21 +731,6 @@ if st.session_state["knowledge_graph"] != {}:
                     for item in st.session_state["cdict"][st.session_state["selected_concept"]]:
                         current_entries.append(item["kg_entry"])
                     current_entries = list(set(current_entries))
-                    st.subheader("Other occurrences of '**{}**' not connected to the selected concept:".format(
-                        selected_cdict_entry["target_words"],
-                        st.session_state["selected_concept"]))
-                    xcount = 0
-                    for e in entries_with_target_word:
-                        if e not in current_entries:
-                            xcount += 1
-                            gloss = kgu.build_gloss_df(st.session_state["knowledge_graph"], e,
-                                                       st.session_state["delimiters"])
-                            st.write(st.session_state["knowledge_graph"][e]["sentence_data"]["text"])
-                            st.dataframe(gloss)
-                    if xcount == 0:
-                        st.write("None")
-
-
 
 # EXPLORE BY PARAMETER
     with st.expander("Explore by parameter"):
@@ -800,7 +787,6 @@ if st.session_state["knowledge_graph"] != {}:
         else:
             is_rp_filter = True
         st.session_state["pfilter"]["rp"] = s_relational
-
 
         # FILTER USAGE
         selected_oc = []
@@ -912,19 +898,108 @@ if st.session_state["knowledge_graph"] != {}:
 
             # Gloss of selected sentence
             st.write("---")
-            st.write("Concepts and target words of the selected sentence: ")
+            st.subheader("Information on selected sentence")
+            st.markdown(f'**{selected_cdictp_entry["target_sentence"]}**')
+            st.markdown(f'*{selected_cdictp_entry["pivot_sentence"]}*')
             pgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kgp_entry, st.session_state["delimiters"])
             pgloss_selection =st.dataframe(pgloss, selection_mode="single-column", on_select="rerun", key="pgloss_df")
+            st.write(selected_cdictp_entry["comment"])
+
             # show sentences with the selected word if any
             if pgloss_selection["selection"]["columns"] != []:
-                ptw = pgloss_selection["selection"]["columns"][0].split("_")[0]
+                ptw = pgloss_selection["selection"]["columns"][0].split("_")[0].split("(")[0]
                 pkg_entries_with_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
                                                                    ptw,
                                                                    st.session_state["delimiters"])
-                st.subheader("Sentences with '*{}*':".format(ptw))
+
+                # stats
+                pwstats = {}
+                for e in pkg_entries_with_word:
+                    c = [c for c in st.session_state["knowledge_graph"][e]["recording_data"]["concept_words"].keys() if
+                         ptw in st.session_state["knowledge_graph"][e]["recording_data"]["concept_words"][c].split(
+                             "...")]
+                    if c == []:
+                        c = "undefined"
+                    else:
+                        c = c[0]
+                    if c in pwstats.keys():
+                        pwstats[c] += 1
+                    else:
+                        pwstats[c] = 1
+                pwstats_df = pd.DataFrame(list(pwstats.items()), columns=["Concept", "Number of occurrences"])
+                pwstats_df = pwstats_df.sort_values("Number of occurrences", ascending=False)
+
+                st.subheader("'**{}**' is, or is part of, the expression of the following concepts:".format(ptw))
+                # Create the clickable bar chart
+                fig = px.bar(
+                    pwstats_df,
+                    x='Concept',
+                    y='Number of occurrences',
+                )
+                # Enable clicking
+                fig.update_layout(
+                    xaxis_title="Concepts",
+                    yaxis_title="Count",
+                    # Rotate x-axis labels if there are many words
+                    xaxis=dict(tickangle=45)
+                )
+                # Display the chart and store click data in session state
+                psc = st.plotly_chart(
+                    fig,
+                    use_container_width=True,
+                    key='pbar_chart',
+                    theme="streamlit",
+                    on_select="rerun"
+                )
+                if psc["selection"]["points"]:
+                    ps_concept = psc["selection"]["points"][0]["label"]
+                else:
+                    ps_concept = ""
+                if ps_concept != "" \
+                        and ps_concept != "undefined" \
+                        and ps_concept != st.session_state["selected_concept"] \
+                        and ps_concept in list(st.session_state["cdict"].keys()):
+                    if st.button("Jump to concept {}".format(ps_concept)):
+                        st.session_state["selected_concept"] = ps_concept
+                        st.rerun()
+
+                if ps_concept != "" and ps_concept != "undefined":
+                    st.write("#### Sentences with *{}* contributing to the expression of **{}**".format(
+                        ptw, ps_concept))
+                else:
+                    st.write("#### Sentences with *{}*".format(
+                        ptw, ps_concept))
+                pgloss_counter = 0
                 for pkge in pkg_entries_with_word:
-                    ppgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], pkge, st.session_state["delimiters"])
-                    st.dataframe(ppgloss)
+                    pkgc = st.session_state["knowledge_graph"][pkge]
+                    if ps_concept != "" and ps_concept != "undefined":
+                        if ps_concept in pkgc["recording_data"]["concept_words"].keys() and ptw in \
+                                pkgc["recording_data"]["concept_words"][ps_concept].split("..."):
+                            pgloss_counter += 1
+                            pgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], pkge,
+                                                             st.session_state["delimiters"])
+                            st.markdown(
+                                f'**{st.session_state["knowledge_graph"][pkge]["recording_data"]["translation"]}**')
+                            st.write(st.session_state["knowledge_graph"][pkge]["sentence_data"]["text"])
+                            st.dataframe(pgloss, key="subgloss" + str(pgloss_counter), use_container_width=True)
+                            st.write(st.session_state["knowledge_graph"][pkge]["recording_data"]["comment"])
+                    else:
+                        pgloss_counter += 1
+                        pgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], pkge,
+                                                         st.session_state["delimiters"])
+                        st.write(st.session_state["knowledge_graph"][pkge]["sentence_data"]["text"])
+                        st.dataframe(pgloss, key="subgloss" + str(pgloss_counter), use_container_width=True)
+
+
+
+                # st.subheader("Sentences with '*{}*':".format(ptw))
+                # for pkge in pkg_entries_with_word:
+                #     ppgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], pkge, st.session_state["delimiters"])
+                #     st.markdown(f'**{st.session_state["knowledge_graph"][pkge]["recording_data"]["translation"]}**')
+                #     st.write(st.session_state["knowledge_graph"][pkge]["sentence_data"]["text"])
+                #     st.dataframe(ppgloss)
+                #     st.write(st.session_state["knowledge_graph"][pkge]["recording_data"]["comment"])
+                #     st.markdown("---")
 
 
 

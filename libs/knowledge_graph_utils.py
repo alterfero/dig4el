@@ -306,61 +306,45 @@ def get_particularization_info(kg, entry, concept):
     return ip, rp
 
 def build_super_gloss_df(knowledge_graph, entry, delimiters, output_dict=False):
+    # Each word can be connected to multiple concepts
+    # Each concept can be connected to multiple words
     sentence_display_list = []
-    target_words_from_translation = stats.custom_split(knowledge_graph[entry]["recording_data"]["translation"], delimiters)
-    unpacked_tw = {}
-    concept_particularization_dict = {}
-    for concept, target_words_from_concept_words in knowledge_graph[entry]["recording_data"]["concept_words"].items():
-        # concept particularization
-        ip, rp = get_particularization_info(knowledge_graph, entry, concept)
-        concept_particularization_dict[concept] = {
-            "ip": ip,
-            "rp": rp
-        }
-        # if multiple target words for a concept (separated by ...) they're developed into multiple words
-        # with concept concept_1, concept_2 etc.
-        words = target_words_from_concept_words.split("...")
-        words = [word.lower() for word in words]
-        if len(words) > 1:
-            wcount = 0
-            for word in words:
-                wcount += 1
-                unpacked_tw[concept + "_" + str(wcount)] = word
+    target_words_from_translation = stats.custom_split(knowledge_graph[entry]["recording_data"]["translation"],
+                                                       delimiters)
+    for target_word in target_words_from_translation:
+        associated_concepts = [concept for concept in knowledge_graph[entry]["recording_data"]["concept_words"]\
+                               if target_word in knowledge_graph[entry]["recording_data"]["concept_words"][concept]]
+        if associated_concepts == []:
+            sentence_display_list.append(
+                {"word": target_word,
+                 "concept": "",
+                 "internal particularization": "",
+                 "relational particularization": ""
+                 }
+            )
         else:
-            unpacked_tw[concept] = words[0]
-    # build sentence list
-    # for each non-empty word from the translation sentence
-    for wd in [w for w in target_words_from_translation if w]:
-        # if this word is in the unpacked target words from concept words
-        if wd in unpacked_tw.values():
-            # the associated concept is concept_key
-            concept_key = utils.get_key_by_value(unpacked_tw, wd)
-            try:
-                ip_display = ", ".join([str(k)+": "+str(v) for k,v in concept_particularization_dict[concept_key.split("_")[0]]["ip"].items()])
-            except KeyError:
-                ip_display = ""
-                print("Key Error in build super gloss on ip_display.")
-                print("wd: ".format(wd))
-                print("concept_key: ".format(concept_key))
-                print("concept_particularization_dict: {}".format(concept_particularization_dict))
-            try:
-                rp_display = ", ".join([str(k)+" "+str(v) for k,v in concept_particularization_dict[concept_key.split("_")[0]]["rp"].items()])
-            except KeyError:
-                rp_display = ""
-                print("Key Error in build super gloss on rp_display. ")
-                print("wd: ".format(wd))
-                print("concept_key: ".format(concept_key))
-                print("concept_particularization_dict: {}".format(concept_particularization_dict))
-            sentence_display_list.append({"word": wd,
-                                          "concept": concept_key,
-                                          "internal particularization": ip_display,
-                                          "relational particularization": rp_display
-                                          })
-        else:
-            sentence_display_list.append({"word": wd,
-                                          "concept": "",
-                                          "internal particularization": "",
-                                          "relational particularization": ""})
+            for concept in associated_concepts:
+                # position
+                concept_index = associated_concepts.index(concept)
+                if concept == associated_concepts[0]:
+                    position = "first"
+                elif concept == associated_concepts[len(associated_concepts) - 1]:
+                    position = "last"
+                else:
+                    position = "middle"
+                # particularization
+                ip, rp = get_particularization_info(knowledge_graph, entry, concept)
+                ip_display = "+".join([str(k) + "=" + str(v) for k, v in ip.items()])
+                rp_display = "+".join([str(k) + " " + str(v) for k, v in rp.items()])
+
+                # create and add entry to supergloss
+                tmp = {}
+                tmp["word"] = target_word if len(associated_concepts) == 1 else target_word + "(" + str(concept_index + 1) + ")"
+                tmp["concept"] = concept
+                tmp["internal particularization"] = ip_display
+                tmp["relational particularization"] = rp_display
+                sentence_display_list.append(tmp)
+
     if not output_dict:
         # build dataframe from ordered dict
         output_df = pd.DataFrame(sentence_display_list)
@@ -368,6 +352,7 @@ def build_super_gloss_df(knowledge_graph, entry, delimiters, output_dict=False):
         return output_df.T
     else:
         return sentence_display_list
+
 
 def get_kg_entry_signature(knowledge_graph, entry_index):
     is_positive_polarity = True
@@ -411,6 +396,7 @@ def get_concept_word_pos(kg, entry_index, delimiters):
                 print("target word {} not in {}".format(target_word, target_words))
     return concept_word_pos
 
+
 def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):
     output = {}
     for entry_index, data in kg.items():
@@ -420,6 +406,154 @@ def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):
                 "data": data
             }
     return output
+
+
+def build_alterlingua_list_from_kg(kg, delimiters):
+    out_list = []
+    with open("./data/concepts.json", "r") as f:
+        cg = json.load(f)
+    altered_kg = build_alterlingua_kg(kg,
+                                      delimiters,
+                                      cg,
+                                      concept_ancestor_level=0)
+    for index, content in altered_kg.items():
+        if "comment" in content["recording_data"].keys():
+            c = content["recording_data"]["comment"]
+        else:
+            c = ""
+        out_list.append(
+            {
+                "source_english": content["sentence_data"]["text"],
+                "target_raw": kg[index]["recording_data"]["translation"],
+                "alterlingua": content["recording_data"]["alterlingua"],
+                "comment": c
+            }
+        )
+    return out_list
+
+
+def replace_concepts_by_ancestors_in_kg(kg, cg, concept_ancestor_level, verbose=True):
+    """
+    :param kg: knowledge graph
+    :param concept_ancestor_level: 0 is the concept, 1 its parent, etc.
+    :return: updated kg
+    """
+    output_kg = {}
+    cat_mapping = {
+        "CONCEPT CORE": "CONCEPT_CORE",
+        "IN FUTURE DIRECTION": "IN_FUTURE_DIRECTION",
+        "EXPERIENCEABLE OBJECT": "THING",
+        "ACTION": "PROCESS",
+        "EXPERIENCE": "PROCESS",
+        "OBJECT": "OBJECT",
+        "ABSTRACT OBJECT": "ABSTRACT_OBJECT",
+        "NON-GRAMMATICAL QUALIFIER": "QUALIFIER",
+        "TIME LOGIC": "TIME_LOGIC",
+        "RELATIVE TIME REFERENCE": "RELATIVE_TIME_REFERENCE",
+        "ABSOLUTE TIME REFERENCES": "ABSOLUTE_TIME_REFERENCE",
+        "TIME CHUNKS": "TIME_CHUNK",
+        "SPACE LOGIC": "SPACE_LOGIC",
+        "QUANTIFIER": "QUANTIFIER",
+        "QUALIFIER": "QUALIFIER",
+        "PERSONAL DEICTIC": "PERSONAL_PRONOUN",
+        "EVENT DEICTIC": "EVENT_DEICTIC",
+        "NON-HUMAN DEICTIC": "REF_OBJECT(S)"
+    }
+    for index, entry in kg.items():
+        concept_mapping = {}
+        output_kg[index] = copy.deepcopy(entry)
+        concepts = entry["sentence_data"]["concept"]
+        if verbose:
+            print(" ")
+            print("REPLACE CONCEPTS BY ANCESTORS **************************************************************************")
+            print("Entry {}, concepts: {}".format(index, concepts))
+
+        # LOOPING OVER ENTRY CONCEPTS IN THE KG TO CREATE CONCEPT MAPPING AND NEW ["sentence_data"]["concept"]
+        for concept in concepts:
+            # creating concept_mapping
+            concept_mapping[concept] = concept
+            ancestors = gu.get_genealogy(cg, concept)
+            if concept_ancestor_level == 0:
+                exp = concept
+            else:
+                if len(ancestors) >= concept_ancestor_level:
+                    ancestor_index = concept_ancestor_level - 1
+                else:
+                    ancestor_index = len(ancestors) - 1
+                if ancestors[ancestor_index] in cat_mapping.keys():
+                    exp = cat_mapping[ancestors[ancestor_index]]
+                else:
+                    exp = ancestors[ancestor_index]
+            concept_mapping[concept] = exp.replace(" ", "_")
+        if verbose:
+            print("Concept mapping: {}".format(concept_mapping))
+        # change concepts in the concept list using concept_mapping
+        output_kg[index]["sentence_data"]["concept"] = [concept_mapping[concept]
+                                                        for concept in entry["sentence_data"]["concept"]]
+        # change concepts in [recording_data][concept_words]
+        for concept in entry["recording_data"]["concept_words"]:
+            if concept in concept_mapping.keys():
+                target_words = output_kg[index]["recording_data"]["concept_words"][concept].pop()
+                output_kg[index]["recording_data"]["concept_words"][concept_mapping[concept]] = target_words
+        if verbose:
+            print("New concept_list: {}".format(output_kg[index]["sentence_data"]["concept"]))
+            print("New concept_words: {}".format(output_kg["recording_data"]["concept_words"]))
+    return output_kg
+
+
+def build_alterlingua_kg(kg, delimiters, cg, show_example=True, concept_ancestor_level=0):
+    """
+    adds an "alterlingua" key and value in "sentence_data".
+    :return: kg
+    """
+    def is_sublist(smaller_list, bigger_list):
+        for i in range(len(bigger_list) - len(smaller_list) + 1):
+            if bigger_list[i:i + len(smaller_list)] == smaller_list:
+                return True
+        return False
+
+    example_counter = 0
+    n_examples = 5
+
+    if concept_ancestor_level == 0:
+        out_kg = copy.deepcopy(kg)
+    else:
+        out_kg = replace_concepts_by_ancestors_in_kg(kg, cg, concept_ancestor_level)
+
+    for index, entry in out_kg.items():
+        original_target_sentence = entry["recording_data"]["translation"]
+
+        target_words = stats.custom_split(entry["recording_data"]["translation"], delimiters)
+        augmented_words = []
+        for target_word in target_words:
+            associated_concepts = [concept for concept in kg[index]["recording_data"]["concept_words"].keys()
+                                   if target_word in kg[index]["recording_data"]["concept_words"][concept]]
+
+            acl = len(associated_concepts)
+            if acl == 0:
+                augmented_word = target_word + "<>"
+            else:
+                augmented_word = target_word + "<"
+                for concept in associated_concepts:
+                    ci = associated_concepts.index(concept)
+                    # particularization
+                    ip, rp = get_particularization_info(kg, index, concept)
+                    ip_display = "IP:"
+                    ip_display += "+".join([str(k) + "=" + str(v) for k, v in ip.items()])
+                    rp_display = "RP:"
+                    rp_display += "+".join([str(k) + " " + str(v) for k, v in rp.items()])
+
+                    augmented_word += concept + "(" + ip_display + " | " + rp_display + ")"
+
+                    if ci < acl - 1:
+                        augmented_word += " & "
+                augmented_word += ">"
+
+            augmented_words.append(augmented_word)
+        entry["recording_data"]["alterlingua"] = " ".join(augmented_words)
+
+    return out_kg
+
 
 def build_categorical_kg(kg, delimiters, cg,
                          replace_target_words=True,
@@ -483,7 +617,7 @@ def build_categorical_kg(kg, delimiters, cg,
         return result_dict
 
     example_counter = 0
-    n_examples = 24
+    n_examples = 12
     if show_example and example_counter < n_examples:
         print("===================================================")
         print("XXX           ALTERLINGUAL KG                    XXX")
@@ -501,7 +635,7 @@ def build_categorical_kg(kg, delimiters, cg,
         "NON-GRAMMATICAL QUALIFIER": "QUALIFIER",
         "TIME LOGIC": "TIME_LOGIC",
         "RELATIVE TIME REFERENCE": "RELATIVE_TIME_REFERENCE",
-        "ABSOLUTE TIME REFERENCES": "ABOLUTE_TIME_REFERENCE",
+        "ABSOLUTE TIME REFERENCES": "ABSOLUTE_TIME_REFERENCE",
         "TIME CHUNKS": "TIME_CHUNK",
         "SPACE LOGIC": "SPACE_LOGIC",
         "QUANTIFIER": "QUANTIFIER",
@@ -516,7 +650,8 @@ def build_categorical_kg(kg, delimiters, cg,
         translation_items = stats.custom_split(entry["recording_data"]["translation"], delimiters)
         concepts = entry["sentence_data"]["concept"]
         if show_example and example_counter < n_examples:
-            print("EXAMPLE")
+            print(" ")
+            print("EXAMPLE **************************************************************************")
             print("Entry {}, concepts: {}".format(index, concepts))
             example_counter += 1
 
@@ -565,19 +700,14 @@ def build_categorical_kg(kg, delimiters, cg,
                     "ip": ip,
                     "rp": rp
                 }
-                ip_display = "&".join([str(k) + "=" + str(v) for k, v in concept_particularization_dict[concept]["ip"].items()])
-                rp_display = "&".join([str(k) + "_" + str(v) for k, v in concept_particularization_dict[concept]["rp"].items()])
-                ip_and_rp_display = ""
-                if ip_display or rp_display:
-                    ip_and_rp_display += "("
-                if ip_display:
-                    ip_and_rp_display += "" + ip_display
-                if rp_display:
-                    if ip_display:
-                        ip_and_rp_display += "_"
-                    ip_and_rp_display += rp_display
-                if ip_display or rp_display:
-                    ip_and_rp_display += ")"
+                if show_example and example_counter < n_examples:
+                    print("concept_particularization_dict: ")
+                    print(concept_particularization_dict)
+                ip_display = "+".join([str(k) + "=" + str(v) for k, v in concept_particularization_dict[concept]["ip"].items()])
+                ip_display = "IP:" + ip_display
+                rp_display = "+".join([str(k) + " " + str(v) for k, v in concept_particularization_dict[concept]["rp"].items()])
+                rp_display = "RP:" + rp_display
+                ip_and_rp_display = "(" + ip_display + "|" + rp_display + ")"
 
                 if show_example and example_counter < n_examples:
                     print("concept {}, tw: {}".format(concept, tw))
@@ -612,7 +742,7 @@ def build_categorical_kg(kg, delimiters, cg,
                                         translation_items[translation_items_index] = ""
                                 if len(twl) == tw_index + 1:  # last w gets the concept mapping added and particularization if option
                                     if keep_target_words:
-                                        translation_items[translation_items_index] = translation_items[translation_items_index] + "_" + concept_mapping[concept]
+                                        translation_items[translation_items_index] = translation_items[translation_items_index] + "<concept:" + concept_mapping[concept] + ">"
                                     else:
                                         translation_items[translation_items_index] = concept_mapping[concept]
                                     if include_particularization:
@@ -626,10 +756,10 @@ def build_categorical_kg(kg, delimiters, cg,
                                 if w in translation_items:
                                     tii = translation_items.index(w)
                                     if keep_target_words:
-                                        translation_items[tii] = w + "_" + concept_mapping[concept]
-                                        if len(twl) > 1:
-                                            translation_items[tii] += "_" + str(c)
-                                            c += 1
+                                        translation_items[tii] = w + "<concept:" + concept_mapping[concept] + ">"
+                                        # if len(twl) > 1:
+                                        #     translation_items[tii] += "_" + str(c)
+                                        #     c += 1
                                     else:
                                         translation_items[tii] = concept_mapping[concept]
                                         if len(twl) > 1:
