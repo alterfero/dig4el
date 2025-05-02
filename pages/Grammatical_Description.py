@@ -30,6 +30,7 @@ from pyvis.network import Network
 import plotly.graph_objects as go
 import streamlit.components.v1 as components
 from io import BytesIO
+from contextlib import suppress
 
 
 st.set_page_config(
@@ -1006,81 +1007,84 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
 
     use_openai = st.button("Use OpenAI to write a short description of {}".format(st.session_state["tl_name"]))
     if use_openai:
-        # Check if 'OPENAI_API_KEY' is available in st.secrets (i.e., running on Streamlit Cloud)
-        if "OPEN_AI_KEY" in st.secrets:
-            openai.api_key = st.secrets["OPEN_AI_KEY"]
-        else:
-            # Fallback to environment variable for local development
-            openai.api_key = os.getenv("OPEN_AI_KEY")
+        api_key = os.getenv("OPEN_AI_KEY")
+        if not api_key:
+            with suppress(FileNotFoundError, KeyError):
+                api_key = st.secrets["OPEN_AI_KEY"]
+        if not api_key:
+            st.error("No OpenAI key found – set OPEN_AI_KEY as an env var or add it to .streamlit/secrets.toml")
 
-        response = openai.chat.completions.create(
-            model="gpt-4.1",
-            messages=messages,
-            temperature=0.3,
-            max_tokens=3000
-        ).choices[0].message.content
+        if api_key:
+            openai.api_key = api_key
 
-        print("Response received")
-
-        print("Loading as json")
-        jsload_success = False
-        # ---------- decode with pre-clean ----------
-        def safe_json(text: str) -> str:
-            """
-            Escape raw newlines and stray unescaped quotes that appear
-            *inside* double-quoted values.
-            """
-            # 1) replace CR/LF inside quoted strings with \n
-            text = re.sub(r'(".*?)(\r?\n)(.*?")',
-                          lambda m: m.group(1) + "\\n" + m.group(3),
-                          text, flags=re.S)
-            # 2) escape naked " inside values → \"
-            text = re.sub(r'(".*?[^\\])"(.*?")',
-                          lambda m: m.group(1) + '\\"' + m.group(2),
-                          text, flags=re.S)
-            return text
-        def decode(raw):
-            try:
-                return json.loads(raw)
-            except json.JSONDecodeError:
-                return json.loads(safe_json(raw))
-        # if the json returned is not well-formed, we send it back to GPT3.5 for cleaning.
-        try:
-            st.session_state["output"] = decode(response)
-            jsload_success = True
-            #st.write(output)
-        except json.decoder.JSONDecodeError:
-            st.write("Issue decoding json, sending back for a fix")
-            print("Raw Response")
-            print(response)
-            fixed_response = openai.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[{"role": "system", "content": "SYSTEM: The previous response was not valid JSON. "
-                                                        "Return exactly the same content but formatted as valid JSON. "
-                                                        "Do not add any extra keys, comments, or prose."},
-                          {"role": "user", "content": response}],
-                temperature=0.0,
-                max_tokens=800
+            response = openai.chat.completions.create(
+                model="gpt-4.1",
+                messages=messages,
+                temperature=0.3,
+                max_tokens=3000
             ).choices[0].message.content
+
+            print("Response received")
+
+            print("Loading as json")
+            jsload_success = False
+            # ---------- decode with pre-clean ----------
+            def safe_json(text: str) -> str:
+                """
+                Escape raw newlines and stray unescaped quotes that appear
+                *inside* double-quoted values.
+                """
+                # 1) replace CR/LF inside quoted strings with \n
+                text = re.sub(r'(".*?)(\r?\n)(.*?")',
+                              lambda m: m.group(1) + "\\n" + m.group(3),
+                              text, flags=re.S)
+                # 2) escape naked " inside values → \"
+                text = re.sub(r'(".*?[^\\])"(.*?")',
+                              lambda m: m.group(1) + '\\"' + m.group(2),
+                              text, flags=re.S)
+                return text
+            def decode(raw):
+                try:
+                    return json.loads(raw)
+                except json.JSONDecodeError:
+                    return json.loads(safe_json(raw))
+            # if the json returned is not well-formed, we send it back to GPT3.5 for cleaning.
             try:
-                fixed_output = decode(fixed_response)
+                st.session_state["output"] = decode(response)
                 jsload_success = True
-                st.session_state["output"] = fixed_output
-                # st.write(fixed_output)
+                #st.write(output)
             except json.decoder.JSONDecodeError:
-                print(fixed_response)
-                st.write("Failed to generate a well-formed response, see termnimal for raw response.")
+                st.write("Issue decoding json, sending back for a fix")
+                print("Raw Response")
+                print(response)
+                fixed_response = openai.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=[{"role": "system", "content": "SYSTEM: The previous response was not valid JSON. "
+                                                            "Return exactly the same content but formatted as valid JSON. "
+                                                            "Do not add any extra keys, comments, or prose."},
+                              {"role": "user", "content": response}],
+                    temperature=0.0,
+                    max_tokens=800
+                ).choices[0].message.content
+                try:
+                    fixed_output = decode(fixed_response)
+                    jsload_success = True
+                    st.session_state["output"] = fixed_output
+                    # st.write(fixed_output)
+                except json.decoder.JSONDecodeError:
+                    print(fixed_response)
+                    st.write("Failed to generate a well-formed response, see termnimal for raw response.")
 
 
-        if st.session_state["output"] != {}:
-            docx_file = ogu.generate_docx_from_hybrid_output(st.session_state["output"], st.session_state["tl_name"])
-            st.download_button(
-                label="📥 Download DOCX",
-                data=docx_file,
-                file_name=f'export_hybrid_grammar_of_{st.session_state["tl_name"]}.docx',
-                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            )
-            st.download_button("Download JSON",
-                               json.dumps(st.session_state["output"], indent=4),
-                               file_name="hybrid_grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
+            if st.session_state["output"] != {}:
+                docx_file = ogu.generate_docx_from_hybrid_output(st.session_state["output"], st.session_state["tl_name"])
+                st.download_button(
+                    label="📥 Download DOCX",
+                    data=docx_file,
+                    file_name=f'export_hybrid_grammar_of_{st.session_state["tl_name"]}.docx',
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                )
+                st.download_button("Download JSON",
+                                   json.dumps(st.session_state["output"], indent=4),
+                                   file_name="hybrid_grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
 
