@@ -1,11 +1,7 @@
 # BACKLOG ---------------------------------------------------
 
-## ! Proba chain: wrong starting node (selects following to selected)
-
 ## Possession
 Manage possession as a composite (Ref_X + Object)
-
-## Morpheme zero
 
 ## Question marks
 
@@ -30,3 +26,5 @@ DONE Requires launching an update process on any CQ transcription uploaded by a 
 Propose it as a the default value of a drop-down menu, as a given type of predicate in english
 may be expressed with another type of predicate in the target language.
 + Display "Type of predicate **marker**" as the concept
+
+## ! Proba chain: wrong starting node (selects following to selected)

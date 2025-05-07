@@ -1075,16 +1075,15 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                     print(fixed_response)
                     st.write("Failed to generate a well-formed response, see termnimal for raw response.")
 
-
-            if st.session_state["output"] != {}:
-                docx_file = ogu.generate_docx_from_hybrid_output(st.session_state["output"], st.session_state["tl_name"])
-                st.download_button(
-                    label="📥 Download DOCX",
-                    data=docx_file,
-                    file_name=f'export_hybrid_grammar_of_{st.session_state["tl_name"]}.docx',
-                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                )
-                st.download_button("Download JSON",
-                                   json.dumps(st.session_state["output"], indent=4),
-                                   file_name="hybrid_grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
+    if st.session_state["output"] != {}:
+        docx_file = ogu.generate_docx_from_hybrid_output(st.session_state["output"], st.session_state["tl_name"])
+        st.download_button(
+            label="📥 Download DOCX",
+            data=docx_file,
+            file_name=f'export_hybrid_grammar_of_{st.session_state["tl_name"]}.docx',
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        )
+        st.download_button("Download JSON",
+                           json.dumps(st.session_state["output"], indent=4),
+                           file_name="hybrid_grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
 

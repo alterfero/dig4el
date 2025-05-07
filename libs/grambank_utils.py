@@ -19,6 +19,7 @@ import csv
 import pandas as pd
 import numpy as np
 from libs import utils as u
+from pathlib import Path
 
 # GLOBAL VARIABLES
 try:
@@ -131,113 +132,170 @@ def compute_grambank_param_distribution(pid, lids_list=["ALL"]):
         param_distribution[vid] = param_distribution[vid]/total_count
     return param_distribution
 
-        
-def compute_grambank_conditional_de_proba(vid_a, vid_b, filtered_language_lid=[]):
+# ==== COMPUTING CP TABLE
+
+# Robust-estimation hyper-parameters
+N_MIN  = 5      # keep edge only if vid_b attested in ≥ N_MIN languages
+K_MIN  = 2      # …and vid_a ∧ vid_b in ≥ K_MIN languages
+ALPHA  = 1.0    # Beta(α,β) prior  — Laplace smoothing (α=β=1)
+BETA   = 1.0
+
+def compute_grambank_conditional_de_proba(vid_a, vid_b, language_lids, return_counts = True):
     """
-    compute the conditional probability p(vid_a | vid_b)
+    Bayesian posterior mean of  P(vid_a | vid_b)  with Beta(α,β) prior.
+    Returns None (later converted to np.nan) if evidence is below thresholds.
     """
-    total_language_count = len(filtered_language_lid)
-    total_observation_count = 0
-    a_count = 0
-    b_count = 0
-    a_and_b_count = 0
-    for language_id in filtered_language_lid:
-        total_observation_count += 1
-        a = False
-        b = False
-        if vid_a in grambank_pvalues_by_language[language_id]:
-            a = True
-            a_count += 1
-        if vid_b in grambank_pvalues_by_language[language_id]:
-            b = True
+    b_count = 0          # how many languages have value vid_b ?
+    a_and_b = 0          # how many have *both* values ?
+
+    for lid in language_lids:
+        values = grambank_pvalues_by_language[lid]
+        has_b = vid_b in values
+        if has_b:
             b_count += 1
-        if a and b:
-            a_and_b_count += 1
-    # P(A|B) = P(A inter B)/P(B)
-    joint_probability =  a_and_b_count / total_observation_count
-    marginal_probability_b = b_count / total_observation_count
-    if b_count != 0:
-        p_a_given_b = a_and_b_count / b_count
+            if vid_a in values:
+                a_and_b += 1
+
+        #print("Language {}: b_count: {}, a_and_b: {}, p_hat: {}".format(lid, b_count, a_and_b, (a_and_b + ALPHA) / (b_count + ALPHA + BETA)))
+    # ---------- decide the estimate ------------------------------------
+    if b_count == 0:
+        p_hat = None  # undefined, vid_b never observed
+    elif b_count < N_MIN or a_and_b < K_MIN:
+        p_hat = None  # too little evidence
     else:
-        p_a_given_b = None
+        # Beta-posterior mean (Laplace smoothing)
+        p_hat = (a_and_b + ALPHA) / (b_count + ALPHA + BETA)
 
-    return {"a": vid_a, "b": vid_b, "p_a_given_b": p_a_given_b, "a_count":a_count, "b_count":b_count, "a_and_b_count": a_and_b_count,
-            "marginal_proba_b": marginal_probability_b, "joint_probability": joint_probability}
+    # ---------- return --------------------------------------------------
+    if return_counts:
+        return p_hat, b_count, a_and_b  # ALWAYS a 3-tuple
+    else:
+        return p_hat
 
+def build_grambank_conditional_probability_table(language_filter=None):
+    """
+    CPT of P(vid_a | vid_b) for every pair of Grambank values.
+    Cells with insufficient evidence are np.nan.
+    """
+    language_filter = language_filter or {}
 
-def build_grambank_conditional_probability_table(language_filter={}):
-    print("BUILDING D.E. CONDITIONAL PROBABILITY TABLE")
-    """the conditional probability table shows the probability of having value b knowing value a,
-    for all pairs of values, by measuring them across all languages where they both appear. 
-     the filtered_params argument says if we use a filtered list of parameters
-     the language_filter argument is a dict that restricts the languages the cpt is computed on
-     by any of family, subfamily, genus and macroarea."""
+    # ---------------------------------------------------------------------
+    # 1. which languages to keep?  (simple: no family filter for now)
+    # ---------------------------------------------------------------------
+    language_lids = list(grambank_language_by_lid.keys())
+    # if you need the same family/subfamily/genus filter logic, paste it here
 
-    # use language filter param to list all language pks to use
-    # TODO: Make possible language filtering for conditional probability computation
-    # if language_filter != {}:
-    #     filtered_language_lid = []
-    #     if "family" in language_filter.keys():
-    #         for fam in language_filter["family"]:
-    #             if fam in language_pk_by_family.keys():
-    #                 filtered_language_lid += (language_pk_by_family[fam])
-    #             else:
-    #                 print("{} not in language_pk_by_family".format(fam))
-    #     if "subfamily" in language_filter.keys():
-    #         for fam in language_filter["subfamily"]:
-    #             if fam in language_pk_by_subfamily.keys():
-    #                 filtered_language_lid += (language_pk_by_subfamily[fam])
-    #             else:
-    #                 print("{} not in language_pk_by_subfamily".format(fam))
-    #     if "genus" in language_filter.keys():
-    #         for fam in language_filter["genus"]:
-    #             if fam in language_pk_by_genus.keys():
-    #                 filtered_language_lid += (language_pk_by_genus[fam])
-    #             else:
-    #                 print("{} not in language_pk_by_genus".format(fam))
-    #     if "macroarea" in language_filter:
-    #         for fam in language_filter["macroarea"].keys():
-    #             if fam in language_pk_by_macroarea.keys():
-    #                 filtered_language_lid += (language_pk_by_macroarea[fam])
-    #             else:
-    #                 print("{} not in language_pk_by_macroarea".format(fam))
-    #     filtered_language_lid = list(set(filtered_language_lid))
-    # else:
-    #     filtered_language_lid = list(language_by_pk.keys())
-
-    filtered_language_lid = list(grambank_language_by_lid.keys())
+    # ---------------------------------------------------------------------
+    # 2. value IDs to iterate over
+    # ---------------------------------------------------------------------
     vid_list = list(parameter_id_by_value_id.keys())
 
-    #full_proba_dict = {}
+    # ---------------------------------------------------------------------
+    # 3. populate DataFrame
+    # ---------------------------------------------------------------------
+    cpt = pd.DataFrame(index=vid_list, columns=vid_list, dtype=float)
+    cpt_trust = pd.DataFrame(index=vid_list, columns=vid_list, dtype=int)
 
-    # create df
-    cpt = pd.DataFrame(index=vid_list, columns=vid_list)
+    total = len(vid_list)
 
-    #populate df
-    de_count = len(vid_list)
-    c = 0
-    for vid_a in vid_list:
-        c += 1
-        print("vid {}, {}% total completion".format(vid_a, 100 * c / de_count))
+    for i, vid_a in enumerate(vid_list, 1):
+        print(f"row {i}/{total}  value={vid_a}")
         for vid_b in vid_list:
-            proba_dict = compute_grambank_conditional_de_proba(vid_a, vid_b, filtered_language_lid)
-            p_a_given_b = proba_dict["p_a_given_b"]
-            cpt.at[vid_a, vid_b] = p_a_given_b
+            # ---- old computation, now returns both p_hat and counts ----
+            p_hat, b_count, a_and_b = compute_grambank_conditional_de_proba(vid_a, vid_b, language_lids, return_counts=True)  # p_hat may be None
 
-    output_folder = "../external_data/grambank_derived/"
-    output_filename = "grambank_vid_conditional_probability"
-    if "family" in language_filter.keys():
-        output_filename += "_family_" + "-".join(language_filter["family"])
-    if "subfamily" in language_filter.keys():
-        output_filename += "_subfamily_" + "-".join(language_filter["subfamily"])
-    if "genus" in language_filter.keys():
-        output_filename += "_genus_" + "-".join(language_filter["genus"])
-    if "macroarea" in language_filter.keys():
-        output_filename += "_macroarea" + "-".join(language_filter["macroarea"])
-    output_filename += ".json"
+            # --- probability table --------------------------------------
+            cpt.at[vid_a, vid_b] = np.nan if p_hat is None else p_hat
 
-    cpt.to_json(output_folder + output_filename)
-    return cpt
+            # --- trust table  (choose your notion of support) -----------
+            cpt_trust.at[vid_a, vid_b] = a_and_b  # or a_and_b, or both
+
+    # ---------------------------------------------------------------------
+    # 4. save
+    # ---------------------------------------------------------------------
+    out_dir = Path("../external_data/grambank_derived")
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    base = "grambank_vid_conditional_probability_new"  # or "grambank_vid_conditional_probability"
+
+    cpt.to_json(out_dir / f"{base}.json")
+    cpt_trust.to_json(out_dir / f"{base}_trust.json")
+    print("Wrote", out_dir / f"{base}.json")
+    print("Wrote", out_dir / f"{base}_trust.json")
+    return cpt, cpt_trust
+        
+# def compute_grambank_conditional_de_proba(vid_a, vid_b, filtered_language_lid=[]):
+#     """
+#     compute the conditional probability p(vid_a | vid_b)
+#     """
+#     total_language_count = len(filtered_language_lid)
+#     total_observation_count = 0
+#     a_count = 0
+#     b_count = 0
+#     a_and_b_count = 0
+#     for language_id in filtered_language_lid:
+#         total_observation_count += 1
+#         a = False
+#         b = False
+#         if vid_a in grambank_pvalues_by_language[language_id]:
+#             a = True
+#             a_count += 1
+#         if vid_b in grambank_pvalues_by_language[language_id]:
+#             b = True
+#             b_count += 1
+#         if a and b:
+#             a_and_b_count += 1
+#     # P(A|B) = P(A inter B)/P(B)
+#     joint_probability =  a_and_b_count / total_observation_count
+#     marginal_probability_b = b_count / total_observation_count
+#     if b_count != 0:
+#         p_a_given_b = a_and_b_count / b_count
+#     else:
+#         p_a_given_b = None
+#
+#     return {"a": vid_a, "b": vid_b, "p_a_given_b": p_a_given_b, "a_count":a_count, "b_count":b_count, "a_and_b_count": a_and_b_count,
+#             "marginal_proba_b": marginal_probability_b, "joint_probability": joint_probability}
+#
+#
+# def build_grambank_conditional_probability_table(language_filter={}):
+#     print("BUILDING D.E. CONDITIONAL PROBABILITY TABLE")
+#     """the conditional probability table shows the probability of having value b knowing value a,
+#     for all pairs of values, by measuring them across all languages where they both appear.
+#     """
+#
+#     filtered_language_lid = list(grambank_language_by_lid.keys())
+#     vid_list = list(parameter_id_by_value_id.keys())
+#
+#     #full_proba_dict = {}
+#
+#     # create df
+#     cpt = pd.DataFrame(index=vid_list, columns=vid_list)
+#
+#     #populate df
+#     de_count = len(vid_list)
+#     c = 0
+#     for vid_a in vid_list:
+#         c += 1
+#         print("vid {}, {}% total completion".format(vid_a, 100 * c / de_count))
+#         for vid_b in vid_list:
+#             proba_dict = compute_grambank_conditional_de_proba(vid_a, vid_b, filtered_language_lid)
+#             p_a_given_b = proba_dict["p_a_given_b"]
+#             cpt.at[vid_a, vid_b] = p_a_given_b
+#
+#     output_folder = "../external_data/grambank_derived/"
+#     output_filename = "grambank_vid_conditional_probability"
+#     if "family" in language_filter.keys():
+#         output_filename += "_family_" + "-".join(language_filter["family"])
+#     if "subfamily" in language_filter.keys():
+#         output_filename += "_subfamily_" + "-".join(language_filter["subfamily"])
+#     if "genus" in language_filter.keys():
+#         output_filename += "_genus_" + "-".join(language_filter["genus"])
+#     if "macroarea" in language_filter.keys():
+#         output_filename += "_macroarea" + "-".join(language_filter["macroarea"])
+#     output_filename += ".json"
+#
+#     cpt.to_json(output_folder + output_filename)
+#     return cpt
 
 
 def build_grambank_pvalues_by_language():

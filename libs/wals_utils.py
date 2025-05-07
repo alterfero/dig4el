@@ -20,6 +20,8 @@ import pandas as pd
 import math
 import numpy as np
 import pickle
+from collections import defaultdict
+from pathlib import Path
 
 # parameter.csv list parameters by pk and their names
 #
@@ -135,6 +137,15 @@ def build_param_pk_by_de_pk():
     with open("../external_data/wals_derived/param_pk_by_de_pk.json", "w") as f:
         json.dump(param_pk_by_de_pk, f, indent=4)
 
+def build_param_name_by_de_name():
+    param_name_by_de_name = {}
+    for de_pk, info in domain_element_by_pk.items():
+        ppk = info["parameter_pk"]
+        p_name = parameter_name_by_pk[str(ppk)]
+        param_name_by_de_name[info["name"]] = p_name
+    with open("../external_data/wals_derived/param_name_by_de_name.json", "w") as f:
+        json.dump(param_name_by_de_name, f, indent=4)
+
 def build_params_pk_by_language_pk():
     params_pk_by_language_pk = {}
     for language_pk in domain_elements_by_language:
@@ -172,7 +183,6 @@ def compute_wals_cp_matrix_from_general_data(ppk1, ppk2):
         p2_de_pk_list = domain_elements_pk_by_parameter_pk[ppk2]
 
         # P1 GIVEN P2 DF
-
         # keep only p1 on rows
         filtered_cpt_p1 = cpt.loc[p1_de_pk_list]
         # keep only given p2 on columns
@@ -326,124 +336,240 @@ def build_domain_elements_by_language_and_languages_by_domain_element():
     with open("./external_data/wals_derived/languages_by_domain_element.json", "w") as f:
         json.dump(languages_by_domain_element, f)
 
-def compute_conditional_de_proba(domain_element_a_pk, domain_element_b_pk, filtered_language_pk=[]):
+#  ================ COMPUTING AND STORING CONDITIONAL PROBABILITY TABLE ========
+
+# ---------------------------------------------------------------------------
+# HYPER-PARAMETERS
+N_MIN = 5     # keep edge only if we saw B in ≥ N_MIN languages
+K_MIN = 2     # …and A∧B in ≥ K_MIN languages
+ALPHA = 1.0   # Beta(α,β) prior → Laplace smoothing   (α=β=1)
+BETA = 1.0
+# ---------------------------------------------------------------------------
+
+def compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts = False):
     """
-    compute the conditional probability P(a | b).
-    The conditional proba will be computed only with the language pks in the list
+    Posterior-mean estimate of  P(A|B)  with Beta(α,β) prior,
+    plus counts so the caller can decide to keep/skip the edge.
     """
-    total_language_count = len(filtered_language_pk)
-    total_observation_count = 0
-    a_count = 0
     b_count = 0
-    a_and_b_count = 0
-    for language_pk in filtered_language_pk:
-        total_observation_count += 1
-        language_id = language_by_pk[language_pk]["id"]
-        a = False
-        b = False
-        if int(domain_element_a_pk) in domain_elements_by_language[str(language_pk)]:
-            a = True
-            a_count += 1
-        if int(domain_element_b_pk) in domain_elements_by_language[str(language_pk)]:
-            b = True
+    a_and_b = 0
+
+    for lang_pk in language_pks:
+        values = domain_elements_by_language[str(lang_pk)]
+        has_a = int(a_pk) in values
+        has_b = int(b_pk) in values
+        if has_b:
             b_count += 1
-        if a and b:
-            a_and_b_count += 1
-    # P(A|B) = P(A inter B)/P(B)
-    joint_probability =  a_and_b_count / total_observation_count
-    marginal_probability_b = b_count / total_observation_count
-    if b_count != 0:
-        p_a_given_b = a_and_b_count / b_count
+            if has_a:
+                a_and_b += 1
+
+    if b_count == 0:
+        return None  # undefined
+
+    # Bayesian posterior mean
+    p_hat = (a_and_b + ALPHA) / (b_count + ALPHA + BETA)
+
+    if return_counts:
+        return p_hat, b_count, a_and_b
+
+    return p_hat
+
+
+def build_conditional_probability_table(filtered_params=True,
+                                        language_filter=None):
+    """
+    Build a CPT with Beta-smoothed estimates and *None* where counts are too small.
+    """
+    language_filter = language_filter or {}
+
+    # ---- 1. which languages ------------------------------------------------
+    if language_filter:
+        language_pks = set()
+        for key, table in [
+            ("family",     language_pk_by_family),
+            ("subfamily",  language_pk_by_subfamily),
+            ("genus",      language_pk_by_genus),
+            ("macroarea",  language_pk_by_macroarea),
+        ]:
+            for label in language_filter.get(key, []):
+                language_pks |= set(table.get(label, []))
     else:
-        p_a_given_b = None
+        language_pks = set(language_by_pk.keys())
 
-    return {"a": domain_element_a_pk, "b": domain_element_b_pk, "p_a_given_b": p_a_given_b, "a_count":a_count, "b_count":b_count, "a_and_b_count": a_and_b_count,
-            "marginal_proba_b": marginal_probability_b, "joint_probability": joint_probability}
+    language_pks = list(language_pks)
 
-def build_conditional_probability_table(filtered_params=True, language_filter={}):
-    print("BUILDING D.E. CONDITIONAL PROBABILITY TABLE")
-    """the conditional probability table shows the probability of having value a given value b,
-    for all pairs of values, by measuring them across all languages where they both appear. 
-     the filtered_params argument says if we use a filtered list of parameters
-     the language_filter argument is a dict that restricts the languages the cpt is computed on
-     by any of family, subfamily, genus and macroarea."""
+    # ---- 2. which domain-element values -----------------------------------
+    lookup_file = (
+        "../external_data/wals_derived/"
+        "domain_element_by_pk_lookup_table_filtered.json"
+        if filtered_params else
+        "../external_data/wals_derived/"
+        "domain_element_by_pk_lookup_table.json"
+    )
+    domain_element_pk_list = list(json.load(open(lookup_file)).keys())
 
-    # load convenient lookup tables
-    if filtered_params:
-        with open ("../external_data/wals_derived/domain_element_by_pk_lookup_table_filtered.json") as f:
-            domain_element_by_pk_lookup_table = json.load(f)
-        print("build_conditional_probability_table loaded FILTERED domain element list")
-    else:
-        with open ("../external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
-            domain_element_by_pk_lookup_table = json.load(f)
-        print("build_conditional_probability_table loaded FULL domain element list")
+    # ---- 3. compute CPT ----------------------------------------------------
+    cpt = pd.DataFrame(index=domain_element_pk_list,
+                       columns=domain_element_pk_list, dtype=float)
+    cpt_trust = pd.DataFrame(index=domain_element_pk_list,
+                       columns=domain_element_pk_list, dtype=int)
 
-    # use language filter param to list all language pks to use
-    if language_filter != {}:
-        filtered_language_pk = []
-        if "family" in language_filter.keys():
-            for fam in language_filter["family"]:
-                if fam in language_pk_by_family.keys():
-                    filtered_language_pk += (language_pk_by_family[fam])
-                else:
-                    print("{} not in language_pk_by_family".format(fam))
-        if "subfamily" in language_filter.keys():
-            for fam in language_filter["subfamily"]:
-                if fam in language_pk_by_subfamily.keys():
-                    filtered_language_pk += (language_pk_by_subfamily[fam])
-                else:
-                    print("{} not in language_pk_by_subfamily".format(fam))
-        if "genus" in language_filter.keys():
-            for fam in language_filter["genus"]:
-                if fam in language_pk_by_genus.keys():
-                    filtered_language_pk += (language_pk_by_genus[fam])
-                else:
-                    print("{} not in language_pk_by_genus".format(fam))
-        if "macroarea" in language_filter:
-            for fam in language_filter["macroarea"].keys():
-                if fam in language_pk_by_macroarea.keys():
-                    filtered_language_pk += (language_pk_by_macroarea[fam])
-                else:
-                    print("{} not in language_pk_by_macroarea".format(fam))
-        filtered_language_pk = list(set(filtered_language_pk))
-    else:
-        filtered_language_pk = list(language_by_pk.keys())
 
-    domain_element_pk_list = list(domain_element_by_pk_lookup_table.keys())
+    for i, a_pk in enumerate(domain_element_pk_list, 1):
+        print(f"Row {i}/{len(domain_element_pk_list)}  value={a_pk}")
+        for b_pk in domain_element_pk_list:
+            p_hat, b_count, a_and_b = compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts=True)
 
-    full_proba_dict = {}
+            if p_hat is None:
+                cpt.at[a_pk, b_pk] = np.nan
+                continue
 
-    # create df
-    cpt = pd.DataFrame(index=domain_element_pk_list, columns=domain_element_pk_list)
+            # too little support? → mark as None
+            if b_count < N_MIN or a_and_b < K_MIN:
+                cpt.at[a_pk, b_pk] = np.nan
+            else:
+                cpt.at[a_pk, b_pk] = p_hat
 
-    #populate df
-    de_count = len(domain_element_pk_list)
-    c = 0
-    for domain_element_1_pk in domain_element_pk_list:
-        c += 1
-        print("Domain element {}, {}% total completion".format(domain_element_1_pk, 100 * c / de_count))
-        for domain_element_2_pk in domain_element_pk_list:
-            proba_dict = compute_conditional_de_proba(domain_element_1_pk, domain_element_2_pk, filtered_language_pk)
-            p_1_given_2 = proba_dict["p_a_given_b"]
-            cpt.at[domain_element_1_pk, domain_element_2_pk] = p_1_given_2
-            full_proba_dict[str(domain_element_1_pk) + " | " + str(domain_element_2_pk)] = proba_dict
+            # trust table
+            cpt_trust.at[a_pk, b_pk] = a_and_b
 
-    output_folder = "../external_data/wals_derived/partial_cpt/"
-    output_filename = "de_conditional_probability"
-    if "family" in language_filter.keys():
-        output_filename += "_family_" + "-".join(language_filter["family"])
-    if "subfamily" in language_filter.keys():
-        output_filename += "_subfamily_" + "-".join(language_filter["subfamily"])
-    if "genus" in language_filter.keys():
-        output_filename += "_genus_" + "-".join(language_filter["genus"])
-    if "macroarea" in language_filter.keys():
-        output_filename += "_macroarea" + "-".join(language_filter["macroarea"])
-    output_filename += ".json"
+    # ---- 4. save -----------------------------------------------------------
+    out = Path("../external_data/wals_derived/partial_cpt")
+    out.mkdir(exist_ok=True, parents=True)
 
-    # with open("./external_data/wals_derived/full_de_conditional_probability.json", "w") as f:
-    #     json.dump(full_proba_dict, f)
-    cpt.to_json(output_folder + output_filename)
+    suffix = []
+    for key in ["family", "subfamily", "genus", "macroarea"]:
+        if key in language_filter and language_filter[key]:
+            suffix.append(key + "_" + "-".join(language_filter[key]))
+    fname = "de_conditional_probability_df_new" + ("_" + "_".join(suffix) if suffix else "") + ".json"
+    f_trust_name = "de_conditional_probability_trust_df_new" + ("_" + "_".join(suffix) if suffix else "") + ".json"
+
+    cpt.to_json(out / fname)
+    cpt_trust.to_json(out / f_trust_name)
+
     return cpt
+
+#   ========================
+
+
+# def compute_conditional_de_proba(domain_element_a_pk, domain_element_b_pk, filtered_language_pk=[]):
+#     """
+#     compute the conditional probability P(a | b).
+#     The conditional proba will be computed only with the language pks in the list
+#     """
+#     total_language_count = len(filtered_language_pk)
+#     total_observation_count = 0
+#     a_count = 0
+#     b_count = 0
+#     a_and_b_count = 0
+#     for language_pk in filtered_language_pk:
+#         total_observation_count += 1
+#         language_id = language_by_pk[language_pk]["id"]
+#         a = False
+#         b = False
+#         if int(domain_element_a_pk) in domain_elements_by_language[str(language_pk)]:
+#             a = True
+#             a_count += 1
+#         if int(domain_element_b_pk) in domain_elements_by_language[str(language_pk)]:
+#             b = True
+#             b_count += 1
+#         if a and b:
+#             a_and_b_count += 1
+#     # P(A|B) = P(A inter B)/P(B)
+#     joint_probability =  a_and_b_count / total_observation_count
+#     marginal_probability_b = b_count / total_observation_count
+#     if b_count != 0:
+#         p_a_given_b = a_and_b_count / b_count
+#     else:
+#         p_a_given_b = None
+#
+#     return {"a": domain_element_a_pk, "b": domain_element_b_pk, "p_a_given_b": p_a_given_b, "a_count":a_count, "b_count":b_count, "a_and_b_count": a_and_b_count,
+#             "marginal_proba_b": marginal_probability_b, "joint_probability": joint_probability}
+#
+# def build_conditional_probability_table(filtered_params=True, language_filter={}):
+#     print("BUILDING D.E. CONDITIONAL PROBABILITY TABLE")
+#     """the conditional probability table shows the probability of having value a given value b,
+#     for all pairs of values, by measuring them across all languages where they both appear.
+#      the filtered_params argument says if we use a filtered list of parameters
+#      the language_filter argument is a dict that restricts the languages the cpt is computed on
+#      by any of family, subfamily, genus and macroarea."""
+#
+#     # load convenient lookup tables
+#     if filtered_params:
+#         with open ("../external_data/wals_derived/domain_element_by_pk_lookup_table_filtered.json") as f:
+#             domain_element_by_pk_lookup_table = json.load(f)
+#         print("build_conditional_probability_table loaded FILTERED domain element list")
+#     else:
+#         with open ("../external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+#             domain_element_by_pk_lookup_table = json.load(f)
+#         print("build_conditional_probability_table loaded FULL domain element list")
+#
+#     # use language filter param to list all language pks to use
+#     if language_filter != {}:
+#         filtered_language_pk = []
+#         if "family" in language_filter.keys():
+#             for fam in language_filter["family"]:
+#                 if fam in language_pk_by_family.keys():
+#                     filtered_language_pk += (language_pk_by_family[fam])
+#                 else:
+#                     print("{} not in language_pk_by_family".format(fam))
+#         if "subfamily" in language_filter.keys():
+#             for fam in language_filter["subfamily"]:
+#                 if fam in language_pk_by_subfamily.keys():
+#                     filtered_language_pk += (language_pk_by_subfamily[fam])
+#                 else:
+#                     print("{} not in language_pk_by_subfamily".format(fam))
+#         if "genus" in language_filter.keys():
+#             for fam in language_filter["genus"]:
+#                 if fam in language_pk_by_genus.keys():
+#                     filtered_language_pk += (language_pk_by_genus[fam])
+#                 else:
+#                     print("{} not in language_pk_by_genus".format(fam))
+#         if "macroarea" in language_filter:
+#             for fam in language_filter["macroarea"].keys():
+#                 if fam in language_pk_by_macroarea.keys():
+#                     filtered_language_pk += (language_pk_by_macroarea[fam])
+#                 else:
+#                     print("{} not in language_pk_by_macroarea".format(fam))
+#         filtered_language_pk = list(set(filtered_language_pk))
+#     else:
+#         filtered_language_pk = list(language_by_pk.keys())
+#
+#     domain_element_pk_list = list(domain_element_by_pk_lookup_table.keys())
+#
+#     full_proba_dict = {}
+#
+#     # create df
+#     cpt = pd.DataFrame(index=domain_element_pk_list, columns=domain_element_pk_list)
+#
+#     #populate df
+#     de_count = len(domain_element_pk_list)
+#     c = 0
+#     for domain_element_1_pk in domain_element_pk_list:
+#         c += 1
+#         print("Domain element {}, {}% total completion".format(domain_element_1_pk, 100 * c / de_count))
+#         for domain_element_2_pk in domain_element_pk_list:
+#             proba_dict = compute_conditional_de_proba(domain_element_1_pk, domain_element_2_pk, filtered_language_pk)
+#             p_1_given_2 = proba_dict["p_a_given_b"]
+#             cpt.at[domain_element_1_pk, domain_element_2_pk] = p_1_given_2
+#             full_proba_dict[str(domain_element_1_pk) + " | " + str(domain_element_2_pk)] = proba_dict
+#
+#     output_folder = "../external_data/wals_derived/partial_cpt/"
+#     output_filename = "de_conditional_probability"
+#     if "family" in language_filter.keys():
+#         output_filename += "_family_" + "-".join(language_filter["family"])
+#     if "subfamily" in language_filter.keys():
+#         output_filename += "_subfamily_" + "-".join(language_filter["subfamily"])
+#     if "genus" in language_filter.keys():
+#         output_filename += "_genus_" + "-".join(language_filter["genus"])
+#     if "macroarea" in language_filter.keys():
+#         output_filename += "_macroarea" + "-".join(language_filter["macroarea"])
+#     output_filename += ".json"
+#
+#     # with open("./external_data/wals_derived/full_de_conditional_probability.json", "w") as f:
+#     #     json.dump(full_proba_dict, f)
+#     cpt.to_json(output_folder + output_filename)
+#     return cpt
 
 def get_available_wals_languages_dict():
     language_dict = {}

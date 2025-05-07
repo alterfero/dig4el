@@ -94,6 +94,21 @@ def get_pname_from_pcode(pcode):
         return None
 
 
+def get_pname_from_value_code(value_code):
+    if value_code[:2] == "GB":
+        try:
+            return get_pname_from_pcode(value_code.split("-")[0])
+        except:
+            return "unknown"
+    else:
+        try:
+            ppk = wu.param_pk_by_de_pk[value_code]
+            pname = wu.parameter_name_by_pk[str(ppk)]
+            return pname
+        except:
+            return "unknown"
+
+
 def get_pvalue_name_from_value_code(code):
     if code[:2] == "GB":
         if code in gu.grambank_vname_by_vid.keys():
@@ -102,6 +117,7 @@ def get_pvalue_name_from_value_code(code):
             print("code {} not in grambank_vname_by_vid, returning name None".format(code))
     else:
         return wu.get_careful_name_of_de_pk(code)
+
 
 
 def get_language_family_by_language_name(lname):

@@ -5,4 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-#utils.replace_concept_names_everywhere()
+wpl = [p for p in wu.parameter_pk_by_name_filtered.keys()]
+gbpl = [p for p in gu.grambank_pid_by_pname.keys()]
+t = wpl + gbpl
+with open("../external_data/all_params.json", "w") as f:
+    json.dump(t, f)

@@ -5,6 +5,8 @@ from io import BytesIO
 import re
 from collections import defaultdict
 import pandas as pd
+import graphviz
+from html import escape
 
 import jinja2
 
@@ -148,8 +150,162 @@ def generate_docx_from_kg_index_list(kg, delimiters, kg_index_list):
 
     return docx_buffer
 
+_MAX_WORD_COLS = 63             # Word hard‑limit on columns  :contentReference[oaicite:0]{index=0}
+_BAD_XML_CHARS_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
 
-def generate_docx_from_hybrid_output(content, language):
+def _safe_text(value: object) -> str:
+    """Return XML‑safe, non‑None, length‑capped string for a table cell."""
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return ""
+    text = str(value)
+    # strip control chars Word’s XML parser can’t handle
+    text = _BAD_XML_CHARS_RE.sub("", text)
+    # Word has no documented per‑cell limit, but 32 K keeps you well clear
+    return text[:32760]
+
+def add_dataframe_table(doc: Document,
+                        df: pd.DataFrame,
+                        style: str = "LightShading-Accent1") -> None:
+    """
+    Render *df* as a Word table and append it to *doc*, coping with:
+      • empty frames
+      • >63 columns
+      • missing / localised style names
+      • NaN / None / weird unicode in the data
+    """
+    if df.empty or df.shape[1] == 0:
+        return                                      # nothing to do
+
+    # Word refuses tables wider than 63 columns
+    if df.shape[1] > _MAX_WORD_COLS:
+        df = df.iloc[:, :_MAX_WORD_COLS]
+
+    # build the table (first row = header row)
+    table = doc.add_table(rows=1, cols=df.shape[1])
+
+    # try the requested style first, fall back gracefully if Word/doc lacks it
+    try:
+        # API style names omit the hyphen: “Light Shading – Accent 1”
+        # becomes “Light Shading Accent 1” :contentReference[oaicite:1]{index=1}
+        table.style = style
+    except KeyError:
+        pass                                         # default style is OK
+
+    # ---- header row -----------------------------------------------------
+    for cell, col in zip(table.rows[0].cells, df.columns):
+        cell.text = _safe_text(col)
+
+    # ---- data rows ------------------------------------------------------
+    for _, row in df.iterrows():
+        for cell, val in zip(table.add_row().cells, row):
+            cell.text = _safe_text(val)
+
+
+STRIP_IDX_RE = re.compile(r'(_\d+|\(\d+\))$', re.VERBOSE)  # to remove indexes _1 or (1) added to target words
+NONWORD_RE = re.compile(r'\W+')
+WORD_COL_CANDIDATES = ("target_word", "word")
+
+STRIP_IDX_RE = re.compile(r"(_\d+|\(\d+\))$")      # strips _2  or (2)
+
+
+# ------------------------------------------------------------------
+#  main helper
+# ------------------------------------------------------------------
+def _prepare_words(df: pd.DataFrame) -> pd.DataFrame:
+    # 1) find the column that holds the word
+    for col in WORD_COL_CANDIDATES:
+        if col in df.columns:
+            word_col = col
+            break
+    else:
+        raise KeyError(
+            f"None of {WORD_COL_CANDIDATES} found in DataFrame columns "
+            f"{list(df.columns)}"
+        )
+
+    out = df.copy()
+
+    # ------------------------------------------------------------------
+    # Strip “_2” or “(2)” only once and reuse the result everywhere
+    # ------------------------------------------------------------------
+    clean_word = (
+        out[word_col]
+        .fillna("")
+        .astype(str)
+        .str.replace(r"(_\d+|\(\d+\))$", "", regex=True)
+    )
+
+    # ---- what the reader will see ------------------------------------
+    out["display_word"] = clean_word
+
+    # ---- Graphviz node‑id (slug of the cleaned word) ------------------
+    out["word_node_id"] = (
+        "word_" + clean_word.str.replace(r"\W+", "_", regex=True)
+    )
+
+    # ---- concept node‑id (unchanged) ----------------------------------
+    out["concept_node_id"] = (
+        "concept_" +
+        (out["concept"].astype(str)
+         + "|" + out["IP"].astype(str)
+         + "|" + out["RP"].astype(str))
+        .apply(hash).astype(str)
+    )
+
+    return out
+
+# ------------------------------------------------------------------
+#  main helper
+# ------------------------------------------------------------------
+def add_concept_graph(doc: Document, df: pd.DataFrame) -> None:
+    """
+    Build a left‑to‑right bipartite graph:
+        target_word  ──▶  concept (IP, RP)
+    and insert it as a picture into *doc*.
+
+    Required df columns: target_word, concept, IP, RP
+    """
+    df = _prepare_words(df)          # ← use the cleaned copy
+
+    g = graphviz.Digraph('WordConcept', format='png')
+    g.attr(rankdir='LR', splines='true', overlap='false')
+
+    # ---------- left column: target words ---------------------------
+    with g.subgraph(name='cluster_targets') as s:
+        s.attr(rank='same')
+        for node_id, label in (df[['word_node_id', 'display_word']]
+                               .drop_duplicates()
+                               .sort_values('display_word')
+                               .itertuples(index=False, name=None)):
+            s.node(node_id, label,
+                   shape='box', style='rounded,filled',
+                   fillcolor='#f0f8ff', fontsize='14')
+
+    # ---------- right column: concept + IP + RP ---------------------
+    with g.subgraph(name='cluster_concepts') as s:
+        s.attr(rank='same')
+        for node_id, c, ip, rp in (
+                df[["concept_node_id", "concept", "IP", "RP"]]
+                        .drop_duplicates()
+                        .sort_values(["concept", "IP", "RP"])
+                        .itertuples(index=False, name=None)
+        ):
+            label = f"{c}\nIP={ip}  RP={rp}"
+            s.node(node_id, label,
+                   shape="ellipse", style="filled",
+                   fillcolor="#ffffe0", fontsize="12")
+
+    # ---------- edges -----------------------------------------------
+    for _, r in df.iterrows():
+        g.edge(r.word_node_id, r.concept_node_id)
+
+    # ---------- render & insert -------------------------------------
+    stream = BytesIO(g.pipe(format='png'))
+    doc.add_picture(stream, width=doc.sections[0].page_width * 0.6)
+    doc.add_paragraph()           # blank line after the picture
+
+
+def generate_docx_from_hybrid_output(content, language, gloss_format="table"):
     document = Document()
     document.add_heading('Learning {}: Elements of grammar.'.format(language), 0)
     document.add_heading('Introduction', 1)
@@ -167,18 +323,10 @@ def generate_docx_from_hybrid_output(content, language):
 
             df = parse_alterlingua(example["gloss"])
 
-            table = document.add_table(rows=1, cols=len(df.columns), style="Light Shading Accent 1")
-
-            # Add headers
-            hdr_cells = table.rows[0].cells
-            for i, column_name in enumerate(df.columns):
-                hdr_cells[i].text = column_name
-
-            # Add rows
-            for _, row in df.iterrows():
-                cells = table.add_row().cells
-                for i, value in enumerate(row):
-                    cells[i].text = str(value)
+            if gloss_format == "table":
+                add_dataframe_table(document, df)
+            elif gloss_format == "graph":
+                add_concept_graph(document, df)
 
             document.add_paragraph("""   """)
 
@@ -214,7 +362,6 @@ def generate_docx_from_grammar_json(grammar_json, language):
                     pex = document.add_paragraph(" ", "Normal")
                     pex.add_run(f'{example["translation"]}', style='Strong')
                     document.add_paragraph(f'{example["english sentence"]}', "Normal")
-
 
                     # Define the number of rows (one header + words) and columns
                     num_words = len(example["gloss"])

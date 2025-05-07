@@ -820,7 +820,7 @@ def build_concept_dict(kg):
             details = {
                 "pivot_sentence": content["sentence_data"]["text"],
                 "target_sentence": content["recording_data"]["translation"],
-                "comment": content["recording_data"]["comment"],
+                "comment": content.get("recording_data", "").get("comment", ""),
                 "target_words":
                     content.get("recording_data", "none").get("concept_words", "none").get(concept, "none").split("_")[
                         0],
