@@ -353,7 +353,7 @@ if st.session_state["req_json"] != {}:
         #if the current node is not a terminal feature, ask the user to navigate the grammar graph to a terminal node with leaves being values, and choose a value.
         else:
             #colz.write("The current grammar node is not a terminal feature, navigate to a terminal feature to choose a value")
-            # currently not allowing direct inputs of deictic. They have to be conceps introduced in the sentence.
+            # currently not allowing direct inputs of deictic. They have to be concepts introduced in the sentence.
             if current_node_children == ["ABSOLUTE REFERENCE", "DEICTIC"]:
                 st.session_state["current_concept_node"] = "ABSOLUTE REFERENCE"
                 st.rerun()

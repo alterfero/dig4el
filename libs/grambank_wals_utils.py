@@ -126,9 +126,15 @@ def get_language_family_by_language_name(lname):
         return wu.language_info_by_id[lid].get("family", None)
     else:
         try:
-            lid = next(gu.grambank_language_by_lid[lid]["name"]
+            lid = next(lid
                        for lid in gu.grambank_language_by_lid.keys()
                        if gu.grambank_language_by_lid[lid]["name"] == lname)
+            try:
+                family = gu.grambank_language_by_lid[lid]["family"]
+            except KeyError:
+                print("Error in get_language_family_by_language_name")
+                print("lid {} not in grambank_language_by_lid or no family mentioned in that entry".format(lid))
+                return None
             return gu.grambank_language_by_lid[lid]["family"]
         except StopIteration:
             return None

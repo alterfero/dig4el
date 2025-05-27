@@ -308,8 +308,9 @@ def add_concept_graph(doc: Document, df: pd.DataFrame) -> None:
 def generate_docx_from_hybrid_output(content, language, gloss_format="table"):
     document = Document()
     document.add_heading('Learning {}: Elements of grammar.'.format(language), 0)
-    document.add_heading('Introduction', 1)
-    document.add_paragraph(content["introduction"]["description"])
+    if "introduction" in content.keys():
+        document.add_heading('Introduction', 1)
+        document.add_paragraph(content["introduction"]["description"])
     for chapter in content["chapters"]:
         document.add_heading(chapter["title"], 1)
         document.add_paragraph(chapter["explanation"])
