@@ -300,7 +300,7 @@ if st.session_state["cq_is_chosen"]:
         if st.session_state["counter"] < number_of_sentences:
             st.session_state["counter"] = st.session_state["counter"] + 1
             st.rerun()
-    jump_to = st.slider(f"Jump to segment", 1, number_of_sentences, value=st.session_state["counter"])
+    jump_to = colw.slider(f"Jump to segment", 1, number_of_sentences, value=st.session_state["counter"])
     if jump_to != st.session_state["counter"]:
         st.session_state["counter"] = jump_to
         st.rerun()
@@ -355,6 +355,18 @@ if st.session_state["cq_is_chosen"]:
     key_counter += 1
     translation = utils.normalize_sentence(translation_raw)
     segmented_target_sentence = stats.custom_split(translation, st.session_state["recording"]["delimiters"])
+
+    # Early sentence validation
+    if colz.button("Validate sentence", key="early_validation"+str(key_counter)):
+        st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
+            "legacy index": cq["dialog"][str(st.session_state["counter"])]["legacy index"],
+            "cq": cq["dialog"][str(st.session_state["counter"])]["text"],
+            "alternate_pivot": alternate_pivot,
+            "translation": translation,
+            "concept_words": {},
+            "comment": ""
+        }
+        key_counter += 1
 
     # for each base concept, display a multiselect tool to select the word(s) that express (part of) this concept in the target language
     # the word(s) are stored as strings in the json, separated by "...", but must be a list for the multiselect tool to work.
@@ -422,7 +434,7 @@ if st.session_state["cq_is_chosen"]:
     comment = colz.text_input("Comments/Notes", value=default_comment, key="comment" + str(st.session_state["counter"]))
 
     # Validate Sentence
-    if colz.button("Validate sentence"):
+    if colz.button("Validate expression and connections"):
         st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
             "legacy index": cq["dialog"][str(st.session_state["counter"])]["legacy index"],
             "cq": cq["dialog"][str(st.session_state["counter"])]["text"],
@@ -447,7 +459,7 @@ if st.session_state["cq_is_chosen"]:
                 + st.session_state["recording"]["interviewee"] + "_"
                 + str(int(time.time())) + ".json")
     colf, colg = st.columns(2)
-    colf.download_button(label="**download your transcription as it is now**",
+    colf.download_button(label="**download your transcription**",
                          data=json.dumps(st.session_state["recording"], indent=4), file_name=filename)
     colf.markdown("""Downloading the transcription saves your transcription on your computer.""")
     colg.markdown("""

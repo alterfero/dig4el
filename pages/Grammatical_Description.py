@@ -704,7 +704,7 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                                                          list(st.session_state["params_by_topic"].keys()))
 
     selected_parameters_by_topic = {}
-    if "All" in st.session_state["selected_topics"]:
+    if "All" in st.session_state["selected_topics"] or st.session_state["selected_topics"] == []:
         st.session_state["selected_topics"] = [topic for topic in  list(st.session_state["params_by_topic"].keys())]
     for selected_topic in st.session_state["selected_topics"]:
         selected_parameters_by_topic[selected_topic] = \
