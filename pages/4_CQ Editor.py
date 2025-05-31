@@ -176,12 +176,17 @@ with colz.container():
         st.rerun()
     if cole.button("Delete"):
         last_position = get_last_dialog_position()
-        # shift dialogs
-        for i in range(st.session_state["counter"], last_position - 1):
-            st.session_state["cq"]["dialog"][str(i)] = copy.deepcopy(st.session_state["cq"]["dialog"][str(i+1)])
-        # erase last
-        del(st.session_state["cq"]["dialog"][str(last_position)])
-        st.rerun()
+        if st.session_state["counter"] == last_position:
+            st.session_state["counter"] = last_position - 1
+            del (st.session_state["cq"]["dialog"][str(last_position)])
+            st.rerun()
+        else:
+            # shift dialogs
+            for i in range(st.session_state["counter"], last_position - 1):
+                st.session_state["cq"]["dialog"][str(i)] = copy.deepcopy(st.session_state["cq"]["dialog"][str(i+1)])
+            # erase last
+            del(st.session_state["cq"]["dialog"][str(last_position)])
+            st.rerun()
 
 
 # there's an entry on that counter mark
@@ -521,12 +526,6 @@ if st.session_state["req_json"] != {}:
                               config=config)
 
 
-# st.subheader("Current questionnaire")
-# st.write(st.session_state["cq"])
-# st.write("req_json")
-# st.write(st.session_state["req_json"])
-# st.write("concepts")
-# st.write(st.session_state["concept_set"])
     
     
 

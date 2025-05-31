@@ -24651,17 +24651,6 @@
             },
             "legacy index": "29b",
             "idiomaticity": 1
-        },
-        "34": {
-            "speaker": "",
-            "text": "",
-            "intent": "",
-            "legacy index": "",
-            "idiomaticity": 1,
-            "predicate": "",
-            "concept": [],
-            "graph": {},
-            "trimmed_graph": {}
         }
     }
 }
