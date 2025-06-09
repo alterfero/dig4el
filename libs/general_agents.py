@@ -30,14 +30,15 @@ try:
         domain_elements_pk_by_parameter_pk = json.load(f)
     with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
         parameter_pk_by_name_filtered = json.load(f)
+    default_wals_cpt = pd.read_json("./external_data/wals_derived/de_conditional_probability_df.json")
 except FileNotFoundError:
     with open("../external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
         domain_elements_pk_by_parameter_pk = json.load(f)
     with open("../external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
         parameter_pk_by_name_filtered = json.load(f)
+    default_wals_cpt = pd.read_json("../external_data/wals_derived/de_conditional_probability_df.json")
 
 # CLASSES
-
 class LanguageParameter:
     def __init__(self, parameter_name, origin="wals", priors_language_pk_list = [], verbose=False):
         self.verbose = verbose
@@ -238,7 +239,10 @@ class GeneralAgent:
     """ A general agent looks at a set of parameters independently of constructions.
     by default, all parameters a general agent observe are considered as nodes of a non-directed,
     fully connected graph."""
-    def __init__(self, name, parameter_names=[], language_stat_filter={}, verbose=False):
+    def __init__(self, name, parameter_names=[],
+                 language_stat_filter={},
+                 active_wals_cpt=default_wals_cpt,
+                 verbose=False):
         self.verbose = verbose
         if self.verbose:
             print("General Agent {} initialization, verbose is {}.".format(name, verbose))
@@ -248,6 +252,10 @@ class GeneralAgent:
         self.parameter_names = parameter_names
         self.language_parameters = {}
         self.graph = {}
+        self.active_wals_cpt = active_wals_cpt
+        # make index and column labels strings.
+        self.active_wals_cpt.index = self.active_wals_cpt.index.astype(str)
+        self.active_wals_cpt.columns = self.active_wals_cpt.columns.astype(str)
 
         # create language_pks_used_for_statistics
         self.wals_languages_used_for_statistics = self.initialize_wals_list_of_language_pks_used_for_statistics()
@@ -311,7 +319,7 @@ class GeneralAgent:
         The graph is represented by a dict of nodes. Each Pi node's value is a dict of other Pj nodes it is connected
         to, each of these nodes with the value (Pj given Pi) matrix."""
         if self.verbose:
-            print("Agent {}: initializing graph.")
+            print("General Agent: initializing graph.")
         if alternate_graph != {}:
             self.graph = alternate_graph
         else:
@@ -320,9 +328,10 @@ class GeneralAgent:
                 for lpn2 in self.language_parameters.keys():
                     # add edge and compute only if both wals or grambank
                     if lpn1 in wu.parameter_pk_by_name.keys() and lpn2 in wu.parameter_pk_by_name.keys() and lpn2 != lpn1:
-                        cp_matrix = wu.compute_wals_cp_matrix_from_general_data(
+                        cp_matrix = wu.extract_wals_cp_matrix_from_general_data(
                             self.language_parameters[lpn2].parameter_pk,
-                            self.language_parameters[lpn1].parameter_pk
+                            self.language_parameters[lpn1].parameter_pk,
+                            active_wals_cpt=self.active_wals_cpt
                         )
                         self.graph[lpn1][lpn2] = cp_matrix
                     elif lpn1 in gu.grambank_pid_by_pname.keys() and lpn2 in gu.grambank_pid_by_pname.keys() and lpn2 != lpn1:
@@ -372,6 +381,10 @@ class GeneralAgent:
             if "macroarea" in self.language_stat_filters.keys():
                 for f in self.language_stat_filters["macroarea"]:
                     language_pks_used_for_statistics += wu.get_language_pks_by_macroarea(f)
+            if "exclusion_list" in self.language_stat_filters.keys():
+                language_pks_used_for_statistics = [item for item in list(wu.language_by_pk.keys())
+                                                    if item not in self.language_stat_filters["exclusion_list"]]
+
             language_pks_used_for_statistics = list(set(language_pks_used_for_statistics))
         else:
             language_pks_used_for_statistics = list(wu.language_by_pk.keys())

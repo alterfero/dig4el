@@ -19,6 +19,24 @@ import json
 from os.path import isfile, join
 from os import listdir
 import pandas as pd
+import hashlib
+
+
+def generate_hash_from_list(identifiers):
+    # Step 1: Sort the list of identifiers
+    sorted_identifiers = sorted(identifiers)
+
+    # Step 2: Concatenate the identifiers into a single string
+    concatenated = ''.join(sorted_identifiers)
+
+    # Step 3: Hash the concatenated string using SHA-256
+    hash_object = hashlib.sha256(concatenated.encode())
+    full_hash = hash_object.hexdigest()
+
+    # Step 4: Truncate the hash to 8 characters (optional)
+    short_hash = full_hash[:16]
+
+    return short_hash
 
 def normalize_column(column):
     col_sum = column.sum()

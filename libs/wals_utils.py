@@ -22,6 +22,7 @@ import numpy as np
 import pickle
 from collections import defaultdict
 from pathlib import Path
+import libs.utils as u
 
 # parameter.csv list parameters by pk and their names
 #
@@ -172,7 +173,7 @@ def get_careful_name_of_de_pk(depk):
     else:
         return(str(depk))
 
-def compute_wals_cp_matrix_from_general_data(ppk1, ppk2):
+def extract_wals_cp_matrix_from_general_data(ppk1, ppk2, active_wals_cpt):
     """ creates the conditional probability matrix P(p1 | p2) and returns it as  df"""
     # if rows of extracted cpt samples have only zeros, making impossible a normalization,
     # the values of such rows are changed to uniform distributions, expressing the absence of information.
@@ -181,10 +182,9 @@ def compute_wals_cp_matrix_from_general_data(ppk1, ppk2):
 
         p1_de_pk_list = domain_elements_pk_by_parameter_pk[ppk1]
         p2_de_pk_list = domain_elements_pk_by_parameter_pk[ppk2]
-
         # P1 GIVEN P2 DF
         # keep only p1 on rows
-        filtered_cpt_p1 = cpt.loc[p1_de_pk_list]
+        filtered_cpt_p1 = active_wals_cpt.loc[p1_de_pk_list]
         # keep only given p2 on columns
         filtered_cpt_p1_given_p2 = filtered_cpt_p1[p2_de_pk_list]
         # normalization: all the columns of each row (primary event) should sum up to 1
@@ -340,16 +340,16 @@ def build_domain_elements_by_language_and_languages_by_domain_element():
 
 # ---------------------------------------------------------------------------
 # HYPER-PARAMETERS
-N_MIN = 5     # keep edge only if we saw B in ≥ N_MIN languages
-K_MIN = 2     # …and A∧B in ≥ K_MIN languages
-ALPHA = 1.0   # Beta(α,β) prior → Laplace smoothing   (α=β=1)
-BETA = 1.0
+N_MIN = 1     # keep edge only if we saw B in ≥ N_MIN languages
+K_MIN = 1     # …and A∧B in ≥ K_MIN languages
+EPSILON = 0.001   # Beta(α,β) prior → avoid 0   (α=β=1)
 # ---------------------------------------------------------------------------
 
 def compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts = False):
     """
-    Posterior-mean estimate of  P(A|B)  with Beta(α,β) prior,
-    plus counts so the caller can decide to keep/skip the edge.
+    Posterior-mean estimate of  P(A|B)
+    P(A|B) estimated as (count(A=ai | B=bj) + epsilon) / (count(B=bj) + epsilon * vocabulary_size)
+    Lidstone smoothing with epsilon to avoid zeros.
     """
     b_count = 0
     a_and_b = 0
@@ -367,7 +367,7 @@ def compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts = False
         return None  # undefined
 
     # Bayesian posterior mean
-    p_hat = (a_and_b + ALPHA) / (b_count + ALPHA + BETA)
+    p_hat = (a_and_b + EPSILON) / (b_count + EPSILON)
 
     if return_counts:
         return p_hat, b_count, a_and_b
@@ -376,9 +376,10 @@ def compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts = False
 
 
 def build_conditional_probability_table(filtered_params=True,
-                                        language_filter=None):
+                                        language_filter=None,
+                                        exclude_lids=None):
     """
-    Build a CPT with Beta-smoothed estimates and *None* where counts are too small.
+    Build a CPT with *None* where counts are too small.
     """
     language_filter = language_filter or {}
 
@@ -393,10 +394,22 @@ def build_conditional_probability_table(filtered_params=True,
         ]:
             for label in language_filter.get(key, []):
                 language_pks |= set(table.get(label, []))
+    if exclude_lids:
+        exclude_pks = [language_pk_by_id.get(lid, None) for lid in exclude_lids]
+        print("exclude pks: {}".format(exclude_pks))
+        exclude_pks = set([item for item in exclude_pks if item is not None])
+        print("WALS CPT computation: {} language pks from exclusion list not found".format(len(exclude_lids) - len(exclude_pks)))
+        language_pks = set(language_by_pk.keys())
+        language_pks -= exclude_pks
+        print("WALS CPT computation: Excluded {} languages".format(len(exclude_lids)))
+        print("Full hash of excluded languages: ")
+        print(u.generate_hash_from_list(exclude_lids))
     else:
         language_pks = set(language_by_pk.keys())
 
     language_pks = list(language_pks)
+    # to test
+    # language_pks = ['2534', '2343', '1821']
 
     # ---- 2. which domain-element values -----------------------------------
     lookup_file = (
@@ -418,20 +431,24 @@ def build_conditional_probability_table(filtered_params=True,
     for i, a_pk in enumerate(domain_element_pk_list, 1):
         print(f"Row {i}/{len(domain_element_pk_list)}  value={a_pk}")
         for b_pk in domain_element_pk_list:
-            p_hat, b_count, a_and_b = compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts=True)
-
-            if p_hat is None:
+            if compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts=True) is None:
                 cpt.at[a_pk, b_pk] = np.nan
-                continue
-
-            # too little support? → mark as None
-            if b_count < N_MIN or a_and_b < K_MIN:
-                cpt.at[a_pk, b_pk] = np.nan
+                cpt_trust.at[a_pk, b_pk] = np.nan
             else:
-                cpt.at[a_pk, b_pk] = p_hat
+                p_hat, b_count, a_and_b = compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts=True)
 
-            # trust table
-            cpt_trust.at[a_pk, b_pk] = a_and_b
+                if p_hat is None:
+                    cpt.at[a_pk, b_pk] = np.nan
+                    continue
+
+                # too little support? → mark as None
+                if b_count < N_MIN or a_and_b < K_MIN:
+                    cpt.at[a_pk, b_pk] = np.nan
+                else:
+                    cpt.at[a_pk, b_pk] = p_hat
+
+                # trust table
+                cpt_trust.at[a_pk, b_pk] = a_and_b
 
     # ---- 4. save -----------------------------------------------------------
     out = Path("../external_data/wals_derived/partial_cpt")
@@ -441,13 +458,16 @@ def build_conditional_probability_table(filtered_params=True,
     for key in ["family", "subfamily", "genus", "macroarea"]:
         if key in language_filter and language_filter[key]:
             suffix.append(key + "_" + "-".join(language_filter[key]))
-    fname = "de_conditional_probability_df_new" + ("_" + "_".join(suffix) if suffix else "") + ".json"
-    f_trust_name = "de_conditional_probability_trust_df_new" + ("_" + "_".join(suffix) if suffix else "") + ".json"
+    if exclude_lids:
+        suffix.append("languages_excluded_hash_{}".format(u.generate_hash_from_list(exclude_lids)))
+
+    fname = "de_conditional_probability" + ("_" + "_".join(suffix) if suffix else "") + ".json"
+    f_trust_name = "de_conditional_probability_trust_" + ("_" + "_".join(suffix) if suffix else "") + ".json"
 
     cpt.to_json(out / fname)
     cpt_trust.to_json(out / f_trust_name)
 
-    return cpt
+    return os.path.join(out, fname)
 
 #   ========================
 
