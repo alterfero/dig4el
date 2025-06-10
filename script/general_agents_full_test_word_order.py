@@ -283,7 +283,7 @@ def analyze_results():
             xlabel: str,
             ylabel: str,
             filename: Path,
-            figsize=(14, 7),
+            figsize=(9, 10),
             rotation=90,
             horizontal: bool = False,
     ):
@@ -329,21 +329,52 @@ def analyze_results():
     # 1. Boxplot: accuracy variation within each language
     # -----------------------------------------------------------------------------
     # Sort languages by median accuracy (high → low) for readability
-    lang_order = (
-        lang_acc.sort_values("median", ascending=False)["language_name"].tolist()
+    sorted_lang_acc = lang_acc.sort_values("median", ascending=False)["language_name"]
+
+    # split and display two half tables so they can fit on pages
+    n = len(lang_acc)
+    half = n // 2
+
+    # Split into two chunks
+    lang_acc_chunk1 = sorted_lang_acc.iloc[:half]
+    lang_acc_chunk2 = sorted_lang_acc.iloc[half:]
+
+    lang_order_chunk1 = (
+        lang_acc_chunk1.tolist()
     )
-    box_data_lang = [
+    lang_order_chunk2 = (
+        lang_acc_chunk2.tolist()
+    )
+
+
+    box_data_lang_1 = [
         run_acc2.loc[run_acc2.language_name == name, "run_accuracy"].tolist()
-        for name in lang_order
+        for name in lang_acc_chunk1
     ]
 
     make_boxplot(
-        box_data_lang,
-        lang_order,
-        title="Inference accuracy distribution per language (10 epochs each)",
+        box_data_lang_1,
+        lang_order_chunk1,
+        title="",
         xlabel="Accuracy (0–1)",
         ylabel="Language",
-        filename=Path("../test_result_analysis/accuracy_per_language_boxplot.png"),
+        filename=Path("../test_result_analysis/accuracy_per_language_boxplot_chunk1.png"),
+        rotation=0,
+        horizontal=True,
+    )
+
+    box_data_lang_2 = [
+        run_acc2.loc[run_acc2.language_name == name, "run_accuracy"].tolist()
+        for name in lang_acc_chunk2
+    ]
+
+    make_boxplot(
+        box_data_lang_2,
+        lang_order_chunk2,
+        title="",
+        xlabel="Accuracy (0–1)",
+        ylabel="Language",
+        filename=Path("../test_result_analysis/accuracy_per_language_boxplot_chunk2.png"),
         rotation=0,
         horizontal=True,
     )

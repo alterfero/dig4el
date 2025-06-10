@@ -265,7 +265,9 @@ def compute_wals_param_distribution(parameter_pk, language_whitelist):
                 print("de_pk {} not in value_by_domain_element_pk".format(de_pk))
             param_distribution[str(de_pk)] = c
         for de_pk in param_distribution.keys():
-            param_distribution[de_pk] = param_distribution[de_pk]/total_count
+            if total_count != 0:
+                param_distribution[de_pk] = param_distribution[de_pk]/total_count
+
     else:
         print("Parameter pk {} not in domain_elements_pk_by_parameter_pk".format(parameter_pk))
     return param_distribution
