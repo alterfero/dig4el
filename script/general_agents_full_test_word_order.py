@@ -6,6 +6,7 @@ import re
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 from libs import general_agents
 from libs import wals_utils as wu
 from libs.utils import generate_hash_from_list
@@ -277,20 +278,47 @@ def analyze_results():
     # -----------------------------------------------------------------------------
     def make_boxplot(
             data,
-            x_labels,
+            labels,
             title: str,
+            xlabel: str,
             ylabel: str,
             filename: Path,
             figsize=(14, 7),
             rotation=90,
+            horizontal: bool = False,
     ):
         plt.figure(figsize=figsize)
-        plt.boxplot(data, labels=x_labels, showfliers=False)
+        bp = plt.boxplot(
+            data,
+            labels=labels,
+            showfliers=False,
+            vert=not horizontal,
+            patch_artist=True,
+            boxprops=dict(facecolor="lightblue", color="black"),
+            medianprops=dict(color="red"),
+            whiskerprops=dict(color="black"),
+            capprops=dict(color="black"),
+        )
         plt.title(title, fontweight="bold")
-        plt.ylabel(ylabel)
-        plt.xticks(ha="right", rotation=rotation)
-        plt.ylim(-0.05, 1.05)
-        plt.grid(axis="y", alpha=0.3)
+        if horizontal:
+            plt.xlabel(xlabel)
+            plt.ylabel(ylabel)
+            plt.yticks(rotation=rotation)
+            plt.xlim(-0.05, 1.05)
+            plt.grid(axis="x", alpha=0.3)
+        else:
+            plt.ylabel(ylabel)
+            plt.xlabel(xlabel)
+            plt.xticks(rotation=rotation)
+            plt.ylim(-0.05, 1.05)
+            plt.grid(axis="y", alpha=0.3)
+
+        legend_elements = [
+            Patch(facecolor="lightblue", edgecolor="black", label="IQR"),
+            Line2D([0], [0], color="red", label="Median"),
+            Line2D([0], [0], color="black", label="Whiskers"),
+        ]
+        plt.legend(handles=legend_elements, loc="lower right")
         plt.tight_layout()
         plt.savefig(filename, dpi=300)
         plt.close()
@@ -313,8 +341,11 @@ def analyze_results():
         box_data_lang,
         lang_order,
         title="Inference accuracy distribution per language (10 epochs each)",
-        ylabel="Accuracy (0–1)",
+        xlabel="Accuracy (0–1)",
+        ylabel="Language",
         filename=Path("../test_result_analysis/accuracy_per_language_boxplot.png"),
+        rotation=0,
+        horizontal=True,
     )
 
     # -----------------------------------------------------------------------------
@@ -329,7 +360,8 @@ def analyze_results():
         box_data_param,
         param_order,
         title="Inference accuracy distribution per grammatical parameter",
-        ylabel="Proportion correct",
+        xlabel="Proportion correct",
+        ylabel="Grammatical parameter",
         filename=Path("../test_result_analysis/accuracy_per_parameter_boxplot.png"),
         rotation=45,
     )
@@ -341,7 +373,8 @@ def analyze_results():
         [lang_acc["median"].tolist()],
         ["all languages"],
         title="Distribution of median accuracy across languages",
-        ylabel="Median accuracy",
+        xlabel="Median accuracy",
+        ylabel="",
         filename=Path("../test_result_analysis/language_median_accuracy_boxplot.png"),
         rotation=0,
         figsize=(4, 6),
