@@ -10,7 +10,7 @@ from matplotlib.lines import Line2D
 from libs import general_agents
 from libs import wals_utils as wu
 from libs.utils import generate_hash_from_list
-from scipy.stats import gaussian_kde
+from scipy.stats import gaussian_kde, bootstrap
 from matplotlib.patches import Patch
 
 # Language ids used for testing. These are all the 116 languages in WALS with data for the 15 parameters
@@ -246,13 +246,26 @@ def analyze_results():
         .rename("run_accuracy")
         .reset_index()
     )
-    # Accuracy per language (across all epochs)
+    # Accuracy per language (across all epochs) using bootstrap CIs
+    lang_records = []
+    for name, grp in run_acc2.groupby("language_name", sort=False):
+        vals = grp["run_accuracy"].to_numpy()
+        ci = bootstrap((vals,), np.mean, confidence_level=0.95,
+                       n_resamples=5000, method="percentile").confidence_interval
+        lang_records.append(
+            {
+                "language_name": name,
+                "mean": vals.mean(),
+                "median": np.median(vals),
+                "ci_lower": ci.low,
+                "ci_upper": ci.high,
+                "n_epochs": len(vals),
+            }
+        )
     lang_acc = (
-        run_acc2.groupby("language_name", sort=False)["run_accuracy"]
-        .agg(["median", "mean", "std", "min", "max", "count"])
-        .reset_index()
-        .rename(columns={"count": "n_epochs"})
+        pd.DataFrame(lang_records)
         .sort_values("mean", ascending=False)
+        .reset_index(drop=True)
     )
 
     # Accuracy per parameter (across languages × epochs)
@@ -324,61 +337,82 @@ def analyze_results():
         plt.close()
         print(f"Saved {filename}")
 
+    def make_errorbar_plot(
+            df: pd.DataFrame,
+            title: str,
+            xlabel: str,
+            ylabel: str,
+            filename: Path,
+            figsize=(9, 10),
+            rotation=0,
+            horizontal: bool = True,
+    ):
+        """Plot mean accuracy with bootstrap CI as error bars."""
+        plt.figure(figsize=figsize)
+        positions = np.arange(len(df))
+        if horizontal:
+            plt.errorbar(
+                df["mean"],
+                positions,
+                xerr=[df["mean"] - df["ci_lower"], df["ci_upper"] - df["mean"]],
+                fmt="o",
+                color="black",
+                ecolor="lightblue",
+                capsize=3,
+            )
+            plt.yticks(positions, df["language_name"], rotation=rotation)
+            plt.xlabel(xlabel)
+            plt.ylabel(ylabel)
+            plt.xlim(-0.05, 1.05)
+            plt.grid(axis="x", alpha=0.3)
+        else:
+            plt.errorbar(
+                positions,
+                df["mean"],
+                yerr=[df["mean"] - df["ci_lower"], df["ci_upper"] - df["mean"]],
+                fmt="o",
+                color="black",
+                ecolor="lightblue",
+                capsize=3,
+            )
+            plt.xticks(positions, df["language_name"], rotation=rotation)
+            plt.ylabel(ylabel)
+            plt.xlabel(xlabel)
+            plt.ylim(-0.05, 1.05)
+            plt.grid(axis="y", alpha=0.3)
+        plt.title(title, fontweight="bold")
+        plt.tight_layout()
+        plt.savefig(filename, dpi=300)
+        plt.close()
+        print(f"Saved {filename}")
+
 
     # -----------------------------------------------------------------------------
-    # 1. Boxplot: accuracy variation within each language
-    # -----------------------------------------------------------------------------
-    # Sort languages by median accuracy (high → low) for readability
-    sorted_lang_acc = lang_acc.sort_values("median", ascending=False)["language_name"]
 
-    # split and display two half tables so they can fit on pages
-    n = len(lang_acc)
+    # 1. Accuracy per language with bootstrap confidence intervals
+    lang_acc_sorted = lang_acc.sort_values("mean", ascending=False)
+    n = len(lang_acc_sorted)
     half = n // 2
-
-    # Split into two chunks
-    lang_acc_chunk1 = sorted_lang_acc.iloc[:half]
-    lang_acc_chunk2 = sorted_lang_acc.iloc[half:]
-
-    lang_order_chunk1 = (
-        lang_acc_chunk1.tolist()
-    )
-    lang_order_chunk2 = (
-        lang_acc_chunk2.tolist()
-    )
-
-
-    box_data_lang_1 = [
-        run_acc2.loc[run_acc2.language_name == name, "run_accuracy"].tolist()
-        for name in lang_acc_chunk1
-    ]
-
-    make_boxplot(
-        box_data_lang_1,
-        lang_order_chunk1,
+    chunk1 = lang_acc_sorted.iloc[:half]
+    chunk2 = lang_acc_sorted.iloc[half:]
+    make_errorbar_plot(
+        chunk1,
         title="",
         xlabel="Accuracy (0–1)",
         ylabel="Language",
-        filename=Path("../test_result_analysis/accuracy_per_language_boxplot_chunk1.png"),
+        filename=Path("../test_result_analysis/accuracy_per_language_ci_chunk1.png"),
         rotation=0,
         horizontal=True,
     )
-
-    box_data_lang_2 = [
-        run_acc2.loc[run_acc2.language_name == name, "run_accuracy"].tolist()
-        for name in lang_acc_chunk2
-    ]
-
-    make_boxplot(
-        box_data_lang_2,
-        lang_order_chunk2,
+    make_errorbar_plot(
+        chunk2,
         title="",
         xlabel="Accuracy (0–1)",
         ylabel="Language",
-        filename=Path("../test_result_analysis/accuracy_per_language_boxplot_chunk2.png"),
+        filename=Path("../test_result_analysis/accuracy_per_language_ci_chunk2.png"),
         rotation=0,
         horizontal=True,
     )
-
     # -----------------------------------------------------------------------------
     # 2. Boxplot: accuracy distribution per parameter
     # -----------------------------------------------------------------------------
