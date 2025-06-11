@@ -1,0 +1,896 @@
+{
+    "target language": "Tahitian",
+    "delimiters": [
+        " ",
+        ".",
+        ",",
+        ";",
+        ":",
+        "!",
+        "?",
+        "\u2026"
+    ],
+    "pivot language": "English",
+    "cq_uid": "1715973404",
+    "data": {
+        "1": {
+            "legacy index": "1a",
+            "cq": "Good morning Doctor",
+            "alternate_pivot": "",
+            "translation": "'ia ora na taote",
+            "concept_words": {
+                "GREET": "'ia...ora...na",
+                "PROCESSIVE PREDICATE": "'ia"
+            },
+            "comment": ""
+        },
+        "2": {
+            "legacy index": "1b",
+            "cq": "How are you?",
+            "alternate_pivot": "",
+            "translation": "e aha t\u014d 'oe huru",
+            "concept_words": {
+                "ASK": "aha",
+                "GREET": "e...aha...t\u014d...'oe...huru",
+                "INCLUSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "3": {
+            "legacy index": "2",
+            "cq": "I'm fine, and you?",
+            "alternate_pivot": "",
+            "translation": "maita'i, 'e 'oe",
+            "concept_words": {
+                "ASK": "",
+                "ASSERT": "",
+                "ATTRIBUTIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "4": {
+            "legacy index": "3",
+            "cq": "Well\u2026 I\u2019m not feeling well these days.",
+            "alternate_pivot": "",
+            "translation": "'aita... e'ere i te mea maita'i i teie mau mahana",
+            "concept_words": {
+                "ASSERT": "",
+                "Negative Polarity": "e'ere",
+                "Ref_speaker": "",
+                "experiencing in the body": "",
+                "good": "maita'i",
+                "these days": "i_2...teie...mau...mahana",
+                "ATTRIBUTIVE PREDICATE": "e'ere...i...te...mea"
+            },
+            "comment": ""
+        },
+        "5": {
+            "legacy index": "4",
+            "cq": "This is why I came to see you.",
+            "alternate_pivot": "",
+            "translation": "n\u014d reira vau e haere mai ai e hi'o ia 'oe",
+            "concept_words": {
+                "ASSERT": "",
+                "event wildcard": "",
+                "causality wildcard": "n\u014d...reira",
+                "Ref_speaker": "vau",
+                "coming": "haere...mai",
+                "seeing": "hi'o",
+                "Ref_addressee": "'oe",
+                "equating": "",
+                "LOCATIVE PREDICATE": "n\u014d"
+            },
+            "comment": ""
+        },
+        "6": {
+            "legacy index": "5a",
+            "cq": "What\u2019s happening to you?",
+            "alternate_pivot": "",
+            "translation": "e aha t\u014d 'oe",
+            "concept_words": {
+                "ASK": "aha",
+                "event wildcard": "",
+                "happening": "",
+                "Ref_addressee": "'oe",
+                "EXISTENTIAL PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "7": {
+            "legacy index": "5b",
+            "cq": "You look sick",
+            "alternate_pivot": "",
+            "translation": "e huru ma'ima'i 'oe",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_addressee": "'oe",
+                "looking like": "huru",
+                "sick": "ma'ima'i",
+                "INCLUSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "8": {
+            "legacy index": "6",
+            "cq": "I can\u2019t sleep well at night.",
+            "alternate_pivot": "",
+            "translation": "e'ita vau e ta'oto maita'i i te p\u014d",
+            "concept_words": {
+                "ASSERT": "",
+                "Negative Polarity": "e'ita",
+                "Ref_speaker": "vau",
+                "being able to": "",
+                "sleeping": "ta'oto",
+                "at night": "i...te...p\u014d",
+                "PROCESSIVE PREDICATE": "e'ita...e"
+            },
+            "comment": ""
+        },
+        "9": {
+            "legacy index": "7a",
+            "cq": "I sweat",
+            "alternate_pivot": "",
+            "translation": "e tahe noa t\u014d'u hou",
+            "concept_words": {
+                "ASSERT": "",
+                "sweating": "tahe...hou",
+                "Ref_speaker": "t\u014d'u",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "10": {
+            "legacy index": "7b",
+            "cq": "I have nightmares.",
+            "alternate_pivot": "",
+            "translation": "ta'otootoahia vau",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "vau",
+                "experiencing in the body": "",
+                "nightmare": "ta'otootoahia",
+                "PROCESSIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "11": {
+            "legacy index": "7c",
+            "cq": "and then I wake up in the middle of the night.",
+            "alternate_pivot": "",
+            "translation": "'e e ara ta'ue mai au i te maorora'a p\u014d",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "au",
+                "waking up": "ara",
+                "middle of the night": "i...te...maorora'a...p\u014d",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "12": {
+            "legacy index": "8a",
+            "cq": "Sometimes I feel hot",
+            "alternate_pivot": "",
+            "translation": "i te tahi taime, e ahu",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "",
+                "experiencing in the body": "",
+                "hot": "ahu",
+                "sometimes": "i...te...tahi...taime",
+                "EXISTENTIAL PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "13": {
+            "legacy index": "8b",
+            "cq": "sometimes I feel cold",
+            "alternate_pivot": "",
+            "translation": "'aore r\u0101, e to'eto'e n\u0101 ni'a i te tino",
+            "concept_words": {
+                "ASSERT": "",
+                "sometimes": "",
+                "Ref_speaker": "",
+                "experiencing in the body": "",
+                "cold": "to'eto'e",
+                "EXISTENTIAL PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "14": {
+            "legacy index": "8c",
+            "cq": "I must have fever?",
+            "alternate_pivot": "",
+            "translation": "e fiva paha t\u014d'u",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "paha",
+                "ASK": "",
+                "Ref_speaker": "t\u014d'u",
+                "experiencing in the body": "",
+                "fever": "fiva",
+                "EXISTENTIAL PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "15": {
+            "legacy index": "9a",
+            "cq": "Let me check your forehead",
+            "alternate_pivot": "",
+            "translation": "'ahani na t\u014d 'oe rae",
+            "concept_words": {
+                "ORDER": "",
+                "Ref_speaker": "",
+                "Ref_addressee": "'oe",
+                "allowing": "'ahani",
+                "checking": "",
+                "forehead": "rae",
+                "PRESENTATIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "16": {
+            "legacy index": "9b",
+            "cq": "Oh yes, you\u2019re hot!",
+            "alternate_pivot": "",
+            "translation": "'a '\u0113, e mea ahu roa",
+            "concept_words": {
+                "APPROVE": "'\u0113",
+                "Ref_addressee": "",
+                "experiencing in the body": "",
+                "hot": "ahu",
+                "ATTRIBUTIVE PREDICATE": "e...mea"
+            },
+            "comment": ""
+        },
+        "17": {
+            "legacy index": "10",
+            "cq": "Do you cough?",
+            "alternate_pivot": "",
+            "translation": "e hota \u0101nei 'oe",
+            "concept_words": {
+                "ASK": "\u0101nei",
+                "Ref_addressee": "'oe",
+                "coughing": "hota",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "18": {
+            "legacy index": "11",
+            "cq": "No, I don\u2019t cough.",
+            "alternate_pivot": "",
+            "translation": "'aita, 'aita e hota",
+            "concept_words": {
+                "DISAPPROVE": "'aita",
+                "Negative Polarity": "'aita_2",
+                "Ref_speaker": "",
+                "coughing": "hota",
+                "EXISTENTIAL PREDICATE": "'aita...e"
+            },
+            "comment": ""
+        },
+        "19": {
+            "legacy index": "12a",
+            "cq": "But every time I wake up, I\u2019m very thirsty.",
+            "alternate_pivot": "",
+            "translation": "'ia ara mai r\u0101 vau, puh\u0101 pape au",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "vau",
+                "every time": "",
+                "waking up": "ara",
+                "experiencing in the body": "",
+                "thirst": "puh\u0101...pape",
+                "PROCESSIVE PREDICATE": "'ia"
+            },
+            "comment": ""
+        },
+        "20": {
+            "legacy index": "12b",
+            "cq": "I feel I need to drink.",
+            "alternate_pivot": "",
+            "translation": "mai te huru ra \u0113, e poih\u0101 noa vau",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "vau",
+                "experiencing in the body": "",
+                "needing": "",
+                "drinking": "",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "21": {
+            "legacy index": "13a",
+            "cq": "And also, my belly hurts.",
+            "alternate_pivot": "",
+            "translation": "'e e m\u0101uiui ato'a te '\u014dp\u016b",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "",
+                "experiencing in the body": "",
+                "pain": "m\u0101uiui",
+                "belly": "'\u014dp\u016b",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "22": {
+            "legacy index": "13b",
+            "cq": "It\u2019s painful.",
+            "alternate_pivot": "",
+            "translation": "mamae roa",
+            "concept_words": {
+                "ASSERT": "",
+                "pain": "mamae",
+                "ATTRIBUTIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "23": {
+            "legacy index": "14",
+            "cq": "Does it hurt during the day? or only at night?",
+            "alternate_pivot": "",
+            "translation": "m\u0101uiui 'oe i te ao, 'aore r\u0101 i te p\u014d noa",
+            "concept_words": {
+                "ASK": "",
+                "Ref_addressee": "'oe",
+                "experiencing in the body": "",
+                "pain": "m\u0101uiui",
+                "OR": "'aore...r\u0101",
+                "day": "ao",
+                "night": "p\u014d",
+                "PROCESSIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "24": {
+            "legacy index": "15a",
+            "cq": "Mostly at night.",
+            "alternate_pivot": "",
+            "translation": "te rahira'a taime, i te p\u014d",
+            "concept_words": {
+                "ASSERT": "",
+                "night": "p\u014d",
+                "LOCATIVE PREDICATE": "i"
+            },
+            "comment": ""
+        },
+        "25": {
+            "legacy index": "15b",
+            "cq": "I don't know why.",
+            "alternate_pivot": "",
+            "translation": "'aita vau i 'ite n\u014d te aha",
+            "concept_words": {
+                "ASSERT": "",
+                "Negative Polarity": "'aita",
+                "Ref_speaker": "vau",
+                "knowing": "'ite",
+                "causality wildcard": "aha",
+                "PROCESSIVE PREDICATE": "'aita...i"
+            },
+            "comment": ""
+        },
+        "26": {
+            "legacy index": "16a",
+            "cq": "Doctor, I\u2019m a bit worried.",
+            "alternate_pivot": "",
+            "translation": "taote, ha'ape'ape'a ri'i au",
+            "concept_words": {
+                "ASSERT": "",
+                "doctor": "taote",
+                "Ref_speaker": "au",
+                "experiencing in the body": "",
+                "anxiety": "ha'ape'ape'a",
+                "a bit": "ri'i",
+                "PROCESSIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "27": {
+            "legacy index": "16b",
+            "cq": "what is going on?",
+            "alternate_pivot": "",
+            "translation": "e aha r\u0101 t\u014d'u",
+            "concept_words": {
+                "ASK": "aha",
+                "object wildcard": "",
+                "happening": "",
+                "EXISTENTIAL PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "28": {
+            "legacy index": "17",
+            "cq": "Have you eaten something particular lately?",
+            "alternate_pivot": "",
+            "translation": "'ua 'amu iho nei 'oe i te tahi m\u0101'a huru '\u0113",
+            "concept_words": {
+                "ASK": "",
+                "Ref_addressee": "'oe",
+                "eating": "'amu",
+                "object wildcard": "",
+                "particular": "huru...'\u0113",
+                "lately": "iho...nei",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "29": {
+            "legacy index": "18a",
+            "cq": "Hm, let me remember\u2026",
+            "alternate_pivot": "",
+            "translation": "mm, h\u0113r\u016b, feruri nei au",
+            "concept_words": {
+                "ORDER": "",
+                "allowing": "",
+                "Ref_speaker": "au",
+                "Ref_addressee": "",
+                "remembering": "feruri",
+                "PROCESSIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "30": {
+            "legacy index": "18b",
+            "cq": "No, I don\u2019t think so.",
+            "alternate_pivot": "",
+            "translation": "'aita, 'aita vau e mana'o ra",
+            "concept_words": {
+                "INFIRM": "'aita",
+                "Negative Polarity": "'aita_2",
+                "Ref_speaker": "vau",
+                "thinking": "mana'o",
+                "event wildcard": "",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "31": {
+            "legacy index": "19a",
+            "cq": "Oh wait",
+            "alternate_pivot": "",
+            "translation": "'a, h\u0113r\u016b",
+            "concept_words": {
+                "ORDER": "",
+                "waiting": "h\u0113r\u016b",
+                "Ref_addressee": "",
+                "PROCESSIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "32": {
+            "legacy index": "19b",
+            "cq": "actually yes I did!",
+            "alternate_pivot": "",
+            "translation": "'oia",
+            "concept_words": {
+                "APPROVE": "'oia",
+                "Ref_speaker": "",
+                "event wildcard": "",
+                "APPRECIATIVE PREDICATE": "'oia"
+            },
+            "comment": ""
+        },
+        "33": {
+            "legacy index": "20",
+            "cq": "Last week, my child came back from the forest with some strange fruit I had never seen.",
+            "alternate_pivot": "",
+            "translation": "i te hepetoma i ma'iri a'e nei, 'ua ho'i mai t\u0101'u tamaiti n\u0101 uta 'e te tahi m\u0101'a hotu huru '\u0113 'aita vau i 'ite a'e nei",
+            "concept_words": {
+                "ASSERT": "",
+                "Negative Polarity": "'aita",
+                "last week": "i...te...hepetoma...i_2...ma'iri...a'e...nei",
+                "children": "tamaiti",
+                "coming": "ho'i...mai",
+                "forest": "uta",
+                "fruit": "m\u0101'a...hotu",
+                "strange": "huru...'\u0113",
+                "Ref_speaker": "t\u0101'u...vau",
+                "seeing": "'ite",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "34": {
+            "legacy index": "21",
+            "cq": "He gave me the fruits to try. ",
+            "alternate_pivot": "",
+            "translation": "'ua h\u014dro'a mai '\u014dna i tera mau m\u0101'a hotu n\u0101'u e t\u0101mata",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_1_person": "'\u014dna",
+                "Ref_speaker": "n\u0101'u...mai",
+                "giving": "h\u014dro'a",
+                "trying": "t\u0101mata",
+                "fruit": "m\u0101'a...hotu",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "35": {
+            "legacy index": "22",
+            "cq": "Did you?",
+            "alternate_pivot": "",
+            "translation": "'ua t\u0101mata 'oe",
+            "concept_words": {
+                "ASK": "",
+                "Ref_addressee": "'oe",
+                "Ref_Event": "",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "36": {
+            "legacy index": "23a",
+            "cq": "Yes I did.",
+            "alternate_pivot": "",
+            "translation": "'\u0113, 'ua t\u0101mata vau",
+            "concept_words": {
+                "APPROVE": "'\u0113",
+                "Ref_speaker": "vau",
+                "Ref_Event": "",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "37": {
+            "legacy index": "23b",
+            "cq": "Actually I liked them.",
+            "alternate_pivot": "",
+            "translation": "'ua au vau",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "vau",
+                "liking": "au",
+                "Ref_many_objects": "",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "38": {
+            "legacy index": "23c",
+            "cq": "They were sweet.",
+            "alternate_pivot": "",
+            "translation": "e mea momona",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_many_objects": "",
+                "exhibiting (an attribute)": "",
+                "sweet": "momona",
+                "ATTRIBUTIVE PREDICATE": "e...mea"
+            },
+            "comment": ""
+        },
+        "39": {
+            "legacy index": "23d",
+            "cq": "I ate many of them.",
+            "alternate_pivot": "",
+            "translation": "'ua 'amu rahi au",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "au",
+                "eating": "'amu",
+                "Ref_many_objects": "",
+                "many": "rahi",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "40": {
+            "legacy index": "24",
+            "cq": "I became sick after that.",
+            "alternate_pivot": "",
+            "translation": "'ua ma'ihia vau i muri iho",
+            "concept_words": {
+                "ASSERT": "",
+                "becoming": "",
+                "sick": "ma'ihia",
+                "after": "i...muri...iho",
+                "event wildcard": "",
+                "Ref_speaker": "vau",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "41": {
+            "legacy index": "25a",
+            "cq": "I see.",
+            "alternate_pivot": "",
+            "translation": "t\u0113 ta'a atu ra",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "t\u0113...ta'a...atu...ra",
+                "APPRECIATIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "42": {
+            "legacy index": "25b",
+            "cq": "It must have been these fruits that made you sick.",
+            "alternate_pivot": "",
+            "translation": "i\u0101'u i mana'o, n\u014d ter\u0101 mau m\u0101'a 'oe i ma'ihia ai",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "i\u0101'u...i...mana'o",
+                "POINTED BY SPEAKER": "ter\u0101",
+                "fruit": "m\u0101'a",
+                "Ref_many_objects": "",
+                "making": "",
+                "Ref_addressee": "'oe",
+                "sick": "ma'ihia",
+                "LOCATIVE PREDICATE": "n\u014d"
+            },
+            "comment": ""
+        },
+        "43": {
+            "legacy index": "26",
+            "cq": "If you hadn\u2019t eaten so much, you wouldn\u2019t have gotten sick.",
+            "alternate_pivot": "",
+            "translation": "'ahani 'oe 'aita i 'amu rahi i te reira, e'ita \u00efa 'oe e ma'ihia",
+            "concept_words": {
+                "EXPRESS CONDITION": "'ahani",
+                "Negative Polarity": "e'ita",
+                "CONDITION": "",
+                "Ref_addressee": "'oe",
+                "eating": "'amu",
+                "becoming": "",
+                "so much": "rahi",
+                "sick": "ma'ihia",
+                "PROCESSIVE PREDICATE": "'aita...i"
+            },
+            "comment": ""
+        },
+        "44": {
+            "legacy index": "27a",
+            "cq": "Oh Doctor, you\u2019re right.",
+            "alternate_pivot": "",
+            "translation": "'\u0113 pa'i taote, 'ua tano iho\u0101 'oe",
+            "concept_words": {
+                "APPROVE": "'ua...tano...iho\u0101...'oe...'\u0113...pa'i",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "45": {
+            "legacy index": "27b",
+            "cq": "I shouldn\u2019t have.",
+            "alternate_pivot": "",
+            "translation": "e'ere i te hape nei",
+            "concept_words": {
+                "WISH": "",
+                "Negative Polarity": "e'ere",
+                "Ref_speaker": "nei",
+                "doing": "",
+                "INCLUSIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "46": {
+            "legacy index": "28",
+            "cq": "What should I do now?",
+            "alternate_pivot": "",
+            "translation": "n\u0101 hea atu ra vau i teienei",
+            "concept_words": {
+                "EXPRESS DUTY (DEONTIC)": "",
+                "ASK": "hea",
+                "event wildcard": "",
+                "Ref_speaker": "vau",
+                "doing": "",
+                "now": "teienei",
+                "PROCESSIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "47": {
+            "legacy index": "29a",
+            "cq": "Don\u2019t worry.",
+            "alternate_pivot": "",
+            "translation": "'eiaha 'oe e ha'ape'ape'a",
+            "concept_words": {
+                "ORDER": "'eiaha",
+                "Negative Polarity": "'eiaha",
+                "worrying": "ha'ape'ape'a",
+                "Ref_addressee": "'oe",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "48": {
+            "legacy index": "29b",
+            "cq": "I\u2019ll give you some medicine to drink.",
+            "alternate_pivot": "",
+            "translation": "e h\u014dro'a atu vau i te tahi r\u0101'au inu",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "vau",
+                "giving": "h\u014dro'a",
+                "Ref_addressee": "atu",
+                "medicine": "r\u0101'au",
+                "drinking": "inu",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "49": {
+            "legacy index": "30a",
+            "cq": "Take it twice a day.",
+            "alternate_pivot": "",
+            "translation": "'a inu e piti taime i te mahana",
+            "concept_words": {
+                "ORDER": "'a",
+                "Ref_addressee": "",
+                "taking": "",
+                "twice a day": "e...piti...taime...i...te...mahana",
+                "Ref_1_object": "",
+                "PROCESSIVE PREDICATE": "'a"
+            },
+            "comment": ""
+        },
+        "50": {
+            "legacy index": "30b",
+            "cq": "In the morning, and in the evening.",
+            "alternate_pivot": "",
+            "translation": "i te po'ipo'i, 'e i te ahiahi",
+            "concept_words": {
+                "ASSERT": "",
+                "AND": "'e",
+                "morning": "po'ipo'i",
+                "evening": "ahiahi",
+                "LOCATIVE PREDICATE": "i...i_2"
+            },
+            "comment": ""
+        },
+        "51": {
+            "legacy index": "31a",
+            "cq": "Alright Doctor.",
+            "alternate_pivot": "",
+            "translation": "n\u0101 reira taote",
+            "concept_words": {
+                "APPROVE": "n\u0101...reira",
+                "LOCATIVE PREDICATE": "n\u0101"
+            },
+            "comment": ""
+        },
+        "52": {
+            "legacy index": "31b",
+            "cq": "And then I\u2019ll be better?",
+            "alternate_pivot": "",
+            "translation": "'e i muri iho, e maita'i mai au",
+            "concept_words": {
+                "ASK": "",
+                "then (time)": "",
+                "Ref_speaker": "au",
+                "COMP-MORE": "",
+                "healthy": "maita'i",
+                "exhibiting (an attribute)": "",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "53": {
+            "legacy index": "32a",
+            "cq": "Yes",
+            "alternate_pivot": "",
+            "translation": "'\u0113",
+            "concept_words": {
+                "APPROVE": "'\u0113",
+                "APPRECIATIVE PREDICATE": "'\u0113"
+            },
+            "comment": ""
+        },
+        "54": {
+            "legacy index": "32b",
+            "cq": "you should get better soon.",
+            "alternate_pivot": "",
+            "translation": "p\u0101p\u016b, e ora 'oi'oi mai 'oe",
+            "concept_words": {
+                "EXPRESS POTENTIAL": "p\u0101p\u016b",
+                "Ref_addressee": "'oe",
+                "becoming": "",
+                "COMP-MORE": "",
+                "healthy": "ora",
+                "soon": "'oi'oi",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "55": {
+            "legacy index": "33",
+            "cq": "This is efficient medicine against fever and belly-ache.",
+            "alternate_pivot": "",
+            "translation": "e r\u0101'au tano n\u014d te f\u012bva 'e te m\u0101uiui '\u014dp\u016b",
+            "concept_words": {
+                "ASSERT": "",
+                "efficient": "tano",
+                "medicine": "r\u0101'au",
+                "AND": "'e",
+                "fever": "f\u012bva",
+                "belly-ache": "m\u0101uiui...'\u014dp\u016b",
+                "Ref_1_object": "",
+                "equating": "",
+                "INCLUSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "56": {
+            "legacy index": "34",
+            "cq": "Also, you must get some rest.",
+            "alternate_pivot": "",
+            "translation": "e fa'afa'aea ato'a 'oe",
+            "concept_words": {
+                "ORDER": "e",
+                "Ref_addressee": "'oe",
+                "experiencing": "",
+                "rest": "fa'afa'aea",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "57": {
+            "legacy index": "35a",
+            "cq": "Don\u2019t go to work",
+            "alternate_pivot": "",
+            "translation": "'eiaha e haere i te 'ohipa",
+            "concept_words": {
+                "ORDER": "'eiaha",
+                "Negative Polarity": "'eiaha",
+                "Ref_addressee": "",
+                "going": "haere",
+                "work": "'ohipa",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "58": {
+            "legacy index": "35b",
+            "cq": "You need to sleep.",
+            "alternate_pivot": "",
+            "translation": "e ta'oto",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_addressee": "",
+                "needing": "",
+                "sleeping": "ta'oto",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "59": {
+            "legacy index": "36a",
+            "cq": "Alright Doctor",
+            "alternate_pivot": "",
+            "translation": "n\u0101 reira \u00efa taote",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "n\u0101...reira",
+                "LOCATIVE PREDICATE": "n\u0101"
+            },
+            "comment": ""
+        },
+        "60": {
+            "legacy index": "36b",
+            "cq": "I understand.",
+            "alternate_pivot": "",
+            "translation": "t\u0113 ta'a ra i\u0101'u",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "i\u0101'u",
+                "understanding": "ta'a",
+                "PROCESSIVE PREDICATE": "t\u0113...ra"
+            },
+            "comment": ""
+        },
+        "61": {
+            "legacy index": "36c",
+            "cq": "Thank you so much!",
+            "alternate_pivot": "",
+            "translation": "m\u0101uruuru roa",
+            "concept_words": {
+                "THANK": "m\u0101uruuru",
+                "PROCESSIVE PREDICATE": ""
+            },
+            "comment": ""
+        }
+    },
+    "interviewer": "Jacques Vernaudon",
+    "interviewee": "Mirose Paia",
+    "recording_uid": "1748856016"
+}

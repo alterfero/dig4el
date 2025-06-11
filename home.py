@@ -47,19 +47,19 @@ with st.popover("References", use_container_width=True):
     
     To cite DIG4EL in your research, please use:
     
-    CHRISTIAN, S. (2024). DIG4EL (v0.1.2). Zenodo. https://doi.org/10.5281/zenodo.14009843
+    CHRISTIAN, S. (2024). DIG4EL (v0.2.0). Zenodo. https://doi.org/10.5281/zenodo.14009843
     """)
 st.markdown("For any enquiry, contact sebastien.christian@doctorant.upf.pf")
 st.markdown("----------------------------------------------------")
 st.markdown("""
 DIG4EL prototype 
-Version 0.1.4
+Version 0.2.0
 
 Copyright © 2024 Sebastien Christian,
 Licensed under GNU Affero General Public License v3.0.
 
 If you use this software in your research, please cite:
-- Christian S. (2024). DIG4EL (Version 0.1.4) DOI: 10.5281/zenodo.1400983
+- Christian S. (2024). DIG4EL (Version 0.2.0) DOI: 10.5281/zenodo.1400983
 - WALS, instructions at https://wals.info/
 - Grambank, instructions at https://github.com/grambank/grambank/wiki/Citing-grambank
 

@@ -1,0 +1,836 @@
+{
+    "target language": "Tahitian",
+    "delimiters": [
+        " ",
+        ".",
+        ",",
+        ";",
+        ":",
+        "!",
+        "?",
+        "\u2026"
+    ],
+    "pivot language": "English",
+    "cq_uid": "1716852912",
+    "data": {
+        "1": {
+            "legacy index": "1",
+            "cq": "Have you ever seen pictures of my family?",
+            "alternate_pivot": "",
+            "translation": "'ua 'ite a'e nei 'oe i te h\u014dho'a o t\u014d'u 'utu\u0101fare",
+            "concept_words": {
+                "ASK": "",
+                "Ref_addressee": "'oe",
+                "Ref_speaker": "t\u014d'u",
+                "seeing": "'ite",
+                "picture": "h\u014dho'a",
+                "family": "'utu\u0101fare",
+                "PROCESSIVE PREDICATE": "'ite"
+            },
+            "comment": ""
+        },
+        "2": {
+            "legacy index": "2",
+            "cq": "Well, I\u2019ve met some of your relatives, but I\u2019ve never seen your pictures.",
+            "alternate_pivot": "",
+            "translation": "'aita, 'ua f\u0101rerei au i te tahi o t\u014d 'oe f\u0113ti'i, 'aita r\u0101 vau i 'ite a'enei i t\u0101 'oe mau pu'era'a h\u014dho'a",
+            "concept_words": {
+                "ASSERT": "",
+                "PROCESSIVE PREDICATE": "f\u0101rerei",
+                "Negative Polarity": "'aita_2",
+                "meeting": "f\u0101rerei",
+                "relatives": "f\u0113ti'i",
+                "BUT": "r\u0101",
+                "seeing": "'ite",
+                "picture": "h\u014dho'a",
+                "never": "'aita_2...a'enei",
+                "Ref_speaker": "vau",
+                "Ref_addressee": "'oe"
+            },
+            "comment": ""
+        },
+        "3": {
+            "legacy index": "3",
+            "cq": "Here is an old photo album I just found in my parents\u2019 room.",
+            "alternate_pivot": "",
+            "translation": "teie te tahi puta h\u014dho'a tahito n\u014d 'ite noa mai nei au i roto i te piha o t\u014d'u n\u0101 metua",
+            "concept_words": {
+                "ASSERT": "",
+                "PRESENT X": "teie",
+                "old": "tahito",
+                "photo album": "puta...h\u014dho'a",
+                "Ref_speaker": "au...t\u014d'u",
+                "finding": "'ite",
+                "parents": "n\u0101...metua",
+                "room": "piha",
+                "EQUATIVE PREDICATE": "teie"
+            },
+            "comment": ""
+        },
+        "4": {
+            "legacy index": "4",
+            "cq": "Oh, show it to me please!",
+            "alternate_pivot": "",
+            "translation": "'\u0101, fa'a'ite mai na",
+            "concept_words": {
+                "ORDER": "",
+                "showing": "fa'a'ite",
+                "Ref_speaker": "mai",
+                "Ref_addressee": "",
+                "Ref_1_object": "",
+                "PROCESSIVE PREDICATE": "fa'a'ite"
+            },
+            "comment": ""
+        },
+        "5": {
+            "legacy index": "5",
+            "cq": "Who\u2019s this on that first photo?",
+            "alternate_pivot": "",
+            "translation": "'o vai teie i roto i teie h\u014dho'a m\u0101t\u0101mua",
+            "concept_words": {
+                "ASK": "vai",
+                "PERSON wildcard": "vai",
+                "POINTED BY SPEAKER": "teie",
+                "photo": "h\u014dho'a",
+                "first": "m\u0101t\u0101mua",
+                "equating": "'o",
+                "EQUATIVE PREDICATE": "'o"
+            },
+            "comment": ""
+        },
+        "6": {
+            "legacy index": "6a",
+            "cq": "It looks like olden times.",
+            "alternate_pivot": "",
+            "translation": "'aita a'e iho\u0101 e mea tahito",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "'aita...a'e...iho\u0101",
+                "looking like": "",
+                "olden times": "tahito",
+                "Ref_1_object": "",
+                "ATTRIBUTIVE PREDICATE": "e...mea"
+            },
+            "comment": ""
+        },
+        "7": {
+            "legacy index": "6b",
+            "cq": "It's in black and white.",
+            "alternate_pivot": "",
+            "translation": "e h\u014dho'a 'ere'ere 'e te 'uo'uo",
+            "concept_words": {
+                "ASSERT": "",
+                "exhibiting (an attribute)": "",
+                "black and white": "'ere'ere...'e...te...'uo'uo",
+                "Ref_1_object": "",
+                "ATTRIBUTIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "8": {
+            "legacy index": "7a",
+            "cq": "These are my grandparents, on my mother\u2019s side.",
+            "alternate_pivot": "",
+            "translation": "'o t\u014d'u p\u0101p\u0101 r\u016b'au 'e t\u014d'u m\u0101m\u0101 r\u016b'au teie, i te pae o t\u014d'u m\u0101m\u0101",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "t\u014d'u",
+                "grandparents": "p\u0101p\u0101...r\u016b'au...m\u0101m\u0101...r\u016b'au_2",
+                "mothers side": "pae...o...t\u014d'u_3...m\u0101m\u0101_2",
+                "POINTED BY SPEAKER": "teie",
+                "presenting (presentative)": "",
+                "EQUATIVE PREDICATE": "'o"
+            },
+            "comment": ""
+        },
+        "9": {
+            "legacy index": "7b",
+            "cq": "Grandpa here on the left, and Grandma on the right.",
+            "alternate_pivot": "",
+            "translation": "'o p\u0101p\u0101'\u016b i '\u014d nei i te pae 'aui, 'e m\u0101m\u0101'\u016b i te pae 'atau",
+            "concept_words": {
+                "ASSERT": "",
+                "POINTED BY SPEAKER": "i...'\u014d...nei",
+                "grandpa": "p\u0101p\u0101'\u016b",
+                "left": "'aui",
+                "AND": "'e",
+                "grandma": "m\u0101m\u0101'\u016b",
+                "right": "'atau",
+                "EQUATIVE PREDICATE": "'o"
+            },
+            "comment": ""
+        },
+        "10": {
+            "legacy index": "8",
+            "cq": "The people around them must be their friends, or other relatives.",
+            "alternate_pivot": "",
+            "translation": "mana'o ana'e au, te mau ta'ata n\u0101 p\u012bha'i iho, e hoa n\u014d r\u0101ua, 'e aore r\u0101, e f\u0113ti'i",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "mana'o...ana'e...au",
+                "people": "ta'ata",
+                "around": "n\u0101...p\u012bha'i...iho",
+                "friends": "hoa",
+                "OR": "'e...aore...r\u0101",
+                "other": "",
+                "relatives": "f\u0113ti'i",
+                "Ref_2_people": "r\u0101ua",
+                "equating": "",
+                "INCLUSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "11": {
+            "legacy index": "9",
+            "cq": "Was that the day of their wedding?",
+            "alternate_pivot": "",
+            "translation": "te mahana o t\u014d r\u0101ua fa'aipoipora'a \u0101nei ter\u0101",
+            "concept_words": {
+                "ASK": "\u0101nei",
+                "day": "mahana",
+                "wedding": "fa'aipoipora'a",
+                "equating": "",
+                "Ref_Event": "ter\u0101",
+                "Ref_2_people": "r\u0101ua",
+                "EQUATIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "12": {
+            "legacy index": "10a",
+            "cq": "No, I don\u2019t think so.",
+            "alternate_pivot": "",
+            "translation": "e'ere, 'aita vau e mana'o ra",
+            "concept_words": {
+                "INFIRM": "e'ere",
+                "Negative Polarity": "'aita",
+                "Ref_speaker": "vau",
+                "thinking": "mana'o",
+                "event wildcard": "",
+                "PROCESSIVE PREDICATE": "mana'o"
+            },
+            "comment": ""
+        },
+        "13": {
+            "legacy index": "10b",
+            "cq": "They were older than this on their wedding. ",
+            "alternate_pivot": "",
+            "translation": "e mea pa'ari a'e r\u0101ua i t\u014d r\u0101ua fa'aipoipora'a",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_2_people": "r\u0101ua",
+                "OLDER THAN X": "pa'ari...a'e",
+                "wedding": "fa'aipoipora'a",
+                "exhibiting (an attribute)": "",
+                "Ref_1_object": "",
+                "ATTRIBUTIVE PREDICATE": "e...mea"
+            },
+            "comment": ""
+        },
+        "14": {
+            "legacy index": "11",
+            "cq": "This must have been the day when they got engaged.",
+            "alternate_pivot": "",
+            "translation": "mana'o ana'e au, 'o te mahana o t\u014d r\u0101ua m\u014dmo'ara'a teie",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "mana'o...ana'e...au",
+                "equating": "'o",
+                "Ref_Event": "teie",
+                "day": "mahana",
+                "getting engaged": "m\u014dmo'ara'a",
+                "Ref_2_people": "r\u0101ua",
+                "EQUATIVE PREDICATE": "'o"
+            },
+            "comment": ""
+        },
+        "15": {
+            "legacy index": "12a",
+            "cq": "In those times, the engagement was a major event for the whole family,",
+            "alternate_pivot": "",
+            "translation": "i ter\u0101 ra tau, e '\u014dro'a faufa'a roa te m\u014dmo'ara'a n\u014d\u00a0te f\u0113ti'i t\u0101'\u0101to'a",
+            "concept_words": {
+                "ASSERT": "",
+                "those times": "ter\u0101...ra...tau",
+                "engagement": "m\u014dmo'ara'a",
+                "event_": "'\u014dro'a",
+                "major": "faufa'a...roa",
+                "family": "f\u0113ti'i",
+                "equating": "",
+                "INCLUSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "16": {
+            "legacy index": "12b",
+            "cq": "People would wear beautiful clothes.",
+            "alternate_pivot": "",
+            "translation": "e 'omo te ta'ata i te 'ahu nehenehe",
+            "concept_words": {
+                "ASSERT": "",
+                "people": "ta'ata",
+                "wearing": "'omo",
+                "beautiful": "nehenehe",
+                "clothes": "'ahu",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "17": {
+            "legacy index": "13",
+            "cq": "Have you met them?",
+            "alternate_pivot": "",
+            "translation": "'ua m\u0101tau 'oe ia r\u0101ua",
+            "concept_words": {
+                "ASK": "",
+                "meeting": "m\u0101tau",
+                "Ref_addressee": "'oe",
+                "Ref_2_people": "r\u0101ua",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "18": {
+            "legacy index": "14",
+            "cq": "Who? My grandparents?",
+            "alternate_pivot": "",
+            "translation": "'o vai ? t\u014d'u p\u0101p\u0101 r\u016b'au m\u0101",
+            "concept_words": {
+                "ASK": "vai",
+                "PERSON wildcard": "vai",
+                "grandparents": "p\u0101p\u0101...r\u016b'au...m\u0101",
+                "Ref_speaker": "t\u014d'u",
+                "EQUATIVE PREDICATE": "'o"
+            },
+            "comment": ""
+        },
+        "19": {
+            "legacy index": "15",
+            "cq": "Yes, your grandparents on the photo.",
+            "alternate_pivot": "",
+            "translation": "'\u0113, t\u014d 'oe p\u0101p\u0101 r\u016b'au m\u0101 i roto i te h\u014dho'a",
+            "concept_words": {
+                "CONFIRM": "'\u0113",
+                "grandparents": "p\u0101p\u0101...r\u016b'au...m\u0101",
+                "Ref_addressee": "'oe",
+                "photo": "h\u014dho'a",
+                "EQUATIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "20": {
+            "legacy index": "16a",
+            "cq": "Actually no. ",
+            "alternate_pivot": "",
+            "translation": "'aita",
+            "concept_words": {
+                "INFIRM": "'aita",
+                "EQUATIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "21": {
+            "legacy index": "16b",
+            "cq": "They died before I was born.",
+            "alternate_pivot": "",
+            "translation": "'ua fa'aru'e mai r\u0101ua hou vau 'a f\u0101nauhia ai",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_2_people": "r\u0101ua",
+                "dying": "fa'aru'e",
+                "BEFORE X": "hou",
+                "Ref_speaker": "vau",
+                "being born": "f\u0101nauhia",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "22": {
+            "legacy index": "16c",
+            "cq": "They were born a long time ago.",
+            "alternate_pivot": "",
+            "translation": "'ua f\u0101nauhia r\u0101ua e mea maoro i teienei",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_2_people": "r\u0101ua",
+                "being born": "f\u0101nauhia",
+                "_a long time ago": "e...mea...maoro...i...teienei",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "23": {
+            "legacy index": "17a",
+            "cq": "Oh I see.",
+            "alternate_pivot": "",
+            "translation": "'\u0101, t\u0113 ta'a atu ra",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "t\u0113...ta'a...atu...ra",
+                "PROCESSIVE PREDICATE": "t\u0113...ra"
+            },
+            "comment": ""
+        },
+        "24": {
+            "legacy index": "17b",
+            "cq": "And who\u2019s that on the second photo?",
+            "alternate_pivot": "",
+            "translation": "'e 'o vai ter\u0101 i roto i te piti o te h\u014dho'a",
+            "concept_words": {
+                "ASK": "vai",
+                "PERSON wildcard": "vai",
+                "second": "piti",
+                "photo": "h\u014dho'a",
+                "POINTED BY SPEAKER": "ter\u0101",
+                "equating": "",
+                "EQUATIVE PREDICATE": "'o"
+            },
+            "comment": ""
+        },
+        "25": {
+            "legacy index": "18a",
+            "cq": "This is my mother",
+            "alternate_pivot": "",
+            "translation": "'o t\u014d'u m\u0101m\u0101 ter\u0101",
+            "concept_words": {
+                "ASSERT": "",
+                "POINTED BY SPEAKER": "ter\u0101",
+                "mother": "m\u0101m\u0101",
+                "Ref_speaker": "t\u014d'u",
+                "equating": "",
+                "EQUATIVE PREDICATE": "'o"
+            },
+            "comment": ""
+        },
+        "26": {
+            "legacy index": "18b",
+            "cq": "when she was a child",
+            "alternate_pivot": "",
+            "translation": "i t\u014dna tamari'ira'a",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_1_person": "t\u014dna",
+                "equating": "",
+                "children": "tamari'ira'a",
+                "time position wildcard": "",
+                "LOCATIVE PREDICATE": "i"
+            },
+            "comment": ""
+        },
+        "27": {
+            "legacy index": "19a",
+            "cq": "I guess she was coming back from school",
+            "alternate_pivot": "",
+            "translation": "ia'u i mana'o, t\u0113 ho'i mai ra '\u014dna mai te fare ha'api'ira'a",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "ia'u...i...mana'o",
+                "Ref_speaker": "ia'u",
+                "guessing": "mana'o",
+                "Ref_1_person": "'\u014dna",
+                "coming": "ho'i...mai",
+                "school": "fare...ha'api'ira'a",
+                "PROCESSIVE PREDICATE": "t\u0113...ra"
+            },
+            "comment": ""
+        },
+        "28": {
+            "legacy index": "19b",
+            "cq": "look at her schoolbag.",
+            "alternate_pivot": "",
+            "translation": "'a hi'o na i t\u0101na p\u016bt\u0113 ha'api'ira'a",
+            "concept_words": {
+                "ORDER": "'a",
+                "Ref_addressee": "",
+                "looking": "hi'o",
+                "schoolbag": "p\u016bt\u0113...ha'api'ira'a",
+                "Ref_1_person": "t\u0101na",
+                "PROCESSIVE PREDICATE": "'a"
+            },
+            "comment": ""
+        },
+        "29": {
+            "legacy index": "",
+            "cq": "Oh yeah, nice.",
+            "alternate_pivot": "",
+            "translation": "'\u0101, '\u0113",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "'\u0101",
+                "APPRECIATIVE PREDICATE": "'\u0113"
+            },
+            "comment": ""
+        },
+        "30": {
+            "legacy index": "20",
+            "cq": "And who is the small boy behind her?",
+            "alternate_pivot": "",
+            "translation": "'e 'o vai ter\u0101 tamaiti iti i muri i\u0101na",
+            "concept_words": {
+                "ASK": "vai",
+                "PERSON wildcard": "vai",
+                "small": "iti",
+                "boy": "tamaiti",
+                "BEHIND X": "i...muri",
+                "Ref_1_person": "i\u0101na",
+                "equating": "'o",
+                "EQUATIVE PREDICATE": "'o"
+            },
+            "comment": ""
+        },
+        "31": {
+            "legacy index": "21a",
+            "cq": "That\u2019s my uncle Teri.",
+            "alternate_pivot": "",
+            "translation": "'o teri te tua'ane o t\u014d'u m\u0101m\u0101",
+            "concept_words": {
+                "ASSERT": "",
+                "uncle": "tua'ane...o...t\u014d'u...m\u0101m\u0101",
+                "Teri": "teri",
+                "equating": "'o",
+                "POINTED BY SPEAKER": "",
+                "Ref_speaker": "t\u014d'u",
+                "EQUATIVE PREDICATE": ""
+            },
+            "comment": "il n'y pas d'\u00e9quivalent exact de \"oncle\", cf. vocabulaire de parent\u00e9"
+        },
+        "32": {
+            "legacy index": "21b",
+            "cq": "You\u2019ve never met him.",
+            "alternate_pivot": "",
+            "translation": "'aita 'oe i f\u0101rerei a'e nei i\u0101na",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_addressee": "'oe",
+                "never": "'aita...a'e...nei",
+                "meeting": "f\u0101rerei",
+                "Ref_1_person": "i\u0101na",
+                "PROCESSIVE PREDICATE": "'aita...i"
+            },
+            "comment": ""
+        },
+        "33": {
+            "legacy index": "21c",
+            "cq": "He lives far away from here.",
+            "alternate_pivot": "",
+            "translation": "e fa'aea '\u014dna i te tahi v\u0101hi e mea \u0101tea",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_1_person": "'\u014dna",
+                "residing": "fa'aea",
+                "far away": "\u0101tea",
+                "here": "",
+                "PROCESSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "34": {
+            "legacy index": "22",
+            "cq": "And what school did they attend then?",
+            "alternate_pivot": "",
+            "translation": "'e tei hea t\u0101 r\u0101ua fare ha'api'ira'a i ter\u0101 tau",
+            "concept_words": {
+                "ASK": "hea",
+                "attending": "",
+                "Ref_2_people": "r\u0101ua",
+                "school": "fare...ha'api'ira'a",
+                "object wildcard": "",
+                "then (time)": "i...ter\u0101...tau",
+                "LOCATIVE PREDICATE": "tei"
+            },
+            "comment": ""
+        },
+        "35": {
+            "legacy index": "23",
+            "cq": "That was an old school that doesn\u2019t exist anymore.",
+            "alternate_pivot": "",
+            "translation": "e fare ha'api'ira'a tahito, 'aita fa'ahou i teienei",
+            "concept_words": {
+                "ASSERT": "",
+                "Negative Polarity": "'aita",
+                "existing": "",
+                "equating": "",
+                "Ref_1_object": "",
+                "old": "tahito",
+                "school": "fare...ha'api'ira'a",
+                "anymore": "'aita...fa'ahou",
+                "INCLUSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "36": {
+            "legacy index": "23",
+            "cq": "It was located down the road, towards the lake.",
+            "alternate_pivot": "",
+            "translation": "tei raro atu i te por\u014dmu, i ter\u0101 pae atu o te roto",
+            "concept_words": {
+                "ASSERT": "",
+                "AND": "",
+                "down the road": "raro...atu...i...te...por\u014dmu",
+                "TOWARD X": "i_2...ter\u0101...pae",
+                "lake": "roto",
+                "BEING LOCATED": "tei",
+                "Ref_1_object": "",
+                "LOCATIVE PREDICATE": "tei"
+            },
+            "comment": ""
+        },
+        "37": {
+            "legacy index": "24",
+            "cq": "Let me see this other photo.",
+            "alternate_pivot": "",
+            "translation": "fa'a'ite mai na i te ter\u0101 atu h\u014dho'a",
+            "concept_words": {
+                "ORDER": "",
+                "Ref_addressee": "",
+                "allowing": "",
+                "Ref_speaker": "mai",
+                "seeing": "fa'a'ite",
+                "OTHER X": "atu",
+                "picture": "h\u014dho'a",
+                "POINTED BY SPEAKER": "ter\u0101",
+                "PROCESSIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "38": {
+            "legacy index": "25",
+            "cq": "This woman is surely your mother again, carrying a child on her back.",
+            "alternate_pivot": "",
+            "translation": "p\u0101p\u016b maita'i, t\u014d 'oe m\u0101m\u0101 fa'ahou ter\u0101 vahine, 'o t\u0113 t\u016bt\u0101 nei i te h\u014d'\u0113 tama",
+            "concept_words": {
+                "EXPRESS LIKELIHOOD": "p\u0101p\u016b...maita'i",
+                "women": "vahine",
+                "POINTED BY SPEAKER": "ter\u0101",
+                "surely": "p\u0101p\u016b...maita'i",
+                "mother": "m\u0101m\u0101",
+                "Ref_addressee": "'oe",
+                "again": "fa'ahou",
+                "carrying": "t\u016bt\u0101",
+                "children": "tama",
+                "back (anatomy)": "",
+                "Ref_1_person": "",
+                "equating": "",
+                "EQUATIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "39": {
+            "legacy index": "26a",
+            "cq": "Oh, I think I know who this child is.",
+            "alternate_pivot": "",
+            "translation": "mmm, m\u0101na'o ana'e au, 'ua m\u0101tau vau i ter\u0101 tama",
+            "concept_words": {
+                "EXPRESS BELIEF (EPISTEMIC)": "m\u0101na'o...ana'e...au",
+                "Ref_speaker": "vau...au",
+                "thinking": "m\u0101na'o",
+                "knowing": "m\u0101tau",
+                "PERSON wildcard": "",
+                "children": "tama",
+                "POINTED BY SPEAKER": "ter\u0101",
+                "equating": "",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "40": {
+            "legacy index": "26b",
+            "cq": "That\u2019s you!",
+            "alternate_pivot": "",
+            "translation": "'o 'oe",
+            "concept_words": {
+                "ASSERT": "",
+                "POINTED BY SPEAKER": "",
+                "Ref_addressee": "'oe",
+                "equating": "'o",
+                "EQUATIVE PREDICATE": "'o"
+            },
+            "comment": ""
+        },
+        "41": {
+            "legacy index": "27a",
+            "cq": "That's me indeed!",
+            "alternate_pivot": "",
+            "translation": "'o vau iho\u0101",
+            "concept_words": {
+                "CONFIRM": "iho\u0101",
+                "POINTED BY SPEAKER": "",
+                "Ref_speaker": "vau",
+                "equating": "'o",
+                "EQUATIVE PREDICATE": "'o"
+            },
+            "comment": ""
+        },
+        "42": {
+            "legacy index": "27b",
+            "cq": "How did you recognize me?",
+            "alternate_pivot": "",
+            "translation": "e mea n\u0101 hea 'oe i 'ite ai 'o vau ter\u0101",
+            "concept_words": {
+                "ASK": "n\u0101...hea",
+                "Ref_addressee": "'oe",
+                "recognizing": "'ite",
+                "Ref_speaker": "vau",
+                "process wildcard": "",
+                "ATTRIBUTIVE PREDICATE": "e...mea"
+            },
+            "comment": ""
+        },
+        "43": {
+            "legacy index": "28a",
+            "cq": "Well, on that photo you\u2019re a small child,",
+            "alternate_pivot": "",
+            "translation": "'aita, e tama pa'i 'oe i roto i ter\u0101 h\u014dho'a",
+            "concept_words": {
+                "ASSERT": "pa'i",
+                "Ref_addressee": "'oe",
+                "small": "",
+                "children": "tama",
+                "photo": "h\u014dho'a",
+                "POINTED BY SPEAKER": "ter\u0101",
+                "exhibiting (an attribute)": "",
+                "INCLUSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "44": {
+            "legacy index": "28b",
+            "cq": "but I recognize your eyes and your smile.",
+            "alternate_pivot": "",
+            "translation": "'ua ta'a r\u0101 i\u0101'u i ni'a noa i t\u014d 'oe h\u014dho'a mata 'e t\u0101 'oe huru 'ata'ata",
+            "concept_words": {
+                "ASSERT": "",
+                "BUT": "r\u0101",
+                "recognizing": "ta'a",
+                "Ref_speaker": "i\u0101'u",
+                "Ref_addressee": "'oe",
+                "eyes": "h\u014dho'a...mata",
+                "AND": "'e",
+                "smile": "'ata'ata",
+                "PROCESSIVE PREDICATE": "'ua"
+            },
+            "comment": ""
+        },
+        "45": {
+            "legacy index": "29",
+            "cq": "You look mischievous on that picture.",
+            "alternate_pivot": "",
+            "translation": "e hi'ora'a tamari'i ha'uti 'oe i roto i ter\u0101 h\u014dho'a",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_addressee": "'oe",
+                "looking like": "hi'ora'a",
+                "mischievous": "ha'uti",
+                "picture": "h\u014dho'a",
+                "POINTED BY SPEAKER": "ter\u0101",
+                "INCLUSIVE PREDICATE": "e"
+            },
+            "comment": ""
+        },
+        "46": {
+            "legacy index": "30",
+            "cq": "You haven\u2019t changed much!",
+            "alternate_pivot": "",
+            "translation": "'aita ato'a iho\u0101 'oe i taui roa",
+            "concept_words": {
+                "ASSERT": "",
+                "Negative Polarity": "'aita",
+                "Ref_addressee": "'oe",
+                "changing (over time)": "taui",
+                "much": "roa",
+                "PROCESSIVE PREDICATE": "'aita...i"
+            },
+            "comment": ""
+        },
+        "47": {
+            "legacy index": "31a",
+            "cq": "Ha ha.",
+            "alternate_pivot": "",
+            "translation": "ha ha",
+            "concept_words": {
+                "SHOW ACTIVE LISTENING": "",
+                "APPRECIATIVE PREDICATE": ""
+            },
+            "comment": ""
+        },
+        "48": {
+            "legacy index": "31b",
+            "cq": "But I\u2019m not a child any more, I\u2019ve grown up.",
+            "alternate_pivot": "",
+            "translation": "e'ere r\u0101 vau i te tamari'i fa'ahou, 'ua pa'ari au i teienei",
+            "concept_words": {
+                "ASSERT": "",
+                "Negative Polarity": "e'ere",
+                "BUT": "r\u0101",
+                "AND": "",
+                "Ref_speaker": "vau...au",
+                "children": "tamari'i",
+                "anymore": "e'ere...fa'ahou",
+                "growing up": "pa'ari",
+                "equating": "",
+                "INCLUSIVE PREDICATE": "e'ere...i...te"
+            },
+            "comment": ""
+        },
+        "49": {
+            "legacy index": "32",
+            "cq": "Today my mother would not be able to carry me on her back!",
+            "alternate_pivot": "",
+            "translation": "e'ita e mara'a fa'ahou i t\u014d'u m\u0101m\u0101 'ia t\u016bt\u0101 i\u0101'u i teie nei mahana",
+            "concept_words": {
+                "ASSERT": "",
+                "Negative Polarity": "e'ita",
+                "today": "i_2...teie...nei...mahana",
+                "mother": "m\u0101m\u0101",
+                "Ref_speaker": "t\u014d'u",
+                "being able to": "mara'a",
+                "carrying": "t\u016bt\u0101",
+                "back (anatomy)": "",
+                "Ref_1_person": "",
+                "PROCESSIVE PREDICATE": "e'ita...e"
+            },
+            "comment": ""
+        },
+        "50": {
+            "legacy index": "33",
+            "cq": "I\u2019m taller and heavier than her.",
+            "alternate_pivot": "",
+            "translation": "e mea roa 'e te teiaha a'e au i\u0101na",
+            "concept_words": {
+                "ASSERT": "",
+                "Ref_speaker": "au",
+                "MORE X THAN Y": "a'e",
+                "AND": "'e",
+                "tall": "roa",
+                "heavy": "teiaha",
+                "Ref_1_person": "i\u0101na",
+                "exhibiting (an attribute)": "",
+                "equating": "",
+                "ATTRIBUTIVE PREDICATE": "e...mea"
+            },
+            "comment": ""
+        },
+        "51": {
+            "legacy index": "34a",
+            "cq": "Ha, that\u2019s true.",
+            "alternate_pivot": "",
+            "translation": "'\u0101, '\u0113, parau mau",
+            "concept_words": {
+                "CONFIRM": "'\u0113...parau...mau",
+                "APPRECIATIVE PREDICATE": "parau...mau"
+            },
+            "comment": ""
+        },
+        "52": {
+            "legacy index": "34b",
+            "cq": "You\u2019ve eaten too much!",
+            "alternate_pivot": "",
+            "translation": "mea t\u0101m\u0101'a roa pa'i 'oe",
+            "concept_words": {
+                "ASSERT": "pa'i",
+                "Ref_addressee": "'oe",
+                "eating": "t\u0101m\u0101'a",
+                "TOO MUCH OF X": "roa",
+                "PROCESSIVE PREDICATE": ""
+            },
+            "comment": ""
+        }
+    },
+    "interviewer": "Jacques Vernaudon",
+    "interviewee": "Mirose Paia",
+    "recording_uid": "1748853402"
+}

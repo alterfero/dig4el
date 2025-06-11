@@ -18,7 +18,7 @@ This software is intended for academic and research purposes. If you use this so
   title = {DIG4EL},
   year = {2024},
   url = {https://github.com/alterfero/dig4el},
-  version = {0.1.2},
+  version = {0.2.0},
   doi       = {10.5281/zenodo.14009843},
   url       = {https://doi.org/10.5281/zenodo.14009843}
 }

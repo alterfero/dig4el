@@ -1,0 +1,9 @@
+parameter,median,mean,std,min,max,n_observations
+"Order of Object, Oblique, and Verb",1.0,0.7139498432601881,0.4520903022670325,0,1,1276
+Order of Adposition and Noun Phrase,1.0,0.8800940438871473,0.3249788997249785,0,1,1276
+Order of Adverbial Subordinator and Clause,1.0,0.7829153605015674,0.4124223561949086,0,1,1276
+Relationship between the Order of Object and Verb and the Order of Adposition and Noun Phrase,1.0,0.8315047021943573,0.3744522912324675,0,1,1276
+Relationship between the Order of Object and Verb and the Order of Relative Clause and Noun,1.0,0.7241379310344828,0.44712287360116454,0,1,1276
+Relationship between the Order of Object and Verb and the Order of Adjective and Noun,1.0,0.6912225705329154,0.4621702366860146,0,1,1276
+Order of Genitive and Noun,1.0,0.7829153605015674,0.41242235619490875,0,1,1276
+Order of Degree Word and Adjective,1.0,0.6473354231974922,0.4779867423207568,0,1,1276
