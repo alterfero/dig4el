@@ -4,6 +4,8 @@ import json
 from libs import general_agents
 from libs import wals_utils as wu
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 """
@@ -84,31 +86,66 @@ if __name__ == "__main__":
         with open("../test_result_analysis/summaries/comparative_results_baseline_vs_dig4el.json", "w") as f:
             json.dump(out_list, f)
     if ANALYZE:
+        def bootstrap_ci(data, func=np.mean, n_bootstrap=10000, ci=95):
+            rng = np.random.default_rng(seed=42)
+            boot_samples = rng.choice(data, (n_bootstrap, len(data)), replace=True)
+            stat = func(boot_samples, axis=1)
+            lower = np.percentile(stat, (100 - ci) / 2)
+            upper = np.percentile(stat, 100 - (100 - ci) / 2)
+            return stat.mean(), (lower, upper), stat
+
         with open("../test_result_analysis/summaries/comparative_results_baseline_vs_dig4el.json", "r") as f:
             results = json.load(f)
 
         df = pd.DataFrame(results)
         for col in ["dig4el mean accuracy", "baseline accuracy"]:
-            df[col] = pd.to_numeric(df[col])
-        stats = df[["dig4el mean accuracy", "baseline accuracy"]].describe()
-        print(stats)
+            df[col] = pd.to_numeric(df[col], errors='coerce')  # coerce to NaN if not convertible
 
-        import matplotlib.pyplot as plt
+        df = df.dropna(subset=["dig4el mean accuracy", "baseline accuracy"])
 
-        plt.figure()
-        df[["dig4el mean accuracy", "baseline accuracy"]].boxplot()
-        plt.ylabel('Accuracy')
-        plt.savefig('../test_result_analysis/accuracy_boxplot.png')
+        import numpy as np
+
+        boot_results = {}
+        for col in ["dig4el mean accuracy", "baseline accuracy"]:
+            values = df[col].values
+            # Mean
+            mean_val, mean_ci, _ = bootstrap_ci(values, np.mean)
+            # Median
+            median_val, median_ci, _ = bootstrap_ci(values, np.median)
+            boot_results[col] = {
+                "mean": (mean_val, mean_ci),
+                "median": (median_val, median_ci),
+            }
+            print(
+                f"{col}: mean={mean_val:.3f} [{mean_ci[0]:.3f}, {mean_ci[1]:.3f}], median={median_val:.3f} [{median_ci[0]:.3f}, {median_ci[1]:.3f}]")
+
+        # Paired difference analysis
+        diff = df["dig4el mean accuracy"].values - df["baseline accuracy"].values
+        diff_mean, diff_mean_ci, diff_samples = bootstrap_ci(diff, np.mean)
+        diff_median, diff_median_ci, _ = bootstrap_ci(diff, np.median)
+        print(f"Difference (DIG4EL - Baseline): mean={diff_mean:.3f} [{diff_mean_ci[0]:.3f}, {diff_mean_ci[1]:.3f}], "
+              f"median={diff_median:.3f} [{diff_median_ci[0]:.3f}, {diff_median_ci[1]:.3f}]")
+
+        plt.figure(figsize=(4, 6))
+        labels = ["dig4el mean accuracy", "baseline accuracy"]
+        means = [boot_results[l]["mean"][0] for l in labels]
+        means_cis = [boot_results[l]["mean"][1] for l in labels]
+        medians = [boot_results[l]["median"][0] for l in labels]
+        medians_cis = [boot_results[l]["median"][1] for l in labels]
+        x = np.arange(len(labels))
+
+        plt.errorbar(x, means, yerr=[[means[i] - means_cis[i][0] for i in range(2)],
+                                     [means_cis[i][1] - means[i] for i in range(2)]],
+                     fmt='o', capsize=8, label='Mean (95% CI)')
+        plt.errorbar(x, medians, yerr=[[medians[i] - medians_cis[i][0] for i in range(2)],
+                                       [medians_cis[i][1] - medians[i] for i in range(2)]],
+                     fmt='s', capsize=8, label='Median (95% CI)')
+        plt.xticks(x, ["DIG4EL", "Baseline"])
+        plt.ylabel("Accuracy")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('../test_result_analysis/bootstrap_mean_median_CI.png')
         plt.close()
-
-        plt.figure()
-        plt.scatter(df["baseline accuracy"], df["dig4el mean accuracy"], alpha=0.7)
-        plt.plot([0, 1], [0, 1], '--', color='gray')  # Diagonal reference line
-        plt.xlabel("Baseline Accuracy")
-        plt.ylabel("DIG4EL Mean Accuracy")
-        plt.savefig("../test_result_analysis/scatter_dig4el_vs_baseline.png")
-        plt.close()
-
 
 
 
