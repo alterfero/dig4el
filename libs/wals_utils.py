@@ -277,6 +277,7 @@ def get_language_pks_by_family(family):
         return language_pk_by_family[family]
     else:
         print("Language family {} not in list of known families".format(family))
+        return None
 
 def get_language_pks_by_subfamily(subfamily):
     if subfamily in language_pk_by_subfamily:

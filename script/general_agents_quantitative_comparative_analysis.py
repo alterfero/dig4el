@@ -1,18 +1,10 @@
 from __future__ import annotations
 import csv
 import json
-import os
-import pandas as pd
-import re
-import numpy as np
-from pathlib import Path
-import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
 from libs import general_agents
 from libs import wals_utils as wu
-from libs.utils import generate_hash_from_list
-from scipy.stats import gaussian_kde
-from matplotlib.patches import Patch
+import pandas as pd
+
 
 """
 1) Load test results by language ("../test_result_analysis/summaries/per_language_accuracy.csv")
@@ -24,18 +16,6 @@ from matplotlib.patches import Patch
     - Compare this baseline_accuracy with the test results accuracy
 """
 
-# experimental_lids = ["abk", "ace", "adi", "ame", "arg", "obo", "aeg", "anj", "may", "bto", "bud", "baw", "bkr",
-#                 "bul", "ccm", "nko", "cct", "chv", "tin", "cle", "cpl", "chr", "coo", "cso", "wel", "dsh",
-#                 "ger", "din", "ndy", "est", "eng", "bsq", "fij", "fin", "fre", "fua", "fut", "krb", "gae",
-#                 "gmw", "orh", "hai", "hau", "htc", "arm", "arw", "iaa", "iba", "ind", "jpn", "jng", "kmj",
-#                 "abu", "khs", "kch", "kmh", "klm", "awt", "kwo", "knr", "kos", "tla", "kis", "ksg", "krr",
-#                 "lug", "lmp", "lmn", "lon", "mlu", "mad", "mxo", "mxc", "mxp", "min", "tab", "mmn", "mau",
-#                 "mng", "mao", "brm", "kho", "nav", "ngz", "nht", "nun", "otm", "tsh", "pal", "poh", "qim",
-#                 "rot", "sdw", "san", "ngm", "spa", "sul", "mup", "svs", "swe",
-#                 "twe", "tml", "ttn", "tgk", "tha", "len", "tsi", "tur", "tzu", "ung", "wal", "wol", "wlf",
-#                 "sio", "cnt", "yur"]
-
-experimental_lids = ["abk", "ace", "adi"]
 
 nobs = {
       "Order of Object, Oblique, and Verb": 84,
@@ -48,9 +28,6 @@ nobs = {
       "Order of Degree Word and Adjective": 91
     }
 
-out_list = []
-
-
 # load test result
 test_file_path = "../test_result_analysis/summaries/per_language_accuracy.csv"
 with open(test_file_path, mode='r', encoding='utf-8') as file:
@@ -61,57 +38,77 @@ def create_naive_vs_dig4el_accuracy_list(tested_language):
     language_name = tested_language["language_name"]
     print(language_name)
     language_test_mean_accuracy = tested_language["mean"]
-    print("test accuracy: {}".format(language_test_mean_accuracy))
     language_id = wu.language_pk_id_by_name[language_name]["id"]
-    language_pk = wu.language_pk_id_by_name[language_name]["pk"]
-    language_family = wu.language_info_by_id[language_id].get("family", "no family")
 
-    # use a general agent to compute priors based on the language family, the naive baseline
-    if language_family != "no family":
-        ga = general_agents.GeneralAgent("baseline", parameter_names=[p for p in nobs.keys()],
-                                         language_stat_filter={"family": [language_family]},
-                                         verbose=False)
-    else:
-        ga = general_agents.GeneralAgent("baseline", parameter_names=[p for p in nobs.keys()],
-                                         verbose=False)
-    naive_baseline_beliefs = ga.get_beliefs()
-    print("naive_baseline_beliefs: {}".format(naive_baseline_beliefs))
+    # use a general agent to compute statistical priors
+    gaf = general_agents.GeneralAgent("baseline", parameter_names=[p for p in nobs.keys()],
+                                      verbose=False)
+
+    # naive accuracy
+    naive_baseline_beliefs = gaf.get_beliefs()
+    print(naive_baseline_beliefs)
     # compute accuracy of naive beliefs across test parameters
-    naive_accuracy = 0.0
     naive_win_count = 0.0
-    for lpn in ga.language_parameters.keys():
+    for lpn in gaf.language_parameters.keys():
         print(lpn)
         # naive depk pick
         naive_depk = max(naive_baseline_beliefs[lpn], key=naive_baseline_beliefs[lpn].get)
-        print("naive: {}".format(naive_depk))
+        print("naive pick: {}".format(naive_depk))
         # true value
         language_data = wu.get_wals_language_data_by_id_or_name(language_id)
         ppk = int(wu.parameter_pk_by_name[lpn])
         true_depk = language_data[ppk]["domainelement_pk"]
-        print("true: {}".format(true_depk))
+        print("true value: {}".format(true_depk))
         # accuracy
         if str(true_depk) == str(naive_depk):
             naive_win_count += 1.0
     naive_accuracy = naive_win_count/len(nobs)
-    print("accuracy: {}".format(naive_accuracy))
 
-    out_list.append(
-        {
+
+    return {
             "language": language_name,
             "dig4el mean accuracy": language_test_mean_accuracy,
-            "naive accuracy": naive_accuracy
+            "baseline accuracy": naive_accuracy,
         }
-    )
 
 if __name__ == "__main__":
-    from multiprocessing import Pool, cpu_count
-    num_processes = min(cpu_count() - 1, len(experimental_lids))
-    with Pool(num_processes) as pool:
-        pool.map(create_naive_vs_dig4el_accuracy_list, experimental_lids)
+    COMPUTE = False
+    ANALYZE = True
+    if COMPUTE:
+        from multiprocessing import Pool, cpu_count
+        num_processes = min(cpu_count() - 1, len(test_data))
+        #num_processes = 1
+        with Pool(num_processes) as pool:
+            out_list = pool.map(create_naive_vs_dig4el_accuracy_list, test_data)
 
-    with open("../test_result_analysis/summaries/comparative_results_baseline_vs_dig4el.json", "w") as f:
-        json.dump(out_list, f)
-    print("saved results")
+        with open("../test_result_analysis/summaries/comparative_results_baseline_vs_dig4el.json", "w") as f:
+            json.dump(out_list, f)
+    if ANALYZE:
+        with open("../test_result_analysis/summaries/comparative_results_baseline_vs_dig4el.json", "r") as f:
+            results = json.load(f)
+
+        df = pd.DataFrame(results)
+        for col in ["dig4el mean accuracy", "baseline accuracy"]:
+            df[col] = pd.to_numeric(df[col])
+        stats = df[["dig4el mean accuracy", "baseline accuracy"]].describe()
+        print(stats)
+
+        import matplotlib.pyplot as plt
+
+        plt.figure()
+        df[["dig4el mean accuracy", "baseline accuracy"]].boxplot()
+        plt.ylabel('Accuracy')
+        plt.savefig('../test_result_analysis/accuracy_boxplot.png')
+        plt.close()
+
+        plt.figure()
+        plt.scatter(df["baseline accuracy"], df["dig4el mean accuracy"], alpha=0.7)
+        plt.plot([0, 1], [0, 1], '--', color='gray')  # Diagonal reference line
+        plt.xlabel("Baseline Accuracy")
+        plt.ylabel("DIG4EL Mean Accuracy")
+        plt.savefig("../test_result_analysis/scatter_dig4el_vs_baseline.png")
+        plt.close()
+
 
 
 

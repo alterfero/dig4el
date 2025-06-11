@@ -371,7 +371,9 @@ class GeneralAgent:
         if self.language_stat_filters != {}:
             if "family" in self.language_stat_filters.keys():
                 for f in self.language_stat_filters["family"]:
-                    language_pks_used_for_statistics += wu.get_language_pks_by_family(f)
+                    print("family filter active with {}".format(f))
+                    if wu.get_language_pks_by_family(f) is not None:
+                        language_pks_used_for_statistics += wu.get_language_pks_by_family(f)
             if "subfamily" in self.language_stat_filters.keys():
                 for f in self.language_stat_filters["subfamily"]:
                     language_pks_used_for_statistics +=  wu.get_language_pks_by_subfamily(f)
@@ -388,6 +390,7 @@ class GeneralAgent:
             language_pks_used_for_statistics = list(set(language_pks_used_for_statistics))
         else:
             language_pks_used_for_statistics = list(wu.language_by_pk.keys())
+        #print("{} languages used for statistics".format(len(language_pks_used_for_statistics)))
         if self.verbose:
             print("Agent {}: {} wals languages used for statistics.".format(self.name, len(language_pks_used_for_statistics)))
         return language_pks_used_for_statistics
