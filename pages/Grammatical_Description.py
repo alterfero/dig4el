@@ -34,6 +34,7 @@ import plotly.graph_objects as go
 from io import BytesIO
 from pathlib import Path
 from typing import Dict, Tuple, List, Set
+import tiktoken
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -100,6 +101,12 @@ if "params_by_topic" not in st.session_state:
         st.session_state["params_by_topic"] = json.load(f)
 if "docx_file_ready" not in st.session_state:
     st.session_state["docx_file_ready"] = False
+if "audience_language" not in st.session_state:
+    st.session_state["audience_language"] = "English"
+if "audience" not in st.session_state:
+    st.session_state["audience"] = "adult beginners"
+if "content_description" not in st.session_state:
+    st.session_state["content_description"] = "grammar lesson"
 
 observed_params = {
     "Order of Subject, Object and Verb": {"code": "81", "observer": (obs.observer_order_of_subject_object_verb, True)},
@@ -953,6 +960,7 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
         #     display_analysis(cross_consensus_stat)
 
 # EDITABLE RESULTS ================================================================
+
 if st.session_state["ga_output_available"]:
     st.markdown("#### Beliefs")
     edit_beliefs = st.toggle("Let me edit beliefs")
@@ -1067,10 +1075,23 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
     else:
         st.write("Generation of docx file failed.")
 
-# HYBRID LLM GRAMMATICAL DESCRIPTION
+# HYBRID LLM GRAMMATICAL DESCRIPTION ====================================================================
+
 if st.session_state["ga_output_available"] and st.session_state["results_approved"] and st.session_state[
     "generate_description"]:
-    st.markdown("#### Generate customized grammatical descriptions by topic.")
+
+    st.markdown("#### Generate default or customized grammatical descriptions.")
+
+    # USER INPUT
+    prompt_override = st.text_input(
+        "Ask a specific question about the language or leave blank for default topics.")
+    content_type = st.selectbox("What kind of document do you want?", ["grammar lesson", "grammatical description"])
+    audience_language = st.selectbox("What is L1?", ["English", "French", "Japanese", "Mandarin Chinese", "German"])
+    if audience_language != st.session_state["audience_language"]:
+        st.session_state["audience_language"] = audience_language
+    audience = st.selectbox("For which audience?", ["high-school beginners", "adult beginners", "linguists"])
+    if audience != st.session_state["audience"]:
+        st.session_state["audience"] = audience
 
     # build prompt data
     # create final result_list
@@ -1102,75 +1123,17 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         "grammar_priors": result_list
     }
 
-    # st.write("Data pacakged for LLM")
+    # st.write("Data packaged for LLM")
     # st.write(json_blob)
 
-    SPECIFIC_QUESTION_PROMPT = """
-    SYSTEM
-    You are "DIG4EL", a generator of grammatical learning material for adult L2 beginners learning the {{language_name}} language.
-    Your objective is to answer the user's question about the language. 
-    To do so, you're given data by the user: a JSON with all the information you need:
-    - grammar_priors: A List of grammatical parameters and their value in the language at hand.
-    - sentences: for each sentence, a dictionary shows:
-      - english sentence ('source_english'),
-      - the target language sentence ('target_raw'),
-      - an explanatory gloss ('alterlingua'),
-      - optional comments ('comment').
-    
-    IMPORTANT CLARIFICATIONS:
-    • The target language grammar is only represented by 'target_raw': 'alterlingua' is an explanatory/teaching gloss; it may contain hints or expansions not actually present in the target language. 
-    • Treat the JSON object you receive as ground truth; do not invent extra facts.
-    • Do not invent examples, facts, or gloss about the target language. Use only examples from the JSON data.
-    • Combine grammar_priors and 'target_raw' from the sentences to infer grammatical rules. The 'alterlingua' is only for the final gloss in your output.
-    • Output must match the EXACT JSON schema shown below – no comments, no extra keys, no trailing commas.
-    • Preserve target language orthography and punctuation exactly as given in 'target_raw'.
-    • The gloss must be the 'alterlingua' version exactly as presented in the data, with no changes.
-    
-    FOCUS: {{user_question}}
-    
-    STRICT-JSON-SCHEMA  (copy exactly):
-    {
-      "chapters": [
-        {
-          "title": {{user_question}},
-          "subtitle": "",
-          "explanation": "",
-          "examples": [
-            { "english": "", 
-              "target": "", 
-              "gloss": "" 
-            }
-          ]
-        }
-      ]
-    }
-    
-    USER
-    Here is the language data:
-    <<<DATA
-    {{json_blob}}
-    >>>
-    
-    TASKS
-    1. Parse all `sentences[*]` and `grammar_priors`.
-    2. Pick up all sentences that illustrate the answer to the user's question.
-    3. Infer grammatical rules from the 'target_raw' field (plus grammar_priors), ignoring morphological or syntactic markers in 'alterlingua'.
-    4. Fill the JSON template:
-       – `explanation` must answer the user's question (thoroughly).
-       – `examples` should contain the relevant sentences that illustrate your explanation.
-           * “english” must be the value from 'source_english'.
-           * “target” must be the value from 'target_raw'.
-           * “gloss” must be the value from 'alterlingua'.
-       – If no examples fit, leave the `examples` array empty and set `explanation` to "No examples available".
-    5. Output **only** the JSON object conforming to STRICT-JSON-SCHEMA. Do not add any extra text or formatting beyond that JSON.
-    
-    END OF PROMPT
-    
-    """
 
-    PROMPT_TEMPLATE = """
+
+    DEFAULT_PROMPT = """
     SYSTEM
-    You are "DIG4EL", a generator of grammatical learning material for adult L2 beginners learning the {{language_name}} language.
+    You are "DIG4EL", a generator of {{content_description}} for the {{language_name}} language for {{audience}}.
+    {{audience}} speak {{audience_language}}. 
+    • Explanations compare {{audience_language}} and {{language_name}} to help {{audience}} learn the grammar. 
+    • Explanations are optimized to the read and understood by {{audience}}.
     • Treat the JSON object you receive as ground truth; never invent extra facts.
     • Use ONLY information present in the JSON; never hallucinate extra facts.
     • Do not invent examples, fact or gloss about the target language: Use examples from the JSON.
@@ -1180,16 +1143,16 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
     • Output must match the EXACT JSON schema shown below – no comments, no extra keys, no trailing commas.
     • Preserve target language orthography and punctuation.
     • Gloss must be the alterlingua version as presented in the data, unchanged.
-    
+
     FOCUS AREAS (fixed order)
       1. Assertion, Question, Injunction: How to determine if a sentence is an assertion, a question or an order?
       2. Existence, Categorization, Qualification: How do you say that something is, that this something belongs to a category, and that this something displays some qualities?
       3. Agent and Patient in a simple sentence: How to determine what is the agent and what is the patient in a simple sentence?
       4. References to people and things: How to recognize and use references to people and things?
       5. Negation: How to say that something is not or that an action does not occur?
-      
-    The content of explnations you provide must answer the questions associated with each focus area. 
-    
+
+    The content of explanations you provide must answer the questions associated with each focus area. 
+
     STRICT-JSON-SCHEMA  (copy exactly):
     {
       "chapters": [
@@ -1247,54 +1210,147 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         }
       ]
     }
-    
+
     ALLOWED TOOL (optional)
     Use ⟨define morpheme="-y": "1SG.POSS"⟩ inline inside an *explanation* if needed.
+
+    USER
+    The language to teach is {{language_name}}. 
+    Here is the language data:
+    <<<DATA
+    {{json_blob}}
+    >>>
+
+    TASKS
+    1. Parse all `sentences[*]` and `grammar_priors`.
+    2. For each focus area, pick up to three sentences that illustrate it best.
+    3. Fill the JSON template:
+       – `explanation` for each chapter. Explanation must answer the question in the subtitle. (≤250 words).  
+       - Explanations should compare {{audience_language}} and {{language_name}}, insisting on contrasts. 
+       - Explanations should be adapted to {{audience}}. 
+       – Populate `examples` with the chosen sentences (preserve order).
+       - Gloss should be exactly the alterlingua gloss from the data.
+    4. If no example fits a chapter, leave its `examples` array empty and set `explanation` to "No examples available yet".
+    5. Output **only** the JSON object that conforms to STRICT-JSON-SCHEMA. Do not wrap it in Markdown fences or add any prose.
+
+    END OF PROMPT
+
+    """
+
+    DEFAULT_SPECIFIC_QUESTION_PROMPT = """
+    SYSTEM
+     You are "DIG4EL", a generator of {{content_description}} of the {{language_name}} language for {{audience}}.
+    {{audience}} speak {{audience_language}}. 
+    - Your objective is to answer the user's question about the language. 
+    - Your answers compare {{audience_language}} and {{language_name}} to help {{audience}} learn the grammar. 
+    - Your answers are optimized to be read and understood by {{audience}}.
+    
+    To do so, the user gives you data: a JSON with all the information you need:
+    - grammar_priors: A List of grammatical parameters and their value in the language at hand.
+    - sentences: for each sentence, a dictionary shows:
+      - english sentence ('source_english'),
+      - the target language sentence ('target_raw'),
+      - an explanatory gloss ('alterlingua'),
+      - optional comments ('comment').
+    
+    IMPORTANT CLARIFICATIONS:
+    • The target language grammar is only represented by 'target_raw': 'alterlingua' is an explanatory/teaching gloss; it may contain hints or expansions not actually present in the target language. 
+    • Treat the JSON object you receive as ground truth; do not invent extra facts.
+    • Do not invent examples, facts, or gloss about the target language. Use only examples from the JSON data.
+    • Combine grammar_priors and 'target_raw' from the sentences to infer grammatical rules. The 'alterlingua' is only for the final gloss in your output.
+    • Output must match the EXACT JSON schema shown below – no comments, no extra keys, no trailing commas.
+    • Preserve target language orthography and punctuation exactly as given in 'target_raw'.
+    • The gloss must be the 'alterlingua' version exactly as presented in the data, with no changes.
+    
+    FOCUS: {{user_question}}
+    
+    STRICT-JSON-SCHEMA  (copy exactly):
+    {
+      "chapters": [
+        {
+          "title": {{user_question}},
+          "subtitle": "",
+          "explanation": "",
+          "examples": [
+            { "english": "", 
+              "target": "", 
+              "gloss": "" 
+            }
+          ]
+        }
+      ]
+    }
     
     USER
-    Here is the lesson data:
+    In {{language_name}}, {{user_question}}
+    Here is the language data:
     <<<DATA
     {{json_blob}}
     >>>
     
     TASKS
     1. Parse all `sentences[*]` and `grammar_priors`.
-    2. For each focus area, pick up to three sentences that illustrate it best.
-    3. Fill the JSON template:
-       – `explanation` for each chapter. Explanation must answer the question in the subtitle. (≤250 words).  
-       – Populate `examples` with the chosen sentences (preserve order).
-       - Gloss should be exactly the alterlingua gloss from the data.
-    4. If no example fits a chapter, leave its `examples` array empty and set `explanation` to "No examples available yet".
-    5. Output **only** the JSON object that conforms to STRICT-JSON-SCHEMA. Do not wrap it in Markdown fences or add any prose.
+    2. Pick up all sentences that illustrate the answer to the user's question.
+    3. Infer grammatical rules from the 'target_raw' field (plus grammar_priors), ignoring morphological or syntactic markers in 'alterlingua'.
+    4. Fill the JSON template:
+       – `explanation` must answer the user's question (thoroughly). Explanation should compare {{audience_language}} 
+       and {{language_name}}, insisting on contrasts. Explanations should be adapted to {{audience}}. 
+       – `examples` should contain the relevant sentences that illustrate your explanation.
+           * “english” must be the value from 'source_english'.
+           * “target” must be the value from 'target_raw'.
+           * “gloss” must be the value from 'alterlingua'.
+       – If no examples fit, leave the `examples` array empty and set `explanation` to "No examples available".
+    5. Output **only** the JSON object conforming to STRICT-JSON-SCHEMA. Do not add any extra text or formatting beyond that JSON.
     
     END OF PROMPT
-
+    
     """
 
-    user_payload = json.dumps(json_blob, ensure_ascii=False)
-
-    system_prompt = PROMPT_TEMPLATE.replace("{{json_blob}}", json.dumps(json_blob, ensure_ascii=False))
-    system_prompt = system_prompt.replace("{{language_name}}", st.session_state["tl_name"])
-
-    prompt_override = st.text_input("Ask a specific question about the language or leave blank for default description.")
-    if prompt_override != "":
-        system_prompt = SPECIFIC_QUESTION_PROMPT
-        system_prompt = system_prompt.replace("{{json_blob}}", json.dumps(json_blob, ensure_ascii=False))
+    if prompt_override == "":
+        system_prompt = DEFAULT_PROMPT
+        system_prompt = system_prompt.replace("{{content_description}}", st.session_state["content_description"])
         system_prompt = system_prompt.replace("{{language_name}}", st.session_state["tl_name"])
+        system_prompt = system_prompt.replace("{{audience_language}}", st.session_state["audience_language"])
+        system_prompt = system_prompt.replace("{{audience}}", st.session_state["audience"])
+        print("Prompt before inserting data ==============")
+        print(system_prompt)
+        #system_prompt = system_prompt.replace("{{json_blob}}", json.dumps(json_blob, ensure_ascii=False))
+    else:
+        system_prompt = DEFAULT_SPECIFIC_QUESTION_PROMPT
+        system_prompt = system_prompt.replace("{{content_description}}", st.session_state["content_description"])
+        system_prompt = system_prompt.replace("{{language_name}}", st.session_state["tl_name"])
+        system_prompt = system_prompt.replace("{{audience_language}}", st.session_state["audience_language"])
+        system_prompt = system_prompt.replace("{{audience}}", st.session_state["audience"])
         system_prompt = system_prompt.replace("{{user_question}}", prompt_override)
+        print("Prompt before inserting data ==============")
+        print(system_prompt)
+        #system_prompt = system_prompt.replace("{{json_blob}}", json.dumps(json_blob, ensure_ascii=False))
+
+    user_payload = json.dumps(json_blob, ensure_ascii=False)
 
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_payload}
     ]
 
-    print("LLM MESSAGES")
-    print(messages)
+    st.markdown("#### Make sure everything below is correct and hit 'Generate'")
+    table = {"Focus": "",
+             "Content": "",
+             "L1": "",
+             "Audience": ""
+             }
+    if prompt_override:
+        table["Focus"] = prompt_override
+    else:
+        table["Focus"] = "Default"
+    table["Content"] = st.session_state['content_description']
+    table["L1"] = st.session_state['audience_language']
+    table["Audience"] = st.session_state['audience']
+    st.table(table)
+    use_openai = st.button(f"Generate")
 
-    def_cont = f"write a short description of key aspects of {st.session_state['tl_name']}'s grammar"
-    if prompt_override != "":
-        def_cont = f"describe {prompt_override.lower()}"
-    use_openai = st.button(f"Use OpenAI to {def_cont}")
+
+
     if use_openai:
         api_key = os.getenv("OPEN_AI_KEY")
         if not api_key:
@@ -1310,7 +1366,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                 model="gpt-4.1",
                 messages=messages,
                 temperature=0.3,
-                max_tokens=4000
+                max_tokens=5000
             ).choices[0].message.content
 
             print("Response received")
@@ -1359,7 +1415,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                                                             "Do not add any extra keys, comments, or prose."},
                               {"role": "user", "content": response}],
                     temperature=0.0,
-                    max_tokens=800
+                    max_tokens=5000
                 ).choices[0].message.content
                 try:
                     fixed_output = decode(fixed_response)
@@ -1368,7 +1424,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                     # st.write(fixed_output)
                 except json.decoder.JSONDecodeError:
                     print(fixed_response)
-                    st.write("Failed to generate a well-formed response, see termninal for raw response.")
+                    st.write("Failed to generate a well-formed response, see terminal for raw response.")
 
             else:
                 st.write("Unable to use the OpenAI API key, please contact support.")

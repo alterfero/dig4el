@@ -23,6 +23,7 @@ import pickle
 from collections import defaultdict
 from pathlib import Path
 import libs.utils as u
+from multiprocessing import Pool, cpu_count
 
 # parameter.csv list parameters by pk and their names
 #
@@ -367,15 +368,20 @@ def compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts = False
                 a_and_b += 1
 
     if b_count == 0:
+        print("no b_count for a_pk {} and b_pk {} for language {}".format(
+            get_careful_name_of_de_pk(a_pk),
+            get_careful_name_of_de_pk(b_pk),
+            language_by_pk.get(str(lang_pk), "no language with that pk")
+        ))
         return None  # undefined
+    else:
+        # Bayesian posterior mean
+        p_hat = (a_and_b + EPSILON) / (b_count + EPSILON)
 
-    # Bayesian posterior mean
-    p_hat = (a_and_b + EPSILON) / (b_count + EPSILON)
+        if return_counts:
+            return p_hat, b_count, a_and_b
 
-    if return_counts:
-        return p_hat, b_count, a_and_b
-
-    return p_hat
+        return p_hat
 
 
 def build_conditional_probability_table(filtered_params=True,
@@ -471,6 +477,108 @@ def build_conditional_probability_table(filtered_params=True,
     cpt_trust.to_json(out / f_trust_name)
 
     return os.path.join(out, fname)
+
+
+
+def compute_row(args):
+    """Compute one row of the conditional probability table, used by multiprocessing."""
+    a_pk, domain_element_pk_list, language_pks = args
+    row = {}
+    trust_row = {}
+
+    print(f"Computing row: {get_careful_name_of_de_pk(a_pk)}")
+
+    for b_pk in domain_element_pk_list:
+        result = compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts=True)
+
+        if result is None:
+            row[b_pk] = np.nan
+            trust_row[b_pk] = np.nan
+            continue
+
+        p_hat, b_count, a_and_b = result
+
+        if p_hat is None or b_count < N_MIN or a_and_b < K_MIN:
+            row[b_pk] = np.nan
+        else:
+            row[b_pk] = p_hat
+
+        trust_row[b_pk] = a_and_b
+
+    return a_pk, row, trust_row
+
+
+def build_conditional_probability_table_multiprocessing(filtered_params=True,
+                                                        language_filter=None,
+                                                        exclude_lids=None):
+    """Main function to build the conditional probability table."""
+    language_filter = language_filter or {}
+
+    # ---- 1. which languages ------------------------------------------------
+    if language_filter:
+        language_pks = set()
+        for key, table in [
+            ("family",     language_pk_by_family),
+            ("subfamily",  language_pk_by_subfamily),
+            ("genus",      language_pk_by_genus),
+            ("macroarea",  language_pk_by_macroarea),
+        ]:
+            for label in language_filter.get(key, []):
+                language_pks |= set(table.get(label, []))
+    elif exclude_lids:
+        exclude_pks = [language_pk_by_id.get(lid) for lid in exclude_lids]
+        exclude_pks = set(filter(None, exclude_pks))
+        language_pks = set(language_by_pk.keys()) - exclude_pks
+    else:
+        language_pks = set(language_by_pk.keys())
+
+    language_pks = list(language_pks)
+
+    # ---- 2. which domain-element values -----------------------------------
+    lookup_file = (
+        "../external_data/wals_derived/"
+        "domain_element_by_pk_lookup_table_filtered.json"
+        if filtered_params else
+        "../external_data/wals_derived/"
+        "domain_element_by_pk_lookup_table.json"
+    )
+    domain_element_pk_list = list(json.load(open(lookup_file)))
+
+    # ---- 3. compute CPT ----------------------------------------------------
+    num_processes = min(cpu_count() - 1, len(domain_element_pk_list))
+    args_list = [(a_pk, domain_element_pk_list, language_pks) for a_pk in domain_element_pk_list]
+
+    with Pool(num_processes) as pool:
+        results = pool.map(compute_row, args_list)
+
+    cpt = pd.DataFrame(index=domain_element_pk_list, columns=domain_element_pk_list, dtype=float)
+    cpt_trust = pd.DataFrame(index=domain_element_pk_list, columns=domain_element_pk_list, dtype=int)
+
+    for a_pk, row, trust_row in results:
+        for b_pk in domain_element_pk_list:
+            cpt.at[a_pk, b_pk] = row.get(b_pk, np.nan)
+            cpt_trust.at[a_pk, b_pk] = trust_row.get(b_pk, np.nan)
+
+    # ---- 4. Save -----------------------------------------------------------
+    out = Path("../external_data/wals_derived/experimental_cpt")
+    out.mkdir(exist_ok=True, parents=True)
+
+    suffix = []
+    for key in ["family", "subfamily", "genus", "macroarea"]:
+        if key in language_filter and language_filter[key]:
+            suffix.append(f"{key}_{'-'.join(language_filter[key])}")
+    if exclude_lids:
+        suffix.append(f"languages_excluded_hash_{u.generate_hash_from_list(exclude_lids)}")
+
+    fname = "de_conditional_probability" + ("_" + "_".join(suffix) if suffix else "") + ".json"
+    f_trust_name = "de_conditional_probability_trust_" + ("_" + "_".join(suffix) if suffix else "") + ".json"
+
+    cpt.to_json(out / fname)
+    cpt_trust.to_json(out / f_trust_name)
+
+    print("Saved to:", os.path.join(out, fname))
+    return os.path.join(out, fname)
+
 
 #   ========================
 

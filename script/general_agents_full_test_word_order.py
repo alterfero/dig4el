@@ -94,7 +94,7 @@ def process_excluded_language(excluded_lid: str):
     ga_param_name_list = list(obs.keys()) + list(nobs.keys())
 
     # Running max_epoch number of test across all languages
-    for epoch in range(1, 12):
+    for epoch in range(1, 30):
         # GA CREATION =========================================================================================
         # excluded languages not used to build priors
         ga = general_agents.GeneralAgent("experimental GA",
@@ -566,7 +566,7 @@ def analyze_results():
 
 if __name__ == "__main__":
     from multiprocessing import Pool, cpu_count
-    COMPUTE_RESULTS = False
+    COMPUTE_RESULTS = True
     ANALYZE_RESULTS = True
 
     if COMPUTE_RESULTS:
