@@ -307,7 +307,7 @@ def add_concept_graph(doc: Document, df: pd.DataFrame) -> None:
 
 def generate_docx_from_hybrid_output(content, language, gloss_format="table"):
     document = Document()
-    document.add_heading('Learning {}: Elements of grammar.'.format(language), 0)
+    document.add_heading('Learning {}'.format(language), 0)
     if "introduction" in content.keys():
         document.add_heading('Introduction', 1)
         document.add_paragraph(content["introduction"]["description"])
@@ -329,6 +329,33 @@ def generate_docx_from_hybrid_output(content, language, gloss_format="table"):
             elif gloss_format == "graph":
                 add_concept_graph(document, df)
 
+            document.add_paragraph("""   """)
+
+    # Save to a BytesIO buffer instead of disk
+    docx_buffer = BytesIO()
+    document.save(docx_buffer)
+    docx_buffer.seek(0)  # Reset buffer position
+
+    return docx_buffer
+
+def generate_plain_language_docx_from_hybrid_output(content, language):
+    document = Document()
+    document.add_heading('Learning {}'.format(language), 0)
+    if "introduction" in content.keys():
+        document.add_heading('Introduction', 1)
+        document.add_paragraph(content["introduction"]["description"])
+    for chapter in content["chapters"]:
+        document.add_heading(chapter["title"], 1)
+        document.add_paragraph(chapter["explanation"])
+        e_counter = 0
+        for example in chapter["examples"]:
+            e_counter += 1
+            document.add_paragraph("""Example {}""".format(e_counter), style='List Bullet')
+            pex = document.add_paragraph(" ", "Normal")
+            pex.add_run(f'{example["target"]}', style='Strong')
+            document.add_paragraph(f'{example["english"]}', "Normal")
+            document.add_paragraph("""   """)
+            document.add_paragraph(f'{example["gloss"]}', "Normal")
             document.add_paragraph("""   """)
 
     # Save to a BytesIO buffer instead of disk

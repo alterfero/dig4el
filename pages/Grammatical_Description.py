@@ -107,6 +107,49 @@ if "audience" not in st.session_state:
     st.session_state["audience"] = "adult beginners"
 if "content_description" not in st.session_state:
     st.session_state["content_description"] = "grammar lesson"
+if "final_output" not in st.session_state:
+    st.session_state["final_output"] = {}
+if "response" not in st.session_state:
+    st.session_state["response"] = ""
+if "PREPROCESS" not in st.session_state:
+    st.session_state["PREPROCESS"] = True
+if "COMPUTE" not in st.session_state:
+    st.session_state["COMPUTE"] = True
+if "POLISH" not in st.session_state:
+    st.session_state["POLISH"] = True
+if "polished_docx_file_ready" not in st.session_state:
+    st.session_state["polished_docx_file_ready"] = False
+if "docx_file" not in st.session_state:
+    st.session_state["docx_file"] = None
+if "docx_file_plain" not in st.session_state:
+    st.session_state["docx_file_plain"] = True
+
+
+# ---------- LLM response helpers ----------
+def safe_json(text: str) -> str:
+    """
+    Escape raw newlines and stray unescaped quotes that appear
+    *inside* double-quoted values.
+    """
+    # 1) replace CR/LF inside quoted strings with \n
+    text = re.sub(r'(".*?)(\r?\n)(.*?")',
+                  lambda m: m.group(1) + "\\n" + m.group(3),
+                  text, flags=re.S)
+    # 2) escape naked " inside values → \"
+    text = re.sub(r'(".*?[^\\])"(.*?")',
+                  lambda m: m.group(1) + '\\"' + m.group(2),
+                  text, flags=re.S)
+    return text
+
+
+def decode(raw):
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        return json.loads(safe_json(raw))
+# -----------------------------------------
+
+# GLOBAL VARIABLES =============================================
 
 observed_params = {
     "Order of Subject, Object and Verb": {"code": "81", "observer": (obs.observer_order_of_subject_object_verb, True)},
@@ -130,6 +173,7 @@ observed_params = {
 }
 
 NUMBER_OF_MESSAGING_CYCLES = 3
+
 delimiters_bank = [
     " ",  # Space
     ".",  # Period or dot
@@ -170,6 +214,8 @@ delimiters_bank = [
 
 default_delimiters = [" ", ".", ",", ";", ":", "!", "?", "\u2026", "'"]
 
+
+# ==================================================================
 
 def create_probability_df(cross_consensus_stat):
     data_points = []
@@ -390,337 +436,321 @@ with st.expander("Inputs"):
 
     show_details = st.toggle("Show details")
 
-# RETRIEVING KNOWLEDGE ==============================================================
-if show_details:
-    st.write("#### Known parameters in {}".format(st.session_state["tl_name"]))
-    col8, col9 = st.columns(2)
-if st.session_state["tl_name"] != "":
-    # WALS
-    if st.session_state["tl_wals_pk"] is not None:
-        if st.session_state["tl_wals_pk"] in wu.domain_elements_by_language.keys():
-            known_values = wu.domain_elements_by_language[st.session_state["tl_wals_pk"]]
-            for known_value in known_values:
-                p_name = wu.parameter_name_by_pk[wu.param_pk_by_de_pk[str(known_value)]]
-                de_name = wu.domain_element_by_pk[str(known_value)]["name"]
-                st.session_state["tl_knowledge"]["known_wals"][p_name] = de_name
-                st.session_state["tl_knowledge"]["known_wals_pk"][p_name] = str(known_value)
-    if len(st.session_state["tl_knowledge"]["known_wals"]) != 0 and show_details:
-        col8.write("**WALS**")
-        col8.markdown("{} known parameters in WALS".format(len(st.session_state[
-                                                                   "tl_knowledge"][
-                                                                   "known_wals"])))
-        show_params = col8.toggle("Show known WALS parameters")
-        if show_params:
-            col8.write(st.session_state["tl_knowledge"]["known_wals"])
-    elif len(st.session_state["tl_knowledge"]["known_wals"]) == 0 and show_details:
-        col8.write("No known parameter in WALS")
-
-    # GRAMBANK
-    if st.session_state["tl_grambank_id"] is not None:
-        ginfo = gu.get_grambank_language_data_by_id_or_name(st.session_state["tl_grambank_id"])
-        known_pids = ginfo.keys()
-        for known_pid in known_pids:
-            p_name = gu.grambank_pname_by_pid[known_pid]
-            v_name = gu.grambank_vname_by_vid[ginfo[known_pid]["vid"]]
-            st.session_state["tl_knowledge"]["known_grambank"][p_name] = v_name
-            st.session_state["tl_knowledge"]["known_grambank_pid"][p_name] = ginfo[known_pid]["vid"]
-    if len(st.session_state["tl_knowledge"]["known_grambank"]) != 0 and show_details:
-        col9.write("**Grambank**")
-        col9.markdown("{} known relevant parameters in Grambank".format(len(st.session_state["tl_knowledge"][
-                                                                                "known_grambank"])))
-        show_params = col9.toggle("Show known Grambank parameters")
-        if show_params:
-            col9.write(st.session_state["tl_knowledge"]["known_grambank"])
-    elif len(st.session_state["tl_knowledge"]["known_grambank"]) == 0 and show_details:
-        col9.write("No known parameter in Grambank")
-    st.session_state["known_processed"] = True
-
-# PROCESSING TRANSCRIPTIONS
-
-# OBSERVATIONS: RUN ALL AVAILABLE OBSERVERS =================================================================
-
-if st.session_state["kg"] != {}:
-    # run all available observers
-    for param_name, param_info in observed_params.items():
-        if param_info["observer"] is not None:
-            (func, canonical) = param_info["observer"]
-            st.session_state["obs"][param_name] = func(
-                st.session_state["kg"],
-                st.session_state["tl_name"],
-                st.session_state["delimiters"],
-                canonical=canonical
-            )
-            st.session_state["tl_knowledge"]["observed"][param_name] = st.session_state["obs"][param_name][
-                "agent-ready observation"]
-
-    st.session_state["observations_processed"] = True
-    # st.write("st.session_state['tl_knowledge']")
-    # st.write(st.session_state["tl_knowledge"])
-    # st.write("st.session_state['obs']")
-    # st.write(st.session_state["obs"])
-
+if st.session_state["PREPROCESS"]:
+    # RETRIEVING KNOWLEDGE ==============================================================
     if show_details:
-        st.markdown("#### Retrieving **observed** information in Conversational Questionnaires")
-        show_observed_details = st.toggle("Show details about observations")
-        #st.write(st.session_state["obs"])
-        if show_details and show_observed_details:
-            for pobs in st.session_state["obs"]:
-                if len(st.session_state["obs"][pobs]["observations"]) != 0:
-                    st.markdown("#### {}".format(pobs))
-                    for de_name, details in st.session_state["obs"][pobs]["observations"].items():
-                        if details["count"] != 0:
-                            st.write("---------------------------------------------")
-                            st.write("**{}** in ".format(de_name))
-                            for occurrence_index, context in details["details"].items():
-                                st.markdown("- ***{}***".format(
-                                    st.session_state["kg"][occurrence_index]["recording_data"]["translation"]))
-                                st.write(st.session_state["kg"][occurrence_index]["sentence_data"]["text"])
-                                gdf = kgu.build_gloss_df(st.session_state["kg"], occurrence_index,
-                                                         st.session_state["delimiters"])
-                                st.dataframe(gdf)
-                                st.write("context: {}".format(context))
-                    st.markdown("-------------------------------------")
+        st.write("#### Known parameters in {}".format(st.session_state["tl_name"]))
+        col8, col9 = st.columns(2)
+    if st.session_state["tl_name"] != "":
+        # WALS
+        if st.session_state["tl_wals_pk"] is not None:
+            if st.session_state["tl_wals_pk"] in wu.domain_elements_by_language.keys():
+                known_values = wu.domain_elements_by_language[st.session_state["tl_wals_pk"]]
+                for known_value in known_values:
+                    p_name = wu.parameter_name_by_pk[wu.param_pk_by_de_pk[str(known_value)]]
+                    de_name = wu.domain_element_by_pk[str(known_value)]["name"]
+                    st.session_state["tl_knowledge"]["known_wals"][p_name] = de_name
+                    st.session_state["tl_knowledge"]["known_wals_pk"][p_name] = str(known_value)
+        if len(st.session_state["tl_knowledge"]["known_wals"]) != 0 and show_details:
+            col8.write("**WALS**")
+            col8.markdown("{} known parameters in WALS".format(len(st.session_state[
+                                                                       "tl_knowledge"][
+                                                                       "known_wals"])))
+            show_params = col8.toggle("Show known WALS parameters")
+            if show_params:
+                col8.write(st.session_state["tl_knowledge"]["known_wals"])
+        elif len(st.session_state["tl_knowledge"]["known_wals"]) == 0 and show_details:
+            col8.write("No known parameter in WALS")
 
-# STATISTICAL PRIORS =====================================================================
+        # GRAMBANK
+        if st.session_state["tl_grambank_id"] is not None:
+            ginfo = gu.get_grambank_language_data_by_id_or_name(st.session_state["tl_grambank_id"])
+            known_pids = ginfo.keys()
+            for known_pid in known_pids:
+                p_name = gu.grambank_pname_by_pid[known_pid]
+                v_name = gu.grambank_vname_by_vid[ginfo[known_pid]["vid"]]
+                st.session_state["tl_knowledge"]["known_grambank"][p_name] = v_name
+                st.session_state["tl_knowledge"]["known_grambank_pid"][p_name] = ginfo[known_pid]["vid"]
+        if len(st.session_state["tl_knowledge"]["known_grambank"]) != 0 and show_details:
+            col9.write("**Grambank**")
+            col9.markdown("{} known relevant parameters in Grambank".format(len(st.session_state["tl_knowledge"][
+                                                                                    "known_grambank"])))
+            show_params = col9.toggle("Show known Grambank parameters")
+            if show_params:
+                col9.write(st.session_state["tl_knowledge"]["known_grambank"])
+        elif len(st.session_state["tl_knowledge"]["known_grambank"]) == 0 and show_details:
+            col9.write("No known parameter in Grambank")
+        st.session_state["known_processed"] = True
 
-if st.session_state["known_processed"] and st.session_state["observations_processed"]:
+    # PROCESSING TRANSCRIPTIONS
 
-    prior_family_list = []
-    is_family_set = False
-    # if no knowledge on this language, ask for alternatives to compute priors
-    if st.session_state["tl_knowledge"]["known_wals"] == {} and st.session_state["tl_knowledge"][
-        "known_grambank"] == {}:
-        base_lname_list = list(set(list(wu.language_pk_id_by_name.keys()) + [linfo["name"] for lid, linfo in
-                                                                             gu.grambank_language_by_lid.items()]))
-        similar_lnames = st.multiselect("If you know languages that resemble {}, select one or several of them.".format(
-            st.session_state["tl_name"]), base_lname_list)
-        prior_family_list = list(set([gwu.get_language_family_by_language_name(lname) for lname in similar_lnames]))
-    # otherwise use language family to compute priors
-    else:
-        prior_family_list = [gwu.get_language_family_by_language_name(st.session_state["tl_name"])]
+    # OBSERVATIONS: RUN ALL AVAILABLE OBSERVERS =================================================================
 
-    if show_details:
-        if prior_family_list == []:
-            display_family_list = "all"
+    if st.session_state["kg"] != {}:
+        # run all available observers
+        for param_name, param_info in observed_params.items():
+            if param_info["observer"] is not None:
+                (func, canonical) = param_info["observer"]
+                st.session_state["obs"][param_name] = func(
+                    st.session_state["kg"],
+                    st.session_state["tl_name"],
+                    st.session_state["delimiters"],
+                    canonical=canonical
+                )
+                st.session_state["tl_knowledge"]["observed"][param_name] = st.session_state["obs"][param_name][
+                    "agent-ready observation"]
+
+        st.session_state["observations_processed"] = True
+        # st.write("st.session_state['tl_knowledge']")
+        # st.write(st.session_state["tl_knowledge"])
+        # st.write("st.session_state['obs']")
+        # st.write(st.session_state["obs"])
+
+        if show_details:
+            st.markdown("#### Retrieving **observed** information in Conversational Questionnaires")
+            show_observed_details = st.toggle("Show details about observations")
+            #st.write(st.session_state["obs"])
+            if show_details and show_observed_details:
+                for pobs in st.session_state["obs"]:
+                    if len(st.session_state["obs"][pobs]["observations"]) != 0:
+                        st.markdown("#### {}".format(pobs))
+                        for de_name, details in st.session_state["obs"][pobs]["observations"].items():
+                            if details["count"] != 0:
+                                st.write("---------------------------------------------")
+                                st.write("**{}** in ".format(de_name))
+                                for occurrence_index, context in details["details"].items():
+                                    st.markdown("- ***{}***".format(
+                                        st.session_state["kg"][occurrence_index]["recording_data"]["translation"]))
+                                    st.write(st.session_state["kg"][occurrence_index]["sentence_data"]["text"])
+                                    gdf = kgu.build_gloss_df(st.session_state["kg"], occurrence_index,
+                                                             st.session_state["delimiters"])
+                                    st.dataframe(gdf)
+                                    st.write("context: {}".format(context))
+                        st.markdown("-------------------------------------")
+
+    # STATISTICAL PRIORS =====================================================================
+
+    if st.session_state["known_processed"] and st.session_state["observations_processed"]:
+
+        prior_family_list = []
+        is_family_set = False
+        # if no knowledge on this language, ask for alternatives to compute priors
+        if st.session_state["tl_knowledge"]["known_wals"] == {} and st.session_state["tl_knowledge"][
+            "known_grambank"] == {}:
+            base_lname_list = list(set(list(wu.language_pk_id_by_name.keys()) + [linfo["name"] for lid, linfo in
+                                                                                 gu.grambank_language_by_lid.items()]))
+            similar_lnames = st.multiselect("If you know languages that resemble {}, select one or several of them.".format(
+                st.session_state["tl_name"]), base_lname_list)
+            prior_family_list = list(set([gwu.get_language_family_by_language_name(lname) for lname in similar_lnames]))
+        # otherwise use language family to compute priors
         else:
-            display_family_list = "the " + ", ".join(prior_family_list)
-        st.write("Prior knowledge is based on statistics over **{}** language family(ies).".format(display_family_list))
+            prior_family_list = [gwu.get_language_family_by_language_name(st.session_state["tl_name"])]
 
-    if prior_family_list != []:
-        l_filter = {"family": prior_family_list}
-    else:
-        l_filter = {}
+        if show_details:
+            if prior_family_list == []:
+                display_family_list = "all"
+            else:
+                display_family_list = "the " + ", ".join(prior_family_list)
+            st.write("Prior knowledge is based on statistics over **{}** language family(ies).".format(display_family_list))
 
-    # SELECT RELEVANT PARAMETERS BY EXPANDING FRONTIER BASED ON OBSERVED AND KNOWN ============
+        if prior_family_list != []:
+            l_filter = {"family": prior_family_list}
+        else:
+            l_filter = {}
 
-    # Populate ga_param_codes and ga_param_names,
-    # Initialize st.session_state["prompt_content"] by topic (topic removed from this version)
+        # SELECT RELEVANT PARAMETERS BY EXPANDING FRONTIER BASED ON OBSERVED AND KNOWN ============
 
-    # build general graph with all wals and grambank values  ----------------------------
-    BASE_DIR = Path("./external_data")
-    G = psu.load_all_cpts(BASE_DIR)
-    print(f"Graph: |V|={G.number_of_nodes()}, |E|={G.number_of_edges()}")
+        # Populate ga_param_codes and ga_param_names,
+        # Initialize st.session_state["prompt_content"] by topic (topic removed from this version)
 
-    # naive uniform priors (replace with family priors if it makes sense) ---
-    priors = {v: 1 / G.number_of_nodes() for v in G.nodes}
-    parameter_selection_belief = psu.BeliefState(priors)
+        # build general graph with all wals and grambank values  ----------------------------
+        BASE_DIR = Path("./external_data")
+        G = psu.load_all_cpts(BASE_DIR)
+        print(f"Graph: |V|={G.number_of_nodes()}, |E|={G.number_of_edges()}")
 
-    # feed observations: use a General Agent to get beliefs from observations -----------------------------------
-    st.session_state["parameter_selection_ga"] = general_agents.GeneralAgent("parameter_selection_ga",
-                                                                             parameter_names=[str(name) for name in
-                                                                                              st.session_state[
-                                                                                                  'obs'].keys()],
-                                                                             language_stat_filter={})
+        # naive uniform priors (replace with family priors if it makes sense) ---
+        priors = {v: 1 / G.number_of_nodes() for v in G.nodes}
+        parameter_selection_belief = psu.BeliefState(priors)
 
-    for observed_param_name in st.session_state["tl_knowledge"]["observed"]:
-        st.session_state["parameter_selection_ga"].add_observations(observed_param_name,
-                                                                    st.session_state["tl_knowledge"]["observed"][
-                                                                        observed_param_name])
+        # feed observations: use a General Agent to get beliefs from observations -----------------------------------
+        st.session_state["parameter_selection_ga"] = general_agents.GeneralAgent("parameter_selection_ga",
+                                                                                 parameter_names=[str(name) for name in
+                                                                                                  st.session_state[
+                                                                                                      'obs'].keys()],
+                                                                                 language_stat_filter={})
 
-    st.session_state["parameter_selection_ga"].run_belief_update_from_observations()
+        for observed_param_name in st.session_state["tl_knowledge"]["observed"]:
+            st.session_state["parameter_selection_ga"].add_observations(observed_param_name,
+                                                                        st.session_state["tl_knowledge"]["observed"][
+                                                                            observed_param_name])
 
-    for p in st.session_state["parameter_selection_ga"].language_parameters.keys():
-        for v_code in st.session_state["parameter_selection_ga"].language_parameters[p].beliefs.keys():
-            proba = st.session_state["parameter_selection_ga"].language_parameters[p].beliefs[v_code]
-            parameter_selection_belief.update_observation(v_code, proba)  # soft evidence
+        st.session_state["parameter_selection_ga"].run_belief_update_from_observations()
 
-    # feed knowledge
-    for p, v in st.session_state["tl_knowledge"]["known_wals_pk"].items():
-        parameter_selection_belief.set_known(v)  # hard evidence
-    for p, v in st.session_state["tl_knowledge"]["known_grambank_pid"].items():
-        parameter_selection_belief.set_known(v)  # hard evidence
+        for p in st.session_state["parameter_selection_ga"].language_parameters.keys():
+            for v_code in st.session_state["parameter_selection_ga"].language_parameters[p].beliefs.keys():
+                proba = st.session_state["parameter_selection_ga"].language_parameters[p].beliefs[v_code]
+                parameter_selection_belief.update_observation(v_code, proba)  # soft evidence
 
-    # select parameters ----------------------------------------------
+        # feed knowledge
+        for p, v in st.session_state["tl_knowledge"]["known_wals_pk"].items():
+            parameter_selection_belief.set_known(v)  # hard evidence
+        for p, v in st.session_state["tl_knowledge"]["known_grambank_pid"].items():
+            parameter_selection_belief.set_known(v)  # hard evidence
 
-    st.subheader("Parameter selection")
-    st.markdown("{} parameters observed, {} known from WALS, {} known from Grambank.  parameters".format(
-        len(st.session_state["tl_knowledge"]["observed"]),
-        len(st.session_state["tl_knowledge"]["known_wals_pk"]),
-        len(st.session_state["tl_knowledge"]["known_grambank_pid"]
-            )))
+        # select parameters ----------------------------------------------
 
-    # --------------------------------------------------------
-    # 1.  Run suggest_parameters *once* and cache the ranking
-    # --------------------------------------------------------
-    st.sidebar.write("Parameter Selection parameters")
-    CP_MIN = st.sidebar.slider(
-        "CP_MIN (edge-weight floor)",
-        min_value=0.0, max_value=1.0, value=0.8, step=0.1,
-        help="Minimum edge weight to keep during frontier expansion"
-    )
-
-    BELIEF_MIN = st.sidebar.slider(
-        "BELIEF_MIN (strong-node threshold)",
-        min_value=0.0, max_value=1.0, value=0.8, step=0.01,
-        help="Threshold above which a value is considered strong"
-    )
-
-    d = st.sidebar.number_input(
-        "d (BFS depth limit)",
-        min_value=1, max_value=10, value=5, step=1,
-        help="How many hops out to search during BFS"
-    )
-
-    SCORE_MIN = st.sidebar.slider(
-        "SCORE_MIN (candidate score threshold)",
-        min_value=0.0, max_value=1.0, value=0.85, step=0.05,
-        help="Minimum score for a candidate to be proposed"
-    )
-
-    K = st.sidebar.number_input(
-        "K (top-k suggestions)",
-        min_value=1, max_value=10_000, value=500, step=50,
-        help="How many top suggestions to return"
-    )
-
-    # seeds = all values whose belief ≥ BELIEF_MIN
-    strong_seeds = set(parameter_selection_belief.strong_values(0.9))
-
-    selected_parameters = psu.suggest_parameters(
-        G,
-        parameter_selection_belief,
-        θ_CP=CP_MIN,  # floor on edge weights kept during frontier expansion.
-        θ_belief=BELIEF_MIN,  # threshold above which a value is considered *strong*
-        d=d,  # BFS depth limit
-        θ_score=SCORE_MIN,  # minimum score for a candidate to be proposed
-        K=K,  # top‑k suggestions to return
-    )
-    st.write("{} Strong parameters, enabling a reach of {} other parameters.".format(len(strong_seeds),
-                                                                                     len(selected_parameters)))
-    if st.toggle("See strong parameters and reach"):
-        colx1, colx2 = st.columns(2)
-        colx1.markdown("**Strong parameters**")
-        for p in strong_seeds:
-            colx1.write("*{}*".format(gwu.get_pname_from_value_code(p)))
-            colx1.write(gwu.get_pvalue_name_from_value_code(p))
-            colx1.write("---")
-        colx2.markdown("**Probabilistic Reach above score threshold**")
-        for p in selected_parameters:
-            colx2.write("*{}*".format(gwu.get_pname_from_value_code(p[0])))
-            colx2.write(gwu.get_pvalue_name_from_value_code(p[0]))
-            colx2.write("Score: {}".format(round(p[1], 2)))
-            colx2.write("---")
-
-    ranked = list(psu.suggest_parameters(
-        G,
-        parameter_selection_belief,
-        θ_CP=CP_MIN,  # floor on edge weights kept during frontier expansion.
-        θ_belief=BELIEF_MIN,  # threshold above which a value is considered *strong*
-        d=d,  # BFS depth limit
-        θ_score=SCORE_MIN,  # minimum score for a candidate to be proposed
-        K=K,  # top‑k suggestions to return
-    ))
-    top_nodes = {vid for vid, _ in ranked}
-
-    if st.toggle("Display network"):
-        # --------------------------------------------------------
-        # 2.  Build the visual sub-graph = seeds ∪ top_nodes
-        # --------------------------------------------------------
-        visible_nodes = strong_seeds.union(top_nodes)
-        net = Network(height="600px", width="100%", directed=True, bgcolor="#ffffff")
-        net.force_atlas_2based()
-
-        # -- nodes ------------------------------------------------
-
-        for node in strong_seeds:
-            p_value_name = gwu.get_pvalue_name_from_value_code(node)
-            p_name = gwu.get_pname_from_value_code(node)
-            net.add_node(node,
-                         label=p_name,
-                         color="#8cd790",
-                         title=f"{p_name}: {p_value_name}")
-
-        for node in top_nodes:
-            p_value_name = gwu.get_pvalue_name_from_value_code(node)
-            p_name = gwu.get_pname_from_value_code(node)
-            net.add_node(node,
-                         label=p_name,
-                         title=f"{p_name}: {p_value_name}",
-                         color="#ffa552")
-
-        # -- edges: only if both ends are in visible_nodes -------
-        for u in visible_nodes:
-            for v, attrs in G[u].items():
-                if v in visible_nodes and attrs["weight"] >= CP_MIN:
-                    net.add_edge(
-                        u, v,
-                        title=f"P={attrs['weight']:.2f}",
-                        physics=True,
-                        width=1,  # fixed line thickness (px)
-                        color={"color": "#dddddd",  # dict form lets you customise
-                               "highlight": "#333333",  #   normal / on‑select / on‑hover
-                               "hover": "#555555"}
-
-                    )
+        st.subheader("Parameter selection")
+        st.markdown("{} parameters observed, {} known from WALS, {} known from Grambank.  parameters".format(
+            len(st.session_state["tl_knowledge"]["observed"]),
+            len(st.session_state["tl_knowledge"]["known_wals_pk"]),
+            len(st.session_state["tl_knowledge"]["known_grambank_pid"]
+                )))
 
         # --------------------------------------------------------
-        # 3.  Render
+        # 1.  Run suggest_parameters *once* and cache the ranking
         # --------------------------------------------------------
-        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".html")
-        net.write_html(tmp.name)
-        components.html(open(tmp.name, "r", encoding="utf-8").read(),
-                        height=650, scrolling=True)
 
-    # st.session_state["selected_topics"] = st.multiselect("Choose topics", list(topics["ga_topics"].keys()))
-    # for topic in st.session_state["selected_topics"]:
-    #     st.session_state["prompt_content"][topic] = {pname: {"main value":None, "examples by value":{}} for pname in topics["ga_topics"][topic].keys()}
-    # ga_param_codes = [item["code"] for topic, topic_params in topics["ga_topics"].items() for item in topic_params.values() if
-    #                              item["code"] is not None and topic in st.session_state["selected_topics"]]
-    # ga_param_names = [gwu.get_pname_from_pcode(code) for code in ga_param_codes]
+        CP_MIN = 0.8
 
-    # let user choose topics of interest, knowing the parameters available in each
-    available_parameter_names = [gwu.get_pname_from_value_code(code[0]) for code in selected_parameters] + [
-        gwu.get_pname_from_value_code(code) for code in strong_seeds]
-    p_per_topic = []
-    tc = 0
-    for topic in st.session_state["params_by_topic"]:
-        c = 0
-        found_p = False
-        for p in available_parameter_names:
-            if p in st.session_state["params_by_topic"][topic]:
-                c += 1
-                found_p = True
-        if not found_p:
-            print(f"parameter {p} not found in params_by_topic")
-        p_per_topic.append({"topic": topic, "count": c})
-        tc += c
-    st.dataframe(pd.DataFrame(p_per_topic))
-    st.write("Total count: {}".format(tc))
+        BELIEF_MIN = 0.8
 
-    st.session_state["selected_topics"] = st.multiselect("Choose topics", ["All"] +
-                                                         list(st.session_state["params_by_topic"].keys()))
+        d = 5
 
-    selected_parameters_by_topic = {}
-    if "All" in st.session_state["selected_topics"] or st.session_state["selected_topics"] == []:
-        st.session_state["selected_topics"] = [topic for topic in  list(st.session_state["params_by_topic"].keys())]
-    for selected_topic in st.session_state["selected_topics"]:
-        selected_parameters_by_topic[selected_topic] = \
-            [p for p in st.session_state["params_by_topic"][selected_topic] if p in available_parameter_names]
+        SCORE_MIN = 0.85
+
+        K = 50
+
+        # seeds = all values whose belief ≥ BELIEF_MIN
+        strong_seeds = set(parameter_selection_belief.strong_values(0.9))
+
+        selected_parameters = psu.suggest_parameters(
+            G,
+            parameter_selection_belief,
+            θ_CP=CP_MIN,  # floor on edge weights kept during frontier expansion.
+            θ_belief=BELIEF_MIN,  # threshold above which a value is considered *strong*
+            d=d,  # BFS depth limit
+            θ_score=SCORE_MIN,  # minimum score for a candidate to be proposed
+            K=K,  # top‑k suggestions to return
+        )
+        st.write("{} Strong parameters, enabling a reach of {} other parameters.".format(len(strong_seeds),
+                                                                                         len(selected_parameters)))
+        if st.toggle("See strong parameters and reach"):
+            colx1, colx2 = st.columns(2)
+            colx1.markdown("**Strong parameters**")
+            for p in strong_seeds:
+                colx1.write("*{}*".format(gwu.get_pname_from_value_code(p)))
+                colx1.write(gwu.get_pvalue_name_from_value_code(p))
+                colx1.write("---")
+            colx2.markdown("**Probabilistic Reach above score threshold**")
+            for p in selected_parameters:
+                colx2.write("*{}*".format(gwu.get_pname_from_value_code(p[0])))
+                colx2.write(gwu.get_pvalue_name_from_value_code(p[0]))
+                colx2.write("Score: {}".format(round(p[1], 2)))
+                colx2.write("---")
+
+        ranked = list(psu.suggest_parameters(
+            G,
+            parameter_selection_belief,
+            θ_CP=CP_MIN,  # floor on edge weights kept during frontier expansion.
+            θ_belief=BELIEF_MIN,  # threshold above which a value is considered *strong*
+            d=d,  # BFS depth limit
+            θ_score=SCORE_MIN,  # minimum score for a candidate to be proposed
+            K=K,  # top‑k suggestions to return
+        ))
+        top_nodes = {vid for vid, _ in ranked}
+
+        if st.toggle("Display network"):
+            # --------------------------------------------------------
+            # 2.  Build the visual sub-graph = seeds ∪ top_nodes
+            # --------------------------------------------------------
+            visible_nodes = strong_seeds.union(top_nodes)
+            net = Network(height="600px", width="100%", directed=True, bgcolor="#ffffff")
+            net.force_atlas_2based()
+
+            # -- nodes ------------------------------------------------
+
+            for node in strong_seeds:
+                p_value_name = gwu.get_pvalue_name_from_value_code(node)
+                p_name = gwu.get_pname_from_value_code(node)
+                net.add_node(node,
+                             label=p_name,
+                             color="#8cd790",
+                             title=f"{p_name}: {p_value_name}")
+
+            for node in top_nodes:
+                p_value_name = gwu.get_pvalue_name_from_value_code(node)
+                p_name = gwu.get_pname_from_value_code(node)
+                net.add_node(node,
+                             label=p_name,
+                             title=f"{p_name}: {p_value_name}",
+                             color="#ffa552")
+
+            # -- edges: only if both ends are in visible_nodes -------
+            for u in visible_nodes:
+                for v, attrs in G[u].items():
+                    if v in visible_nodes and attrs["weight"] >= CP_MIN:
+                        net.add_edge(
+                            u, v,
+                            title=f"P={attrs['weight']:.2f}",
+                            physics=True,
+                            width=1,  # fixed line thickness (px)
+                            color={"color": "#dddddd",  # dict form lets you customise
+                                   "highlight": "#333333",  #   normal / on‑select / on‑hover
+                                   "hover": "#555555"}
+
+                        )
+
+            # --------------------------------------------------------
+            # 3.  Render
+            # --------------------------------------------------------
+            tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".html")
+            net.write_html(tmp.name)
+            components.html(open(tmp.name, "r", encoding="utf-8").read(),
+                            height=650, scrolling=True)
+
+        # st.session_state["selected_topics"] = st.multiselect("Choose topics", list(topics["ga_topics"].keys()))
+        # for topic in st.session_state["selected_topics"]:
+        #     st.session_state["prompt_content"][topic] = {pname: {"main value":None, "examples by value":{}} for pname in topics["ga_topics"][topic].keys()}
+        # ga_param_codes = [item["code"] for topic, topic_params in topics["ga_topics"].items() for item in topic_params.values() if
+        #                              item["code"] is not None and topic in st.session_state["selected_topics"]]
+        # ga_param_names = [gwu.get_pname_from_pcode(code) for code in ga_param_codes]
+
+        # let user choose topics of interest, knowing the parameters available in each
+        available_parameter_names = [gwu.get_pname_from_value_code(code[0]) for code in selected_parameters] + [
+            gwu.get_pname_from_value_code(code) for code in strong_seeds]
+        p_per_topic = []
+        tc = 0
+        for topic in st.session_state["params_by_topic"]:
+            c = 0
+            found_p = False
+            for p in available_parameter_names:
+                if p in st.session_state["params_by_topic"][topic]:
+                    c += 1
+                    found_p = True
+            if not found_p:
+                print(f"parameter {p} not found in params_by_topic")
+            p_per_topic.append({"topic": topic, "count": c})
+            tc += c
+        st.dataframe(pd.DataFrame(p_per_topic))
+        st.write("Total count: {}".format(tc))
+
+        st.session_state["selected_topics"] = st.multiselect("Choose topics", ["All"] +
+                                                             list(st.session_state["params_by_topic"].keys()))
+
+        selected_parameters_by_topic = {}
+        if "All" in st.session_state["selected_topics"] or st.session_state["selected_topics"] == []:
+            st.session_state["selected_topics"] = [topic for topic in  list(st.session_state["params_by_topic"].keys())]
+        for selected_topic in st.session_state["selected_topics"]:
+            selected_parameters_by_topic[selected_topic] = \
+                [p for p in st.session_state["params_by_topic"][selected_topic] if p in available_parameter_names]
+
+    # END PREPROCESS
 
     # PREPARING AND RUNNING GENERAL AGENT ==================================================================
 
     st.markdown("#### Generating Grammar")
     if st.button("Launch inferential process"):
+        st.session_state["PREPROCESS"] = False
         st.session_state["run_ga"] = True
         st.session_state["belief_history"] = {}
         st.session_state["consensus_store"] = {}
@@ -854,6 +884,8 @@ if st.session_state["known_processed"] and st.session_state["observations_proces
                 st.dataframe(pdf)
         st.session_state["run_ga"] = False
         st.session_state["ga_output_available"] = True
+        st.session_state["run_ga"] = False
+
     # Details
     if show_details and st.session_state["ga_output_available"]:
         show_ga = st.toggle("Show General Agent graph")
@@ -1214,13 +1246,6 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
     ALLOWED TOOL (optional)
     Use ⟨define morpheme="-y": "1SG.POSS"⟩ inline inside an *explanation* if needed.
 
-    USER
-    The language to teach is {{language_name}}. 
-    Here is the language data:
-    <<<DATA
-    {{json_blob}}
-    >>>
-
     TASKS
     1. Parse all `sentences[*]` and `grammar_priors`.
     2. For each focus area, pick up to three sentences that illustrate it best.
@@ -1281,13 +1306,6 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
       ]
     }
     
-    USER
-    In {{language_name}}, {{user_question}}
-    Here is the language data:
-    <<<DATA
-    {{json_blob}}
-    >>>
-    
     TASKS
     1. Parse all `sentences[*]` and `grammar_priors`.
     2. Pick up all sentences that illustrate the answer to the user's question.
@@ -1313,8 +1331,15 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         system_prompt = system_prompt.replace("{{audience_language}}", st.session_state["audience_language"])
         system_prompt = system_prompt.replace("{{audience}}", st.session_state["audience"])
         print("Prompt before inserting data ==============")
+        print("SYSTEM")
         print(system_prompt)
-        #system_prompt = system_prompt.replace("{{json_blob}}", json.dumps(json_blob, ensure_ascii=False))
+        print("USER")
+        user_payload = f"""Answer the questions about the grammar of the {st.session_state['tl_name']} language, 
+        to {audience} speaking {st.session_state['audience_language']}. 
+        Here's the {st.session_state['tl_name']} data: 
+        
+        """
+        print(user_payload)
     else:
         system_prompt = DEFAULT_SPECIFIC_QUESTION_PROMPT
         system_prompt = system_prompt.replace("{{content_description}}", st.session_state["content_description"])
@@ -1322,18 +1347,34 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         system_prompt = system_prompt.replace("{{audience_language}}", st.session_state["audience_language"])
         system_prompt = system_prompt.replace("{{audience}}", st.session_state["audience"])
         system_prompt = system_prompt.replace("{{user_question}}", prompt_override)
-        print("Prompt before inserting data ==============")
+        print("Prompt before inserting data ================================================")
+        print("SYSTEM")
         print(system_prompt)
-        #system_prompt = system_prompt.replace("{{json_blob}}", json.dumps(json_blob, ensure_ascii=False))
+        print("USER")
+        user_payload = f"""Answer the question '{prompt_override}' about the grammar of the {st.session_state['tl_name']} language, 
+                to {audience} speaking {st.session_state['audience_language']}. 
+                Here's the {st.session_state['tl_name']} data: 
 
-    user_payload = json.dumps(json_blob, ensure_ascii=False)
+                """
+        print(user_payload)
+
+    user_payload += json.dumps(json_blob, ensure_ascii=False)
 
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_payload}
     ]
 
-    st.markdown("#### Make sure everything below is correct and hit 'Generate'")
+    print("TOKENS ================================================")
+    # Choose your model's encoding; for GPT-4, GPT-3.5-turbo, etc.
+    encoding = tiktoken.encoding_for_model("gpt-4")  # or "gpt-3.5-turbo", etc.
+
+    input_text = system_prompt + user_payload
+    num_tokens = len(encoding.encode(input_text))
+
+    print(f"Number of tokens: {num_tokens}")
+
+    st.markdown("#### Make sure everything below is correct and press 'Generate'")
     table = {"Focus": "",
              "Content": "",
              "L1": "",
@@ -1348,10 +1389,9 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
     table["Audience"] = st.session_state['audience']
     st.table(table)
     use_openai = st.button(f"Generate")
-
-
-
+    request_info = st.empty()
     if use_openai:
+        request_info.write("Sending generation request... {} tokens".format(num_tokens))
         api_key = os.getenv("OPEN_AI_KEY")
         if not api_key:
             with suppress(FileNotFoundError, KeyError):
@@ -1362,58 +1402,32 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         if api_key:
             openai.api_key = api_key
 
-            response = openai.chat.completions.create(
+            st.session_state["response"] = openai.chat.completions.create(
                 model="gpt-4.1",
                 messages=messages,
                 temperature=0.3,
                 max_tokens=5000
             ).choices[0].message.content
-
+            request_info.write("Response received")
             print("Response received")
-
             print("Loading as json")
             jsload_success = False
 
-
-            # ---------- decode with pre-clean ----------
-            def safe_json(text: str) -> str:
-                """
-                Escape raw newlines and stray unescaped quotes that appear
-                *inside* double-quoted values.
-                """
-                # 1) replace CR/LF inside quoted strings with \n
-                text = re.sub(r'(".*?)(\r?\n)(.*?")',
-                              lambda m: m.group(1) + "\\n" + m.group(3),
-                              text, flags=re.S)
-                # 2) escape naked " inside values → \"
-                text = re.sub(r'(".*?[^\\])"(.*?")',
-                              lambda m: m.group(1) + '\\"' + m.group(2),
-                              text, flags=re.S)
-                return text
-
-
-            def decode(raw):
-                try:
-                    return json.loads(raw)
-                except json.JSONDecodeError:
-                    return json.loads(safe_json(raw))
-
-
             # if the json returned is not well-formed, we send it back to GPT3.5 for cleaning.
             try:
-                st.session_state["output"] = decode(response)
+                st.session_state["output"] = decode(st.session_state["response"])
                 jsload_success = True
-                #st.write(output)
+                request_info.success("Valid response received")
             except json.decoder.JSONDecodeError:
                 st.write("Issue decoding json, sending back for a fix")
                 print("Raw Response")
-                print(response)
+                print(st.session_state["response"])
                 fixed_response = openai.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[{"role": "system", "content": "SYSTEM: The previous response was not valid JSON. "
                                                             "Return exactly the same content but formatted as valid JSON. "
                                                             "Do not add any extra keys, comments, or prose."},
-                              {"role": "user", "content": response}],
+                              {"role": "user", "content": st.session_state["response"]}],
                     temperature=0.0,
                     max_tokens=5000
                 ).choices[0].message.content
@@ -1424,36 +1438,106 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                     # st.write(fixed_output)
                 except json.decoder.JSONDecodeError:
                     print(fixed_response)
-                    st.write("Failed to generate a well-formed response, see terminal for raw response.")
+                    request_info.write("Failed to generate a well-formed response, see terminal for raw response.")
 
             else:
-                st.write("Unable to use the OpenAI API key, please contact support.")
+                request_info.write("Unable to use the OpenAI API key, please contact support.")
 
-
+    st.markdown("**Intermediate output**")
     col41, col42, col43 = st.columns(3)
     if st.session_state["output"] != {}:
+        request_info.write("Intermediate output available")
+
         col41.download_button("Download JSON",
                            json.dumps(st.session_state["output"], indent=4),
                            file_name="hybrid_grammatical_description_of_{}.json".format(
-                               st.session_state["tl_name"]))
-        if col42.button("Generate docx with gloss tables"):
-            docx_file = ogu.generate_docx_from_hybrid_output(st.session_state["output"],
+                               st.session_state["tl_name"]), key="inter_json")
+        if col42.button("Generate docx", key="generate_inter_docx"):
+            st.session_state["docx_file"] = ogu.generate_docx_from_hybrid_output(st.session_state["output"],
                                                              st.session_state["tl_name"],
                                                              gloss_format="table")
             st.session_state["docx_file_ready"] = True
-        if col43.button("Generate docx with gloss graphs"):
-            docx_file = ogu.generate_docx_from_hybrid_output(st.session_state["output"],
-                                                             st.session_state["tl_name"],
-                                                             gloss_format="graph")
-            st.session_state["docx_file_ready"] = True
 
     if st.session_state["docx_file_ready"]:
-        st.download_button(
+        col43.download_button(
             label="📥 Download DOCX",
-            data=docx_file,
-            file_name=f'export_hybrid_grammar_of_{st.session_state["tl_name"]}.docx',
-            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            data=st.session_state["docx_file"],
+            file_name=f'export_hybrid_grammar_of_{st.session_state["tl_name"]}_detailed_tables.docx',
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            key="inter_docx"
         )
 
+    # POLISHING
+    if st.session_state["output"] != {} and st.session_state["POLISH"]:
+        st.markdown("**Final output**")
+        request_info.write("Polishing output...")
+        print("POLISHING ========================================================================")
+        final_system_prompt = f'''
+                SYSTEM
+                    You are a language-learning assistant adapting a grammar lesson provided by the user in a JSON format by turning the gloss provided in examples 
+                    into a plain language presentation of the sentence, focusing on the title and the explanation. 
+                    - The title is in 'title', the explanation in 'explanation', and the examples in 'examples'.
+                    - Each example shows the English sentence, the target sentence in the target language, and the gloss. 
+                    - The gloss is made of each target language word, followed by information about the word, delimited with <>. 
+                        This information always start with the meaning of the word, then between parenthesis information about its
+                        Internal Particularization (IP) as tense or number, then Relational Particularization (RP) 
+                        as the semantic role. 
+                NOTE: Do no invent anything about the target language. Use only the information provided in the user JSON.
+                OBJECTIVE:
+                    - Return the same JSON with updated gloss for each example. 
+                    - The updated gloss should be a plain-language string, easy to read by the {st.session_state['audience_language']}-speaking 
+                        {st.session_state['audience']}, helping to understand the explanation given. 
+                FORMAT: 
+                    - Your output should be a valid JSON with the exact same format as the input. 
+
+                '''
+        # TOKEN COUNT
+        encoding = tiktoken.encoding_for_model("gpt-4")  # or "gpt-3.5-turbo", etc.
+
+        final_input_text = final_system_prompt + st.session_state["response"]
+        num_tokens = len(encoding.encode(final_input_text))
+        print("Polishing request: {} tokens".format(num_tokens))
+
+
+        final_response = openai.chat.completions.create(
+            model="gpt-4.1",
+            messages=[{"role": "system", "content": final_system_prompt},
+                      {"role": "user", "content": st.session_state["response"]}],
+            temperature=0.3,
+            max_tokens=5000
+        ).choices[0].message.content
+
+        try:
+            st.session_state["final_output"] = decode(final_response)
+            print("POLISHED RESPONSE: ")
+            print(final_response)
+            print("POLISHED OUTPUT: ")
+            print(st.session_state["final_output"])
+        except json.decoder.JSONDecodeError:
+            print("Error decoding final JSON")
+            print(final_response)
+
+        st.session_state["POLISH"] = False
+
+    if st.session_state["final_output"] != {}:
+        col51, col52, col53 = st.columns(3)
+        request_info.success("Done.")
+        col51.download_button("Download JSON",
+                              json.dumps(st.session_state["final_output"], indent=4),
+                              file_name="{}_grammar_plain.json".format(
+                                  st.session_state["tl_name"]), key="final_json")
+
+        if col52.button("Generate docx"):
+            st.session_state["docx_file_plain"] = ogu.generate_plain_language_docx_from_hybrid_output(st.session_state["final_output"],
+                                                                   st.session_state["tl_name"])
+            st.session_state["polished_docx_file_ready"] = True
+
+        if st.session_state["polished_docx_file_ready"]:
+            col53.download_button(
+                label="📥 Download DOCX with plain language examples",
+                data=st.session_state["docx_file_plain"],
+                file_name=f'{st.session_state["tl_name"]}_grammar_plain.docx',
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document", key="final_docx"
+            )
 
 
