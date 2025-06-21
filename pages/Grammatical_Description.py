@@ -52,7 +52,7 @@ if "tl_grambank_id" not in st.session_state:
 if "delimiters" not in st.session_state:
     st.session_state["delimiters"] = []
 if "selected_topics" not in st.session_state:
-    st.session_state["selected_topics"] = []
+    st.session_state["selected_topics"] = None
 if "loaded_existing" not in st.session_state:
     st.session_state["loaded_existing"] = ""
 if "cq_transcriptions" not in st.session_state:
@@ -111,19 +111,32 @@ if "final_output" not in st.session_state:
     st.session_state["final_output"] = {}
 if "response" not in st.session_state:
     st.session_state["response"] = ""
-if "PREPROCESS" not in st.session_state:
-    st.session_state["PREPROCESS"] = True
-if "COMPUTE" not in st.session_state:
-    st.session_state["COMPUTE"] = True
-if "POLISH" not in st.session_state:
-    st.session_state["POLISH"] = True
+if "preprocessing_done" not in st.session_state:
+    st.session_state["preprocessing_done"] = False
+if "computing_done" not in st.session_state:
+    st.session_state["computing_done"] = False
+if "initial_llm_request_done" not in st.session_state:
+    st.session_state["initial_llm_request_done"] = False
+if "polishing_done" not in st.session_state:
+    st.session_state["polishing_done"] = False
 if "polished_docx_file_ready" not in st.session_state:
     st.session_state["polished_docx_file_ready"] = False
 if "docx_file" not in st.session_state:
     st.session_state["docx_file"] = None
 if "docx_file_plain" not in st.session_state:
     st.session_state["docx_file_plain"] = True
-
+if "preprocess_done" not in st.session_state:
+    st.session_state["preprocess_done"] = False
+if "selected_parameters_by_topic" not in st.session_state:
+    st.session_state["selected_parameters_by_topic"] = {}
+if "l_filter" not in st.session_state:
+    st.session_state["l_filter"] = {}
+if "ga_param_names" not in st.session_state:
+    st.session_state["ga_param_names"] = {}
+if "strong_seeds" not in st.session_state:
+    st.session_state["strong_seeds"] = {}
+if "selected_parameters" not in st.session_state:
+    st.session_state["selected_parameters"] = {}
 
 # ---------- LLM response helpers ----------
 def safe_json(text: str) -> str:
@@ -214,6 +227,15 @@ delimiters_bank = [
 
 default_delimiters = [" ", ".", ",", ";", ":", "!", "?", "\u2026", "'"]
 
+CP_MIN = 0.8
+
+BELIEF_MIN = 0.8
+
+d = 5
+
+SCORE_MIN = 0.85
+
+K = 50
 
 # ==================================================================
 
@@ -327,9 +349,12 @@ def display_analysis(cross_consensus_stat):
 
         st.plotly_chart(fig_box, use_container_width=True)
 
+st.sidebar.subheader("DIG4EL")
+st.sidebar.write("Process")
+side_info = st.sidebar.empty()
 
 with st.sidebar:
-    st.subheader("DIG4EL")
+    st.markdown("---")
     st.page_link("home.py", label="Home", icon=":material/home:")
 
     st.write("**Base features**")
@@ -345,16 +370,21 @@ with st.sidebar:
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
 st.title("Generate grammatical descriptions")
-with st.popover("i"):
+colk1, colk2 = st.columns(2)
+with colk1.popover("i"):
     st.write(
         "This is an early prototype of inferential outputs, enabled for testing purposes. Outputs are meant to be reviewed by a speaker of the language.")
+show_details = colk2.toggle("Show computation details")
+# INPUTS ========================================================================
+if not st.session_state["loaded_existing"]:
+    side_info.write("Waiting for transcription files")
 with st.expander("Inputs"):
     if st.button("reset"):
         st.session_state["tl_name"] = ""
         st.session_state["tl_wals_pk"] = ""
         st.session_state["tl_grambank_id"] = ""
         st.session_state["delimiters"] = []
-        st.session_state["selected_topics"] = []
+        st.session_state["selected_topics"] = None
         st.session_state["loaded_existing"] = ""
         st.session_state["cq_transcriptions"] = []
         st.session_state["kg"] = {}
@@ -377,9 +407,26 @@ with st.expander("Inputs"):
         st.session_state["generate_description"] = False
         st.session_state["results_approved"] = False
         st.session_state["prompt_content"] = {}
+        st.session_state["output"] = {}
+        st.session_state["docx_file_ready"] = False
+        st.session_state["audience_language"] = "English"
+        st.session_state["audience"] = "adult beginners"
+        st.session_state["content_description"] = "grammar lesson"
+        st.session_state["final_output"] = {}
+        st.session_state["response"] = ""
+        st.session_state["preprocessing_done"] = False
+        st.session_state["computing_done"] = False
+        st.session_state["polishing_done"] = False
+        st.session_state["polished_docx_file_ready"] = False
+        st.session_state["docx_file"] = None
+        st.session_state["docx_file_plain"] = True
+        st.session_state["selected_parameters_by_topic"] = {}
+        st.session_state["selected_parameters"] = []
+        st.session_state["strong_seeds"] = []
         st.rerun()
 
     # MANAGING CQ TRANSCRIPTIONS
+
     cqs = st.file_uploader(
         "Load Conversational Questionnaires' transcriptions (all at once for multiple transcriptions)", type="json",
         accept_multiple_files=True)
@@ -433,14 +480,15 @@ with st.expander("Inputs"):
             else:
                 st.session_state["delimiters"] = st.multiselect("Edit word separators if needed", delimiters_bank,
                                                                 default=default_delimiters)
+            side_info.write("Input files mapped")
 
-    show_details = st.toggle("Show details")
 
-if st.session_state["PREPROCESS"]:
+# PREPROCESSING: KNOWLEDGE, OBSERVATIONS, PARAMETER DISCOVERY ==============================
+
+if st.session_state["kg"] and not st.session_state["preprocessing_done"]:
+    side_info.write("Retrieving specific knowledge")
+    col8, col9 = st.columns(2)
     # RETRIEVING KNOWLEDGE ==============================================================
-    if show_details:
-        st.write("#### Known parameters in {}".format(st.session_state["tl_name"]))
-        col8, col9 = st.columns(2)
     if st.session_state["tl_name"] != "":
         # WALS
         if st.session_state["tl_wals_pk"] is not None:
@@ -456,9 +504,7 @@ if st.session_state["PREPROCESS"]:
             col8.markdown("{} known parameters in WALS".format(len(st.session_state[
                                                                        "tl_knowledge"][
                                                                        "known_wals"])))
-            show_params = col8.toggle("Show known WALS parameters")
-            if show_params:
-                col8.write(st.session_state["tl_knowledge"]["known_wals"])
+
         elif len(st.session_state["tl_knowledge"]["known_wals"]) == 0 and show_details:
             col8.write("No known parameter in WALS")
 
@@ -475,9 +521,6 @@ if st.session_state["PREPROCESS"]:
             col9.write("**Grambank**")
             col9.markdown("{} known relevant parameters in Grambank".format(len(st.session_state["tl_knowledge"][
                                                                                     "known_grambank"])))
-            show_params = col9.toggle("Show known Grambank parameters")
-            if show_params:
-                col9.write(st.session_state["tl_knowledge"]["known_grambank"])
         elif len(st.session_state["tl_knowledge"]["known_grambank"]) == 0 and show_details:
             col9.write("No known parameter in Grambank")
         st.session_state["known_processed"] = True
@@ -485,7 +528,7 @@ if st.session_state["PREPROCESS"]:
     # PROCESSING TRANSCRIPTIONS
 
     # OBSERVATIONS: RUN ALL AVAILABLE OBSERVERS =================================================================
-
+    side_info.write("Making observations")
     if st.session_state["kg"] != {}:
         # run all available observers
         for param_name, param_info in observed_params.items():
@@ -506,30 +549,8 @@ if st.session_state["PREPROCESS"]:
         # st.write("st.session_state['obs']")
         # st.write(st.session_state["obs"])
 
-        if show_details:
-            st.markdown("#### Retrieving **observed** information in Conversational Questionnaires")
-            show_observed_details = st.toggle("Show details about observations")
-            #st.write(st.session_state["obs"])
-            if show_details and show_observed_details:
-                for pobs in st.session_state["obs"]:
-                    if len(st.session_state["obs"][pobs]["observations"]) != 0:
-                        st.markdown("#### {}".format(pobs))
-                        for de_name, details in st.session_state["obs"][pobs]["observations"].items():
-                            if details["count"] != 0:
-                                st.write("---------------------------------------------")
-                                st.write("**{}** in ".format(de_name))
-                                for occurrence_index, context in details["details"].items():
-                                    st.markdown("- ***{}***".format(
-                                        st.session_state["kg"][occurrence_index]["recording_data"]["translation"]))
-                                    st.write(st.session_state["kg"][occurrence_index]["sentence_data"]["text"])
-                                    gdf = kgu.build_gloss_df(st.session_state["kg"], occurrence_index,
-                                                             st.session_state["delimiters"])
-                                    st.dataframe(gdf)
-                                    st.write("context: {}".format(context))
-                        st.markdown("-------------------------------------")
-
     # STATISTICAL PRIORS =====================================================================
-
+    side_info.write("Computing statistical priors")
     if st.session_state["known_processed"] and st.session_state["observations_processed"]:
 
         prior_family_list = []
@@ -546,30 +567,23 @@ if st.session_state["PREPROCESS"]:
         else:
             prior_family_list = [gwu.get_language_family_by_language_name(st.session_state["tl_name"])]
 
-        if show_details:
-            if prior_family_list == []:
-                display_family_list = "all"
-            else:
-                display_family_list = "the " + ", ".join(prior_family_list)
-            st.write("Prior knowledge is based on statistics over **{}** language family(ies).".format(display_family_list))
-
         if prior_family_list != []:
-            l_filter = {"family": prior_family_list}
+            st.session_state["l_filter"] = {"family": prior_family_list}
         else:
-            l_filter = {}
+            st.session_state["l_filter"] = {}
 
         # SELECT RELEVANT PARAMETERS BY EXPANDING FRONTIER BASED ON OBSERVED AND KNOWN ============
 
-        # Populate ga_param_codes and ga_param_names,
+        # Populate ga_param_codes and st.session_state["ga_param_names"],
         # Initialize st.session_state["prompt_content"] by topic (topic removed from this version)
 
         # build general graph with all wals and grambank values  ----------------------------
         BASE_DIR = Path("./external_data")
-        G = psu.load_all_cpts(BASE_DIR)
-        print(f"Graph: |V|={G.number_of_nodes()}, |E|={G.number_of_edges()}")
+        st.session_state["G"] = psu.load_all_cpts(BASE_DIR)
+        print(f'Graph: |V|={st.session_state["G"].number_of_nodes()}, |E|={st.session_state["G"].number_of_edges()}')
 
         # naive uniform priors (replace with family priors if it makes sense) ---
-        priors = {v: 1 / G.number_of_nodes() for v in G.nodes}
+        priors = {v: 1 / st.session_state["G"].number_of_nodes() for v in st.session_state["G"].nodes}
         parameter_selection_belief = psu.BeliefState(priors)
 
         # feed observations: use a General Agent to get beliefs from observations -----------------------------------
@@ -598,8 +612,8 @@ if st.session_state["PREPROCESS"]:
             parameter_selection_belief.set_known(v)  # hard evidence
 
         # select parameters ----------------------------------------------
-
-        st.subheader("Parameter selection")
+        side_info.write("Discovering parameters")
+        st.subheader("Parameter discovery")
         st.markdown("{} parameters observed, {} known from WALS, {} known from Grambank.  parameters".format(
             len(st.session_state["tl_knowledge"]["observed"]),
             len(st.session_state["tl_knowledge"]["known_wals_pk"]),
@@ -610,21 +624,13 @@ if st.session_state["PREPROCESS"]:
         # 1.  Run suggest_parameters *once* and cache the ranking
         # --------------------------------------------------------
 
-        CP_MIN = 0.8
 
-        BELIEF_MIN = 0.8
-
-        d = 5
-
-        SCORE_MIN = 0.85
-
-        K = 50
 
         # seeds = all values whose belief ≥ BELIEF_MIN
-        strong_seeds = set(parameter_selection_belief.strong_values(0.9))
+        st.session_state["strong_seeds"] = set(parameter_selection_belief.strong_values(0.9))
 
-        selected_parameters = psu.suggest_parameters(
-            G,
+        st.session_state["selected_parameters"] = psu.suggest_parameters(
+            st.session_state["G"],
             parameter_selection_belief,
             θ_CP=CP_MIN,  # floor on edge weights kept during frontier expansion.
             θ_belief=BELIEF_MIN,  # threshold above which a value is considered *strong*
@@ -632,24 +638,11 @@ if st.session_state["PREPROCESS"]:
             θ_score=SCORE_MIN,  # minimum score for a candidate to be proposed
             K=K,  # top‑k suggestions to return
         )
-        st.write("{} Strong parameters, enabling a reach of {} other parameters.".format(len(strong_seeds),
-                                                                                         len(selected_parameters)))
-        if st.toggle("See strong parameters and reach"):
-            colx1, colx2 = st.columns(2)
-            colx1.markdown("**Strong parameters**")
-            for p in strong_seeds:
-                colx1.write("*{}*".format(gwu.get_pname_from_value_code(p)))
-                colx1.write(gwu.get_pvalue_name_from_value_code(p))
-                colx1.write("---")
-            colx2.markdown("**Probabilistic Reach above score threshold**")
-            for p in selected_parameters:
-                colx2.write("*{}*".format(gwu.get_pname_from_value_code(p[0])))
-                colx2.write(gwu.get_pvalue_name_from_value_code(p[0]))
-                colx2.write("Score: {}".format(round(p[1], 2)))
-                colx2.write("---")
+        st.write("{} Strong parameters, enabling a reach of {} other parameters.".format(len(st.session_state["strong_seeds"]),
+                                                                                         len(st.session_state["selected_parameters"])))
 
         ranked = list(psu.suggest_parameters(
-            G,
+            st.session_state["G"],
             parameter_selection_belief,
             θ_CP=CP_MIN,  # floor on edge weights kept during frontier expansion.
             θ_belief=BELIEF_MIN,  # threshold above which a value is considered *strong*
@@ -657,19 +650,99 @@ if st.session_state["PREPROCESS"]:
             θ_score=SCORE_MIN,  # minimum score for a candidate to be proposed
             K=K,  # top‑k suggestions to return
         ))
-        top_nodes = {vid for vid, _ in ranked}
+        st.session_state["top_nodes"] = {vid for vid, _ in ranked}
 
+        # let user choose topics of interest, knowing the parameters available in each
+        available_parameter_names = [gwu.get_pname_from_value_code(code[0]) for code in st.session_state["selected_parameters"]] + [
+            gwu.get_pname_from_value_code(code) for code in st.session_state["strong_seeds"]]
+
+        p_per_topic = []
+        tc = 0
+        for topic in st.session_state["params_by_topic"]:
+            c = 0
+            found_p = False
+            for p in available_parameter_names:
+                if p in st.session_state["params_by_topic"][topic]:
+                    c += 1
+                    found_p = True
+            if not found_p:
+                print(f"parameter {p} not found in params_by_topic")
+            p_per_topic.append({"topic": topic, "count": c})
+            tc += c
+        st.dataframe(pd.DataFrame(p_per_topic))
+        st.write("Total count: {}".format(tc))
+
+        st.session_state["selected_topics"] = st.multiselect("Choose topics (leaving blank will select all topics)", ["All"] +
+                                                             list(st.session_state["params_by_topic"].keys()))
+
+        if "All" in st.session_state["selected_topics"] or st.session_state["selected_topics"] == []:
+            st.session_state["selected_topics"] = [topic for topic in list(st.session_state["params_by_topic"].keys())]
+
+        for selected_topic in st.session_state["selected_topics"]:
+            st.session_state["selected_parameters_by_topic"][selected_topic] = \
+                [p for p in st.session_state["params_by_topic"][selected_topic] if p in available_parameter_names]
+
+        st.session_state["preprocessing_done"] = True
+        side_info.write("Preprocessing done")
+
+# END PREPROCESSING
+
+# SHOW DETAILS
+if st.session_state["preprocessing_done"] and show_details:
+    st.write("#### Known parameters in {}".format(st.session_state["tl_name"]))
+    show_params = st.toggle("Show known WALS parameters")
+    if show_params:
+        st.write(st.session_state["tl_knowledge"]["known_wals"])
+    show_params = st.toggle("Show known Grambank parameters")
+    if show_params:
+        st.write(st.session_state["tl_knowledge"]["known_grambank"])
+    if show_details:
+        st.markdown("#### Retrieving **observed** information in Conversational Questionnaires")
+        show_observed_details = st.toggle("Show details about observations")
+        # st.write(st.session_state["obs"])
+        if show_observed_details:
+            for pobs in st.session_state["obs"]:
+                if len(st.session_state["obs"][pobs]["observations"]) != 0:
+                    st.markdown("#### {}".format(pobs))
+                    for de_name, details in st.session_state["obs"][pobs]["observations"].items():
+                        if details["count"] != 0:
+                            st.write("---------------------------------------------")
+                            st.write("**{}** in ".format(de_name))
+                            for occurrence_index, context in details["details"].items():
+                                st.markdown("- ***{}***".format(
+                                    st.session_state["kg"][occurrence_index]["recording_data"]["translation"]))
+                                st.write(st.session_state["kg"][occurrence_index]["sentence_data"]["text"])
+                                gdf = kgu.build_gloss_df(st.session_state["kg"], occurrence_index,
+                                                         st.session_state["delimiters"])
+                                st.dataframe(gdf)
+                                st.write("context: {}".format(context))
+                    st.markdown("-------------------------------------")
+        # STRONG SEEDS AND PARAMS
+        if st.toggle("See strong parameters and reach"):
+            colx1, colx2 = st.columns(2)
+            colx1.markdown("**Strong parameters**")
+            for p in st.session_state["strong_seeds"]:
+                colx1.write("*{}*".format(gwu.get_pname_from_value_code(p)))
+                colx1.write(gwu.get_pvalue_name_from_value_code(p))
+                colx1.write("---")
+            colx2.markdown("**Probabilistic Reach above score threshold**")
+            for p in st.session_state["selected_parameters"]:
+                colx2.write("*{}*".format(gwu.get_pname_from_value_code(p[0])))
+                colx2.write(gwu.get_pvalue_name_from_value_code(p[0]))
+                colx2.write("Score: {}".format(round(p[1], 2)))
+                colx2.write("---")
+        # NETWORK
         if st.toggle("Display network"):
             # --------------------------------------------------------
-            # 2.  Build the visual sub-graph = seeds ∪ top_nodes
+            # 2.  Build the visual sub-graph = seeds ∪ st.session_state["top_nodes"]
             # --------------------------------------------------------
-            visible_nodes = strong_seeds.union(top_nodes)
+            visible_nodes = st.session_state["strong_seeds"].union(st.session_state["top_nodes"])
             net = Network(height="600px", width="100%", directed=True, bgcolor="#ffffff")
             net.force_atlas_2based()
 
             # -- nodes ------------------------------------------------
 
-            for node in strong_seeds:
+            for node in st.session_state["strong_seeds"]:
                 p_value_name = gwu.get_pvalue_name_from_value_code(node)
                 p_name = gwu.get_pname_from_value_code(node)
                 net.add_node(node,
@@ -677,7 +750,7 @@ if st.session_state["PREPROCESS"]:
                              color="#8cd790",
                              title=f"{p_name}: {p_value_name}")
 
-            for node in top_nodes:
+            for node in st.session_state["top_nodes"]:
                 p_value_name = gwu.get_pvalue_name_from_value_code(node)
                 p_name = gwu.get_pname_from_value_code(node)
                 net.add_node(node,
@@ -687,7 +760,7 @@ if st.session_state["PREPROCESS"]:
 
             # -- edges: only if both ends are in visible_nodes -------
             for u in visible_nodes:
-                for v, attrs in G[u].items():
+                for v, attrs in st.session_state["G"][u].items():
                     if v in visible_nodes and attrs["weight"] >= CP_MIN:
                         net.add_edge(
                             u, v,
@@ -708,84 +781,41 @@ if st.session_state["PREPROCESS"]:
             components.html(open(tmp.name, "r", encoding="utf-8").read(),
                             height=650, scrolling=True)
 
-        # st.session_state["selected_topics"] = st.multiselect("Choose topics", list(topics["ga_topics"].keys()))
-        # for topic in st.session_state["selected_topics"]:
-        #     st.session_state["prompt_content"][topic] = {pname: {"main value":None, "examples by value":{}} for pname in topics["ga_topics"][topic].keys()}
-        # ga_param_codes = [item["code"] for topic, topic_params in topics["ga_topics"].items() for item in topic_params.values() if
-        #                              item["code"] is not None and topic in st.session_state["selected_topics"]]
-        # ga_param_names = [gwu.get_pname_from_pcode(code) for code in ga_param_codes]
+# PREPARING AND RUNNING GENERAL AGENT ==================================================================
+if st.session_state["preprocessing_done"] and st.button("Generate grammar"):
+    st.session_state["run_ga"] = True
+if (st.session_state["preprocessing_done"]
+        and st.session_state["run_ga"]
+        and not st.session_state["ga_output_available"]):
+    side_info.write("Creating agent")
+    st.session_state["belief_history"] = {}
+    st.session_state["consensus_store"] = {}
+    st.session_state["ga_output_available"] = False
+    st.session_state["generate_description"] = False
+    st.session_state["results_approved"] = False
+    st.session_state["ga_param_names"] = [
+        p
+        for topic in st.session_state["selected_parameters_by_topic"].keys()
+        for p in st.session_state["selected_parameters_by_topic"][topic]
+    ]
+    st.write("Running General Agent with {} parameters.".format(len(st.session_state["ga_param_names"])))
 
-        # let user choose topics of interest, knowing the parameters available in each
-        available_parameter_names = [gwu.get_pname_from_value_code(code[0]) for code in selected_parameters] + [
-            gwu.get_pname_from_value_code(code) for code in strong_seeds]
-        p_per_topic = []
-        tc = 0
-        for topic in st.session_state["params_by_topic"]:
-            c = 0
-            found_p = False
-            for p in available_parameter_names:
-                if p in st.session_state["params_by_topic"][topic]:
-                    c += 1
-                    found_p = True
-            if not found_p:
-                print(f"parameter {p} not found in params_by_topic")
-            p_per_topic.append({"topic": topic, "count": c})
-            tc += c
-        st.dataframe(pd.DataFrame(p_per_topic))
-        st.write("Total count: {}".format(tc))
+    st.session_state["prompt_content"] = {}
 
-        st.session_state["selected_topics"] = st.multiselect("Choose topics", ["All"] +
-                                                             list(st.session_state["params_by_topic"].keys()))
+    for topic in st.session_state["selected_topics"]:
+        st.session_state["prompt_content"][topic] = {pname: {"main value": None, "examples by value": {}}
+                                                     for pname in st.session_state["selected_parameters_by_topic"][topic]}
 
-        selected_parameters_by_topic = {}
-        if "All" in st.session_state["selected_topics"] or st.session_state["selected_topics"] == []:
-            st.session_state["selected_topics"] = [topic for topic in  list(st.session_state["params_by_topic"].keys())]
-        for selected_topic in st.session_state["selected_topics"]:
-            selected_parameters_by_topic[selected_topic] = \
-                [p for p in st.session_state["params_by_topic"][selected_topic] if p in available_parameter_names]
-
-    # END PREPROCESS
-
-    # PREPARING AND RUNNING GENERAL AGENT ==================================================================
-
-    st.markdown("#### Generating Grammar")
-    if st.button("Launch inferential process"):
-        st.session_state["PREPROCESS"] = False
-        st.session_state["run_ga"] = True
-        st.session_state["belief_history"] = {}
-        st.session_state["consensus_store"] = {}
-        st.session_state["ga_output_available"] = False
-        st.session_state["generate_description"] = False
-        st.session_state["results_approved"] = False
-
-        ga_param_names = [
-            p
-            for topic in selected_parameters_by_topic.keys()
-            for p in selected_parameters_by_topic[topic]
-        ]
-        st.write("Running General Agent with {} parameters.".format(len(ga_param_names)))
-
-        st.session_state["prompt_content"] = {}
-        for topic in st.session_state["selected_topics"]:
-            st.session_state["prompt_content"][topic] = {pname: {"main value": None, "examples by value": {}}
-                                                         for pname in selected_parameters_by_topic[topic]}
+    st.session_state["run_ga"] = True
 
     if st.session_state["run_ga"]:
+        side_info.write("Running inferences")
         st.session_state["ga"] = general_agents.GeneralAgent("ga",
-                                                             parameter_names=ga_param_names,
-                                                             language_stat_filter=l_filter)
+                                                             parameter_names=st.session_state["ga_param_names"],
+                                                             language_stat_filter=st.session_state["l_filter"])
 
         st.session_state["belief_history"] = {param: [st.session_state["ga"].language_parameters[param].beliefs] for
                                               param in st.session_state["ga"].language_parameters.keys()}
-
-        if show_details:
-            st.write("Agent created with {} parameters, {} known, {} observed.".format(
-                len(st.session_state["ga"].language_parameters),
-                len(st.session_state["tl_knowledge"]["known_wals"]) + len(
-                    st.session_state["tl_knowledge"]["known_grambank"]),
-                len(st.session_state["tl_knowledge"]["observed"])))
-            st.write("Initial beliefs")
-            st.write(st.session_state["ga"].get_displayable_beliefs())
 
         # OBSERVATIONS
         for observed_param_name in st.session_state["tl_knowledge"]["observed"]:
@@ -803,10 +833,6 @@ if st.session_state["PREPROCESS"]:
 
         for param in st.session_state["belief_history"].keys():
             st.session_state["belief_history"][param].append(st.session_state["ga"].language_parameters[param].beliefs)
-        if show_details:
-            infospot.write("Injecting observations")
-            st.write("Beliefs after observations")
-            st.write(st.session_state["ga"].get_displayable_beliefs())
 
         # TRUTH INJECTION
         # Injecting beliefs of known parameters from wals/grambank
@@ -819,16 +845,10 @@ if st.session_state["PREPROCESS"]:
             if known_p_name in st.session_state["ga"].language_parameters.keys():
                 st.session_state["ga"].language_parameters[known_p_name].inject_peak_belief(vid, 1, locked=True)
 
-        if show_details:
-            infospot.write("Injecting known information")
-            st.write("Beliefs after injecting known information")
-            st.write(st.session_state["ga"].get_displayable_beliefs())
-
         # BELIEF PROPAGATION
+        side_info.write("Belief propagation")
         beliefs_snapshot = st.session_state["ga"].get_beliefs()
         for k in range(NUMBER_OF_MESSAGING_CYCLES):
-            if show_details:
-                infospot.write("Running General Agent #{}/{}".format(k + 1, NUMBER_OF_MESSAGING_CYCLES))
             st.session_state["belief_history"] = {param_name: [] for param_name in
                                                   st.session_state["ga"].language_parameters.keys()}
             st.session_state["ga"].reset_beliefs_history()
@@ -852,148 +872,151 @@ if st.session_state["PREPROCESS"]:
                 for pvalue, proba in pvalues.items():
                     cross_consensus_stat[param][gwu.get_pvalue_name_from_value_code(pvalue)].append(proba)
 
-        if show_details:
-            infospot.write("All inferences computed")
-
-            st.write("**beliefs evolution**")
-            for param in st.session_state["belief_history"].keys():
-                if param in st.session_state["tl_knowledge"]["known_wals"]:
-                    origin = "Known"
-                elif param in st.session_state["tl_knowledge"]["known_grambank"]:
-                    origin = "Known"
-                elif param in st.session_state["tl_knowledge"]["observed"]:
-                    origin = "Observed"
-                else:
-                    origin = "Inferred"
-                if st.session_state["ga"].language_parameters[param].locked:
-                    l = " is locked"
-                else:
-                    l = ""
-                rounded_weight = round(st.session_state["ga"].language_parameters[param].weight, 2)
-                st.write(param + "(" + origin + ")" + l)
-                st.write("{} ({}, {}). Normalized entropy = {}%. Weight = {}".format(param, origin, l,
-                                                                                     round(100 * st.session_state[
-                                                                                         "ga"].language_parameters[
-                                                                                         param].entropy, 2),
-                                                                                     rounded_weight))
-                pdf = pd.DataFrame(st.session_state["belief_history"][param]).T
-                renaming_dict = {}
-                for v in st.session_state["belief_history"][param][0].keys():
-                    renaming_dict[v] = gwu.get_pvalue_name_from_value_code(v)
-                pdf = pdf.rename(index=renaming_dict)
-                st.dataframe(pdf)
         st.session_state["run_ga"] = False
         st.session_state["ga_output_available"] = True
-        st.session_state["run_ga"] = False
+        side_info.write("Inferences computed")
 
-    # Details
-    if show_details and st.session_state["ga_output_available"]:
-        show_ga = st.toggle("Show General Agent graph")
-        if show_ga:
-            # GRAPH with pyvis
-            def plot_ga_pyvis(ga):
-                net = Network(height='800px', width='100%', directed=True)
-                net.barnes_hut()
-                # Add nodes with belief values
-                for param_name in ga.graph.keys():
-                    if param_name in st.session_state["tl_knowledge"]["known_wals"]:
-                        col = "blue"
-                        s = 30
-                        prefix = "KNOWN (WALS)"
-                    elif param_name in st.session_state["tl_knowledge"]["known_grambank"]:
-                        col = "pink"
-                        s = 30
-                        prefix = "KNOWN (Grambank)"
-                    elif param_name in st.session_state["tl_knowledge"]["observed"]:
-                        col = "yellow"
-                        s = 20
-                        prefix = "OBSERVED"
-                    else:
-                        col = "grey"
-                        s = 10
-                        prefix = "Inferred"
+# Details
+if show_details and st.session_state["ga_output_available"]:
 
-                    node_title = prefix + "\n" + param_name
+    st.write("Agent created with {} parameters, {} known, {} observed.".format(
+        len(st.session_state["ga"].language_parameters),
+        len(st.session_state["tl_knowledge"]["known_wals"]) + len(
+            st.session_state["tl_knowledge"]["known_grambank"]),
+        len(st.session_state["tl_knowledge"]["observed"])))
 
-                    net.add_node(
-                        n_id=param_name,
-                        label=prefix,
-                        title=node_title,
-                        size=s,
-                        color=col
-                    )
-                # Add edges with probabilities
-                for from_node in ga.graph.keys():
-                    for to_node in ga.graph[from_node].keys():
-                        max_cp = ga.graph[from_node][to_node].max().max()
-                        max_row, max_col = ga.graph[from_node][to_node].stack().idxmax()
-                        max_row_name = gwu.get_pvalue_name_from_value_code(max_row)
-                        max_col_name = gwu.get_pvalue_name_from_value_code(max_col)
-                        try:
-                            net.add_edge(
-                                source=from_node,
-                                to=to_node,
-                                value=ga.graph[from_node][to_node].max().max(),
-                                title=from_node + "-->" + to_node + "\nCP table:\n" + str(ga.graph[from_node][to_node]),
-                                label=ga.graph[from_node][to_node].max().max(),
-                                color="#eeeeee",
-                                arrows="",
-                                physics=True
-                            )
-                        except:
-                            print("no node")
+    st.write("**beliefs evolution**")
+    for param in st.session_state["belief_history"].keys():
+        if param in st.session_state["tl_knowledge"]["known_wals"]:
+            origin = "Known"
+        elif param in st.session_state["tl_knowledge"]["known_grambank"]:
+            origin = "Known"
+        elif param in st.session_state["tl_knowledge"]["observed"]:
+            origin = "Observed"
+        else:
+            origin = "Inferred"
+        if st.session_state["ga"].language_parameters[param].locked:
+            l = " is locked"
+        else:
+            l = ""
+        rounded_weight = round(st.session_state["ga"].language_parameters[param].weight, 2)
+        st.write(param + "(" + origin + ")" + l)
+        st.write("{} ({}, {}). Normalized entropy = {}%. Weight = {}".format(param, origin, l,
+                                                                             round(100 * st.session_state[
+                                                                                 "ga"].language_parameters[
+                                                                                 param].entropy, 2),
+                                                                             rounded_weight))
+        pdf = pd.DataFrame(st.session_state["belief_history"][param]).T
+        renaming_dict = {}
+        for v in st.session_state["belief_history"][param][0].keys():
+            renaming_dict[v] = gwu.get_pvalue_name_from_value_code(v)
+        pdf = pdf.rename(index=renaming_dict)
+        st.dataframe(pdf)
 
-                # Customize physics options for better layout
-                net.set_options("""
-                                var options = {
-                                  "nodes": {
-                                    "font": {
-                                      "size": 16
-                                    }
-                                  },
-                                  "edges": {
-                                    "color": {
-                                      "inherit": true
-                                    },
-                                    "smooth": true
-                                  },
-                                  "physics": {
-                                    "enabled": true,
-                                    "stabilization": {
-                                    "enabled": true,
-                                    "iterations": 100,
-                                    "updateInterval": 25
-                                    },
-                                    "barnesHut": {
-                                      "gravitationalConstant": -8000,
-                                      "centralGravity": 0.9,
-                                      "springLength": 500,
-                                      "springConstant": 0.05,
-                                      "damping": 0.5,
-                                      "avoidOverlap": 1
-                                    },
-                                    "minVelocity": 0.75
-                                  }
+    show_ga = st.toggle("Show General Agent graph")
+    if show_ga:
+        # GRAPH with pyvis
+        def plot_ga_pyvis(ga):
+            net = Network(height='800px', width='100%', directed=True)
+            net.barnes_hut()
+            # Add nodes with belief values
+            for param_name in ga.graph.keys():
+                if param_name in st.session_state["tl_knowledge"]["known_wals"]:
+                    col = "blue"
+                    s = 30
+                    prefix = "KNOWN (WALS)"
+                elif param_name in st.session_state["tl_knowledge"]["known_grambank"]:
+                    col = "pink"
+                    s = 30
+                    prefix = "KNOWN (Grambank)"
+                elif param_name in st.session_state["tl_knowledge"]["observed"]:
+                    col = "yellow"
+                    s = 20
+                    prefix = "OBSERVED"
+                else:
+                    col = "grey"
+                    s = 10
+                    prefix = "Inferred"
+
+                node_title = prefix + "\n" + param_name
+
+                net.add_node(
+                    n_id=param_name,
+                    label=prefix,
+                    title=node_title,
+                    size=s,
+                    color=col
+                )
+            # Add edges with probabilities
+            for from_node in ga.graph.keys():
+                for to_node in ga.graph[from_node].keys():
+                    max_cp = ga.graph[from_node][to_node].max().max()
+                    max_row, max_col = ga.graph[from_node][to_node].stack().idxmax()
+                    max_row_name = gwu.get_pvalue_name_from_value_code(max_row)
+                    max_col_name = gwu.get_pvalue_name_from_value_code(max_col)
+                    try:
+                        net.add_edge(
+                            source=from_node,
+                            to=to_node,
+                            value=ga.graph[from_node][to_node].max().max(),
+                            title=from_node + "-->" + to_node + "\nCP table:\n" + str(ga.graph[from_node][to_node]),
+                            label=ga.graph[from_node][to_node].max().max(),
+                            color="#eeeeee",
+                            arrows="",
+                            physics=True
+                        )
+                    except:
+                        print("no node")
+
+            # Customize physics options for better layout
+            net.set_options("""
+                            var options = {
+                              "nodes": {
+                                "font": {
+                                  "size": 16
                                 }
-                                """)
-                # Generate HTML representation of the graph
-                return net.generate_html()
+                              },
+                              "edges": {
+                                "color": {
+                                  "inherit": true
+                                },
+                                "smooth": true
+                              },
+                              "physics": {
+                                "enabled": true,
+                                "stabilization": {
+                                "enabled": true,
+                                "iterations": 100,
+                                "updateInterval": 25
+                                },
+                                "barnesHut": {
+                                  "gravitationalConstant": -8000,
+                                  "centralGravity": 0.9,
+                                  "springLength": 500,
+                                  "springConstant": 0.05,
+                                  "damping": 0.5,
+                                  "avoidOverlap": 1
+                                },
+                                "minVelocity": 0.75
+                              }
+                            }
+                            """)
+            # Generate HTML representation of the graph
+            return net.generate_html()
 
 
-            # Generate the PyVis graph HTML
-            html_str = plot_ga_pyvis(st.session_state["ga"])
+        # Generate the PyVis graph HTML
+        html_str = plot_ga_pyvis(st.session_state["ga"])
 
-            # Display the PyVis graph in Streamlit
-            st.components.v1.html(html_str, height=800, width=1000)
-            # st.write(st.session_state["ga"].graph)
-        # show_cross_consensus_stats = st.toggle("Show results across agents")
-        # if show_cross_consensus_stats:
-        #     st.markdown("#### Beliefs across {} seperate consensus search".format(NUMBER_OF_MESSAGING_CYCLES))
-        #     display_analysis(cross_consensus_stat)
+        # Display the PyVis graph in Streamlit
+        st.components.v1.html(html_str, height=800, width=1000)
+        # st.write(st.session_state["ga"].graph)
+
 
 # EDITABLE RESULTS ================================================================
 
 if st.session_state["ga_output_available"]:
+    side_info.write("Results edition")
     st.markdown("#### Beliefs")
     edit_beliefs = st.toggle("Let me edit beliefs")
     if not edit_beliefs:
@@ -1401,7 +1424,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
 
         if api_key:
             openai.api_key = api_key
-
+            side_info.write("Waiting for LLM output...")
             st.session_state["response"] = openai.chat.completions.create(
                 model="gpt-4.1",
                 messages=messages,
@@ -1443,16 +1466,17 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
             else:
                 request_info.write("Unable to use the OpenAI API key, please contact support.")
 
-    st.markdown("**Intermediate output**")
     col41, col42, col43 = st.columns(3)
     if st.session_state["output"] != {}:
+        st.session_state["initial_llm_request_done"] = True
+        side_info.write("Formatted content received")
         request_info.write("Intermediate output available")
 
-        col41.download_button("Download JSON",
+        col41.download_button("Download JSON with gloss tables",
                            json.dumps(st.session_state["output"], indent=4),
                            file_name="hybrid_grammatical_description_of_{}.json".format(
                                st.session_state["tl_name"]), key="inter_json")
-        if col42.button("Generate docx", key="generate_inter_docx"):
+        if col42.button("Generate docx with gloss tables", key="generate_inter_docx"):
             st.session_state["docx_file"] = ogu.generate_docx_from_hybrid_output(st.session_state["output"],
                                                              st.session_state["tl_name"],
                                                              gloss_format="table")
@@ -1460,7 +1484,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
 
     if st.session_state["docx_file_ready"]:
         col43.download_button(
-            label="📥 Download DOCX",
+            label="📥 Download intermediate DOCX",
             data=st.session_state["docx_file"],
             file_name=f'export_hybrid_grammar_of_{st.session_state["tl_name"]}_detailed_tables.docx',
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -1468,9 +1492,9 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         )
 
     # POLISHING
-    if st.session_state["output"] != {} and st.session_state["POLISH"]:
-        st.markdown("**Final output**")
+    if st.session_state["output"] != {} and not st.session_state["polishing_done"]:
         request_info.write("Polishing output...")
+        side_info.write("Waiting for content polishing...")
         print("POLISHING ========================================================================")
         final_system_prompt = f'''
                 SYSTEM
@@ -1509,32 +1533,33 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
 
         try:
             st.session_state["final_output"] = decode(final_response)
-            print("POLISHED RESPONSE: ")
+            print("POLISHING RESPONSE: ")
             print(final_response)
-            print("POLISHED OUTPUT: ")
+            print("POLISHING OUTPUT: ")
             print(st.session_state["final_output"])
         except json.decoder.JSONDecodeError:
             print("Error decoding final JSON")
             print(final_response)
 
-        st.session_state["POLISH"] = False
+        st.session_state["polishing_done"] = True
 
     if st.session_state["final_output"] != {}:
+        side_info.write("Final content received")
         col51, col52, col53 = st.columns(3)
         request_info.success("Done.")
-        col51.download_button("Download JSON",
+        col51.download_button("Download final JSON",
                               json.dumps(st.session_state["final_output"], indent=4),
                               file_name="{}_grammar_plain.json".format(
                                   st.session_state["tl_name"]), key="final_json")
 
-        if col52.button("Generate docx"):
+        if col52.button("Generate final docx"):
             st.session_state["docx_file_plain"] = ogu.generate_plain_language_docx_from_hybrid_output(st.session_state["final_output"],
                                                                    st.session_state["tl_name"])
             st.session_state["polished_docx_file_ready"] = True
 
         if st.session_state["polished_docx_file_ready"]:
             col53.download_button(
-                label="📥 Download DOCX with plain language examples",
+                label="📥 Download final DOCX",
                 data=st.session_state["docx_file_plain"],
                 file_name=f'{st.session_state["tl_name"]}_grammar_plain.docx',
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document", key="final_docx"

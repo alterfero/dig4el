@@ -123,7 +123,8 @@ with st.sidebar:
 
 with st.expander("Input", expanded=True):
     coli, colo, colp = st.columns(3)
-    use_alterlingua = coli.toggle("Use alterlingua", value=st.session_state["use_alterlingua"])
+    # use_alterlingua = coli.toggle("Use alterlingua", value=st.session_state["use_alterlingua"])
+    use_alterlingua = False
     keep_target_words = st.session_state["keep_target_words"]
     concept_ancestor_level = st.session_state["concept_ancestor_level"]
     include_particularization = st.session_state["include_particularization"]
@@ -186,7 +187,7 @@ with st.expander("Input", expanded=True):
             # Consolidating transcriptions - Knowledge Graph
             st.write("Once your transcriptions are loaded and word separators selected, click on 'Build knowledge graph' below")
 
-            if st.button("Build knowledge graph"):
+            if st.button("Continue"):
                 st.session_state["knowledge_graph"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
                     st.session_state["cq_transcriptions"],
                     st.session_state["tl_name"],
