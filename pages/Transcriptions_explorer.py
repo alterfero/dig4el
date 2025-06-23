@@ -121,6 +121,8 @@ with st.sidebar:
     st.write("**Explore DIG4EL processes**")
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
+st.subheader("Explore Transcriptions")
+
 with st.expander("Input", expanded=True):
     coli, colo, colp = st.columns(3)
     # use_alterlingua = coli.toggle("Use alterlingua", value=st.session_state["use_alterlingua"])

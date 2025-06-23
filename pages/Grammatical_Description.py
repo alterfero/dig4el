@@ -1398,6 +1398,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
     print(f"Number of tokens: {num_tokens}")
 
     st.markdown("#### Make sure everything below is correct and press 'Generate'")
+    st.markdown("⚠️ Be aware: The data will be sent to a remote LLM for processing ⚠️")
     table = {"Focus": "",
              "Content": "",
              "L1": "",

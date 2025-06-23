@@ -116,7 +116,7 @@ if "cq_id_dict" not in st.session_state:
         cq_id_dict[cq_json["uid"]] = {"filename": cq, "content": cq_json}
     st.session_state["cq_id_dict"] = cq_id_dict
 
-st.title("Transcription Recorder")
+st.title("Record Transcriptions")
 
 with st.popover("i"):
     st.markdown("""This page allows to record the transcription of Conversational Questionnaires. 
