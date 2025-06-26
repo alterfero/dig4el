@@ -14,6 +14,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import streamlit as st
+import time
+
 st.set_page_config(
     page_title="DIG4EL",
     page_icon="🧊",
@@ -39,7 +41,7 @@ import streamlit.components.v1 as components
 from libs import output_generation_utils as ogu
 from libs import utils
 from io import BytesIO
-import time
+
 
 if "tl_name" not in st.session_state:
     st.session_state["tl_name"] = ""
