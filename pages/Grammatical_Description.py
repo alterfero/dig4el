@@ -482,6 +482,64 @@ with st.expander("Inputs"):
                                                                 default=default_delimiters)
             side_info.write("Input files mapped")
 
+    if cqs == []:
+        st.markdown("---")
+        st.markdown("#### or use available examples")
+        available_transcriptions_folders = os.listdir(os.path.join(".", "available_transcriptions"))
+        if ".DS_Store" in available_transcriptions_folders:
+            available_transcriptions_folders.remove(".DS_Store")
+        existing = st.selectbox("Or load an available set of transcriptions", available_transcriptions_folders)
+        if st.button(f"Load {existing}"):
+            tpath = os.path.join(".", "available_transcriptions", existing)
+            if os.path.isdir(tpath):
+                st.session_state["cq_transcriptions"] = []
+                for t in os.listdir(tpath):
+                    if t.endswith(".json"):
+                        with open(os.path.join(tpath, t)) as f:
+                            new_cq = json.load(f)
+                            st.session_state["cq_transcriptions"].append(new_cq)
+            if st.session_state["cq_transcriptions"] != []:
+                st.session_state["delimiters"] = st.session_state["cq_transcriptions"][0]["delimiters"]
+                st.session_state[
+                    "kg"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
+                    st.session_state["cq_transcriptions"],
+                    st.session_state["tl_name"],
+                    st.session_state["delimiters"])
+                with open("./data/knowledge/current_kg.json", "w") as f:
+                    json.dump(st.session_state["kg"], f, indent=4)
+                st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
+                    len(st.session_state["cq_transcriptions"]), len(st.session_state["kg"]),
+                    total_target_word_count, len(unique_words)))
+                st.session_state["loaded_existing"] = True
+                st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
+                # managing language input
+                st.session_state["tl_name"] = st.session_state["cq_transcriptions"][0]["target language"]
+                # check data in wals
+                st.session_state["tl_wals_pk"] = wu.language_pk_id_by_name.get(st.session_state["tl_name"], {}).get(
+                    "pk",
+                    None)
+                # check data in grambank
+                if st.session_state["tl_name"] in [gu.grambank_language_by_lid[lid]["name"] for lid in
+                                                   gu.grambank_language_by_lid.keys()]:
+                    st.session_state["tl_grambank_id"] = next(
+                        lid for lid, value in gu.grambank_language_by_lid.items() if
+                        value["name"] == st.session_state["tl_name"])
+                else:
+                    st.session_state["tl_grambank_id"] = None
+                # managing delimiters
+                if "delimiters" in st.session_state["cq_transcriptions"][0].keys():
+                    st.session_state["delimiters"] = st.session_state["cq_transcriptions"][0]["delimiters"]
+                    print("Word separators have been explicitly entered in the transcription.")
+                elif st.session_state["tl_name"] in wu.language_pk_id_by_name.keys():
+                    with open("./data/delimiters.json", "r") as f:
+                        delimiters_dict = json.load(f)
+                        st.session_state["delimiters"] = delimiters_dict[st.session_state["tl_name"]]
+                        print("Word separators are retrieved from a file.")
+                else:
+                    st.session_state["delimiters"] = st.multiselect("Edit word separators if needed", delimiters_bank,
+                                                                    default=default_delimiters)
+                side_info.write("Input files mapped")
+
 
 # PREPROCESSING: KNOWLEDGE, OBSERVATIONS, PARAMETER DISCOVERY ==============================
 
@@ -782,7 +840,7 @@ if st.session_state["preprocessing_done"] and show_details:
                             height=650, scrolling=True)
 
 # PREPARING AND RUNNING GENERAL AGENT ==================================================================
-if st.session_state["preprocessing_done"] and st.button("Generate grammar"):
+if st.session_state["preprocessing_done"] and st.button("Guess grammar rules"):
     st.session_state["run_ga"] = True
 if (st.session_state["preprocessing_done"]
         and st.session_state["run_ga"]
@@ -1012,7 +1070,6 @@ if show_details and st.session_state["ga_output_available"]:
         st.components.v1.html(html_str, height=800, width=1000)
         # st.write(st.session_state["ga"].graph)
 
-
 # EDITABLE RESULTS ================================================================
 
 if st.session_state["ga_output_available"]:
@@ -1033,10 +1090,11 @@ if st.session_state["ga_output_available"]:
                     origin = "Observed"
                 else:
                     origin = "Inferred"
-                result_list.append({"Parameter": pname,
-                                    "Origin": origin,
-                                    "Winner": P.get_winning_belief_name(),
-                                    "Confidence": round(100 * (1 - P.entropy))})
+                if round(100 * (1 - P.entropy)) > 50:  # Only add beliefs if confidence > 50%
+                    result_list.append({"Parameter": pname,
+                                        "Origin": origin,
+                                        "Winner": P.get_winning_belief_name(),
+                                        "Confidence": round(100 * (1 - P.entropy))})
             result_df = pd.DataFrame(result_list)
             result_df = result_df.sort_values(by="Confidence", ascending=False)
             st.dataframe(result_df, use_container_width=True)
@@ -1135,7 +1193,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
 if st.session_state["ga_output_available"] and st.session_state["results_approved"] and st.session_state[
     "generate_description"]:
 
-    st.markdown("#### Generate default or customized grammatical descriptions.")
+    st.markdown("#### Use a LLM to customize grammatical descriptions.")
 
     # USER INPUT
     prompt_override = st.text_input(
@@ -1426,12 +1484,14 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         if api_key:
             openai.api_key = api_key
             side_info.write("Waiting for LLM output...")
+
             st.session_state["response"] = openai.chat.completions.create(
                 model="gpt-4.1",
                 messages=messages,
                 temperature=0.3,
                 max_tokens=5000
             ).choices[0].message.content
+
             request_info.write("Response received")
             print("Response received")
             print("Loading as json")
