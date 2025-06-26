@@ -26,6 +26,7 @@ import streamlit.components.v1 as components
 from libs import output_generation_utils as ogu
 from libs import utils
 from io import BytesIO
+import time
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -63,6 +64,8 @@ if "concept_ancestor_level" not in st.session_state:
     st.session_state["concept_ancestor_level"] = 1
 if "include_particularization" not in st.session_state:
     st.session_state["include_particularization"] = False
+if "initial_loading" not in st.session_state:
+    st.session_state["initial_loading"] = True
 
 delimiters_bank = [
     " ",  # Space
@@ -122,6 +125,11 @@ with st.sidebar:
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
 st.subheader("Explore Transcriptions")
+
+if st.session_state["initial_loading"]:
+    with st.spinner("Loading..."):
+        time.sleep(5)
+    st.session_state["initial_loading"] = False
 
 with st.expander("Input", expanded=True):
     coli, colo, colp = st.columns(3)
