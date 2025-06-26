@@ -13,6 +13,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+st.set_page_config(
+    page_title="DIG4EL",
+    page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+if st.session_state["initial_loading"]:
+    with st.spinner("Loading..."):
+        time.sleep(5)
+    st.session_state["initial_loading"] = False
+
 import streamlit as st
 import json
 from libs import knowledge_graph_utils as kgu, stats
@@ -27,13 +39,6 @@ from libs import output_generation_utils as ogu
 from libs import utils
 from io import BytesIO
 import time
-
-st.set_page_config(
-    page_title="DIG4EL",
-    page_icon="🧊",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 if "tl_name" not in st.session_state:
     st.session_state["tl_name"] = ""
@@ -125,11 +130,6 @@ with st.sidebar:
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
 st.subheader("Explore Transcriptions")
-
-if st.session_state["initial_loading"]:
-    with st.spinner("Loading..."):
-        time.sleep(5)
-    st.session_state["initial_loading"] = False
 
 with st.expander("Input", expanded=True):
     coli, colo, colp = st.columns(3)
