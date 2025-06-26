@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import streamlit as st
 st.set_page_config(
     page_title="DIG4EL",
     page_icon="🧊",
@@ -25,7 +26,7 @@ if st.session_state["initial_loading"]:
         time.sleep(5)
     st.session_state["initial_loading"] = False
 
-import streamlit as st
+
 import json
 from libs import knowledge_graph_utils as kgu, stats
 import pandas as pd
