@@ -23,6 +23,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+if "initial_loading" not in st.session_state:
+    st.session_state["initial_loading"] = True
+
 if st.session_state["initial_loading"]:
     with st.spinner("Loading..."):
         time.sleep(5)
@@ -72,8 +75,7 @@ if "concept_ancestor_level" not in st.session_state:
     st.session_state["concept_ancestor_level"] = 1
 if "include_particularization" not in st.session_state:
     st.session_state["include_particularization"] = False
-if "initial_loading" not in st.session_state:
-    st.session_state["initial_loading"] = True
+
 
 delimiters_bank = [
     " ",  # Space
