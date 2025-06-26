@@ -27,7 +27,7 @@ if "initial_loading" not in st.session_state:
     st.session_state["initial_loading"] = True
 
 if st.session_state["initial_loading"]:
-    with st.spinner("Loading..."):
+    with st.spinner("Loading... if it fails, reload the page!"):
         time.sleep(5)
     st.session_state["initial_loading"] = False
 

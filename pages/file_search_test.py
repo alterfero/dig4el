@@ -26,6 +26,8 @@ import json
 api_key = os.getenv("OPEN_AI_KEY")
 openai.api_key = api_key
 
+if "tl" not in st.session_state:
+    st.session_state["tl"] = "Mwotlap"
 if "full_response" not in st.session_state:
     st.session_state["full_response"] = None
 if "response_text" not in st.session_state:
@@ -56,18 +58,26 @@ with st.sidebar:
     st.write("**Explore DIG4EL processes**")
     st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 
-st.title("Component Beta-test: using existing papers.")
+tl_vs_dict = {
+    "Mwotlap": "Mwotlap",
+    "Iaai": "iaai"
+}
 
-pivot_language = st.selectbox("Choose the output language",["Bislama", "English", "French"])
+st.title("Isolated Component Beta-test: Information retrieval using existing papers.")
+
+st.session_state["tl"] = st.selectbox("Choose the target language",["Mwotlap", "Iaai"])
+
+
+pivot_language = st.selectbox("Choose the output language",["English", "French", "Bislama"])
 
 prompt = "You are a grammar description assistant retrieving grammar lesson content from existing documents."
 prompt += "The lessson topic is: "
-prompt += "In Mwotlap, " + st.text_input("Ask a question about Mwotlap")
+prompt += "In " + st.session_state["tl"] + ", " + st.text_input("Ask a question about the target language")
 prompt += "Use as much available examples as possible retrieved from the document to explain it."
 prompt += "Provide your answer in the " + pivot_language + " language."
 
 if st.button("Submit"):
-    st.session_state["full_response"] = fsu.file_search_request("Mwotlap", prompt)
+    st.session_state["full_response"] = fsu.file_search_request(tl_vs_dict[st.session_state["tl"]], prompt)
     try:
         raw_response = st.session_state["full_response"].output[1].content
         st.session_state["response_text"] = raw_response[0].text

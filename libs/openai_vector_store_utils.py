@@ -155,15 +155,14 @@ def check_vector_store_status(vs_name):
         )
     print(result)
 
-local_file_path = "/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/"
-file_name = "3_Krausse_Francois_final.pdf"
+local_file_path = "/Users/sebastienchristian/Desktop/d/01-These/language_lib/iaai/"
 
 
 # create_file(local_file_path+file_name)
 #list_files()
 #add_file_to_vector_store("Mwotlap", "3_Krausse_Francois_final.pdf")
-#add_all_files_from_folder_to_vector_store("Mwotlap", local_file_path)
-check_vector_store_status("Mwotlap")
+#add_all_files_from_folder_to_vector_store("iaai", local_file_path)
+check_vector_store_status("iaai")
 
 
 ## DOCUMENTATION
