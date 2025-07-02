@@ -10,7 +10,7 @@ From pivot sentence, generate a descriptive JSON with constrained format and con
 """
 
 class TypeOfPredicate(BaseModel):
-    type_of_predicate: str = Literal["none", "existential", "locative", "processive", "inclusive", "attributive",
+    type_of_predicate: Literal["none", "existential", "locative", "processive", "inclusive", "attributive",
     "numeral", "presentative"]
 
     class Config:
