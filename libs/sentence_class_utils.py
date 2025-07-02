@@ -74,7 +74,7 @@ class Concept(BaseModel):
 class EnrichedSentence(BaseModel):
     sentence: str = Field(..., description="sentence")
     intent: str = Field(..., description="The intent of the speaker.")
-    type_of_predicate: str = TypeOfPredicate
+    type_of_predicate: TypeOfPredicate
     concepts: list[Concept]
 
     class Config:
