@@ -64,7 +64,7 @@ existential_extractor = Agent(
     - Deictics are existential predicates ("That", "this", "here", "up there", anything pointed in space and time).  
     - Possessive words (my, yours etc.) create a predicate that describes the actual being (I, you). 
         the possession is expressed in another predicate by the next agent.
-    - Multiple reference to the same antecedent (Mary...she, or my...my) must be merged in a single predicate.  
+    - Multiple reference to the same antecedent (Mary...she, I...me, Mary...her, or my...my) must be merged in a single predicate.  
     - Each of these predicates has type "existential".
     - Do not create any higher-order relations, arguments, or extra predicates. Those belong to later agents.
     - No additional keys, no comments, no explanatory text outside the JSON following the output schema.
