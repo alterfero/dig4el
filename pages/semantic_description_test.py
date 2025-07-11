@@ -128,22 +128,24 @@ def plot_semantic_graph_pyvis(data,
 
 
 sentence = st.text_input("Sentence")
-if st.button("Output Sentence Structure"):
+if st.button("Describe sentence"):
     st.session_state.existential = None
     st.session_state.result = None
     st.write("Extracting individual existential predicates")
     st.session_state.existential = sdu.extract_existential_predicates(sentence)
 
 if st.session_state.existential:
-    st.write(st.session_state.existential)
+    if st.checkbox("Show unitary base predicates"):
+        st.write(st.session_state.existential)
 
 if st.session_state.existential:
     st.write("Computing higher order predicates")
-    st.session_state.result = sdu.describe_sentence(sentence, st.session_state.existential)
+    st.session_state.result = sdu.describe_sentence_with_predicates(sentence, st.session_state.existential)
 
 if st.session_state.result:
-    st.write(sentence)
     html = plot_semantic_graph_pyvis(st.session_state.result)
     components.html(html, height=600, width=1000)
     st.markdown("**Agent comments**: *{}*".format(st.session_state.result.get("comments", "no comments")))
+    st.markdown("**Semantic Description: *{}*".format(st.session_state.result.get("grammatical_description", "no description")))
+    st.markdown( "**Keywords: *{}*".format(st.session_state.result.get("grammatical_keywords", "no keywords")))
     st.write(st.session_state.result)

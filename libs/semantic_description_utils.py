@@ -5,21 +5,24 @@ import openai
 from agents import Agent, ModelSettings, function_tool, Runner
 from typing import List, Literal, Tuple, Union, Optional
 from pydantic import BaseModel, Field, Extra
+from collections import defaultdict
 
 api_key = os.getenv("OPEN_AI_KEY")
 openai.api_key = api_key
 
+
 class PredicateType(BaseModel):
-    type: Literal["existential", "equative", "locative", "attributive", "inclusive", "possessive",
-                  "sampling", "processive", "causal", "logic", "other"]
+    type: Union[Literal["existential", "equative", "locative", "attributive", "inclusive", "possessive",
+    "sampling", "processive", "causal", "logic", "other"], str]
+
 
 class Features(BaseModel):
     number: Optional[Literal["singular", "dual", "trial", "paucal", "plural"]] = None
     definiteness: Optional[Literal["definite", "indefinite"]] = None
     polarity: Optional[Literal["positive", "negative"]]
     tense: Optional[Literal["past", "present", "future", "general"]] = None
-    aspect: Optional[Literal["perfect", "progressive", "habitual", "other"]] = None
-    mood: Optional[Literal["indicative", "hypothetical", "conditional", "wish", "belief", "imperative"]] = None
+    aspect: Optional[Union[Literal["perfective", "imperfective", "progressive", "habitual"], str]] = None
+    mood: Optional[Union[Literal["indicative", "hypothetical", "conditional", "wish", "belief", "imperative"], str]] = None
     voice: Optional[Literal['active', 'passive', 'none']] = None
     reality: Optional[Literal['real', 'conditional', 'potential', 'hypothetical', 'imaginary', 'other']] = None
     space: Optional[Literal['none', 'speaker-sphere', 'addressee_sphere', 'remote']] = None
@@ -27,10 +30,10 @@ class Features(BaseModel):
 
 
 class Argument(BaseModel):
-    role: Literal['agent', 'experiencer', 'patient', 'recipient', 'instrument', 'time information', 'space information',
-                  'beneficiary', 'goal', 'destination', 'source', 'possessor', 'possession', 'stimulus',
-                  'cause', 'consequence', 'condition', "equality", "complement", "other"]
-    target_pid: str            # id of another predicate
+    role: Union[Literal['agent', 'experiencer', 'patient', 'recipient', 'instrument', 'time information', 'space information',
+    'beneficiary', 'goal', 'destination', 'source', 'possessor', 'possession', 'stimulus',
+    'cause', 'consequence', 'condition', "equality", "complement", "other"], str]
+    target_pid: str  # id of another predicate
 
 
 class Predicate(BaseModel):
@@ -40,12 +43,16 @@ class Predicate(BaseModel):
     feats: Features
     args: List[Argument]
 
+
 class Sentence(BaseModel):
     pid: str
     intent: str  # the intent of the speaker as assert, ask etc.
     predicates: List[Predicate]
     top: str  # id of the topmost predicate
+    grammatical_description: str
+    grammatical_keywords: List[str]
     comments: str
+
 
 existential_extractor = Agent(
     name="existential_extractor",
@@ -53,16 +60,17 @@ existential_extractor = Agent(
     instructions="""
     - You are Predicate-Agent #1 (Existential extractor). 
     - Your only job is to list the elementary predicates required for the sentence to make sense.
-    - These predicates are units of meaning. They can be a single word, or a jointed or disjointed group of words.
-    English verbs as "to be" or "to have" are usually not an existential predicate but indicate relations between predicates. 
-    Every open-class token (noun, proper noun, adjective, lexical verb, participle, numeral, etc.) gets exactly 
-    one predicate.
-    - Reference with unknown antecedents for the reader are existential predicates.
+    - These predicates are indivisible units of meaning in the sentence carrying their internal determination. 
+        They can be a single word, or a jointed or disjointed group of words.
+        Typical unitary predicates are for example determinant + noun ("the dog"), verb with modal words ("would come"), 
+        adjective with modifier ("very pretty"), adverb with modifier ("so fast"). 
+    - English verbs as "to be" or "to have" are usually not an existential predicate but indicate a verb's determination or relations between predicates. 
+    - References (as pronouns or deictics) with unknown antecedents for the reader are existential predicates.
     - References with unknown antecedents for the speaker are existential predicates, as question words and "wildcards" 
     as "who", "where", "when", "that" etc. when used as a reference to an unknown antecedent (as in "I don't know who came").
-    - Pronouns referring to the speaker, the people he/she is talking to, are existential predicates. 
-    - Deictics are existential predicates ("That", "this", "here", "up there", anything pointed in space and time).  
-    - Possessive words (my, yours etc.) create a predicate that describes the actual being (I, you). 
+    - Proper nouns and Pronouns referring to the speaker, the people he/she is talking to, are existential predicates. 
+    - Deictics are existential predicates ("That", "this", "here", "up there", anything pointed in real of imaginary space and time).  
+    - Possessive words (my, yours etc.) create a predicate that describes the actual being possessing something (I, you, Mary). 
         the possession is expressed in another predicate by the next agent.
     - Multiple reference to the same antecedent (Mary...she, I...me, Mary...her, or my...my) must be merged in a single predicate.  
     - Each of these predicates has type "existential".
@@ -84,15 +92,35 @@ higher_order_predicate_extractor = Agent(
     - Use only the predicates you are provided with, referenced by their pid. 
     - When creating new predicates as needed to reflect the meaning of the sentence, create new, unique pids. 
     - Your output must contain all existential predicates, plus the higher-order predicates you have added. 
-    - Fill all relevant arguments of all predicates. 
-    - Coordination, logic ("and", "or" etc.), causal ("because", "if...then" etc.) 
-        or temporal coordinations ("then" etc.) in complex sentences are also predicates that must be created. 
+    - Intent: indicate what the speaker's intent is with a very short general expression, as "assert", "ask a question", 
+    "express a whish", "deny", "express a condition with if...then", "express a contrast with but" etc.
+    - Fill all relevant arguments of all predicates. You can create argument's role if none in the list is satisfactory.
+    - Modify the type of predicate when needed:
+        Equative predicates state the symetric identity between twho things, as in "Bob is your father" (= Your father is Bob).
+        Inclusive predicates states the inclusion of something in a class, as in "Bos is a man" (= Bob is something that belongs to the man category)
+        Attributive predicates associate a property with something, as in "Bob is fun."
+        Locative predicates indicate where (in time or space) is something, as in "Bob is in the garage."
+        Possessive predicates express a possession relation.
+        Sampling predicate lists example of something.
+        Logic predicates express a logical relationship between other predicates (and, or, but, however, in spite of etc.)
+        Causal predicates express causality between two predicates (because etc.)
+        Conditional predicates express a conditional relation between two predicates (if...then etc). 
+        Spatio-temporal predicates express a spatial or temporal relation between two predicates (then...)
+        
+        If none of the listed predicates is satisfactory, you can invent a new one. 
+        
+    - Create missing, higher-order predicates as neeed.  
     - Add to the "comment" field any issue you had doing your job, including suggestions on how to make the prompt 
     and framework better. 
+    - Grammatical-Semantic description: provide a brief description of language-independent grammatical & semantic 
+    forms in the sentence as "negative polarity", "passive voice", "expression of a condition", "comparison" etc. 
+    "perfect aspect" etc. Use only semantic, language-independent terms. For example, a relative clause in a sentence is
+    language-specific, while the attribution of properties (what the relative does foe example) is not. 
+    - Grammatical-Semantic keywords: provide a list of grammar keywords that can be associated with this sentence, highlighting
+    salient semantic expressions. Use only semantic, language-independent terms. 
     
     For example, in "Mary, who is the sister of Helen, has a dog who bites neighbors because he thinks they are geese.", 
-    the existential predicates' heads 
-    are [Mary, Helen, sister, dog, neighbors, thinking, geese]. 
+    the existential predicates' heads are [Mary, Helen, sister, dog, neighbors, thinking, geese]. 
     Higher-level predicates are 
     - a possessive predicate hp1 (Helen has a sister)
     - an equative predicate hp2 (Mary is the sister of Helen)
@@ -100,17 +128,111 @@ higher_order_predicate_extractor = Agent(
     - a processive predicate hp4 (Mary's dog bites neighbors)
     - an equative predicate with a "belief" mood (neighbors are geese)
     - an overall causal predicate (Mary's dog bites BECAUSE he believes...)
+    In this example the intent is "Assert", the grammatical description is "The sentence 
+    expresses a general fact about a person and a dog, with a possession relation between the two. 
+    The beliefs of the dog are expressed." The grammatical keywords are ["property attribution", "possession", 
+    "general fact", "expression of beliefs"]
+    
     """,
     output_type=Sentence
 )
+
 
 def extract_existential_predicates(sentence: str) -> List[str]:
     result = Runner.run_sync(existential_extractor, sentence)
     return result.final_output
 
 
-def describe_sentence(sentence: str, predicates: list[str]) -> dict:
+def describe_sentence_with_predicates(sentence: str, predicates: list[str]) -> dict:
     data = f"Sentence: {sentence} --- Predicates: {predicates}"
     result = Runner.run_sync(higher_order_predicate_extractor, data)
     return result.final_output.dict()
+
+def describe_sentence(sentence: str) -> dict:
+    predicates = extract_existential_predicates(sentence)
+    data = f"Sentence: {sentence} --- Predicates: {predicates}"
+    result = Runner.run_sync(higher_order_predicate_extractor, data)
+    return result.final_output.dict()
+
+def json_to_text_and_kw_description(sentence_dict: dict) -> Tuple[str, List[str]]:
+    out_str = ""
+    kw = []
+    out_str = "Intent: " + sentence_dict.get("intent")
+    kw.append(sentence_dict.get("intent"))
+    predicate_type = [sentence_dict[p]["ptype"]["type"] for p in sentence_dict["predicates"]]
+    definiteness = [sentence_dict[p]["definiteness"] for p in sentence_dict["predicates"]]
+    tense = [sentence_dict[p]["tense"] for p in sentence_dict["predicates"]
+              if sentence_dict[p]["tense"] not in ["present"]]
+    polarity = [sentence_dict[p]["polarity"] for p in sentence_dict["predicates"]
+                  if sentence_dict[p]["polarity"] not in ["positive"]]
+    aspect = [sentence_dict[p]["aspect"] for p in sentence_dict["predicates"]
+             if sentence_dict[p]["aspect"] not in ["positive"]]
+    mood = [sentence_dict[p]["mood"] for p in sentence_dict["predicates"]]
+    voice = [sentence_dict[p]["polarity"] for p in sentence_dict["predicates"]
+            if sentence_dict[p]["polarity"] not in ["active"]]
+    reality = [sentence_dict[p]["polarity"] for p in sentence_dict["predicates"]]
+    space = [sentence_dict[p]["space"] for p in sentence_dict["predicates"]]
+    direction = [sentence_dict[p]["direction"] for p in sentence_dict["predicates"]
+                if sentence_dict[p]["direction"]]
+    out_str += ", ".join(list(set(predicate_type))) + "predicates. "
+    kw += list(set(predicate_type))
+    out_str += ", ".join(list(set(definiteness))) + "definiteness. "
+    kw += list(set(definiteness))
+    out_str += ", ".join(list(set(tense))) + "tense. "
+    kw += list(set(tense))
+    out_str += ", ".join(list(set(polarity))) + "polarity. "
+    kw += list(set(polarity))
+    out_str += ", ".join(list(set(aspect))) + "aspect. "
+    kw += list(set(aspect))
+    out_str += ", ".join(list(set(mood))) + "mood. "
+    kw += list(set(mood))
+    out_str += ", ".join(list(set(voice))) + "voice. "
+    kw += list(set(voice))
+    out_str += ", ".join(list(set(reality))) + "reality. "
+    kw += list(set(reality))
+    out_str += ", ".join(list(set(space))) + "space. "
+    kw += list(set(space))
+    out_str += ", ".join(list(set(direction))) + "direction. "
+    kw += list(set(direction))
+
+    return out_str, kw
+
+
+def add_descriptions_and_keywords_to_sentence_pairs(sentence_pairs: list) -> list:
+    print("Describing {} sentences".format(len(sentence_pairs)))
+    out_list = []
+    i = 0
+    for item in sentence_pairs:
+        i += 1
+        print("Sentence {}, {}".format(i, item["source"]))
+        source_sentence = item["source"]
+        description = describe_sentence(source_sentence)
+        description_text = description.get("grammatical_description", "no description")
+        keywords = description.get("grammatical keywords", "no keywords")
+        out_list.append(
+            {
+                "source": item["source"],
+                "target": item["target"],
+                "description_dict": description,
+                "description_text": description_text,
+                "keywords": keywords
+            }
+        )
+    return out_list
+
+
+def build_keyword_index(enriched_pairs: List) -> dict:
+    """
+    Build an inverted index from each keyword → set of sentence‐indices.
+    enriched_pairs: list of dicts, each has a "keywords" key with a list of strings.
+    Returns: index: dict[str, set[int]]
+    """
+    index = defaultdict(set)
+    print(build_keyword_index())
+    for i, pair in enumerate(enriched_pairs):
+        print(i, pair)
+        for kw in pair["keywords"]:
+            print(kw)
+            index[kw].add(i)
+    return index
 
