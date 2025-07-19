@@ -61,6 +61,7 @@ def compute_grambank_given_wals_cp(pid, ppk):
         # not grambank pids
         return None
 
+
 def compute_wals_given_grambank_cp(ppk, pid):
 
     if ppk in wu.parameter_name_by_pk and pid in gu.grambank_param_value_dict:
@@ -117,8 +118,6 @@ def get_pvalue_name_from_value_code(code):
             print("code {} not in grambank_vname_by_vid, returning name None".format(code))
     else:
         return wu.get_careful_name_of_de_pk(code)
-
-
 
 def get_language_family_by_language_name(lname):
     if lname in wu.language_pk_id_by_name.keys():

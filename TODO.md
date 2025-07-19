@@ -1,20 +1,23 @@
 # BACKLOG ---------------------------------------------------
 
-## Possession
-Manage possession as a composite (Ref_X + Object)
-
 ## Question marks
 
-## Alterlingua: stable code, with comments
 
 ## Automated CQ graph creation
 
+- text2graph(context, text as a list of segments) returns the superconcept graph and a list of concepts.
+- It includes potential additional information requested from the user. 
+
+- merge_concept_graph(concepts) adds concepts to the Master Concept Graph
+
+
 # IN PROGRESS ------------------------------------------------------------
 
-## Display comments in Exploring Transcriptions
-Done for concept exploration, in progress now for structural exploration
 
 # DONE --------------------------------------------------------------------
+
+
+## Alterlingua: stable code, with comments
 
 ## Remove PP* and replace by actual concepts: Ref_speaker, Ref_1_addressee etc. 
 DONE Requires updating the names in concepts, CQs and transcriptions.

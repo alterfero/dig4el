@@ -14,6 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import asyncio
 
+import pandas as pd
 import streamlit as st
 import json
 from libs import semantic_description_utils as sdu
@@ -21,6 +22,7 @@ from libs import retrieval_augmented_generation_utils as ragu
 import pkg_resources
 import streamlit.components.v1 as components
 from pyvis.network import Network
+import time
 import os
 
 if "sentence_pairs" not in st.session_state:
@@ -35,6 +37,8 @@ if "description_dict" not in st.session_state:
     st.session_state.description_dict = None
 if "description_text" not in st.session_state:
     st.session_state.description_text = None
+if "enriching_pairs" not in st.session_state:
+    st.session_state.enriching_pairs = False
 if "enriched_pairs" not in st.session_state:
     st.session_state.enriched_pairs = None
 if "embeddings" not in st.session_state:
@@ -43,6 +47,15 @@ if "index" not in st.session_state:
     st.session_state.index = None
 if "hard_query_result" not in st.session_state:
     st.session_state.hard_query_result = None
+if "stime" not in st.session_state:
+    st.session_state.stime = None
+
+st.set_page_config(
+    page_title="DIG4EL",
+    page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 
 try:
@@ -52,6 +65,8 @@ except RuntimeError:
     # No loop set ⇒ create one and register it as the thread’s default.
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
+
+TEMP_FILE = "./data/tmp_enriched_pairs_file.json"
 
 def generate_and_save_embeddings_of_source_sentence_list(sentences, embedding_file_path="/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/sentence pairs/embeddings.pkl"):
     embeddings = ragu.build_embeddings(sentences)
@@ -234,12 +249,39 @@ sentence_pairs_file = st.file_uploader("Upload a sentence pair file (must contai
 if sentence_pairs_file is not None:
     st.session_state.sentence_pairs = json.load(sentence_pairs_file)
 if st.session_state.sentence_pairs is not None:
-    if st.button("Create enriched pairs file"):
-        st.session_state.enriched_pairs = sdu.add_descriptions_and_keywords_to_sentence_pairs(sentence_pairs)
-if st.session_state.enriched_pairs is not None:
+    if st.button("Create enriched pairs file (long process, LLM use)"):
+        st.session_state.enriching_pairs = True
+if st.session_state.enriching_pairs:
+    st.write("Starting sentence pairs augmentation process on {} sentences".format(len(st.session_state.sentence_pairs)))
+    info1 = st.empty()
+    info2 = st.empty()
+    info3 = st.empty()
+    st.session_state.enriched_pairs = []
+    for c, sentence_pair in enumerate(st.session_state.sentence_pairs):
+
+        with info1:
+            st.progress(c/len(st.session_state.sentence_pairs), "Sentence augmentation in progress...")
+        info2.write("Processing sentence {}/{}".format(c + 1, len(st.session_state.sentence_pairs)))
+        if st.session_state.stime:
+            info2.write("Estimated {} minutes remaining".format(round(st.session_state.stime * (len(st.session_state.sentence_pairs) - c)/60)))
+        info3.write("sentence {}: {}".format(c + 1, sentence_pair.get("source", "no source")))
+        start_time = time.time()
+        augmented_sentence = sdu.add_description_and_keywords_to_sentence_pair(sentence_pair)
+        st.session_state.stime = round(time.time() - start_time)
+        st.session_state.enriched_pairs.append(augmented_sentence)
+        with open(TEMP_FILE, "w") as f:
+            json.dump(st.session_state.enriched_pairs, f)
+        if c == len(st.session_state.sentence_pairs) - 1:
+            st.session_state.enriching_pairs = False
+            st.rerun()
+
+if not st.session_state.enriching_pairs and st.session_state.enriched_pairs is not None:
     st.download_button("Download and store the augmented sentence pairs file",
                        data=json.dumps(st.session_state.enriched_pairs),
                        file_name="augmented_sentence_pairs.json")
+    if st.checkbox("Explore augmented sentences"):
+        tdf = pd.DataFrame(st.session_state.enriched_pairs, columns=["source", "description_text", "grammatical_keywords"])
+        st.dataframe(tdf)
 
 # Computing embeddings
 st.subheader("Generating embeddings from enriched pairs")
@@ -271,8 +313,20 @@ else:
         st.session_state.index = sdu.build_keyword_index(st.session_state.enriched_pairs)
 
 if st.session_state.enriched_pairs and st.session_state.index:
+    if st.checkbox("see index"):
+        st.write(st.session_state.index)
     selected_keywords = st.multiselect("Select keywords", st.session_state.index)
-    st.write(st.session_state.index)
+    selected_indexes = [index for kw in selected_keywords for index in st.session_state.index[kw]]
+    selected_indexes = list(set(selected_indexes))
+    if selected_indexes:
+        st.markdown("{} sentences with these keywords".format(len(selected_indexes)))
+    for i in selected_indexes:
+        st.markdown(f"Sentence: **{st.session_state.enriched_pairs[i]['target']}**")
+        st.write(f"Pivot: {st.session_state.enriched_pairs[i]['source']}")
+        st.markdown("*Description: {}*".format(st.session_state.enriched_pairs[i]["description_text"]))
+        st.write(", ".join(st.session_state.enriched_pairs[i]["grammatical_keywords"]))
+        st.divider()
+
 
 
 

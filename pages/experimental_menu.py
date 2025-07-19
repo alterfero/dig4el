@@ -45,3 +45,5 @@ st.page_link("pages/compare.py", label="Compare CQs across languages", icon=":ma
 st.page_link("pages/full_concept_graph_viewer.py", label="Explore the full concept graph", icon=":material/schema:")
 
 st.page_link("pages/semantic_description_test.py", label="Test semantic descriptions", icon=":material/search:")
+
+st.page_link("pages/sentence_retrieval_test.py", label="Test sentence retrieval (RAG)", icon=":material/search:")

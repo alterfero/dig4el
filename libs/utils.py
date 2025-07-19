@@ -21,6 +21,50 @@ from os import listdir
 import pandas as pd
 import hashlib
 
+from collections.abc import Mapping, Sequence
+
+
+def flatten(obj, parent_key=()):
+    """
+    Flatten a nested dict/list into a mapping from key‐path tuples to values.
+
+    Args:
+        obj:     The input data (dict, list/tuple, or leaf).
+        parent_key:  Tuple of keys/indices leading to this obj.
+
+    Returns:
+        A dict { tuple(path): leaf_value, … }.
+    """
+    items = {}
+    if isinstance(obj, Mapping):
+        for k, v in obj.items():
+            new_key = parent_key + (k,)
+            items.update(flatten(v, new_key))
+    elif isinstance(obj, Sequence) and not isinstance(obj, (str, bytes)):
+        for idx, v in enumerate(obj):
+            new_key = parent_key + (idx,)
+            items.update(flatten(v, new_key))
+    else:
+        items[parent_key] = obj
+    return items
+
+
+# Example
+data = {
+    "user": {"name": "Alice", "roles": ["admin", "user"]},
+    "active": True
+}
+
+flat = flatten(data)
+
+
+# flat == {
+#   ('user','name'): 'Alice',
+#   ('user','roles',0): 'admin',
+#   ('user','roles',1): 'user',
+#   ('active',): True
+# }
+
 
 def generate_hash_from_list(identifiers):
     # Step 1: Sort the list of identifiers

@@ -5,179 +5,158 @@ Bin 1: Accuracy 0.0 to 0.1 (0 languages)
 ------------------------------------------------------------
 No languages in this bin.
 
-Bin 2: Accuracy 0.1 to 0.2 (3 languages)
+Bin 2: Accuracy 0.1 to 0.2 (1 languages)
 ------------------------------------------------------------
-  1. Amele                     12.50%
-  2. Batak (Karo)              12.50%
-  3. Sandawe                   12.50%
+  1. Nung (in Vietnam)         12.50%
 
-Bin 3: Accuracy 0.2 to 0.3 (5 languages)
+Bin 3: Accuracy 0.2 to 0.3 (20 languages)
 ------------------------------------------------------------
-  1. Hausa                     25.00%
-  2. Loniu                     25.00%
-  3. Swedish                   25.00%
-  4. Tetun                     25.00%
-  5. Tzutujil                  25.00%
+  1. Acehnese                  25.00%
+  2. Cantonese                 25.00%
+  3. Hausa                     25.00%
+  4. Iaai                      25.00%
+  5. Iban                      25.00%
+  6. Kairiru                   25.00%
+  7. Khasi                     25.00%
+  8. Kisi                      25.00%
+  9. Lampung                   25.00%
+ 10. Manggarai                 25.00%
+ 11. Minangkabau               25.00%
+ 12. Ndyuka                    25.00%
+ 13. Obolo                     25.00%
+ 14. Sango                     25.00%
+ 15. Tigak                     25.00%
+ 16. Tolai                     25.00%
+ 17. Tzutujil                  25.00%
+ 18. Tümpisa Shoshone          25.00%
+ 19. Woleaian                  25.00%
+ 20. Wolof                     25.00%
 
-Bin 4: Accuracy 0.3 to 0.4 (3 languages)
+Bin 4: Accuracy 0.3 to 0.4 (28 languages)
 ------------------------------------------------------------
-  1. Fijian                    37.50%
-  2. Kosraean                  37.50%
-  3. Tinrin                    37.50%
+  1. Arabic (Egyptian)         37.50%
+  2. Arabic (Gulf)             37.50%
+  3. Buduma                    37.50%
+  4. Bulgarian                 37.50%
+  5. Chrau                     37.50%
+  6. Dinka                     37.50%
+  7. English                   37.50%
+  8. French                    37.50%
+  9. Futuna-Aniwa              37.50%
+ 10. German                    37.50%
+ 11. Huastec                   37.50%
+ 12. Indonesian                37.50%
+ 13. Jingpho                   37.50%
+ 14. Kanuri                    37.50%
+ 15. Kosraean                  37.50%
+ 16. Kwoma                     37.50%
+ 17. Ma'di                     37.50%
+ 18. Maung                     37.50%
+ 19. Mupun                     37.50%
+ 20. Ngizim                    37.50%
+ 21. Nkore-Kiga                37.50%
+ 22. Oromo (Harar)             37.50%
+ 23. Otomí (Mezquital)         37.50%
+ 24. Palauan                   37.50%
+ 25. Pohnpeian                 37.50%
+ 26. Savosavo                  37.50%
+ 27. Tarahumara (Western)      37.50%
+ 28. Tsimshian (Coast)         37.50%
 
 Bin 5: Accuracy 0.4 to 0.5 (0 languages)
 ------------------------------------------------------------
 No languages in this bin.
 
-Bin 6: Accuracy 0.5 to 0.6 (12 languages)
+Bin 6: Accuracy 0.5 to 0.6 (37 languages)
 ------------------------------------------------------------
-  1. Adioukrou                 50.00%
-  2. Armenian (Eastern)        50.00%
-  3. Bawm                      50.00%
-  4. Cantonese                 50.00%
-  5. Estonian                  50.00%
-  6. Finnish                   50.00%
-  7. Kairiru                   50.00%
-  8. Kisi                      50.00%
-  9. Oromo (Harar)             50.00%
- 10. Tarahumara (Western)      50.00%
- 11. Walman                    50.00%
- 12. Yurok                     50.00%
+  1. Abkhaz                    50.00%
+  2. Abun                      50.00%
+  3. Amele                     50.00%
+  4. Batak (Karo)              50.00%
+  5. Bawm                      50.00%
+  6. Burmese                   50.00%
+  7. Choctaw                   50.00%
+  8. Chuvash                   50.00%
+  9. Coos (Hanis)              50.00%
+ 10. Danish                    50.00%
+ 11. Fulfulde (Adamawa)        50.00%
+ 12. Haida                     50.00%
+ 13. Japanese                  50.00%
+ 14. Karen (Sgaw)              50.00%
+ 15. Kham                      50.00%
+ 16. Lamani                    50.00%
+ 17. Lenakel                   50.00%
+ 18. Loniu                     50.00%
+ 19. Lugbara                   50.00%
+ 20. Maleu                     50.00%
+ 21. Maybrat                   50.00%
+ 22. Nahuatl (Tetelcingo)      50.00%
+ 23. Nama                      50.00%
+ 24. Ngambay                   50.00%
+ 25. Quechua (Imbabura)        50.00%
+ 26. Rotuman                   50.00%
+ 27. Sio                       50.00%
+ 28. Spanish                   50.00%
+ 29. Sulka                     50.00%
+ 30. Swedish                   50.00%
+ 31. Taba                      50.00%
+ 32. Tamil                     50.00%
+ 33. Thai                      50.00%
+ 34. Tinrin                    50.00%
+ 35. Turkish                   50.00%
+ 36. Ungarinjin                50.00%
+ 37. Yurok                     50.00%
 
-Bin 7: Accuracy 0.6 to 0.7 (8 languages)
+Bin 7: Accuracy 0.6 to 0.7 (22 languages)
 ------------------------------------------------------------
-  1. Acehnese                  62.50%
-  2. German                    62.50%
-  3. Kanuri                    62.50%
-  4. Koyra Chiini              62.50%
-  5. Kwoma                     62.50%
-  6. Lugbara                   62.50%
-  7. Minangkabau               62.50%
-  8. Rotuman                   62.50%
+  1. Adioukrou                 62.50%
+  2. Anejom                    62.50%
+  3. Armenian (Eastern)        62.50%
+  4. Awtuw                     62.50%
+  5. Basque                    62.50%
+  6. Batak (Toba)              62.50%
+  7. Chatino (Sierra Occidental) 62.50%
+  8. Chinantec (Comaltepec)    62.50%
+  9. Estonian                  62.50%
+ 10. Finnish                   62.50%
+ 11. Gumawana                  62.50%
+ 12. Karimojong                62.50%
+ 13. Kiribati                  62.50%
+ 14. Klamath                   62.50%
+ 15. Mamanwa                   62.50%
+ 16. Mixtec (Chalcatongo)      62.50%
+ 17. Mixtec (Ocotepec)         62.50%
+ 18. Mixtec (Peñoles)          62.50%
+ 19. Sandawe                   62.50%
+ 20. Tetun                     62.50%
+ 21. Walman                    62.50%
+ 22. Welsh                     62.50%
 
-Bin 8: Accuracy 0.7 to 0.8 (26 languages)
+Bin 8: Accuracy 0.7 to 0.8 (8 languages)
 ------------------------------------------------------------
-  1. Abun                      75.00%
-  2. Anejom                    75.00%
-  3. Armenian (Western)        75.00%
-  4. Awtuw                     75.00%
-  5. Burmese                   75.00%
-  6. Choctaw                   75.00%
-  7. Coos (Hanis)              75.00%
-  8. Danish                    75.00%
-  9. Dinka                     75.00%
- 10. English                   75.00%
- 11. Karen (Sgaw)              75.00%
- 12. Karimojong                75.00%
- 13. Kham                      75.00%
- 14. Klamath                   75.00%
- 15. Maung                     75.00%
- 16. Navajo                    75.00%
- 17. Ngizim                    75.00%
- 18. Nung (in Vietnam)         75.00%
- 19. Palauan                   75.00%
- 20. Pohnpeian                 75.00%
- 21. Savosavo                  75.00%
- 22. Sio                       75.00%
- 23. Taba                      75.00%
- 24. Tümpisa Shoshone          75.00%
- 25. Ungarinjin                75.00%
- 26. Woleaian                  75.00%
+  1. Armenian (Western)        75.00%
+  2. Chinantec (Lealao)        75.00%
+  3. Chinantec (Palantla)      75.00%
+  4. Fijian                    75.00%
+  5. Gaelic (Scots)            75.00%
+  6. Koyra Chiini              75.00%
+  7. Maori                     75.00%
+  8. Navajo                    75.00%
 
-Bin 9: Accuracy 0.8 to 0.9 (38 languages)
+Bin 9: Accuracy 0.8 to 0.9 (0 languages)
 ------------------------------------------------------------
-  1. Abkhaz                    87.50%
-  2. Arabic (Gulf)             87.50%
-  3. Batak (Toba)              87.50%
-  4. Buduma                    87.50%
-  5. Chatino (Sierra Occidental) 87.50%
-  6. Chinantec (Lealao)        87.50%
-  7. Chinantec (Palantla)      87.50%
-  8. Chrau                     87.50%
-  9. Chuvash                   87.50%
- 10. French                    87.50%
- 11. Gaelic (Scots)            87.50%
- 12. Gumawana                  87.50%
- 13. Huastec                   87.50%
- 14. Iaai                      87.50%
- 15. Indonesian                87.50%
- 16. Japanese                  87.50%
- 17. Khasi                     87.50%
- 18. Kiribati                  87.50%
- 19. Ma'di                     87.50%
- 20. Maleu                     87.50%
- 21. Mamanwa                   87.50%
- 22. Maori                     87.50%
- 23. Maybrat                   87.50%
- 24. Mixtec (Ocotepec)         87.50%
- 25. Mixtec (Peñoles)          87.50%
- 26. Mupun                     87.50%
- 27. Nahuatl (Tetelcingo)      87.50%
- 28. Ndyuka                    87.50%
- 29. Nkore-Kiga                87.50%
- 30. Obolo                     87.50%
- 31. Otomí (Mezquital)         87.50%
- 32. Spanish                   87.50%
- 33. Sulka                     87.50%
- 34. Tamil                     87.50%
- 35. Tigak                     87.50%
- 36. Tsimshian (Coast)         87.50%
- 37. Turkish                   87.50%
- 38. Wolof                     87.50%
+No languages in this bin.
 
-Bin 10: Accuracy 0.9 to 1.0 (21 languages)
+Bin 10: Accuracy 0.9 to 1.0 (0 languages)
 ------------------------------------------------------------
-  1. Arabic (Egyptian)         100.00%
-  2. Basque                    100.00%
-  3. Bulgarian                 100.00%
-  4. Chinantec (Comaltepec)    100.00%
-  5. Fulfulde (Adamawa)        100.00%
-  6. Futuna-Aniwa              100.00%
-  7. Haida                     100.00%
-  8. Iban                      100.00%
-  9. Jingpho                   100.00%
- 10. Lamani                    100.00%
- 11. Lampung                   100.00%
- 12. Lenakel                   100.00%
- 13. Manggarai                 100.00%
- 14. Mixtec (Chalcatongo)      100.00%
- 15. Nama                      100.00%
- 16. Ngambay                   100.00%
- 17. Quechua (Imbabura)        100.00%
- 18. Sango                     100.00%
- 19. Thai                      100.00%
- 20. Tolai                     100.00%
- 21. Welsh                     100.00%
+No languages in this bin.
 
 
 SUMMARY STATISTICS
 ------------------------------------------------------------
 Total languages: 116
-Average accuracy: 75.43%
-Median accuracy: 87.50%
-Standard deviation: 22.11%
-Highest accuracy: 100.00% (Sango)
-Lowest accuracy: 12.50% (Batak (Karo))
-
-Languages with 100% accuracy:
-1. Arabic (Egyptian)
-2. Basque
-3. Bulgarian
-4. Chinantec (Comaltepec)
-5. Fulfulde (Adamawa)
-6. Futuna-Aniwa
-7. Haida
-8. Iban
-9. Jingpho
-10. Lamani
-11. Lampung
-12. Lenakel
-13. Manggarai
-14. Mixtec (Chalcatongo)
-15. Nama
-16. Ngambay
-17. Quechua (Imbabura)
-18. Sango
-19. Thai
-20. Tolai
-21. Welsh
+Average accuracy: 46.44%
+Median accuracy: 50.00%
+Standard deviation: 14.82%
+Highest accuracy: 75.00% (Navajo)
+Lowest accuracy: 12.50% (Nung (in Vietnam))

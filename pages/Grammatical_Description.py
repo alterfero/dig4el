@@ -1223,11 +1223,12 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
             for param in st.session_state["prompt_content"][domain].keys():
                 if param == pname:
                     examples_by_value = st.session_state["prompt_content"][domain][param]["examples by value"]
-        result_list.append({"Parameter": pname,
-                            "Origin": origin,
-                            "Winner": P.get_winning_belief_name(),
-                            "Confidence": round(100 * (1 - P.entropy)),
-                            "Examples by value": examples_by_value})
+        if (1 - P.entropy) > 0.7:
+            result_list.append({"Parameter": pname,
+                                "Origin": origin,
+                                "Winner": P.get_winning_belief_name(),
+                                "Confidence": round(100 * (1 - P.entropy)),
+                                "Examples by value": examples_by_value})
     # build sentence_data_list
     sentence_data_list = kgu.build_alterlingua_list_from_kg(st.session_state["kg"],
                                                             st.session_state["delimiters"])
@@ -1420,6 +1421,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         Here's the {st.session_state['tl_name']} data: 
         
         """
+        print("User payload")
         print(user_payload)
     else:
         system_prompt = DEFAULT_SPECIFIC_QUESTION_PROMPT
@@ -1437,6 +1439,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                 Here's the {st.session_state['tl_name']} data: 
 
                 """
+        print("User payload")
         print(user_payload)
 
     user_payload += json.dumps(json_blob, ensure_ascii=False)

@@ -10,16 +10,19 @@ st.set_page_config(
 st.header("DIG4EL")
 st.markdown("### Digital Inferential Grammars for Endangered Languages")
 
-st.markdown("DIG4EL is a research software prototype designed to support the computer-assisted creation of grammatical learning materials "
+st.markdown("DIG4EL is a research software prototype designed to support the computer-assisted creation of grammatical second-language learning material"
             "for endangered languages.")
 st.markdown("The method combines")
 st.markdown("- The theoretical framework of **Radical Construction Grammar** (Croft, 2001).")
 st.markdown("- An efficient and engaging method for data collection in the field, namely **Conversational Questionnaires** (François, 2019).")
 st.markdown("- The use of accumulated linguistic knowledge from over 2,500 of the world's languages, thanks to the **World Atlas of Language Structures** (Dryer & Haspelmath,2013) and **Grambank** (Skirgård et al., 2023)")
 st.markdown("- The craft of **teaching the grammar of threatened and endangered languages**  (Vernaudon, 2018).")
-st.markdown("- Original natural language processing (NLP) algorithms leveraging **Graph-based Meaning Representations** and **Bayesian networks**.")
+st.markdown("- Original natural language processing (NLP) algorithms leveraging **Graph-based Meaning Representations** and **Bayesian networks**. (Christian, 2025)")
 
 with st.popover("References", use_container_width=True):
+    st.markdown("**Enhancing grammatical documentation for endangered languages with graph-based meaning representation and Loopy Belief Propagation**")
+    st.markdown("Christian S. (2025). Natural Language Processing Journal.")
+    st.markdown("[https://doi.org/10.1016/j.nlp.2025.100164](https://doi.org/10.1016/j.nlp.2025.100164)")
     st.markdown("**Radical Construction Grammar**")
     st.markdown("Croft W. 2001. Radical Construction Grammar. Oxford University Press.")
     st.markdown("**World Atlas of Language Structures**")

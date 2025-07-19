@@ -63,7 +63,8 @@ existential_extractor = Agent(
     - These predicates are indivisible units of meaning in the sentence carrying their internal determination. 
         They can be a single word, or a jointed or disjointed group of words.
         Typical unitary predicates are for example determinant + noun ("the dog"), verb with modal words ("would come"), 
-        adjective with modifier ("very pretty"), adverb with modifier ("so fast"). 
+        adjective with modifier ("very pretty"), adverb with modifier ("so fast").
+    - For the head, use the "-ing" form for verbs, singular for nouns.  
     - English verbs as "to be" or "to have" are usually not an existential predicate but indicate a verb's determination or relations between predicates. 
     - References (as pronouns or deictics) with unknown antecedents for the reader are existential predicates.
     - References with unknown antecedents for the speaker are existential predicates, as question words and "wildcards" 
@@ -109,7 +110,7 @@ higher_order_predicate_extractor = Agent(
         
         If none of the listed predicates is satisfactory, you can invent a new one. 
         
-    - Create missing, higher-order predicates as neeed.  
+    - Create missing, higher-order predicates as need.  
     - Add to the "comment" field any issue you had doing your job, including suggestions on how to make the prompt 
     and framework better. 
     - Grammatical-Semantic description: provide a brief description of language-independent grammatical & semantic 
@@ -154,72 +155,80 @@ def describe_sentence(sentence: str) -> dict:
     result = Runner.run_sync(higher_order_predicate_extractor, data)
     return result.final_output.dict()
 
-def json_to_text_and_kw_description(sentence_dict: dict) -> Tuple[str, List[str]]:
-    out_str = ""
-    kw = []
-    out_str = "Intent: " + sentence_dict.get("intent")
-    kw.append(sentence_dict.get("intent"))
-    predicate_type = [sentence_dict[p]["ptype"]["type"] for p in sentence_dict["predicates"]]
-    definiteness = [sentence_dict[p]["definiteness"] for p in sentence_dict["predicates"]]
-    tense = [sentence_dict[p]["tense"] for p in sentence_dict["predicates"]
-              if sentence_dict[p]["tense"] not in ["present"]]
-    polarity = [sentence_dict[p]["polarity"] for p in sentence_dict["predicates"]
-                  if sentence_dict[p]["polarity"] not in ["positive"]]
-    aspect = [sentence_dict[p]["aspect"] for p in sentence_dict["predicates"]
-             if sentence_dict[p]["aspect"] not in ["positive"]]
-    mood = [sentence_dict[p]["mood"] for p in sentence_dict["predicates"]]
-    voice = [sentence_dict[p]["polarity"] for p in sentence_dict["predicates"]
-            if sentence_dict[p]["polarity"] not in ["active"]]
-    reality = [sentence_dict[p]["polarity"] for p in sentence_dict["predicates"]]
-    space = [sentence_dict[p]["space"] for p in sentence_dict["predicates"]]
-    direction = [sentence_dict[p]["direction"] for p in sentence_dict["predicates"]
-                if sentence_dict[p]["direction"]]
-    out_str += ", ".join(list(set(predicate_type))) + "predicates. "
+def description_dict_to_kw(description_dict: dict) -> List[str]:
+    predicate_type = []
+    definiteness = []
+    tense = []
+    polarity = []
+    aspect = []
+    mood = []
+    voice = []
+    reality = []
+    space = []
+    direction = []
+
+    kw = [description_dict.get("intent")]
+
+    predicate_type = [p["ptype"].get("type", None) for p in description_dict["predicates"] if p["ptype"].get("type", None) is not None]
+
+    number = [p["feats"].get("number", None) for p in description_dict["predicates"] if p["feats"].get("number", None) is not None]
+
+    definiteness = [p["feats"].get("definiteness", None) for p in description_dict["predicates"] if p["feats"].get("definiteness", None) is not None]
+
+    tense = [p["feats"].get("tense", None) for p in description_dict["predicates"] if p["feats"].get("tense", None) is not None]
+
+    polarity = [p["feats"].get("polarity", None) for p in description_dict["predicates"] if p["feats"].get("polarity", None) is not None]
+
+    aspect = [p["feats"].get("aspect", None) for p in description_dict["predicates"] if p["feats"].get("aspect", None) is not None]
+
+    mood = [p["feats"].get("mood", None) for p in description_dict["predicates"] if p["feats"].get("mood", None) is not None]
+
+    voice = [p["feats"].get("voice", None) for p in description_dict["predicates"] if p["feats"].get("voice", None) is not None]
+
+    reality = [p["feats"].get("reality", None) for p in description_dict["predicates"] if p["feats"].get("reality", None) is not None]
+
+    space = [p["feats"].get("space", None) for p in description_dict["predicates"] if p["feats"].get("space", None) is not None]
+
+    direction = [p["feats"].get("direction", None) for p in description_dict["predicates"] if p["feats"].get("direction", None) is not None]
+
     kw += list(set(predicate_type))
-    out_str += ", ".join(list(set(definiteness))) + "definiteness. "
+    kw += list(set(number))
     kw += list(set(definiteness))
-    out_str += ", ".join(list(set(tense))) + "tense. "
     kw += list(set(tense))
-    out_str += ", ".join(list(set(polarity))) + "polarity. "
     kw += list(set(polarity))
-    out_str += ", ".join(list(set(aspect))) + "aspect. "
     kw += list(set(aspect))
-    out_str += ", ".join(list(set(mood))) + "mood. "
     kw += list(set(mood))
-    out_str += ", ".join(list(set(voice))) + "voice. "
     kw += list(set(voice))
-    out_str += ", ".join(list(set(reality))) + "reality. "
     kw += list(set(reality))
-    out_str += ", ".join(list(set(space))) + "space. "
     kw += list(set(space))
-    out_str += ", ".join(list(set(direction))) + "direction. "
     kw += list(set(direction))
 
-    return out_str, kw
+    return kw
 
 
-def add_descriptions_and_keywords_to_sentence_pairs(sentence_pairs: list) -> list:
-    print("Describing {} sentences".format(len(sentence_pairs)))
-    out_list = []
-    i = 0
-    for item in sentence_pairs:
-        i += 1
-        print("Sentence {}, {}".format(i, item["source"]))
-        source_sentence = item["source"]
+def add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None | dict:
+    source_sentence = sentence_pair.get("source", "")
+    if source_sentence == "":
+        print("No source in {}".format(sentence_pair))
+        return None
+    else:
         description = describe_sentence(source_sentence)
+        # print("*************************")
+        # print("*      DESCRIPTION      *")
+        # print("*************************")
+        # print(description)
         description_text = description.get("grammatical_description", "no description")
-        keywords = description.get("grammatical keywords", "no keywords")
-        out_list.append(
-            {
-                "source": item["source"],
-                "target": item["target"],
+        keywords = description.get("grammatical_keywords", ["no keywords"])
+        keywords += description_dict_to_kw(description)
+        keywords = list(set(keywords))
+        augmented_pair = {
+                "source": sentence_pair["source"],
+                "target": sentence_pair["target"],
                 "description_dict": description,
                 "description_text": description_text,
-                "keywords": keywords
+                "grammatical_keywords": keywords
             }
-        )
-    return out_list
-
+        return augmented_pair
 
 def build_keyword_index(enriched_pairs: List) -> dict:
     """
@@ -228,11 +237,10 @@ def build_keyword_index(enriched_pairs: List) -> dict:
     Returns: index: dict[str, set[int]]
     """
     index = defaultdict(set)
-    print(build_keyword_index())
+    print("build_keyword_index")
     for i, pair in enumerate(enriched_pairs):
-        print(i, pair)
-        for kw in pair["keywords"]:
-            print(kw)
+        print(pair)
+        for kw in pair["grammatical_keywords"]:
             index[kw].add(i)
     return index
 
