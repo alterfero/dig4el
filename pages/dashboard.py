@@ -14,10 +14,12 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 
+import pandas as pd
 import streamlit as st
 import json
 from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
+from libs import openai_vector_store_utils as ovsu
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -28,16 +30,30 @@ st.set_page_config(
 
 BASE_LD_PATH = "./ld/"
 
+if "indi_language" not in st.session_state:
+    st.session_state["indi_language"] = "Abkhaz-Adyge"
+if "indi_glottocode" not in st.session_state:
+    st.session_state["indi_glottocode"] = ""
+if "l1_language" not in st.session_state:
+    st.session_state.l1_language = ""
+if "request_text" not in st.session_state:
+    st.session_state.request_text = ""
+if "bayesian_data" not in st.session_state:
+    st.session_state.bayesian_data = None
 if "has_bayesian" not in st.session_state:
     st.session_state.has_bayesian = False
 if "has_docs" not in st.session_state:
     st.session_state.has_docs = False
+if "new_docs_uploaded" not in st.session_state:
+    st.session_state.new_docs_uploaded = False
+if "has_vector_store" in st.session_state:
+    st.session_state.has_vector_store = False
 if "has_pairs" not in st.session_state:
     st.session_state.has_pairs = False
 if "has_monolingual" not in st.session_state:
     st.session_state.has_monolingual = False
 if "info_doc" not in st.session_state:
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "descriptions", "info.json")) as f:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json")) as f:
         st.session_state.info_doc = json.load(f)
 
 with st.sidebar:
@@ -48,10 +64,15 @@ st.header("Dashboard")
 st.write("Combine your language data and generate descriptions and grammar lessons")
 
 colq, colw = st.columns(2)
-st.session_state.indi_language = colq.selectbox("What language are we working on?", gu.GLOTTO_LANGUAGE_LIST)
-st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language, "glottocode not found")
-st.markdown("*glottocode {}*".format(st.session_state.indi_glottocode))
-st.session_state.l1_language = colw.selectbox("What is the language of the readers?", ["English", "Bislama", "French", "German", "Tahitian"])
+selected_language = colq.selectbox("What language are we working on?", gu.GLOTTO_LANGUAGE_LIST)
+if st.button("Select {}".format(selected_language)):
+    st.session_state.indi_language = selected_language
+    st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language, "glottocode not found")
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r") as f:
+        st.session_state.info_doc = json.load(f)
+st.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
+
+st.session_state.l1_language = colw.selectbox("What is the language of the readers?", ["Bislama", "English", "French", "German", "Japanese", "Swedish", "Tahitian"])
 
 st.sidebar.divider()
 st.sidebar.write("✅ CQ Ready" if st.session_state.has_bayesian else "CQ: No Data")
@@ -80,14 +101,15 @@ with tab1:
                                                                   "cq",
                                                                   "cq_knowledge")):
 
-                    st.markdown("**There is an existing CQ Knowledge, click below to use it**")
-                    if st.button("Use existing CQ Knowledge in {}".format(st.session_state.indi_language)):
+                    st.success("**There is an existing CQ Knowledge file, use it?**")
+                    if st.button("Yes, Use existing CQ Knowledge in {}".format(st.session_state.indi_language)):
                         with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
                                                "cq",
                                                "cq_knowledge",
                                                "cq_knowledge.json"), "r") as f:
                             st.session_state.bayesian_data = json.load(f)
                         st.session_state.has_bayesian = True
+                        st.rerun()
 
     cq_knowledge_file = st.file_uploader("Upload a CQ Knowledge JSON file")
     if cq_knowledge_file is not None:
@@ -97,30 +119,180 @@ with tab1:
 
     if st.session_state.has_bayesian:
         st.success("✅ CQ knowledge ready")
+
 with tab2:
     st.write("""
-            The Document Knowledge is created by indexing the content of the documents you are providing.
+            The Document Knowledge is created by indexing the content of the documents you are providing in 
+            so-called **'vector stores'**.
             These documents will be uploaded to be indexed, and their indexing stored on a remote server. 
             Use only documents that are public, or that you have the right to use. Rename your documents to make 
             their title and author(s) explicit in the document name. Avoid using spaces or punctuation in the name. 
             For example: author_noam_chomsky_title_the_architecture_of_language.pdf
              """
              )
+
+    # DOCUMENTS
     available_documents = os.listdir(os.path.join(BASE_LD_PATH,
                                                   st.session_state.indi_language,
                                                   "descriptions",
                                                   "sources"))
     available_documents = [d for d in available_documents if d[-3:] in ["txt", "ocx", "pdf"]]
-    vectorized_documents = st.session_state.info_doc["documents_currently_vectorized"]
-    st.write("{} available documents".format(len(available_documents)))
-    st.write(available_documents)
-    st.write("{} documents present in the current index".format(len(vectorized_documents)))
-    st.write(vectorized_documents)
+    vectorized_documents = st.session_state.info_doc["documents"]["vectorized"]
+    if available_documents == []:
+        st.write("No document uploaded yet")
+    else:
+        st.write("{} available documents: ".format(len(available_documents)))
+        for d in available_documents:
+            st.markdown("- **{}**".format(d))
+
+    new_documents = st.file_uploader(
+        "Add new documents from your computer (pdf, txt)",
+        accept_multiple_files=True
+    )
+
+    if new_documents:
+        if st.button("Add these documents to available documents on the server"):
+            dest_dir = os.path.join(
+                BASE_LD_PATH,
+                st.session_state.indi_language,
+                "descriptions",
+                "sources"
+            )
+            for new_doc in new_documents:
+                dest_path = os.path.join(dest_dir, new_doc.name)
+                with open(dest_path, "wb") as f:
+                    f.write(new_doc.read())
+                st.success(f"Saved `{new_doc.name}` to server.")
+
+            st.rerun()
+
+    # VECTOR STORE
+    available_oa_vector_store = ovsu.list_vector_stores()
+    if st.session_state.indi_language + "_documents" in available_oa_vector_store.keys():
+        st.session_state.has_vector_store = True
+        st.success("There is an existing vector store for {}".format(st.session_state.indi_language))
+        if st.session_state.info_doc["documents"]["vectorized"] == available_documents:
+            st.success("The vector store includes all available documents.")
+        else:
+            doc_status_dict = {
+                "available_and_vectorized": [],
+                "available_but_not_vectorized": [],
+                "vectorized_but_not_available": []
+            }
+            for d in available_documents:
+                if d in st.session_state.info_doc["documents"]["vectorized"]:
+                    doc_status_dict["available_and_vectorized"].append(d)
+                else:
+                    doc_status_dict["available_but_not_vectorized"].append(d)
+            for d in st.session_state.info_doc["documents"]["vectorized"]:
+                if d not in available_documents:
+                    doc_status_dict["vectorized_but_not_available"].append(d)
+            st.write(doc_status_dict)
 
 
+    else:
+        st.write("No vector store yet")
+
+    if available_documents != [] and st.button("Create a vector store with all available documents"):
+        vs_id = ovsu.add_all_files_from_folder_to_vector_store(vs_name=st.session_state.indi_language+"_documents",
+                                                                folder_path=os.path.join(BASE_LD_PATH,
+                                                                            st.session_state.indi_language,
+                                                                            "descriptions",
+                                                                            "sources")
+                                                       )
+        # update info_json
+        st.session_state.info_doc["documents"]["vectorized"] = [fn for fn in os.listdir(os.path.join(BASE_LD_PATH,
+                                                                       st.session_state.indi_language,
+                                                                       "descriptions",
+                                                                       "sources")) if fn[-3:] in ["txt", "pdf"] ]
+        st.session_state.info_doc["documents"]["oa_vector_store_name"] = st.session_state.indi_language+"_documents"
+        st.session_state.info_doc["documents"]["oa_vector_store_id"] = vs_id
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as f:
+            json.dump(st.session_state.info_doc, f)
+
+    if st.button("check vector store status, make sure it is ready before you use it"):
+        status = ovsu.check_vector_store_status(vs_name=st.session_state.indi_language+"_documents")
+        if status == "completed":
+            st.success("Vector store {} ready for use".format(st.session_state.indi_language+"_documents"))
+            st.session_state.has_docs = True
+            st.rerun()
+
+        else:
+            st.warning("Vector store not ready yet... come back in a few minutes and try again.")
 
 with tab3:
-    st.write("**Sentence Pairs**")
+    PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
+    st.write("""
+    1. Sentence pairs must be organized in a JSON file [{"source":"sentence in English", 
+    "target": "sentence in the target language"}, ...]. 
+    2. DIG4EL *augments* these pairs using a LLM, adding a grammatical description and a semantic graph. 
+    It is a long process. The *augmented pairs* file is then stored for future use, on the server and you
+    should also keep a copy on your computer.
+    3. The *augmented pair* file is then used to provide relevant augmented pairs to grammatical descriptions 
+    (Retrieval-Augmented Generation, or RAG). 
+    """)
+    available_pairs = st.session_state.info_doc["pairs"]
+    available_pairs_filenames = []
+    if available_pairs == []:
+        st.write("No sentence pair file available")
+    else:
+        available_pairs_filenames = [p["filename"] for p in st.session_state.info_doc["pairs"]]
+        df_display = pd.DataFrame(st.session_state.info_doc["pairs"])
+        st.markdown("**Available sentence pairs files**")
+        st.dataframe(df_display)
+
+    new_pair_file = st.file_uploader(
+        "Add a new sentence pair JSON to the server",
+        accept_multiple_files=False
+    )
+
+    if new_pair_file and new_pair_file.name.endswith(".json"):
+        if new_pair_file.name in available_pairs_filenames:
+            replace_ok = st.checkbox("This file is already on the server, replace it?", value=False)
+        else:
+            replace_ok = True
+        if replace_ok:
+            info_entered = False
+            name = st.text_input("Name this corpus")
+            origin = st.text_input("Origin of the corpus")
+            author = st.text_input("Author/owner of the corpus")
+            if name and origin and author:
+                info_entered = True
+            valid_file = False
+            if info_entered and st.button("Add this file to sentence pairs on the server"):
+                try:
+                    sentence_pairs = json.load(new_pair_file)
+                    if "source" in sentence_pairs[0].keys() and "target" in sentence_pairs[0].keys():
+                        valid_file = True
+                    else:
+                        st.write("This is a JSON file, but not a sentence pair file formatted as a list of 'source' and 'target' keys()")
+                except:
+                    st.write("Not a correctly formatted JSON file.")
+            if valid_file:
+                st.success("Adding {} to the server".format(new_pair_file.name))
+                with open(os.path.join(PAIRS_BASE_PATH, new_pair_file.name), "w") as f:
+                    json.dump(sentence_pairs, f)
+                st.success(f"Saved `{new_pair_file.name}` on the server.")
+
+                # UPDATE INFO_DOC
+                if new_pair_file.name in available_pairs_filenames:
+                    i = [i for i in st.session_state.info_doc["pairs"].index if st.session_state.info_doc["pairs"]["filename"] == new_pair_file.name][0]
+                    del(st.session_state.info_doc["pairs"][i])
+
+                st.session_state.info_doc["pairs"].append(
+                    {
+                        "filename": new_pair_file.name,
+                        "name": name,
+                        "origin": origin,
+                        "author": author,
+                        "augmented": False,
+                        "vectorized": False
+                    }
+                )
+                with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as f:
+                    json.dump(st.session_state.info_doc, f)
+                st.rerun()
+
 with tab4:
     tab4.write("**Monolingual Text**")
 

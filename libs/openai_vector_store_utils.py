@@ -12,9 +12,13 @@ def create_vector_store(name):
     print(vector_store)
 
 def list_vector_stores():
+    out_dict = {}
     client = openai.OpenAI(api_key=api_key)
-    vector_store = client.vector_stores.list()
-    print(vector_store)
+    vector_stores = client.vector_stores.list()
+    print(vector_stores)
+    for vs in vector_stores:
+        out_dict[vs.name] = vs.id
+    return out_dict
 
 def create_file(file_path):
     client = openai.OpenAI(api_key=api_key)
@@ -95,7 +99,7 @@ def add_all_files_from_folder_to_oa(folder_path):
         if file_name in existing_filenames:
             print("{} already uploaded".format(file_name))
         else:
-            file_path = folder_path + file_name
+            file_path = os.path.join(folder_path, file_name)
             with open(file_path, "rb") as file_content:
                 result = client.files.create(
                     file=file_content,
@@ -114,7 +118,10 @@ def delete_all_files():
         client.files.delete(file.id)
 
 
-def add_all_files_from_folder_to_vector_store(vs_name, folder_path, create_vs_if_needed=True):
+def add_all_files_from_folder_to_vector_store(vs_name,
+                                              folder_path,
+                                              create_vs_if_needed=True,
+                                              replace_previous_if_existing=True):
     client = openai.OpenAI(api_key=api_key)
     # get vector store
     vs_list = client.vector_stores.list()
@@ -122,12 +129,20 @@ def add_all_files_from_folder_to_vector_store(vs_name, folder_path, create_vs_if
     if active_vs == []:
         if create_vs_if_needed:
             vector_store = client.vector_stores.create(name=vs_name)
+            print("Vector store {} created".format(vs_name))
         else:
             print("No vector store with that name")
             print(vs_list)
             return None
     else:
-        vector_store = active_vs[0]
+        tmp_vs = active_vs[0]
+        if replace_previous_if_existing:
+            client.vector_stores.delete(tmp_vs.id)
+            print("Resetting existing vector store {}".format(vs_name))
+            vector_store = client.vector_stores.create(name=vs_name)
+        else:
+            vector_store = tmp_vs
+
         # add all files from local folder to oa
         print("Adding all compatible files from {}".format(folder_path))
         uploaded_filenames = add_all_files_from_folder_to_oa(folder_path)
@@ -138,6 +153,7 @@ def add_all_files_from_folder_to_vector_store(vs_name, folder_path, create_vs_if
             print("adding {}".format(file_name))
             add_file_to_vector_store(vs_name, file_name)
         print("All files added, check status for processing")
+        return vector_store.id
 
 def check_vector_store_status(vs_name):
     client = openai.OpenAI(api_key=api_key)
@@ -149,11 +165,13 @@ def check_vector_store_status(vs_name):
         print(vs_list)
         return None
     else:
+        print("found vector store {}".format(vs_name))
         vector_store = active_vs[0]
+        print("id: {}".format(vector_store.id))
         result = client.vector_stores.files.list(
             vector_store_id=vector_store.id
         )
-    print(result)
+    return result.data[0].status
 
 local_file_path = "/Users/sebastienchristian/Desktop/d/01-These/language_lib/iaai/"
 
@@ -162,7 +180,8 @@ local_file_path = "/Users/sebastienchristian/Desktop/d/01-These/language_lib/iaa
 #list_files()
 #add_file_to_vector_store("Mwotlap", "3_Krausse_Francois_final.pdf")
 #add_all_files_from_folder_to_vector_store("iaai", local_file_path)
-check_vector_store_status("iaai")
+check_vector_store_status("Tahitian_documents")
+# list_vector_stores()
 
 
 ## DOCUMENTATION

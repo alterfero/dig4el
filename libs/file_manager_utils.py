@@ -1,9 +1,14 @@
 import os
 import streamlit as st
 import pandas as pd
+import json
 
 doc_info = {
-    "documents_currently_vectorized": []
+"documents":{
+"vectorized_documents": [],
+"oa_vector_store_name":[],
+"oa_vector_store_id":[]
+}
 }
 
 def create_ld(BASE_LD_PATH, lname):
@@ -17,7 +22,7 @@ def create_ld(BASE_LD_PATH, lname):
     os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs"))
     os.mkdir(os.path.join(BASE_LD_PATH, lname, "monolingual"))
 
-    with open(os.path.join(BASE_LD_PATH, lname, "descriptions", "info.json"), "r") as f:
+    with open(os.path.join(BASE_LD_PATH, lname, "info.json"), "w") as f:
         json.dump(doc_info, f)
 
 def display_file_manager(folder_path: str, file_extensions: list[str] = None):

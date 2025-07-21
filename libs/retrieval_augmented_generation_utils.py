@@ -61,5 +61,20 @@ def semantic_search(embeddings, query, model_name='all-MiniLM-L6-v2', top_k=10):
     return hits
 
 
+def cq_to_sentence_pairs(cq_transcription_dict: dict) -> list[dict]:
+    out = []
+    for entry in cq_transcription_dict["data"].keys():
+        out.append(
+            {
+                "source": cq_transcription_dict["data"][entry]["cq"],
+                "target": cq_transcription_dict["data"][entry]["translation"]
+            }
+        )
+    return out
 
+# with open("/Users/sebastienchristian/Desktop/d/01-These/Engine/v1/ld/Tahitian/cq/cq_translations/recording_cq_Going fishing_1716315461_Tahitian_Jacques Vernaudon_Mirose Paia_1748856964.json", "r") as f:
+#     spd = json.load(f)
+# sp = cq_to_sentence_pairs(spd)
+# with open("./going_fishing_sentence_pairs.json", "w") as f:
+#     json.dump(sp, f)
 
