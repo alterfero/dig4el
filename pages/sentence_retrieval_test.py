@@ -18,6 +18,9 @@ import pandas as pd
 import streamlit as st
 import json
 from libs import semantic_description_utils as sdu
+from libs import sentence_queue_utils as squ
+from redis import Redis
+from rq.job import Job
 from libs import retrieval_augmented_generation_utils as ragu
 import pkg_resources
 import streamlit.components.v1 as components
@@ -66,7 +69,7 @@ except RuntimeError:
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-TEMP_FILE = "./data/tmp_enriched_pairs_file.json"
+TEMP_FILE = "./data/tmp_enriched_pairs_file.jsonl"
 
 def generate_and_save_embeddings_of_source_sentence_list(sentences, embedding_file_path="/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/sentence pairs/embeddings.pkl"):
     embeddings = ragu.build_embeddings(sentences)
@@ -251,34 +254,33 @@ if sentence_pairs_file is not None:
 if st.session_state.sentence_pairs is not None:
     if st.button("Create enriched pairs file (long process, LLM use)"):
         st.session_state.enriching_pairs = True
-if st.session_state.enriching_pairs:
-    st.write("Starting sentence pairs augmentation process on {} sentences".format(len(st.session_state.sentence_pairs)))
-    info1 = st.empty()
-    info2 = st.empty()
-    info3 = st.empty()
-    st.session_state.enriched_pairs = []
+        st.session_state.jobs = []
+        if os.path.exists(TEMP_FILE):
+            os.remove(TEMP_FILE)
+        for pair in st.session_state.sentence_pairs:
+            job_id = squ.enqueue_sentence_pair(pair, TEMP_FILE)
+            st.session_state.jobs.append(job_id)
 
-    for c, sentence_pair in enumerate(st.session_state.sentence_pairs):
-        with info1:
-            st.progress(c/len(st.session_state.sentence_pairs), "Sentence augmentation in progress...")
-        info2.write("Processing sentence {}/{}".format(c + 1, len(st.session_state.sentence_pairs)))
-        if st.session_state.stime:
-            info2.write("Estimated {} minutes remaining".format(round(st.session_state.stime * (len(st.session_state.sentence_pairs) - c)/60)))
-        info3.write("sentence {}: {}".format(c + 1, sentence_pair.get("source", "no source")))
-        start_time = time.time()
-        augmented_sentence = sdu.add_description_and_keywords_to_sentence_pair(sentence_pair)
-        st.session_state.stime = round(time.time() - start_time)
-        st.session_state.enriched_pairs.append(augmented_sentence)
-        with open(TEMP_FILE, "w") as f:
-            json.dump(st.session_state.enriched_pairs, f)
-        if c == len(st.session_state.sentence_pairs) - 1:
-            st.session_state.enriching_pairs = False
-            st.rerun()
+if st.session_state.enriching_pairs:
+    total = len(st.session_state.jobs)
+    processed = 0
+    if os.path.exists(TEMP_FILE):
+        with open(TEMP_FILE, "r") as f:
+            processed = sum(1 for _ in f)
+    st.progress(processed/total if total else 0.0, "Sentence augmentation in progress...")
+    st.write("Processed {}/{}".format(processed, total))
+    if processed == total and total > 0:
+        with open(TEMP_FILE, "r") as f:
+            st.session_state.enriched_pairs = [json.loads(line) for line in f]
+        st.session_state.enriching_pairs = False
+        st.rerun()
 
 if not st.session_state.enriching_pairs and st.session_state.enriched_pairs is not None:
-    st.download_button("Download and store the augmented sentence pairs file",
-                       data=json.dumps(st.session_state.enriched_pairs),
-                       file_name="augmented_sentence_pairs.json")
+    st.download_button(
+        "Download and store the augmented sentence pairs file",
+        data="".join(json.dumps(item) + "\n" for item in st.session_state.enriched_pairs),
+        file_name="augmented_sentence_pairs.jsonl"
+    )
     if st.checkbox("Explore augmented sentences"):
         tdf = pd.DataFrame(st.session_state.enriched_pairs, columns=["source", "description_text", "grammatical_keywords"])
         st.dataframe(tdf)
@@ -286,9 +288,12 @@ if not st.session_state.enriching_pairs and st.session_state.enriched_pairs is n
 # Computing embeddings
 st.subheader("Generating embeddings from enriched pairs")
 if st.session_state.enriched_pairs is None:
-    enriched_pairs_file = st.file_uploader("Upload enriched pairs file", type="json")
+    enriched_pairs_file = st.file_uploader("Upload enriched pairs file", type=["json", "jsonl"])
     if enriched_pairs_file is not None:
-        st.session_state.enriched_pairs = json.load(enriched_pairs_file)
+        if enriched_pairs_file.name.endswith(".jsonl"):
+            st.session_state.enriched_pairs = [json.loads(line) for line in enriched_pairs_file]
+        else:
+            st.session_state.enriched_pairs = json.load(enriched_pairs_file)
 if st.session_state.enriched_pairs is not None:
     if st.button("generate embeddings"):
         embedding_ready_sentences = [item["description_text"] for item in st.session_state.enriched_pairs]
@@ -307,7 +312,12 @@ if st.session_state.embeddings is not None:
 # Hard-indexing and querying
 st.subheader("Hard-indexing and querying")
 if st.session_state.enriched_pairs is None:
-    st.session_state.enriched_pairs = st.file_uploader("Upload an augmented sentence pair file", type="json")
+    uploaded = st.file_uploader("Upload an augmented sentence pair file", type=["json", "jsonl"])
+    if uploaded is not None:
+        if uploaded.name.endswith(".jsonl"):
+            st.session_state.enriched_pairs = [json.loads(line) for line in uploaded]
+        else:
+            st.session_state.enriched_pairs = json.load(uploaded)
 else:
     if st.session_state.index is None:
         st.session_state.index = sdu.build_keyword_index(st.session_state.enriched_pairs)

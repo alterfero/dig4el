@@ -1,0 +1,35 @@
+# Copyright (C) 2024 Sebastien CHRISTIAN, University of French Polynesia
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#!/usr/bin/env python
+"""RQ worker to process sentence augmentation tasks."""
+
+from redis import Redis
+from rq import Worker, Queue, Connection
+import os
+
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
+
+
+def main() -> None:
+    redis_conn = Redis.from_url(REDIS_URL)
+    with Connection(redis_conn):
+        worker = Worker([QUEUE_NAME])
+        worker.work()
+
+
+if __name__ == "__main__":
+    main()
