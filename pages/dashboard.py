@@ -33,7 +33,7 @@ BASE_LD_PATH = "./ld/"
 if "indi_language" not in st.session_state:
     st.session_state["indi_language"] = "Abkhaz-Adyge"
 if "indi_glottocode" not in st.session_state:
-    st.session_state["indi_glottocode"] = ""
+    st.session_state["indi_glottocode"] = "abkh1242"
 if "l1_language" not in st.session_state:
     st.session_state.l1_language = ""
 if "request_text" not in st.session_state:

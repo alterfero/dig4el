@@ -7,16 +7,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-if "indi_language" not in st.session_state:
-    st.session_state["indi_language"] = "English"
-if "indi_glottocode" not in st.session_state:
-    st.session_state["indi_glottocode"] = "English"
-if "l1_language" not in st.session_state:
-    st.session_state.l1_language = ""
-if "request_text" not in st.session_state:
-    st.session_state.request_text = ""
-if "bayesian_data" not in st.session_state:
-    st.session_state.bayesian_data = None
+
 
 with st.sidebar:
     st.subheader("DIG4EL")

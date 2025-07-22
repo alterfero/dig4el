@@ -257,8 +257,8 @@ if st.session_state.enriching_pairs:
     info2 = st.empty()
     info3 = st.empty()
     st.session_state.enriched_pairs = []
-    for c, sentence_pair in enumerate(st.session_state.sentence_pairs):
 
+    for c, sentence_pair in enumerate(st.session_state.sentence_pairs):
         with info1:
             st.progress(c/len(st.session_state.sentence_pairs), "Sentence augmentation in progress...")
         info2.write("Processing sentence {}/{}".format(c + 1, len(st.session_state.sentence_pairs)))
