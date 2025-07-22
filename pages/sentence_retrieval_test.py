@@ -19,13 +19,10 @@ import streamlit as st
 import json
 from libs import semantic_description_utils as sdu
 from libs import sentence_queue_utils as squ
-from redis import Redis
-from rq.job import Job
 from libs import retrieval_augmented_generation_utils as ragu
 import pkg_resources
 import streamlit.components.v1 as components
 from pyvis.network import Network
-import time
 import os
 
 if "sentence_pairs" not in st.session_state:
@@ -50,8 +47,6 @@ if "index" not in st.session_state:
     st.session_state.index = None
 if "hard_query_result" not in st.session_state:
     st.session_state.hard_query_result = None
-if "stime" not in st.session_state:
-    st.session_state.stime = None
 
 st.set_page_config(
     page_title="DIG4EL",
