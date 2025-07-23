@@ -260,6 +260,8 @@ if st.session_state.sentence_pairs is not None:
         for pair in st.session_state.sentence_pairs:
             job_id = squ.enqueue_sentence_pair(pair, TEMP_FILE)
             st.session_state.jobs.append(job_id)
+        print("st.session_state.jobs ({} jobs)".format(len(st.session_state.jobs)))
+        print(st.session_state.jobs)
 
 if st.session_state.enriching_pairs:
     total = len(st.session_state.jobs)

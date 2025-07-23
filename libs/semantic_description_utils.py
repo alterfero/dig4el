@@ -206,6 +206,23 @@ def description_dict_to_kw(description_dict: dict) -> List[str]:
     return kw
 
 
+def TEST_add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None | dict:
+    source_sentence = sentence_pair.get("source", "")
+    if source_sentence == "":
+        print("No source in {}".format(sentence_pair))
+        return None
+    else:
+
+        augmented_pair = {
+                "source": sentence_pair["source"],
+                "target": sentence_pair["target"],
+                "description_dict": "description_dict",
+                "description_text": "description_text",
+                "grammatical_keywords": "keywords"
+            }
+        return augmented_pair
+
+
 def add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None | dict:
     source_sentence = sentence_pair.get("source", "")
     if source_sentence == "":

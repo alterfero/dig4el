@@ -16,20 +16,18 @@
 #!/usr/bin/env python
 """RQ worker to process sentence augmentation tasks."""
 
-from redis import Redis
-from rq import Worker, Queue, Connection
 import os
+from redis import Redis
+from rq import SpawnWorker, Queue
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
 
-
 def main() -> None:
     redis_conn = Redis.from_url(REDIS_URL)
-    with Connection(redis_conn):
-        worker = Worker([QUEUE_NAME])
-        worker.work()
-
+    queue = Queue('sentence', connection=redis_conn)
+    worker = SpawnWorker([queue])
+    worker.work()
 
 if __name__ == "__main__":
     main()

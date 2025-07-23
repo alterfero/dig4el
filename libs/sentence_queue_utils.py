@@ -32,6 +32,8 @@ QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
 
 def _process_sentence_pair(sentence_pair: Dict, output_file: str) -> Dict:
     """Worker task to enrich a sentence pair and append it to a JSONL file."""
+    print("_process_sentence_pair")
+    print(sentence_pair)
     result = sdu.add_description_and_keywords_to_sentence_pair(sentence_pair)
     if result is not None:
         with open(output_file, "a", encoding="utf-8") as f:
