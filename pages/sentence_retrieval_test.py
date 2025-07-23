@@ -70,6 +70,32 @@ except RuntimeError:
     asyncio.set_event_loop(loop)
 
 TEMP_FILE = "./data/tmp_enriched_pairs_file.jsonl"
+JOB_INFO_FILE = "./data/job_progress.json"
+
+
+def check_enrichment_progress() -> None:
+    """Update session state based on ongoing background jobs."""
+    if os.path.exists(JOB_INFO_FILE):
+        with open(JOB_INFO_FILE, "r") as f:
+            info = json.load(f)
+        total = info.get("total", 0)
+        temp_file = info.get("temp_file", TEMP_FILE)
+        processed = 0
+        if os.path.exists(temp_file):
+            with open(temp_file, "r") as tf:
+                processed = sum(1 for _ in tf)
+        st.session_state.enriching_pairs = processed < total
+        st.session_state.jobs_total = total
+        st.session_state.jobs_processed = processed
+        if processed >= total and total > 0:
+            with open(temp_file, "r") as tf:
+                st.session_state.enriched_pairs = [json.loads(line) for line in tf]
+            os.remove(JOB_INFO_FILE)
+            st.session_state.enriching_pairs = False
+    else:
+        st.session_state.enriching_pairs = False
+        st.session_state.jobs_total = 0
+        st.session_state.jobs_processed = 0
 
 def generate_and_save_embeddings_of_source_sentence_list(sentences, embedding_file_path="/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/sentence pairs/embeddings.pkl"):
     embeddings = ragu.build_embeddings(sentences)
@@ -227,6 +253,9 @@ def plot_semantic_graph_pyvis(data,
 # Global variables =============================
 BASE_PATH = "/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/sentence_pairs/"
 
+# Refresh state from any existing background jobs
+check_enrichment_progress()
+
 # ========= interface ===========================
 
 st.header("Sentence Pairs LLM & KW Retrieval Test")
@@ -252,30 +281,29 @@ sentence_pairs_file = st.file_uploader("Upload a sentence pair file (must contai
 if sentence_pairs_file is not None:
     st.session_state.sentence_pairs = json.load(sentence_pairs_file)
 if st.session_state.sentence_pairs is not None:
-    if st.button("Create enriched pairs file (long process, LLM use)"):
+    create_btn = st.button(
+        "Create enriched pairs file (long process, LLM use)",
+        disabled=st.session_state.enriching_pairs,
+    )
+    if create_btn and not st.session_state.enriching_pairs:
         st.session_state.enriching_pairs = True
-        st.session_state.jobs = []
         if os.path.exists(TEMP_FILE):
             os.remove(TEMP_FILE)
+        info = {"total": len(st.session_state.sentence_pairs), "temp_file": TEMP_FILE}
+        with open(JOB_INFO_FILE, "w") as jf:
+            json.dump(info, jf)
+        st.session_state.jobs_total = len(st.session_state.sentence_pairs)
+        st.session_state.jobs_processed = 0
         for pair in st.session_state.sentence_pairs:
-            job_id = squ.enqueue_sentence_pair(pair, TEMP_FILE)
-            st.session_state.jobs.append(job_id)
-        print("st.session_state.jobs ({} jobs)".format(len(st.session_state.jobs)))
-        print(st.session_state.jobs)
+            squ.enqueue_sentence_pair(pair, TEMP_FILE)
 
 if st.session_state.enriching_pairs:
-    total = len(st.session_state.jobs)
-    processed = 0
-    if os.path.exists(TEMP_FILE):
-        with open(TEMP_FILE, "r") as f:
-            processed = sum(1 for _ in f)
-    st.progress(processed/total if total else 0.0, "Sentence augmentation in progress...")
+    total = st.session_state.get("jobs_total", 0)
+    processed = st.session_state.get("jobs_processed", 0)
+    st.progress(processed / total if total else 0.0, "Sentence augmentation in progress...")
     st.write("Processed {}/{}".format(processed, total))
-    if processed == total and total > 0:
-        with open(TEMP_FILE, "r") as f:
-            st.session_state.enriched_pairs = [json.loads(line) for line in f]
-        st.session_state.enriching_pairs = False
-        st.rerun()
+    time.sleep(5)
+    st.rerun()
 
 if not st.session_state.enriching_pairs and st.session_state.enriched_pairs is not None:
     st.download_button(
