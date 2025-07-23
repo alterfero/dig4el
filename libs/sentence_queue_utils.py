@@ -58,5 +58,10 @@ def enqueue_sentence_pair(sentence_pair: Dict, output_file: str) -> str:
     """
     redis_conn = Redis.from_url(REDIS_URL)
     q = Queue(QUEUE_NAME, connection=redis_conn)
-    job = q.enqueue(_process_sentence_pair, sentence_pair, output_file)
+    job = q.enqueue(
+        _process_sentence_pair,
+        sentence_pair,
+        output_file,
+        job_timeout=600,
+    )
     return job.id
