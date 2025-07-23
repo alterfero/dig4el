@@ -298,6 +298,9 @@ if st.session_state.sentence_pairs is not None:
             squ.enqueue_sentence_pair(pair, TEMP_FILE)
 
 if st.session_state.enriching_pairs:
+    st.markdown("""The sentence augmentation will continue even if you close this page. 
+    Keeping the page open will allow you to monitor the progress. The augmented sentence file 
+    will be saved on the server, ready for use.""")
     total = st.session_state.get("jobs_total", 0)
     processed = st.session_state.get("jobs_processed", 0)
     st.progress(processed / total if total else 0.0, "Sentence augmentation in progress...")

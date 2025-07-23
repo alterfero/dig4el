@@ -15,7 +15,9 @@
       "origin": "cq_alexandre_francois",
       "author": "Jacques Vernaudon and Mirose Paia",
       "augmented": false,
-      "vectorized": false
+      "augmented_filename": "",
+      "vectorized": false,
+      "vector_store_name": ""
     }
   ]
 }

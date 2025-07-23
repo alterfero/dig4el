@@ -1,1 +1,21 @@
-{"documents": {"vectorized_documents": [], "oa_vector_store_name": [], "oa_vector_store_id": []}}
+{
+  "language": "Tahitian",
+  "documents": {
+    "vectorized": [
+      "AUTHOR_Vernaudon_TITLE_M\u00e9moire_HDR_Vol 2_Figures_predicat_tahitien_2023-01-03.pdf",
+      "AUTHOR_Vernaudon_TITLE_te_dx.pdf"
+    ],
+    "oa_vector_store_name": "Tahitian_documents",
+    "oa_vector_store_id": "vs_687d8741c380819183f193e8c425f623"
+  },
+  "pairs": [
+    {
+      "filename": "going_fishing_sentence_pairs.json",
+      "name": "cq_going_fishing",
+      "origin": "cq_alexandre_francois",
+      "author": "Jacques Vernaudon and Mirose Paia",
+      "augmented": false,
+      "vectorized": false
+    }
+  ]
+}

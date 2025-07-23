@@ -20,6 +20,7 @@ import json
 from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
 from libs import openai_vector_store_utils as ovsu
+from libs import sentence_queue_utils as squ
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -55,6 +56,34 @@ if "has_monolingual" not in st.session_state:
 if "info_doc" not in st.session_state:
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json")) as f:
         st.session_state.info_doc = json.load(f)
+if "selected_pairs_filename" not in st.session_state:
+    st.session_state.selected_pairs_filename = ""
+
+
+def check_enrichment_progress(selected_pairs_filename) -> None:
+    """Update session state based on ongoing background jobs."""
+    if os.path.exists(JOB_INFO_FILE):
+        with open(JOB_INFO_FILE, "r") as f:
+            info = json.load(f)
+        total = info.get("total", 0)
+        temp_file = info.get("temp_file", "tmp_augmented_" + selected_pairs_filename)
+        processed = 0
+        if os.path.exists(temp_file):
+            with open(temp_file, "r") as tf:
+                processed = sum(1 for _ in tf)
+        st.session_state.enriching_pairs = processed < total
+        st.session_state.jobs_total = total
+        st.session_state.jobs_processed = processed
+        if processed >= total and total > 0:
+            with open(temp_file, "r") as tf:
+                st.session_state.enriched_pairs = [json.loads(line) for line in tf]
+            os.remove(JOB_INFO_FILE)
+            st.session_state.enriching_pairs = False
+    else:
+        st.session_state.enriching_pairs = False
+        st.session_state.jobs_total = 0
+        st.session_state.jobs_processed = 0
+
 
 with st.sidebar:
     st.subheader("DIG4EL")
@@ -67,12 +96,15 @@ colq, colw = st.columns(2)
 selected_language = colq.selectbox("What language are we working on?", gu.GLOTTO_LANGUAGE_LIST)
 if st.button("Select {}".format(selected_language)):
     st.session_state.indi_language = selected_language
-    st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language, "glottocode not found")
+    st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language,
+                                                                   "glottocode not found")
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r") as f:
         st.session_state.info_doc = json.load(f)
 st.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
 
-st.session_state.l1_language = colw.selectbox("What is the language of the readers?", ["Bislama", "English", "French", "German", "Japanese", "Swedish", "Tahitian"])
+st.session_state.l1_language = colw.selectbox("What is the language of the readers?",
+                                              ["Bislama", "English", "French", "German", "Japanese", "Swedish",
+                                               "Tahitian"])
 
 st.sidebar.divider()
 st.sidebar.write("✅ CQ Ready" if st.session_state.has_bayesian else "CQ: No Data")
@@ -92,7 +124,8 @@ with tab1:
     Knowledge is built. 
     """)
     st.page_link("pages/record_cq_transcriptions.py", label="Enter CQ translations", icon=":material/contract_edit:")
-    st.page_link("pages/infer_from_knowledge_and_cqs.py", label="Generate CQ Knowledge from existing CQs", icon=":material/contract_edit:")
+    st.page_link("pages/infer_from_knowledge_and_cqs.py", label="Generate CQ Knowledge from existing CQs",
+                 icon=":material/contract_edit:")
 
     if st.session_state.indi_language in os.listdir(BASE_LD_PATH):
         if "cq" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language)):
@@ -194,26 +227,27 @@ with tab2:
         st.write("No vector store yet")
 
     if available_documents != [] and st.button("Create a vector store with all available documents"):
-        vs_id = ovsu.add_all_files_from_folder_to_vector_store(vs_name=st.session_state.indi_language+"_documents",
-                                                                folder_path=os.path.join(BASE_LD_PATH,
-                                                                            st.session_state.indi_language,
-                                                                            "descriptions",
-                                                                            "sources")
-                                                       )
+        vs_id = ovsu.add_all_files_from_folder_to_vector_store(vs_name=st.session_state.indi_language + "_documents",
+                                                               folder_path=os.path.join(BASE_LD_PATH,
+                                                                                        st.session_state.indi_language,
+                                                                                        "descriptions",
+                                                                                        "sources")
+                                                               )
         # update info_json
         st.session_state.info_doc["documents"]["vectorized"] = [fn for fn in os.listdir(os.path.join(BASE_LD_PATH,
-                                                                       st.session_state.indi_language,
-                                                                       "descriptions",
-                                                                       "sources")) if fn[-3:] in ["txt", "pdf"] ]
-        st.session_state.info_doc["documents"]["oa_vector_store_name"] = st.session_state.indi_language+"_documents"
+                                                                                                     st.session_state.indi_language,
+                                                                                                     "descriptions",
+                                                                                                     "sources")) if
+                                                                fn[-3:] in ["txt", "pdf"]]
+        st.session_state.info_doc["documents"]["oa_vector_store_name"] = st.session_state.indi_language + "_documents"
         st.session_state.info_doc["documents"]["oa_vector_store_id"] = vs_id
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as f:
             json.dump(st.session_state.info_doc, f)
 
     if st.button("check vector store status, make sure it is ready before you use it"):
-        status = ovsu.check_vector_store_status(vs_name=st.session_state.indi_language+"_documents")
+        status = ovsu.check_vector_store_status(vs_name=st.session_state.indi_language + "_documents")
         if status == "completed":
-            st.success("Vector store {} ready for use".format(st.session_state.indi_language+"_documents"))
+            st.success("Vector store {} ready for use".format(st.session_state.indi_language + "_documents"))
             st.session_state.has_docs = True
             st.rerun()
 
@@ -222,6 +256,7 @@ with tab2:
 
 with tab3:
     PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
+    JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
     st.write("""
     1. Sentence pairs must be organized in a JSON file [{"source":"sentence in English", 
     "target": "sentence in the target language"}, ...]. 
@@ -246,6 +281,7 @@ with tab3:
         accept_multiple_files=False
     )
 
+    # Upload sentence pairs file
     if new_pair_file and new_pair_file.name.endswith(".json"):
         if new_pair_file.name in available_pairs_filenames:
             replace_ok = st.checkbox("This file is already on the server, replace it?", value=False)
@@ -265,19 +301,21 @@ with tab3:
                     if "source" in sentence_pairs[0].keys() and "target" in sentence_pairs[0].keys():
                         valid_file = True
                     else:
-                        st.write("This is a JSON file, but not a sentence pair file formatted as a list of 'source' and 'target' keys()")
+                        st.write(
+                            "This is a JSON file, but not a sentence pair file formatted as a list of 'source' and 'target' keys()")
                 except:
                     st.write("Not a correctly formatted JSON file.")
             if valid_file:
                 st.success("Adding {} to the server".format(new_pair_file.name))
-                with open(os.path.join(PAIRS_BASE_PATH, new_pair_file.name), "w") as f:
+                with open(os.path.join(PAIRS_BASE_PATH, "pairs", new_pair_file.name), "w") as f:
                     json.dump(sentence_pairs, f)
                 st.success(f"Saved `{new_pair_file.name}` on the server.")
 
                 # UPDATE INFO_DOC
                 if new_pair_file.name in available_pairs_filenames:
-                    i = [i for i in st.session_state.info_doc["pairs"].index if st.session_state.info_doc["pairs"]["filename"] == new_pair_file.name][0]
-                    del(st.session_state.info_doc["pairs"][i])
+                    i = [i for i in st.session_state.info_doc["pairs"].index if
+                         st.session_state.info_doc["pairs"]["filename"] == new_pair_file.name][0]
+                    del (st.session_state.info_doc["pairs"][i])
 
                 st.session_state.info_doc["pairs"].append(
                     {
@@ -293,11 +331,66 @@ with tab3:
                     json.dump(st.session_state.info_doc, f)
                 st.rerun()
 
+    # Augment sentence pairs file
+    if "sentence_pairs" not in st.session_state:
+        st.session_state.sentence_pairs = None
+    if "enriching_pairs" not in st.session_state:
+        st.session_state.enriching_pairs = False
+    if "enriched_pairs" not in st.session_state:
+        st.session_state.enriched_pairs = []
+    st.subheader("Augment sentence pairs with automatic grammatical descriptions")
+    st.markdown("""Sentence pairs are augmented with grammatical descriptions, so they can be used efficiently.
+    This is a long process (around 30 seconds per sentence pair) that will run in the background once started.  
+    """)
+    if len(st.session_state.info_doc["pairs"]) > 0:
+        st.session_state.selected_pairs_filename = st.selectbox("Select a sentence pairs file to augment",
+                                                                [item["filename"]
+                                                                 for item in st.session_state.info_doc["pairs"]])
+
+        with open(os.path.join(PAIRS_BASE_PATH, "pairs", st.session_state.selected_pairs_filename), "r") as f:
+            st.session_state.sentence_pairs = json.load(f)
+        create_btn = st.button(
+            "Augment {} (long process, LLM use)".format(st.session_state.selected_pairs_filename),
+            disabled=st.session_state.enriching_pairs,
+        )
+        if create_btn and not st.session_state.enriching_pairs:
+            st.session_state.enriching_pairs = True
+            if os.path.exists(
+                    os.path.join(PAIRS_BASE_PATH, "tmp_augmented_" + st.session_state.selected_pairs_filename)):
+                os.remove("tmp_augmented_" + st.session_state.selected_pairs_filename)
+            info = {"total": len(st.session_state.sentence_pairs),
+                    "temp_file": "tmp_augmented_" + st.session_state.selected_pairs_filename}
+            with open(JOB_INFO_FILE, "w") as jf:
+                json.dump(info, jf)
+            st.session_state.jobs_total = len(st.session_state.sentence_pairs)
+            st.session_state.jobs_processed = 0
+            for pair in st.session_state.sentence_pairs:
+                squ.enqueue_sentence_pair(pair, os.path.join(PAIRS_BASE_PATH,
+                                                             "tmp_augmented_" + st.session_state.selected_pairs_filename))
+
+    if st.session_state.enriching_pairs:
+        st.markdown("""The sentence augmentation will continue even if you close this page. 
+        Keeping the page open will allow you to monitor the progress. The augmented sentence file 
+        will be saved on the server, ready for use.""")
+        total = st.session_state.get("jobs_total", 0)
+        processed = st.session_state.get("jobs_processed", 0)
+        st.progress(processed / total if total else 0.0, "Sentence augmentation in progress...")
+        st.write("Processed {}/{}".format(processed, total))
+        if st.button("Show progress update"):
+            st.rerun()
+
+    if not st.session_state.enriching_pairs and st.session_state.enriched_pairs is not None:
+        st.download_button(
+            label="Download and store the augmented sentence pairs file",
+            data=st.session_state.enriched_pairs,
+            file_name="augmented_sentence_pairs.json"
+        )
+        if st.checkbox("Explore augmented sentences"):
+            tdf = pd.DataFrame(st.session_state.enriched_pairs,
+                               columns=["source", "description_text", "grammatical_keywords"])
+            st.dataframe(tdf)
+
 with tab4:
     tab4.write("**Monolingual Text**")
 
 st.divider()
-
-
-
-
