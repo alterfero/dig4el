@@ -180,7 +180,7 @@ local_file_path = "/Users/sebastienchristian/Desktop/d/01-These/language_lib/iaa
 #list_files()
 #add_file_to_vector_store("Mwotlap", "3_Krausse_Francois_final.pdf")
 #add_all_files_from_folder_to_vector_store("iaai", local_file_path)
-check_vector_store_status("Tahitian_documents")
+# check_vector_store_status("Tahitian_documents")
 # list_vector_stores()
 
 

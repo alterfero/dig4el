@@ -6,6 +6,8 @@ from agents import Agent, ModelSettings, function_tool, Runner
 from typing import List, Literal, Tuple, Union, Optional
 from pydantic import BaseModel, Field, Extra
 from collections import defaultdict
+import pkg_resources
+from pyvis.network import Network
 
 api_key = os.getenv("OPEN_AI_KEY")
 openai.api_key = api_key
@@ -238,12 +240,12 @@ def add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None |
         keywords = description.get("grammatical_keywords", ["no keywords"])
         keywords += description_dict_to_kw(description)
         keywords = list(set(keywords))
+        description["grammarical_keywords"] = keywords
         augmented_pair = {
                 "source": sentence_pair["source"],
                 "target": sentence_pair["target"],
                 "description_dict": description,
-                "description_text": description_text,
-                "grammatical_keywords": keywords
+                "description_text": description_text
             }
         return augmented_pair
 
@@ -261,3 +263,80 @@ def build_keyword_index(enriched_pairs: List) -> dict:
             index[kw].add(i)
     return index
 
+def plot_semantic_graph_pyvis(data,
+                              height="600px",
+                              width="100%",
+                              coordination_color="#DD22AA",
+                              concept_color="#AED6F1",
+                              predicate_color="#A9DFBF",
+                              top_node_color="#E74C3C"):
+
+    # ensure PyVis can find its Jinja templates
+    template_dir = pkg_resources.resource_filename("pyvis", "templates")
+
+    net = Network(height=height,
+                  width=width,
+                  directed=True,
+                  notebook=False,
+                  )
+    net.barnes_hut()
+
+    # index concepts, predicates & coordinations by ID
+    predicates = {p["pid"]: p for p in data.get("predicates", [])}
+
+    # add all predicate nodes, then their edges
+    for pid, p in predicates.items():
+        head = p.get("head", pid)
+        type = p.get("ptype", pid).get("type", pid)
+        if type == "existential":
+            type = ""
+        if type in ["equative", "possessive"]:
+            head = ""
+        if head != "" and type != "":
+            head += ", "
+
+        net.add_node(
+            n_id=pid,
+            label=f"{head}{type}",
+            title=(
+                f"Aspect: {p.get('feats').get('aspect')} · "
+                f"Mood: {p.get('feats').get('mood')} · "
+                f"Tense: {p.get('feats').get('tense')} · "
+                f"Reality: {p.get('feats').get('reality')}"
+            ),
+            shape="box",
+            color=predicate_color,
+            size=30
+        )
+    for pid, p in predicates.items():
+        for arg in p.get("args", []):
+            role = arg.get("role", "")
+            target = arg.get("target_pid", None)
+            net.add_edge(
+                source=pid,
+                to=target,
+                label=role,
+                title=role,
+                arrows="to",
+                physics=True
+            )
+
+    # highlight the top node if specified
+    top_id = data.get("top", {})
+    if top_id and net.get_node(top_id):
+        net.get_node(top_id)["color"] = top_node_color
+        net.get_node(top_id)["title"] += "  ← top node"
+
+    # custom physics for stability
+    net.set_options("""
+    var options = {
+      "nodes": {"font":{"size":14}},
+      "edges": {"smooth":true},
+      "physics": {
+        "barnesHut": {"gravitationalConstant":-5000, "centralGravity":0.2},
+        "minVelocity":0.5
+      }
+    }
+    """)
+
+    return net.generate_html()

@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
-
 import pandas as pd
 import streamlit as st
 import json
@@ -21,6 +20,11 @@ from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
 from libs import openai_vector_store_utils as ovsu
 from libs import sentence_queue_utils as squ
+from libs import semantic_description_utils as sdu
+import streamlit.components.v1 as components
+from pyvis.network import Network
+from libs import utils as u
+from libs import stats
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -30,6 +34,43 @@ st.set_page_config(
 )
 
 BASE_LD_PATH = "./ld/"
+DELIMITERS = [
+    " ",  # Space
+    ".",  # Period or dot
+    "?",  # Interrogation mark
+    "!",  # Exclamation mark
+    ",",  # Comma
+    "·",  # Middle dot (interpunct)
+    "‧",  # Small interpunct (used in some East Asian scripts)
+    "․",  # Armenian full stop
+    "-",  # Hyphen or dash (used in compound words or some languages)
+    "_",  # Underscore (used in some digital texts and programming)
+    "‿",  # Tironian sign (used in Old Irish)
+    "、",  # Japanese comma
+    "。",  # Japanese/Chinese full stop
+    "።",  # Ge'ez (Ethiopian script) word separator
+    ":",  # Colon
+    ";",  # Semicolon
+    "؟",  # Arabic question mark
+    "٬",  # Arabic comma
+    "؛",  # Arabic semicolon
+    "۔",  # Urdu full stop
+    "।",  # Devanagari danda (used in Hindi and other Indic languages)
+    "॥",  # Double danda (used in Sanskrit and other Indic texts)
+    "𐩖",  # South Arabian word divider
+    "𐑀",  # Old Hungarian word separator
+    "་",  # Tibetan Tsheg (used in Tibetan script)
+    "᭞",  # Sundanese word separator
+    "᠂",  # Mongolian comma
+    "᠃",  # Mongolian full stop
+    " ",  # Ogham space mark (used in ancient Irish writing)
+    "꓿",  # Lisu word separator
+    "፡",  # Ge'ez word separator
+    "'",  # Apostrophe (used for contractions and possessives)
+    "…",  # Ellipsis
+    "–",  # En dash
+    "—",  # Em dash
+]
 
 if "indi_language" not in st.session_state:
     st.session_state["indi_language"] = "Abkhaz-Adyge"
@@ -58,32 +99,62 @@ if "info_doc" not in st.session_state:
         st.session_state.info_doc = json.load(f)
 if "selected_pairs_filename" not in st.session_state:
     st.session_state.selected_pairs_filename = ""
+if "sentence_pairs_signatures" not in st.session_state:
+    st.session_state.sentence_pairs_signatures = []
+if "sentence_pairs" not in st.session_state:
+    st.session_state.sentence_pairs = None
+if "enriching_pairs" not in st.session_state:
+    st.session_state.enriching_pairs = False
+if "enriched_pairs" not in st.session_state:
+    st.session_state.enriched_pairs = []
+if "pairs_in_queue" not in st.session_state:
+    st.session_state.pairs_in_queue = []
+if "jobs_processed" not in st.session_state:
+    st.session_state.jobs_processed = []
+
+PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
+CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
+JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
+
+def generate_sentence_pairs_signatures(sentence_pairs: list[dict]) -> list[str]:
+    sig_list = []
+    for sentence_pair in sentence_pairs:
+        sig_list.append(u.clean_sentence(sentence_pair["source"], filename=True))
+    return sig_list
 
 
-def check_enrichment_progress(selected_pairs_filename) -> None:
-    """Update session state based on ongoing background jobs."""
-    if os.path.exists(JOB_INFO_FILE):
-        with open(JOB_INFO_FILE, "r") as f:
-            info = json.load(f)
-        total = info.get("total", 0)
-        temp_file = info.get("temp_file", "tmp_augmented_" + selected_pairs_filename)
-        processed = 0
-        if os.path.exists(temp_file):
-            with open(temp_file, "r") as tf:
-                processed = sum(1 for _ in tf)
-        st.session_state.enriching_pairs = processed < total
-        st.session_state.jobs_total = total
-        st.session_state.jobs_processed = processed
-        if processed >= total and total > 0:
-            with open(temp_file, "r") as tf:
-                st.session_state.enriched_pairs = [json.loads(line) for line in tf]
-            os.remove(JOB_INFO_FILE)
-            st.session_state.enriching_pairs = False
-    else:
-        st.session_state.enriching_pairs = False
-        st.session_state.jobs_total = 0
-        st.session_state.jobs_processed = 0
+def check_augmentation_progress() -> None:
+    """Update session state based on ongoing background jobs.
+    by comparing sentences in the sentence file with files in the
+    augmented_pairs folder"""
+    # all jobs
+    with open(CURRENT_JOB_SIG_FILE, "r") as f:
+        all_jobs = json.load(f)
+    # done jobs
+    processed_jobs = [filename[:-5] for filename in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
+                      if filename[:-5] in all_jobs]
 
+    st.session_state.pairs_in_queue = list(set(all_jobs).difference(set(processed_jobs)))
+    st.session_state.enriching_pairs = len(processed_jobs) < len(all_jobs)
+    st.session_state.jobs_total = len(all_jobs)
+    st.session_state.jobs_processed = processed_jobs
+
+    print("st.session_state.jobs_total: {}".format(st.session_state.jobs_total))
+    print("all_jobs: {}".format(all_jobs))
+    print("st.session_state.jobs_processed: {}".format(st.session_state.jobs_processed))
+
+
+    if len(st.session_state.jobs_processed) == len(all_jobs):
+        print("!!!! ALL JOBS DONE !!!")
+        os.remove(CURRENT_JOB_SIG_FILE)
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r") as f:
+            info_dict = json.load(f)
+        for item in info_dict["pairs"]:
+            if item["filename"] == st.session_state.selected_pairs_filename:
+                item["augmented"] = True
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as f:
+            json.dump(info_dict, f)
+        st.session_state.info_doc = info_dict
 
 with st.sidebar:
     st.subheader("DIG4EL")
@@ -100,6 +171,10 @@ if st.button("Select {}".format(selected_language)):
                                                                    "glottocode not found")
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r") as f:
         st.session_state.info_doc = json.load(f)
+    PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
+    CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
+    JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
+
 st.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
 
 st.session_state.l1_language = colw.selectbox("What is the language of the readers?",
@@ -107,10 +182,10 @@ st.session_state.l1_language = colw.selectbox("What is the language of the reade
                                                "Tahitian"])
 
 st.sidebar.divider()
-st.sidebar.write("✅ CQ Ready" if st.session_state.has_bayesian else "CQ: No Data")
-st.sidebar.write("✅ Docs Ready" if st.session_state.has_docs else "Docs: No Data")
-st.sidebar.write("✅ Pairs Ready" if st.session_state.has_pairs else "Pairs: No Data")
-st.sidebar.write("✅ Mono Ready" if st.session_state.has_monolingual else "Mono: No Data")
+st.sidebar.write("✅ CQ Ready" if st.session_state.has_bayesian else "CQ: Not ready")
+st.sidebar.write("✅ Docs Ready" if st.session_state.has_docs else "Docs: Not ready")
+st.sidebar.write("✅ Pairs Ready" if st.session_state.has_pairs else "Pairs: Not ready")
+st.sidebar.write("✅ Mono Ready" if st.session_state.has_monolingual else "Mono: Not ready")
 st.sidebar.divider()
 
 st.markdown("#### Using the tabs below, add information about {}".format((st.session_state.indi_language)))
@@ -255,17 +330,18 @@ with tab2:
             st.warning("Vector store not ready yet... come back in a few minutes and try again.")
 
 with tab3:
-    PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
-    JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
-    st.write("""
-    1. Sentence pairs must be organized in a JSON file [{"source":"sentence in English", 
-    "target": "sentence in the target language"}, ...]. 
+
+    st.write(f"""
+    1. Sentence pairs must be organized in a JSON file "source":"sentence in English", 
+    "target": "sentence in the target language" etc. 
     2. DIG4EL *augments* these pairs using a LLM, adding a grammatical description and a semantic graph. 
     It is a long process. The *augmented pairs* file is then stored for future use, on the server and you
     should also keep a copy on your computer.
-    3. The *augmented pair* file is then used to provide relevant augmented pairs to grammatical descriptions 
+    3. You are invited to connect {st.session_state.indi_language} word(s) with concept(s) in sentences.
+    4. The *augmented pair* file is then used to provide relevant augmented pairs to grammatical descriptions 
     (Retrieval-Augmented Generation, or RAG). 
     """)
+    st.subheader("Add sentence pairs files")
     available_pairs = st.session_state.info_doc["pairs"]
     available_pairs_filenames = []
     if available_pairs == []:
@@ -323,25 +399,47 @@ with tab3:
                         "name": name,
                         "origin": origin,
                         "author": author,
-                        "augmented": False,
-                        "vectorized": False
+                        "augmented": False
                     }
                 )
                 with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as f:
                     json.dump(st.session_state.info_doc, f)
                 st.rerun()
 
-    # Augment sentence pairs file
-    if "sentence_pairs" not in st.session_state:
-        st.session_state.sentence_pairs = None
-    if "enriching_pairs" not in st.session_state:
-        st.session_state.enriching_pairs = False
-    if "enriched_pairs" not in st.session_state:
-        st.session_state.enriched_pairs = []
+    # AUGMENT SENTENCE PAIRS
+
     st.subheader("Augment sentence pairs with automatic grammatical descriptions")
     st.markdown("""Sentence pairs are augmented with grammatical descriptions, so they can be used efficiently.
     This is a long process (around 30 seconds per sentence pair) that will run in the background once started.  
     """)
+
+    # Display available augmented pairs
+    available_augmented_sentences = [fn
+                                     for fn in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
+                                     if fn[-5:] == ".json"
+                                     ]
+    st.markdown("**{} Available augmented sentences**".format(len(available_augmented_sentences)))
+    if st.checkbox("Explore augmented sentences"):
+        selected_augmented_sentence = st.selectbox("Select a sentence",
+                                                   [s[:-5] for s in available_augmented_sentences])
+        seleced_augmented_sentence_file = selected_augmented_sentence + ".json"
+        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", seleced_augmented_sentence_file), "r") as f:
+            sas = json.load(f)
+        st.markdown(f"""
+        - **{st.session_state.indi_language}**: **{sas["target"]}**
+        - **English**: {sas["source"]}
+        - **General description**: {sas["description_text"]}
+        - **Short grammatical description**: {sas["description_dict"]["grammatical_description"]}
+        - **Grammatical keywords**: {sas["description_dict"]["grammatical_keywords"]}
+        - **{st.session_state.indi_language} word(s) - concept(s) connections**: 
+        """)
+        for connection in sas.get("connections", {}):
+            st.write("{} --> {}".format(connection, sas["connections"][connection]))
+
+        html = sdu.plot_semantic_graph_pyvis(sas["description_dict"])
+        components.html(html, height=600, width=1000)
+
+    # add new pairs
     if len(st.session_state.info_doc["pairs"]) > 0:
         st.session_state.selected_pairs_filename = st.selectbox("Select a sentence pairs file to augment",
                                                                 [item["filename"]
@@ -349,46 +447,96 @@ with tab3:
 
         with open(os.path.join(PAIRS_BASE_PATH, "pairs", st.session_state.selected_pairs_filename), "r") as f:
             st.session_state.sentence_pairs = json.load(f)
+
+        # user triggers augmentation
         create_btn = st.button(
             "Augment {} (long process, LLM use)".format(st.session_state.selected_pairs_filename),
             disabled=st.session_state.enriching_pairs,
         )
-        if create_btn and not st.session_state.enriching_pairs:
+        if create_btn and not st.session_state.enriching_pairs:  # augmentation launched only if previous one done
             st.session_state.enriching_pairs = True
-            if os.path.exists(
-                    os.path.join(PAIRS_BASE_PATH, "tmp_augmented_" + st.session_state.selected_pairs_filename)):
-                os.remove("tmp_augmented_" + st.session_state.selected_pairs_filename)
-            info = {"total": len(st.session_state.sentence_pairs),
-                    "temp_file": "tmp_augmented_" + st.session_state.selected_pairs_filename}
-            with open(JOB_INFO_FILE, "w") as jf:
-                json.dump(info, jf)
-            st.session_state.jobs_total = len(st.session_state.sentence_pairs)
-            st.session_state.jobs_processed = 0
-            for pair in st.session_state.sentence_pairs:
-                squ.enqueue_sentence_pair(pair, os.path.join(PAIRS_BASE_PATH,
-                                                             "tmp_augmented_" + st.session_state.selected_pairs_filename))
+            pairs_signatures = generate_sentence_pairs_signatures(st.session_state.sentence_pairs)
+            with open(CURRENT_JOB_SIG_FILE, "w") as f:
+                json.dump(pairs_signatures, f)
+            # Pass jobs to Redis
+            new_pairs = [pair for pair in st.session_state.sentence_pairs
+                         if u.clean_sentence(pair["source"], filename=True) + ".json"
+                         not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
+            if new_pairs != st.session_state.sentence_pairs:
+                st.write("{} sentences discarded: they already have been augmented".format(
+                    len(st.session_state.sentence_pairs) - len(new_pairs)
+                ))
+            for pair in new_pairs:
+                squ.enqueue_sentence_pair(pair, os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
 
     if st.session_state.enriching_pairs:
         st.markdown("""The sentence augmentation will continue even if you close this page. 
         Keeping the page open will allow you to monitor the progress. The augmented sentence file 
         will be saved on the server once augmentation is finished, ready for use.""")
-        total = st.session_state.get("jobs_total", 0)
-        processed = st.session_state.get("jobs_processed", 0)
-        st.progress(processed / total if total else 0.0, "Sentence augmentation in progress...")
-        st.write("Processed {}/{}".format(processed, total))
         if st.button("Show progress update"):
-            st.rerun()
+            check_augmentation_progress()
+            total = st.session_state.jobs_total
+            processed = len(st.session_state.jobs_processed)
+            st.progress(processed / total if total else 0.0, "Sentence augmentation in progress...")
+            st.write("Processed {}/{}".format(processed, total))
+        if st.checkbox("Show sentences"):
+            cola, cols = st.columns(2)
+            cola.write("To process")
+            for item in st.session_state.pairs_in_queue:
+                cola.write(item)
+            cols.write("Processed")
+            for item in st.session_state.jobs_processed:
+                cols.write(item)
+    else:
+        st.write("The last sentence pairs augmentation job is complete, you can start a new one.")
 
-    if not st.session_state.enriching_pairs and st.session_state.enriched_pairs is not None:
-        st.download_button(
-            label="Download and store the augmented sentence pairs file",
-            data=st.session_state.enriched_pairs,
-            file_name="augmented_sentence_pairs.json"
+    # ADD WORD-CONCEPT CONNECTIONS
+    st.subheader("Connect word(s) and concept(s)")
+    st.write("This step is manual and adds a lot of information to the corpus.")
+
+    #build aug_sent_df
+    aps = []
+    for ap_file in [fn
+                    for fn in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
+                    if fn[-5:] == ".json"]:
+        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file), "r") as f:
+            ap = json.load(f)
+        aps.append(
+            {
+                "source": ap["source"],
+                "target": ap["target"],
+                "connections": ap.get("connections", {}),
+                "filename": os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file)
+            }
         )
-        if st.checkbox("Explore augmented sentences"):
-            tdf = pd.DataFrame(st.session_state.enriched_pairs,
-                               columns=["source", "description_text", "grammatical_keywords"])
-            st.dataframe(tdf)
+    aps_df = pd.DataFrame(aps, columns=["source", "target", "connections"])
+    selected = st.dataframe(aps_df, selection_mode="single-row", on_select="rerun", key="aps_df")
+
+    if selected["selection"]["rows"] != []:
+        selected_ap = aps[selected["selection"]["rows"][0]]
+        with open(selected_ap["filename"], "r") as f:
+            slap = json.load(f)
+        if not slap.get("connections", None):
+            slap["connections"] = {}
+        st.markdown(f"**{st.session_state.indi_language}**: {slap['target']}")
+        st.markdown(f"**English**: {slap['source']}")
+        concepts = [pred["head"]
+                    for pred in slap["description_dict"]["predicates"]]
+        words = stats.custom_split(slap["target"], DELIMITERS)
+
+        for concept in concepts:
+            connected_words = st.multiselect(f"{concept} Is expressed by",
+                                             words,
+                                             default=slap["connections"].get(concept, []),
+                                             key="cw"+concept)
+            slap["connections"][concept] = connected_words
+        if st.button("Submit connections"):
+            with open(selected_ap["filename"], "w") as f:
+                json.dump(slap, f)
+                st.success("Connections saved in {}".format(selected_ap["filename"]))
+
+
+
 
 with tab4:
     tab4.write("**Monolingual Text**")

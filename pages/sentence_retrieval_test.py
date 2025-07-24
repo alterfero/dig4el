@@ -312,7 +312,7 @@ if not st.session_state.enriching_pairs and st.session_state.enriched_pairs is n
     st.download_button(
         "Download and store the augmented sentence pairs file",
         data="".join(json.dumps(item) + "\n" for item in st.session_state.enriched_pairs),
-        file_name="augmented_sentence_pairs.jsonl"
+        file_name="augmented_sentence_pairs.json"
     )
     if st.checkbox("Explore augmented sentences"):
         tdf = pd.DataFrame(st.session_state.enriched_pairs, columns=["source", "description_text", "grammatical_keywords"])

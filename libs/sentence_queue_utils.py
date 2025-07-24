@@ -19,7 +19,7 @@ from __future__ import annotations
 import json
 import os
 from typing import Dict
-
+from libs import utils as u
 from redis import Redis
 from rq import Queue
 
@@ -30,18 +30,19 @@ REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
 
 
-def _process_sentence_pair(sentence_pair: Dict, output_file: str) -> Dict:
+def _process_sentence_pair(sentence_pair: Dict, output_dir: str) -> Dict:
     """Worker task to enrich a sentence pair and append it to a JSONL file."""
     print("_process_sentence_pair")
     print(sentence_pair)
     result = sdu.add_description_and_keywords_to_sentence_pair(sentence_pair)
     if result is not None:
-        with open(output_file, "a", encoding="utf-8") as f:
+        filename = u.clean_sentence(sentence_pair["source"], filename=True) + ".json"
+        with open(os.path.join(output_dir, filename), "a", encoding="utf-8") as f:
             f.write(json.dumps(result, ensure_ascii=False) + "\n")
     return result
 
 
-def enqueue_sentence_pair(sentence_pair: Dict, output_file: str) -> str:
+def enqueue_sentence_pair(sentence_pair: Dict, output_dir: str) -> str:
     """Enqueue a sentence pair for processing.
 
     Parameters
@@ -61,7 +62,7 @@ def enqueue_sentence_pair(sentence_pair: Dict, output_file: str) -> str:
     job = q.enqueue(
         _process_sentence_pair,
         sentence_pair,
-        output_file,
+        output_dir,
         job_timeout=600,
     )
     return job.id

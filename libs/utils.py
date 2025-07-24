@@ -115,15 +115,25 @@ def is_number(s):
 def listify(string):
     return(string.split("..."))
 
-def clean_sentence(sentence):
+def clean_sentence(sentence, filename=False, filename_length=50):
     """Clean a sentence."""
     nil_list = [",", ";"]
     space_list = ["'", "’", "(", ")", ":", ".", "!", "?", "…", "—", "-", "–", "—", "«"]
     out = sentence.lower()
-    for item in nil_list:
-        out = out.replace(item, "")
-    for item in space_list:
-        out = out.replace(item, " ")
+    if not filename:
+        for item in nil_list:
+            out = out.replace(item, "")
+        for item in space_list:
+            out = out.replace(item, " ")
+    else:
+        length = min(len(sentence), filename_length)
+        nil_list += ["."]
+        space_list += [" "]
+        for item in nil_list:
+            out = out.replace(item, "")
+        for item in space_list:
+            out = out.replace(item, "_")
+        out = out[:length]
     return out
 
 def normalize_sentence(sentence):

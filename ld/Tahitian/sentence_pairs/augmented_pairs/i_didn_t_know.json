@@ -1,0 +1,93 @@
+{
+  "source": "I didn’t know.",
+  "target": "'aita vau i fa'aro'o a'e",
+  "description_dict": {
+    "pid": "e2",
+    "intent": "assert",
+    "predicates": [
+      {
+        "pid": "e1",
+        "head": "I",
+        "ptype": {
+          "type": "existential"
+        },
+        "feats": {
+          "number": "singular",
+          "definiteness": "definite",
+          "polarity": null,
+          "tense": null,
+          "aspect": null,
+          "mood": null,
+          "voice": null,
+          "reality": "real",
+          "space": null,
+          "direction": null
+        },
+        "args": []
+      },
+      {
+        "pid": "e2",
+        "head": "knowing",
+        "ptype": {
+          "type": "existential"
+        },
+        "feats": {
+          "number": null,
+          "definiteness": null,
+          "polarity": "negative",
+          "tense": "past",
+          "aspect": "perfective",
+          "mood": "indicative",
+          "voice": "active",
+          "reality": "real",
+          "space": null,
+          "direction": null
+        },
+        "args": [
+          {
+            "role": "experiencer",
+            "target_pid": "e1"
+          }
+        ]
+      }
+    ],
+    "top": "e2",
+    "grammatical_description": "Negative polarity, past tense, perfective aspect; experiencer–predicate relation; assertion of ignorance.",
+    "grammatical_keywords": [
+      "negative polarity",
+      "past tense",
+      "perfective aspect",
+      "experiencer relation",
+      "assertion of ignorance",
+      "assert",
+      "existential",
+      "singular",
+      "definite",
+      "past",
+      "negative",
+      "perfective",
+      "indicative",
+      "active",
+      "real"
+    ],
+    "comments": "No issues encountered. The negative polarity is encoded in the predicate’s features; only the subject–predicate argument link was needed."
+  },
+  "description_text": "Negative polarity, past tense, perfective aspect; experiencer–predicate relation; assertion of ignorance.",
+  "grammatical_keywords": [
+    "real",
+    "negative",
+    "assertion of ignorance",
+    "indicative",
+    "singular",
+    "perfective",
+    "experiencer relation",
+    "past",
+    "past tense",
+    "existential",
+    "assert",
+    "active",
+    "definite",
+    "negative polarity",
+    "perfective aspect"
+  ]
+}

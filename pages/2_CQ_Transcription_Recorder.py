@@ -321,7 +321,7 @@ if st.session_state["cq_is_chosen"]:
     # a recording exists at this index
     if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
         translation_default = st.session_state["recording"]["data"][str(st.session_state["counter"])]["translation"]
-        # alernate pivot
+        # alternate pivot
         if "alternate_pivot" in st.session_state["recording"]["data"][str(st.session_state["counter"])].keys():
             alternate_pivot_default = st.session_state["recording"]["data"][str(st.session_state["counter"])][
                 "alternate_pivot"]
