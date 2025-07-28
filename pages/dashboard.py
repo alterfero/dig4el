@@ -158,7 +158,7 @@ def check_augmentation_progress() -> None:
 
 with st.sidebar:
     st.subheader("DIG4EL")
-    st.page_link("home2.py", label="Home", icon=":material/home:")
+    st.page_link("home.py", label="Home", icon=":material/home:")
 
 st.header("Dashboard")
 st.write("Combine your language data and generate descriptions and grammar lessons")
@@ -538,7 +538,10 @@ with tab3:
 
 
 
+
+
 with tab4:
     tab4.write("**Monolingual Text**")
+    st.write("In development")
 
 st.divider()

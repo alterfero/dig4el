@@ -24,6 +24,9 @@ and paraphrase mining.
 https://www.sbert.net/
 """
 
+# def sentence_pair_dict_to_sentence_pair_txt(sentence_pair_dict: dict) -> str:
+
+
 def build_embeddings(sentences, model_name='all-MiniLM-L6-v2', normalize=True):
     """
     Build and return a FAISS index and the embeddings-to-sentence mapping.

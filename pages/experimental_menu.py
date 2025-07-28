@@ -46,4 +46,4 @@ st.page_link("pages/full_concept_graph_viewer.py", label="Explore the full conce
 
 st.page_link("pages/semantic_description_test.py", label="Test semantic descriptions", icon=":material/search:")
 
-st.page_link("pages/sentence_retrieval_test.py", label="Test sentence retrieval (RAG)", icon=":material/search:")
+st.page_link("pages/dashboard.py", label="Hybrid inferences (Alpha)", icon=":material/search:")
