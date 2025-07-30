@@ -16,11 +16,14 @@ import os
 import pandas as pd
 import streamlit as st
 import json
+import asyncio
 from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
 from libs import openai_vector_store_utils as ovsu
 from libs import sentence_queue_utils as squ
+from libs import semantic_description_agents as sda
 from libs import semantic_description_utils as sdu
+from libs import retrieval_augmented_generation_utils as ragu
 import streamlit.components.v1 as components
 from pyvis.network import Network
 from libs import utils as u
@@ -116,6 +119,9 @@ PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "se
 CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
 JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
 
+if "index.pkl" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs", "vectors")):
+    st.session_state.has_pairs = True
+
 def generate_sentence_pairs_signatures(sentence_pairs: list[dict]) -> list[str]:
     sig_list = []
     for sentence_pair in sentence_pairs:
@@ -185,13 +191,15 @@ st.sidebar.divider()
 st.sidebar.write("✅ CQ Ready" if st.session_state.has_bayesian else "CQ: Not ready")
 st.sidebar.write("✅ Docs Ready" if st.session_state.has_docs else "Docs: Not ready")
 st.sidebar.write("✅ Pairs Ready" if st.session_state.has_pairs else "Pairs: Not ready")
-st.sidebar.write("✅ Mono Ready" if st.session_state.has_monolingual else "Mono: Not ready")
+#st.sidebar.write("✅ Mono Ready" if st.session_state.has_monolingual else "Mono: Not ready")
 st.sidebar.divider()
+if st.session_state.has_bayesian or st.session_state.has_docs or st.session_state.has_pairs:
+    st.page_link("home.py", label="Home", icon=":material/home:")
 
 st.markdown("#### Using the tabs below, add information about {}".format((st.session_state.indi_language)))
 
 st.divider()
-tab1, tab2, tab3, tab4 = st.tabs(["CQ Inferences", "Documents", "Sentence Pairs", "Monolingual text"])
+tab1, tab2, tab3 = st.tabs(["CQ Inferences", "Documents", "Sentence Pairs"])
 with tab1:
     st.markdown("""
     If you don't have created Conversational Questionnaires yet, you can do it with "Enter CQ Translations". 
@@ -341,7 +349,7 @@ with tab3:
     4. The *augmented pair* file is then used to provide relevant augmented pairs to grammatical descriptions 
     (Retrieval-Augmented Generation, or RAG). 
     """)
-    st.subheader("Add sentence pairs files")
+    st.subheader("1. Add sentence pairs files")
     available_pairs = st.session_state.info_doc["pairs"]
     available_pairs_filenames = []
     if available_pairs == []:
@@ -408,7 +416,7 @@ with tab3:
 
     # AUGMENT SENTENCE PAIRS
 
-    st.subheader("Augment sentence pairs with automatic grammatical descriptions")
+    st.subheader("2. Augment sentence pairs with automatic grammatical descriptions")
     st.markdown("""Sentence pairs are augmented with grammatical descriptions, so they can be used efficiently.
     This is a long process (around 30 seconds per sentence pair) that will run in the background once started.  
     """)
@@ -428,15 +436,15 @@ with tab3:
         st.markdown(f"""
         - **{st.session_state.indi_language}**: **{sas["target"]}**
         - **English**: {sas["source"]}
-        - **General description**: {sas["description_text"]}
-        - **Short grammatical description**: {sas["description_dict"]["grammatical_description"]}
-        - **Grammatical keywords**: {sas["description_dict"]["grammatical_keywords"]}
+        - **General description**: {sas["description"]}
+        - **Short grammatical description**: {sas["description"]["grammatical_description"]}
+        - **Grammatical keywords**: {sas["description"]["grammatical_keywords"]}
         - **{st.session_state.indi_language} word(s) - concept(s) connections**: 
         """)
         for connection in sas.get("connections", {}):
             st.write("{} --> {}".format(connection, sas["connections"][connection]))
 
-        html = sdu.plot_semantic_graph_pyvis(sas["description_dict"])
+        html = sdu.plot_semantic_graph_pyvis(sas["description"])
         components.html(html, height=600, width=1000)
 
     # add new pairs
@@ -491,7 +499,7 @@ with tab3:
         st.write("The last sentence pairs augmentation job is complete, you can start a new one.")
 
     # ADD WORD-CONCEPT CONNECTIONS
-    st.subheader("Connect word(s) and concept(s)")
+    st.subheader("3. Connect word(s) and concept(s)")
     st.write("This step is manual and adds a lot of information to the corpus.")
 
     #build aug_sent_df
@@ -520,28 +528,57 @@ with tab3:
             slap["connections"] = {}
         st.markdown(f"**{st.session_state.indi_language}**: {slap['target']}")
         st.markdown(f"**English**: {slap['source']}")
-        concepts = [pred["head"]
-                    for pred in slap["description_dict"]["predicates"]]
+        referents = [r["designation"]
+                    for r in slap["description"]["referents"]]
         words = stats.custom_split(slap["target"], DELIMITERS)
 
-        for concept in concepts:
-            connected_words = st.multiselect(f"{concept} Is expressed by",
+        for referent in referents:
+            connected_words = st.multiselect(f"{referent} Is expressed by",
                                              words,
-                                             default=slap["connections"].get(concept, []),
-                                             key="cw"+concept)
-            slap["connections"][concept] = connected_words
+                                             default=slap["connections"].get(referent, []),
+                                             key="cw"+referent)
+            slap["connections"][referent] = connected_words
         if st.button("Submit connections"):
             with open(selected_ap["filename"], "w") as f:
                 json.dump(slap, f)
                 st.success("Connections saved in {}".format(selected_ap["filename"]))
 
+    st.subheader("4. Index augmented pairs to make them ready for use")
+    if st.button("Index !"):
+        if sdu.get_vector_ready_pairs(st.session_state.indi_language):
+            st.success("Augmented pairs prepared for vectorization")
+        if ragu.vectorize_vaps(st.session_state.indi_language):
+            st.success("Augmented pairs vectorized and indexed")
+        ragu.create_hard_kw_index(st.session_state.indi_language)
+        st.session_state.has_pairs = True
+        st.rerun()
 
 
 
+    if st.session_state.has_pairs:
+        st.divider()
+        st.subheader("Test sentence pairs retrieval")
+        with st.spinner("Refreshing keyword index"):
+            ragu.create_hard_kw_index(st.session_state.indi_language)
+        with st.spinner("Loading vectors"):
+            index, id_to_meta = ragu.load_index_and_id_to_meta(st.session_state.indi_language)
+        if "query_results" not in st.session_state:
+            st.session_state.query_results = []
+        query = st.text_input("Sentence retrieval test, enter a query")
 
+        if "hard_kw_retrieval_results" not in st.session_state:
+            st.session_state.hard_kw_retrieval_results = []
+        if st.button("Submit"):
+            st.session_state.query_results = ragu.retrieve_similar(query,
+                                                                   index=index,
+                                                                   id_to_meta=id_to_meta,
+                                                                   k=5)
+            st.session_state.hard_kw_retrieval_results = ragu.hard_retrieve_from_query(query, st.session_state.indi_language)
 
-with tab4:
-    tab4.write("**Monolingual Text**")
-    st.write("In development")
+        st.write("Vector results: ")
+        st.write(st.session_state.query_results)
+        st.write("Keywords results: ")
+        st.write(st.session_state.hard_kw_retrieval_results)
+
 
 st.divider()

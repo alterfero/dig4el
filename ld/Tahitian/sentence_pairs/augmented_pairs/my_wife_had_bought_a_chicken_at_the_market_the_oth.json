@@ -1,1 +1,194 @@
-{"source": "My wife had bought a chicken at the market the other day", "target": "'ua ho'o mai tā'u vahine i te moa i te mātete i te tahi mahana ra", "description_dict": {"pid": "s1", "intent": "assert", "predicates": [{"pid": "e1", "head": "I", "ptype": {"type": "existential"}, "feats": {"number": "singular", "definiteness": "definite", "polarity": "positive", "tense": null, "aspect": null, "mood": null, "voice": null, "reality": null, "space": null, "direction": null}, "args": []}, {"pid": "e2", "head": "wife", "ptype": {"type": "existential"}, "feats": {"number": "singular", "definiteness": "definite", "polarity": "positive", "tense": null, "aspect": null, "mood": null, "voice": null, "reality": null, "space": null, "direction": null}, "args": []}, {"pid": "e3", "head": "chicken", "ptype": {"type": "existential"}, "feats": {"number": "singular", "definiteness": "indefinite", "polarity": "positive", "tense": null, "aspect": null, "mood": null, "voice": null, "reality": null, "space": null, "direction": null}, "args": []}, {"pid": "e4", "head": "market", "ptype": {"type": "existential"}, "feats": {"number": "singular", "definiteness": "definite", "polarity": "positive", "tense": null, "aspect": null, "mood": null, "voice": null, "reality": null, "space": null, "direction": null}, "args": []}, {"pid": "e5", "head": "day", "ptype": {"type": "existential"}, "feats": {"number": "singular", "definiteness": "definite", "polarity": "positive", "tense": null, "aspect": null, "mood": null, "voice": null, "reality": null, "space": null, "direction": null}, "args": []}, {"pid": "e6", "head": "have", "ptype": {"type": "possessive"}, "feats": {"number": null, "definiteness": null, "polarity": "positive", "tense": "general", "aspect": null, "mood": "indicative", "voice": "active", "reality": "real", "space": null, "direction": null}, "args": [{"role": "possessor", "target_pid": "e1"}, {"role": "possession", "target_pid": "e2"}]}, {"pid": "e7", "head": "buy", "ptype": {"type": "processive"}, "feats": {"number": null, "definiteness": null, "polarity": "positive", "tense": "past", "aspect": "perfective", "mood": "indicative", "voice": "active", "reality": "real", "space": null, "direction": null}, "args": [{"role": "agent", "target_pid": "e2"}, {"role": "patient", "target_pid": "e3"}, {"role": "space information", "target_pid": "e4"}, {"role": "time information", "target_pid": "e5"}]}], "top": "e7", "grammatical_description": "Past perfect aspect in active voice; possession expressed; processive action with locative and temporal adjuncts.", "grammatical_keywords": ["past perfect", "perfective aspect", "active voice", "possession", "processive action", "locative adjunct", "temporal adjunct", "assert", "possessive", "existential", "processive", "singular", "indefinite", "definite", "general", "past", "positive", "perfective", "indicative", "active", "real"], "comments": "No major issues. Note: the past perfect has been modeled as past tense with perfective aspect. Consider adding a distinct feature for perfect aspect in the framework."}, "description_text": "Past perfect aspect in active voice; possession expressed; processive action with locative and temporal adjuncts.", "grammatical_keywords": ["assert", "active voice", "real", "temporal adjunct", "existential", "locative adjunct", "past perfect", "processive", "processive action", "active", "singular", "past", "possessive", "definite", "possession", "indicative", "positive", "general", "perfective aspect", "indefinite", "perfective"]}
+{
+  "source": "My wife had bought a chicken at the market the other day",
+  "target": "'ua ho'o mai t\u0101'u vahine i te moa i te m\u0101tete i te tahi mahana ra",
+  "description": {
+    "pid": "S1",
+    "referents": [
+      {
+        "rid": "R1",
+        "designation": "the speaker's wife",
+        "speaker_relation": null,
+        "type": "human",
+        "referent_status": "known by the speaker",
+        "indexicality": null,
+        "features": {
+          "quantifiability": "discrete",
+          "quantity": "one",
+          "definiteness": "definite",
+          "reality": "real",
+          "polarity": "positive",
+          "time_aspect": null,
+          "time_position": "general",
+          "movement": null,
+          "space_location": "speaker-sphere"
+        }
+      },
+      {
+        "rid": "R2",
+        "designation": "a chicken",
+        "speaker_relation": null,
+        "type": "animal",
+        "referent_status": "known by the speaker",
+        "indexicality": null,
+        "features": {
+          "quantifiability": "discrete",
+          "quantity": "one",
+          "definiteness": "indefinite",
+          "reality": "real",
+          "polarity": "positive",
+          "time_aspect": null,
+          "time_position": "past",
+          "movement": null,
+          "space_location": null
+        }
+      },
+      {
+        "rid": "R3",
+        "designation": "the market",
+        "speaker_relation": null,
+        "type": "location in space",
+        "referent_status": "known by the speaker",
+        "indexicality": null,
+        "features": {
+          "quantifiability": null,
+          "quantity": null,
+          "definiteness": "definite",
+          "reality": "real",
+          "polarity": "positive",
+          "time_aspect": null,
+          "time_position": "general",
+          "movement": null,
+          "space_location": "a specific location"
+        }
+      },
+      {
+        "rid": "R4",
+        "designation": "the other day",
+        "speaker_relation": null,
+        "type": "location in time",
+        "referent_status": "known by the speaker",
+        "indexicality": null,
+        "features": {
+          "quantifiability": null,
+          "quantity": null,
+          "definiteness": "definite",
+          "reality": "real",
+          "polarity": "positive",
+          "time_aspect": null,
+          "time_position": "past",
+          "movement": null,
+          "space_location": null
+        }
+      },
+      {
+        "rid": "R5",
+        "designation": "the buying event",
+        "speaker_relation": null,
+        "type": "action",
+        "referent_status": "known by the speaker",
+        "indexicality": null,
+        "features": {
+          "quantifiability": null,
+          "quantity": null,
+          "definiteness": "definite",
+          "reality": "real",
+          "polarity": "positive",
+          "time_aspect": "perfective",
+          "time_position": "past",
+          "movement": null,
+          "space_location": "a specific location"
+        }
+      }
+    ],
+    "predicates": [
+      {
+        "pid": "p1",
+        "kernel": {
+          "rid": "R5",
+          "designation": "the buying event",
+          "speaker_relation": null,
+          "type": "action",
+          "referent_status": "known by the speaker",
+          "indexicality": null,
+          "features": {
+            "quantifiability": null,
+            "quantity": null,
+            "definiteness": "definite",
+            "reality": "real",
+            "polarity": "positive",
+            "time_aspect": "perfective",
+            "time_position": "past",
+            "movement": null,
+            "space_location": "a specific location"
+          }
+        },
+        "ptype": {
+          "type": "processive"
+        },
+        "args": [
+          {
+            "role": "agent",
+            "target_pid": "R1"
+          },
+          {
+            "role": "theme",
+            "target_pid": "R2"
+          },
+          {
+            "role": "location",
+            "target_pid": "R3"
+          },
+          {
+            "role": "time",
+            "target_pid": "R4"
+          }
+        ]
+      }
+    ],
+    "top": "p1",
+    "grammatical_description": "Perfect aspect with past time reference",
+    "grammatical_keywords": [
+      "theme",
+      "indefinite",
+      "assert a past event",
+      "processive",
+      "active",
+      "location",
+      "perfect aspect",
+      "general",
+      "agent",
+      "one",
+      "a specific location",
+      "past",
+      "speaker-sphere",
+      "time",
+      "real",
+      "my wife",
+      "past time",
+      "indicative",
+      "discrete",
+      "definite",
+      "perfective"
+    ],
+    "comments": "",
+    "enunciation": {
+      "intent": "assert a past event",
+      "mood": "indicative",
+      "voice": "active",
+      "emphasis": "my wife"
+    }
+  },
+  "connections": {
+    "the speaker's wife": [
+      "vahine"
+    ],
+    "a chicken": [
+      "moa"
+    ],
+    "the market": [
+      "m\u0101tete"
+    ],
+    "the other day": [],
+    "the buying event": []
+  }
+}

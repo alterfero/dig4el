@@ -1,9 +1,12 @@
 import json
+import os.path
+
 from sentence_transformers import SentenceTransformer, util
 import faiss
 import numpy as np
 import pickle
 import torch
+from libs import stats
 
 """
 Implementing Retrieval-Augmented Generation (RAG) to add relevant pairs of sentences from a parallel corpus
@@ -26,36 +29,102 @@ https://www.sbert.net/
 
 # def sentence_pair_dict_to_sentence_pair_txt(sentence_pair_dict: dict) -> str:
 
+BASE_LD_PATH = "./ld"
 
-def build_embeddings(sentences, model_name='all-MiniLM-L6-v2', normalize=True):
+def compute_embeddings_and_FAISS_index(
+        sentences: list[str],
+        metadata: list[dict] = None,
+        model_name: str = 'all-MiniLM-L6-v2',
+        normalize: bool = True
+):
     """
-    Build and return a FAISS index and the embeddings-to-sentence mapping.
-    A FAISS index is simply the core data structure Facebook AI’s FAISS library uses to store
-    high-dimensional vectors and perform (approximate) nearest-neighbor searches over them.
+    Create FAISS index and metadata mapping for sentence embeddings.
+
+    Args:
+        sentences (list[str]): Sentences or document strings to embed.
+        metadata (list[dict], optional): Optional metadata for each sentence.
+        model_name (str): SentenceTransformer model name.
+        normalize (bool): Normalize embeddings for cosine similarity.
+
+    Returns:
+        index (faiss.Index): FAISS index built from sentence embeddings.
+        id_to_meta (dict[int, dict]): Mapping from index id to metadata.
     """
+    assert isinstance(sentences, list) and all(
+        isinstance(s, str) for s in sentences), "sentences must be a list of strings"
+
     model = SentenceTransformer(model_name)
-    embeddings = model.encode(sentences, convert_to_tensor=True)
+    embeddings = model.encode(sentences, convert_to_numpy=True, batch_size=64, show_progress_bar=True)
 
-    return embeddings
+    if normalize:
+        faiss.normalize_L2(embeddings)
 
-def save_embeddings(embeddings, path='embeddings.pkl'):
-    with open(path, 'wb') as f:
-        pickle.dump(embeddings, f)
+    dim = embeddings.shape[1]
+    index = faiss.IndexFlatIP(dim) if normalize else faiss.IndexFlatL2(dim)
+    index.add(embeddings)
 
-def load_embeddings(path='embeddings.pkl'):
-    with open(path, 'rb') as f:
-        embeddings = pickle.load(f)
-    return embeddings
+    id_to_meta = {i: {'sentence': sentences[i]} | (metadata[i] if metadata else {}) for i in range(len(sentences))}
 
-def query_similarity(embeddings, query, model_name='all-MiniLM-L6-v2', top_k=10):
+    return embeddings, index, id_to_meta
+
+def vectorize_vaps(indi_language):
+    vaps_path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vector_ready_pairs")
+    vec_path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors")
+    vapsf = [f for f in os.listdir(vaps_path) if f[-4:] == ".txt"]
+    print("vectorizing {} vaps".format(len(vapsf)))
+    if len(vapsf) == 0:
+        return True
+    else:
+        vaps = []
+        id_to_meta = []
+        for vapf in vapsf:
+            with open(os.path.join(vaps_path, vapf), "r") as f:
+                content = f.read()
+                vaps.append(content)
+                id_to_meta.append({
+                    "filename": vapf
+                })
+
+        embeddings, index, id_to_meta = compute_embeddings_and_FAISS_index(vaps, id_to_meta)
+
+        with open(os.path.join(vec_path, "embeddings.pkl"), "wb") as f:
+            pickle.dump(embeddings, f)
+        with open(os.path.join(vec_path, "index.pkl"), "wb") as f:
+            pickle.dump(index, f)
+        with open(os.path.join(vec_path, "id_to_meta.json"), "w") as f:
+            json.dump(id_to_meta, f)
+
+        return True
+
+def save_index_id_to_meta_and_metadata(index, id_to_meta, indi_language):
+    path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors")
+    index_path = os.path.join(path, "index.pkl")
+    id_to_meta_path = os.path.join(path, "id_to_meta.json")
+    with open(index_path, 'wb') as f:
+        pickle.dump(index, f)
+    with open(id_to_meta_path, 'w') as f:
+        json.dump(id_to_meta, f)
+
+def load_index_and_id_to_meta(indi_language):
+    path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors")
+    index_path = os.path.join(path, "index.pkl")
+    id_to_meta_path = os.path.join(path, "id_to_meta.json")
+    with open(index_path, 'rb') as f:
+        index = pickle.load(f)
+    with open(id_to_meta_path, 'r') as f:
+        id_to_meta = json.load(f)
+    return index, id_to_meta
+
+
+def retrieve_similar(query: str, index, id_to_meta, model_name='all-MiniLM-L6-v2', k=5, normalize=True):
+    k = min(len(id_to_meta.keys()), k)
     model = SentenceTransformer(model_name)
-    query_embedding = model.encode([query], convert_to_tensor=True)
-
-    # We use cosine-similarity and torch.topk to find the highest 5 scores
-    similarity_scores = model.similarity(query_embedding, embeddings)[0]
-    scores, indices = torch.topk(similarity_scores, k=top_k)
-
-    return scores, indices
+    query_vec = model.encode([query], convert_to_numpy=True)
+    if normalize:
+        faiss.normalize_L2(query_vec)
+    d, i = index.search(query_vec, k)
+    results = [id_to_meta[str(int(m))] for m in i[0]]
+    return results
 
 def semantic_search(embeddings, query, model_name='all-MiniLM-L6-v2', top_k=10):
     model = SentenceTransformer(model_name)
@@ -63,6 +132,38 @@ def semantic_search(embeddings, query, model_name='all-MiniLM-L6-v2', top_k=10):
     hits = util.semantic_search(query_embedding, embeddings, top_k=top_k)
     return hits
 
+def create_hard_kw_index(indi_language):
+    aps_path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "augmented_pairs")
+    vec_path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors")
+    apsf = [f for f in os.listdir(aps_path) if f[-5:] == ".json"]
+    kwi = {}
+    for apf in apsf:
+        with open(os.path.join(aps_path, apf), "r") as f:
+            ap = json.load(f)
+        kws = ap["description"]["grammatical_keywords"]
+        for kw in kws:
+            if kw in kwi.keys():
+                if apf not in kwi[kw]:
+                    kwi[kw].append(apf)
+            else:
+                kwi[kw] = [apf]
+    with open(os.path.join(vec_path, "hard_index.json"), "w") as f:
+        json.dump(kwi, f)
+    return kwi
+
+def hard_retrieve_from_query(query: str, indi_language: str) -> list[str]:
+    kwif = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors", "hard_index.json")
+    results = []
+    with open(kwif, "r") as f:
+        kwi = json.load(f)
+    parsed_query = stats.custom_split(query)
+    for w in parsed_query:
+        ks = [k for k in kwi.keys() if w in k]
+        if ks != []:
+            results += [kwi[k] for k in ks][0]
+    print(results)
+    results = list(set(results))
+    return results
 
 def cq_to_sentence_pairs(cq_transcription_dict: dict) -> list[dict]:
     out = []

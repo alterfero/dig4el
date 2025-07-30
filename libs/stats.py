@@ -30,7 +30,10 @@ def calculate_entropy(prob_dict):
             entropy -= prob * math.log2(prob)
     return entropy
 
-def custom_split(text, delimiters):
+DEFAULT_DELIMITERS = [".", ",", ":", ";", "?", "!", "(", ")", " "]
+
+
+def custom_split(text, delimiters=DEFAULT_DELIMITERS):
     #print("XXXXXXXXXXXX splitting {} with {}".format(text, delimiters))
     punctuation = [".", ",", ":", ";", "?", "!", "(", ")"]
     # Create a regular expression pattern using the provided delimiters
