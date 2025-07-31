@@ -1479,9 +1479,6 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         request_info.write("Sending generation request... {} tokens".format(num_tokens))
         api_key = os.getenv("OPEN_AI_KEY")
         if not api_key:
-            with suppress(FileNotFoundError, KeyError):
-                api_key = st.secrets["OPEN_AI_KEY"]
-        if not api_key:
             st.error("No OpenAI key found – set OPEN_AI_KEY as an env var or add it to .streamlit/secrets.toml")
 
         if api_key:

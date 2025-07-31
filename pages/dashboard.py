@@ -79,8 +79,6 @@ if "indi_language" not in st.session_state:
     st.session_state["indi_language"] = "Abkhaz-Adyge"
 if "indi_glottocode" not in st.session_state:
     st.session_state["indi_glottocode"] = "abkh1242"
-if "l1_language" not in st.session_state:
-    st.session_state.l1_language = ""
 if "request_text" not in st.session_state:
     st.session_state.request_text = ""
 if "bayesian_data" not in st.session_state:
@@ -194,7 +192,7 @@ st.sidebar.write("✅ Pairs Ready" if st.session_state.has_pairs else "Pairs: No
 #st.sidebar.write("✅ Mono Ready" if st.session_state.has_monolingual else "Mono: Not ready")
 st.sidebar.divider()
 if st.session_state.has_bayesian or st.session_state.has_docs or st.session_state.has_pairs:
-    st.page_link("home.py", label="Home", icon=":material/home:")
+    st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")
 
 st.markdown("#### Using the tabs below, add information about {}".format((st.session_state.indi_language)))
 
@@ -336,6 +334,11 @@ with tab2:
 
         else:
             st.warning("Vector store not ready yet... come back in a few minutes and try again.")
+
+    if st.session_state.has_docs:
+        st.subheader("Test document information retrieval")
+        query = st.text_input("Enter your query")
+
 
 with tab3:
 

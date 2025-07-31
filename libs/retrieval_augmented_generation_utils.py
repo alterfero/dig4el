@@ -116,14 +116,32 @@ def load_index_and_id_to_meta(indi_language):
     return index, id_to_meta
 
 
-def retrieve_similar(query: str, index, id_to_meta, model_name='all-MiniLM-L6-v2', k=5, normalize=True):
+def retrieve_similar(query: str, index, id_to_meta,
+                     model_name='all-MiniLM-L6-v2', k=5, normalize=True,
+                     min_score=0.3):
     k = min(len(id_to_meta.keys()), k)
     model = SentenceTransformer(model_name)
-    query_vec = model.encode([query], convert_to_numpy=True)
+    q_vec = model.encode([query], convert_to_numpy=True)
     if normalize:
-        faiss.normalize_L2(query_vec)
-    d, i = index.search(query_vec, k)
-    results = [id_to_meta[str(int(m))] for m in i[0]]
+        faiss.normalize_L2(q_vec)
+
+    dists, idxs = index.search(q_vec, k)
+
+    scores, ids = dists[0], idxs[0]
+    results = []
+    for score, idx in zip(scores, ids):
+        if normalize:
+            if score < min_score:
+                continue
+        else:
+            if score > min_score:  # lower L2 is better
+                continue
+
+        results.append(id_to_meta[str(int(idx))])
+        print("id_to_meta: {}, score:{}".format(id_to_meta[str(int(idx))]["filename"], score))
+        if len(results) >= k:
+            break
+
     return results
 
 def semantic_search(embeddings, query, model_name='all-MiniLM-L6-v2', top_k=10):

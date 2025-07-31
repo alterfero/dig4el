@@ -366,6 +366,83 @@ def generate_plain_language_docx_from_hybrid_output(content, language):
     return docx_buffer
 
 
+def generate_lesson_docx_from_aggregated_output(content, indi_language, readers_language):
+    loc = {
+        "English": {
+            "introduction": "Introduction",
+            "for example": "For example",
+            "in conclusion": "In Conclusion",
+            "more_examples": "More examples",
+            "learning_the_x_language_grammar": "Learning the X language grammar"
+        },
+        "Bislama": {
+            "introduction": "Introdaksen",
+            "for example": "Foa eksampol",
+            "in conclusion": "Long fin",
+            "more_examples": "Mo eksampol",
+            "learning_the_x_language_grammar": "Lernim graema blong lanwis X"
+        },
+        "French": {
+            "introduction": "Introduction",
+            "for example": "Par exemple",
+            "in conclusion": "En conclusion",
+            "more_examples": "Plus d'exemples",
+            "learning_the_x_language_grammar": "Apprentissage de la grammaire de la langue X"
+        },
+        "Japanese": {
+            "introduction": "はじめに",
+            "for example": "例えば",
+            "in conclusion": "結論として",
+            "more_examples": "さらに例",
+            "learning_the_x_language_grammar": "X言語の文法を学ぶ"
+        },
+        "Swedish": {
+            "introduction": "Introduktion",
+            "for example": "Till exempel",
+            "in conclusion": "Sammanfattningsvis",
+            "more_examples": "Fler exempel",
+            "learning_the_x_language_grammar": "Att lära sig X-språkets grammatik"
+        }
+    }
+    locit = loc.get(readers_language, "English")
+    learning_X = locit["learning_the_x_language_grammar"].replace("X", indi_language)
+
+    document = Document()
+
+    document.add_heading(content["title"], level=1)
+    document.add_paragraph("  ")
+    document.add_paragraph(content["introduction"])
+
+    for section in content["sections"]:
+        document.add_heading(section["focus"], level=2)
+        document.add_paragraph(section["description"]["description"])
+        document.add_paragraph(locit["for example"] + ": ")
+        pex = document.add_paragraph(" ", "Normal")
+        pex.add_run(f'{section["example"]["target_sentence"]}', style='Strong')
+        document.add_paragraph(f'({section["example"]["source_sentence"]})', "Normal")
+        document.add_paragraph(section["example"]["description"])
+
+    document.add_heading(locit["in conclusion"], level=1)
+    document.add_paragraph(" ")
+    document.add_paragraph(content["conclusion"])
+
+    document.add_heading(locit["more_examples"] + ": ")
+    document.add_paragraph(" ")
+    for i, s in enumerate(content["translation_drills"]):
+        aex = document.add_paragraph(" ", style="List Bullet")
+        aex.add_run(f'{s["target"]}', style='Strong')
+        document.add_paragraph(f'({s["source"]})', "Normal")
+
+    # Save to a BytesIO buffer instead of disk
+    docx_buffer = BytesIO()
+    document.save(docx_buffer)
+    docx_buffer.seek(0)  # Reset buffer position
+
+    return docx_buffer
+
+
+
+
 def generate_docx_from_grammar_json(grammar_json, language):
     h1_index = 0
     h2_index = 0
