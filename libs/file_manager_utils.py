@@ -4,11 +4,14 @@ import pandas as pd
 import json
 
 doc_info = {
-"documents":{
-"vectorized_documents": [],
-"oa_vector_store_name":[],
-"oa_vector_store_id":[]
-}
+  "language": "",
+  "documents": {
+    "vectorized": [],
+    "oa_vector_store_name": "",
+    "oa_vector_store_id": ""
+  },
+  "pairs": [],
+  "outputs": {}
 }
 
 def create_ld(BASE_LD_PATH, lname):
@@ -20,7 +23,12 @@ def create_ld(BASE_LD_PATH, lname):
     os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions", "sources"))
     os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions", "embeddings"))
     os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs"))
+    os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "augmented_pairs"))
+    os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "pairs"))
+    os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "vector_ready_pairs"))
+    os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "vectors"))
     os.mkdir(os.path.join(BASE_LD_PATH, lname, "monolingual"))
+    os.mkdir(os.path.join(BASE_LD_PATH, lname, "outputs"))
 
     with open(os.path.join(BASE_LD_PATH, lname, "info.json"), "w") as f:
         json.dump(doc_info, f)

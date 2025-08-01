@@ -95,6 +95,26 @@ else:
     colq.markdown(f"Working on **{st.session_state.indi}**")
     colq.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
 
+# PROPOSING EXISTING DOCUMENTS
+with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r") as f:
+    info = json.load(f)
+if info["outputs"] != {}:
+    st.subheader("Access stored outputs from previous queries")
+    slq = st.selectbox("Select a query to access the files", [q for q in info["outputs"].keys()])
+    coln, colm = st.columns(2)
+    if info["outputs"][slq] in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs")):
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", info["outputs"][slq]), "rb") as jsonf:
+            coln.download_button(label="Download JSON file",
+                                 data=jsonf,
+                                 file_name=info["outputs"][slq],
+                                 mime="application/json")
+    if info["outputs"][slq][:-5]+".docx" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs")):
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", info["outputs"][slq][:-5]+".docx"), "rb") as docxf:
+            colm.download_button(label="Download DOCX file",
+                                 data=docxf,
+                                 file_name=info["outputs"][slq][:-5]+".docx",
+                                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+
 # GATHERING MATERIAL
 
 # cq
@@ -125,13 +145,16 @@ st.sidebar.write("✅ Pairs Ready" if st.session_state.is_pairs else "No pairs")
 if st.session_state.is_pairs:
     st.session_state.use_pairs = st.sidebar.toggle("Use Pairs", value=st.session_state.use_pairs)
 
-query = st.text_input("Query")
-if query is not None and query != st.session_state.query:
-    if st.button("submit"):
-        st.session_state.query = query
-        st.session_state.relevant_parameters = None
-        st.session_state.alterlingua_contribution = None
-        st.session_state.run_sources = True
+if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is_doc and st.session_state.use_doc)
+    or (st.session_state.is_pairs and st.session_state.use_pairs)):
+    st.subheader("Generate a new grammatical description")
+    query = st.text_input("Query")
+    if query is not None and query != st.session_state.query:
+        if st.button("submit"):
+            st.session_state.query = query
+            st.session_state.relevant_parameters = None
+            st.session_state.alterlingua_contribution = None
+            st.session_state.run_sources = True
 
 
 if st.session_state.run_sources:
@@ -254,8 +277,10 @@ if (st.session_state.alterlingua_contribution
             )
 
         st.session_state.run_aggregation = False
+        st.success("Done! Output available.")
 
 if st.session_state.output_dict:
+    st.subheader("Store and/or download the output below")
     if st.sidebar.checkbox("Show JSON output"):
         st.write(st.session_state.output_dict)
     fn = "dig4el_aggregated_output_"
@@ -266,13 +291,28 @@ if st.session_state.output_dict:
                                                            st.session_state.indi,
                                                            st.session_state.readers_language)
 
-    st.download_button(label="Download JSON output",
-                       data=json.dumps(st.session_state.output_dict),
-                       file_name=fn)
-    st.download_button(label="Download DOCX output",
-                       data=docx,
-                       file_name=fn[:-5]+".docx",
-                       mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                       key="final_docx")
+    # Save outputs
+    if st.button("Store output (and share it with others)"):
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w") as f:
+            json.dump(st.session_state.output_dict, f)
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn[:-5]+".docx"), "wb") as f:
+            f.write(docx.getvalue())
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r") as f:
+            info = json.load(f)
+        info["outputs"][query] = fn
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w") as f:
+            info = json.dump(info, f)
+        st.success("Output stored and available")
+
+    # Download outputs
+    colz, colx = st.columns(2)
+    colz.download_button(label="Download JSON output",
+                         data=json.dumps(st.session_state.output_dict),
+                         file_name=fn)
+    colx.download_button(label="Download DOCX output",
+                         data=docx,
+                         file_name=fn[:-5]+".docx",
+                         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                         key="final_docx")
 
 

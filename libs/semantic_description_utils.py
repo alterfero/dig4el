@@ -247,8 +247,8 @@ def build_vector_ready_augmented_pair(augmented_pair: dict) -> str:
         for concept, words in augmented_pair["connections"].items():
             if words != "":
                 out_str += " " + concept + ": " + ", ".join(words) + "."
-    out_str += " GRAMMATICAL DESCRIPTION: " + augmented_pair["description"]["grammatical_description"] + "."
-    out_str += " GRAMMATICAL KEYWORDS: " + ", ".join(augmented_pair["description"]["grammatical_keywords"]) + "."
+    out_str += " GRAMMATICAL DESCRIPTION: " + augmented_pair["description"].get("grammatical_description"+".", "")
+    out_str += " GRAMMATICAL KEYWORDS: " + ", ".join(augmented_pair["description"].get("grammatical_keywords"+".", ""))
     return out_str
 
 def get_vector_ready_pairs(indi_language):

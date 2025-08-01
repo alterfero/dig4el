@@ -259,7 +259,7 @@ side_info = st.sidebar.empty()
 
 with st.sidebar:
     st.markdown("---")
-    st.page_link("home2.py", label="Home", icon=":material/home:")
+    st.page_link("home.py", label="Home", icon=":material/home:")
     st.page_link("pages/dashboard.py", label="Back to dashboard", icon=":material/contract_edit:")
 
 st.title("Generate knowledge from CQs")

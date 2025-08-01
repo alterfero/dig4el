@@ -16,12 +16,10 @@ import os
 import pandas as pd
 import streamlit as st
 import json
-import asyncio
 from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
 from libs import openai_vector_store_utils as ovsu
 from libs import sentence_queue_utils as squ
-from libs import semantic_description_agents as sda
 from libs import semantic_description_utils as sdu
 from libs import retrieval_augmented_generation_utils as ragu
 import streamlit.components.v1 as components
@@ -36,7 +34,8 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-BASE_LD_PATH = "./ld/"
+BASE_LD_PATH = "./ld"
+
 DELIMITERS = [
     " ",  # Space
     ".",  # Period or dot
@@ -163,9 +162,10 @@ def check_augmentation_progress() -> None:
 with st.sidebar:
     st.subheader("DIG4EL")
     st.page_link("home.py", label="Home", icon=":material/home:")
+    st.page_link("pages/generate_grammar.py", label="Generate grammar", icon=":material/bolt:")
 
-st.header("Dashboard")
-st.write("Combine your language data and generate descriptions and grammar lessons")
+st.header("Sources Dashboard")
+st.write("Upload and create sources for grammatical descriptions")
 
 colq, colw = st.columns(2)
 selected_language = colq.selectbox("What language are we working on?", gu.GLOTTO_LANGUAGE_LIST)
@@ -173,6 +173,8 @@ if st.button("Select {}".format(selected_language)):
     st.session_state.indi_language = selected_language
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language,
                                                                    "glottocode not found")
+    if st.session_state.indi_language not in os.listdir(os.path.join(BASE_LD_PATH)):
+        fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r") as f:
         st.session_state.info_doc = json.load(f)
     PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
@@ -436,10 +438,14 @@ with tab3:
         seleced_augmented_sentence_file = selected_augmented_sentence + ".json"
         with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", seleced_augmented_sentence_file), "r") as f:
             sas = json.load(f)
+
         st.markdown(f"""
         - **{st.session_state.indi_language}**: **{sas["target"]}**
         - **English**: {sas["source"]}
-        - **General description**: {sas["description"]}
+        - **Intent**: {sas["description"]["enunciation"]["intent"]}.
+        - **Enunciation**: {sas["description"]["enunciation"]["mood"]} mood, 
+        {sas["description"]["enunciation"]["mood"]} voice, 
+        emphasis on {sas["description"]["enunciation"]["emphasis"]}.
         - **Short grammatical description**: {sas["description"]["grammatical_description"]}
         - **Grammatical keywords**: {sas["description"]["grammatical_keywords"]}
         - **{st.session_state.indi_language} word(s) - concept(s) connections**: 
