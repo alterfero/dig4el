@@ -22,8 +22,8 @@ from libs import openai_vector_store_utils as ovsu
 from libs import sentence_queue_utils as squ
 from libs import semantic_description_utils as sdu
 from libs import retrieval_augmented_generation_utils as ragu
+from libs import grammar_generation_agents as gga
 import streamlit.components.v1 as components
-from pyvis.network import Network
 from libs import utils as u
 from libs import stats
 
@@ -36,48 +36,12 @@ st.set_page_config(
 
 BASE_LD_PATH = "./ld"
 
-DELIMITERS = [
-    " ",  # Space
-    ".",  # Period or dot
-    "?",  # Interrogation mark
-    "!",  # Exclamation mark
-    ",",  # Comma
-    "·",  # Middle dot (interpunct)
-    "‧",  # Small interpunct (used in some East Asian scripts)
-    "․",  # Armenian full stop
-    "-",  # Hyphen or dash (used in compound words or some languages)
-    "_",  # Underscore (used in some digital texts and programming)
-    "‿",  # Tironian sign (used in Old Irish)
-    "、",  # Japanese comma
-    "。",  # Japanese/Chinese full stop
-    "።",  # Ge'ez (Ethiopian script) word separator
-    ":",  # Colon
-    ";",  # Semicolon
-    "؟",  # Arabic question mark
-    "٬",  # Arabic comma
-    "؛",  # Arabic semicolon
-    "۔",  # Urdu full stop
-    "।",  # Devanagari danda (used in Hindi and other Indic languages)
-    "॥",  # Double danda (used in Sanskrit and other Indic texts)
-    "𐩖",  # South Arabian word divider
-    "𐑀",  # Old Hungarian word separator
-    "་",  # Tibetan Tsheg (used in Tibetan script)
-    "᭞",  # Sundanese word separator
-    "᠂",  # Mongolian comma
-    "᠃",  # Mongolian full stop
-    " ",  # Ogham space mark (used in ancient Irish writing)
-    "꓿",  # Lisu word separator
-    "፡",  # Ge'ez word separator
-    "'",  # Apostrophe (used for contractions and possessives)
-    "…",  # Ellipsis
-    "–",  # En dash
-    "—",  # Em dash
-]
-
 if "indi_language" not in st.session_state:
     st.session_state["indi_language"] = "Abkhaz-Adyge"
 if "indi_glottocode" not in st.session_state:
     st.session_state["indi_glottocode"] = "abkh1242"
+if "delimiters" not in st.session_state:
+    st.session_state.delimiters = None
 if "request_text" not in st.session_state:
     st.session_state.request_text = ""
 if "bayesian_data" not in st.session_state:
@@ -88,8 +52,10 @@ if "has_docs" not in st.session_state:
     st.session_state.has_docs = False
 if "new_docs_uploaded" not in st.session_state:
     st.session_state.new_docs_uploaded = False
-if "has_vector_store" in st.session_state:
+if "has_vector_store" not in st.session_state:
     st.session_state.has_vector_store = False
+if "vsid" not in st.session_state:
+    st.session_state.vsid = None
 if "has_pairs" not in st.session_state:
     st.session_state.has_pairs = False
 if "has_monolingual" not in st.session_state:
@@ -111,6 +77,16 @@ if "pairs_in_queue" not in st.session_state:
     st.session_state.pairs_in_queue = []
 if "jobs_processed" not in st.session_state:
     st.session_state.jobs_processed = []
+if "uploaded_docs" not in st.session_state:
+    st.session_state.uploaded_docs = []
+if "staged_docs" not in st.session_state:
+    st.session_state.ready_to_vec_docs = []
+if "vectorized_docs" not in st.session_state:
+    st.session_state.vectorized_docs = []
+if "file_status_list" not in st.session_state:
+    st.session_state.file_status_list = {}
+if "vector_store_status" not in st.session_state:
+    st.session_state.vector_store_status = None
 
 PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
 CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
@@ -118,6 +94,10 @@ JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
 
 if "index.pkl" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs", "vectors")):
     st.session_state.has_pairs = True
+
+def save_info_dict():
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as fdi:
+        json.dump(st.session_state.info_doc, fdi)
 
 def generate_sentence_pairs_signatures(sentence_pairs: list[dict]) -> list[str]:
     sig_list = []
@@ -177,24 +157,13 @@ if st.button("Select {}".format(selected_language)):
         fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r") as f:
         st.session_state.info_doc = json.load(f)
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "delimiters.json"), "r") as f:
+        st.session_state.delimiters = json.load(f)
     PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
     CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
     JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
 
 st.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
-
-st.session_state.l1_language = colw.selectbox("What is the language of the readers?",
-                                              ["Bislama", "English", "French", "German", "Japanese", "Swedish",
-                                               "Tahitian"])
-
-st.sidebar.divider()
-st.sidebar.write("✅ CQ Ready" if st.session_state.has_bayesian else "CQ: Not ready")
-st.sidebar.write("✅ Docs Ready" if st.session_state.has_docs else "Docs: Not ready")
-st.sidebar.write("✅ Pairs Ready" if st.session_state.has_pairs else "Pairs: Not ready")
-#st.sidebar.write("✅ Mono Ready" if st.session_state.has_monolingual else "Mono: Not ready")
-st.sidebar.divider()
-if st.session_state.has_bayesian or st.session_state.has_docs or st.session_state.has_pairs:
-    st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")
 
 st.markdown("#### Using the tabs below, add information about {}".format((st.session_state.indi_language)))
 
@@ -240,34 +209,34 @@ with tab2:
     st.write("""
             The Document Knowledge is created by indexing the content of the documents you are providing in 
             so-called **'vector stores'**.
-            These documents will be uploaded to be indexed, and their indexing stored on a remote server. 
-            Use only documents that are public, or that you have the right to use. Rename your documents to make 
-            their title and author(s) explicit in the document name. Avoid using spaces or punctuation in the name. 
+            These documents you share will be 
+            1) **Upload**: Documents are uploaded to our server.
+            2) **Staging**: Documents are staged to be used by remote LLM processes.
+            3) **Vectorization**: Documents are divided into short parts, and each part is indexed. The technical
+            term for this step is **vectorization**. We will use this term to avoid confusion with other types of indexing used. 
+            At the end of the process, the documents are stored in a **vector store**. 
+            
+            **Use only documents that are public**. They will not be shared, but their content will be used 
+             and their origin referenced. 
+             
+             Rename your documents to make their title and author(s) explicit in the document name. Avoid using spaces or punctuation in the name. 
             For example: author_noam_chomsky_title_the_architecture_of_language.pdf
+            
              """
              )
 
     # DOCUMENTS
-    available_documents = os.listdir(os.path.join(BASE_LD_PATH,
-                                                  st.session_state.indi_language,
-                                                  "descriptions",
-                                                  "sources"))
-    available_documents = [d for d in available_documents if d[-3:] in ["txt", "ocx", "pdf"]]
-    vectorized_documents = st.session_state.info_doc["documents"]["vectorized"]
-    if available_documents == []:
-        st.write("No document uploaded yet")
-    else:
-        st.write("{} available documents: ".format(len(available_documents)))
-        for d in available_documents:
-            st.markdown("- **{}**".format(d))
+    st.divider()
+    doc_path = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "descriptions", "sources")
+    st.subheader("Upload new documents from your computer to our server")
+    st.session_state.uploaded_docs = [d for d in os.listdir(doc_path) if d[-3:] in ["txt", "ocx", "pdf"]]
 
     new_documents = st.file_uploader(
-        "Add new documents from your computer (pdf, txt)",
+        "Add new PDF documents from your computer",
         accept_multiple_files=True
     )
-
     if new_documents:
-        if st.button("Add these documents to available documents on the server"):
+        if st.button("Upload these documents"):
             dest_dir = os.path.join(
                 BASE_LD_PATH,
                 st.session_state.indi_language,
@@ -279,67 +248,98 @@ with tab2:
                 with open(dest_path, "wb") as f:
                     f.write(new_doc.read())
                 st.success(f"Saved `{new_doc.name}` to server.")
-
+            st.session_state.uploaded_docs = [d for d in os.listdir(doc_path) if d[-3:] in ["txt", "ocx", "pdf"]]
             st.rerun()
 
-    # VECTOR STORE
-    available_oa_vector_store = ovsu.list_vector_stores()
-    if st.session_state.indi_language + "_documents" in available_oa_vector_store.keys():
+    st.divider()
+    st.subheader("Status of uploaded files")
+    # ========================================= PROCESS TABLE =================================
+    # files on server
+    st.session_state.file_status_list = [{
+                                        "id": None,
+                                        "filename": d,
+                                        "staged": False,
+                                        "vectorized": False
+                                        } for d in st.session_state.uploaded_docs]
+
+    # checking if vector store exists from api call and info, create one if needed
+    available_vector_stores = ovsu.list_vector_stores_sync()
+    vsid_from_info_dict = st.session_state.info_doc["documents"].get("oa_vector_store_id", None)
+    if vsid_from_info_dict is not None and vsid_from_info_dict in [vs.id for vs in available_vector_stores]:
+        st.session_state.vsid = vsid_from_info_dict
+        print("VSID found and matches ({})".format(st.session_state.vsid))
         st.session_state.has_vector_store = True
-        st.success("There is an existing vector store for {}".format(st.session_state.indi_language))
-        if st.session_state.info_doc["documents"]["vectorized"] == available_documents:
-            st.success("The vector store includes all available documents.")
-        else:
-            doc_status_dict = {
-                "available_and_vectorized": [],
-                "available_but_not_vectorized": [],
-                "vectorized_but_not_available": []
-            }
-            for d in available_documents:
-                if d in st.session_state.info_doc["documents"]["vectorized"]:
-                    doc_status_dict["available_and_vectorized"].append(d)
-                else:
-                    doc_status_dict["available_but_not_vectorized"].append(d)
-            for d in st.session_state.info_doc["documents"]["vectorized"]:
-                if d not in available_documents:
-                    doc_status_dict["vectorized_but_not_available"].append(d)
-            st.write(doc_status_dict)
-
-
     else:
-        st.write("No vector store yet")
+        print("No VSID found in info_dict matching an existing VSID: Creating a vector store")
+        with st.spinner("Creating new vector store"):
+            st.session_state.vsid = ovsu.create_vector_store_sync(st.session_state.indi_language + "_documents")
+            st.session_state.info_doc["documents"]["oa_vector_store_id"] = st.session_state.vsid
+            save_info_dict()
+        print("New vector store created with VSID {}".format(st.session_state.vsid))
+        st.session_state.has_vector_store = True
 
-    if available_documents != [] and st.button("Create a vector store with all available documents"):
-        vs_id = ovsu.add_all_files_from_folder_to_vector_store(vs_name=st.session_state.indi_language + "_documents",
-                                                               folder_path=os.path.join(BASE_LD_PATH,
-                                                                                        st.session_state.indi_language,
-                                                                                        "descriptions",
-                                                                                        "sources")
-                                                               )
-        # update info_json
-        st.session_state.info_doc["documents"]["vectorized"] = [fn for fn in os.listdir(os.path.join(BASE_LD_PATH,
-                                                                                                     st.session_state.indi_language,
-                                                                                                     "descriptions",
-                                                                                                     "sources")) if
-                                                                fn[-3:] in ["txt", "pdf"]]
-        st.session_state.info_doc["documents"]["oa_vector_store_name"] = st.session_state.indi_language + "_documents"
-        st.session_state.info_doc["documents"]["oa_vector_store_id"] = vs_id
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as f:
-            json.dump(st.session_state.info_doc, f)
+    # list which uploaded files are staged
+    with st.spinner("Listing staged files"):
+        st.session_state.staged = ovsu.list_files_sync()
+    for staf in st.session_state.staged:
+        for sf in st.session_state.file_status_list:
+            if staf.filename == sf["filename"]:
+                sf["id"] = staf.id
+                sf["staged"] = True
 
-    if st.button("check vector store status, make sure it is ready before you use it"):
-        status = ovsu.check_vector_store_status(vs_name=st.session_state.indi_language + "_documents")
-        if status == "completed":
-            st.success("Vector store {} ready for use".format(st.session_state.indi_language + "_documents"))
-            st.session_state.has_docs = True
+    # list files already vectorized:
+    if st.session_state.has_vector_store is True:
+        with st.spinner("Listing vectorized files"):
+            st.session_state.vectorized_docs = ovsu.list_files_in_vector_store_sync(vid=st.session_state.vsid)
+        for vecf in st.session_state.vectorized_docs:
+            #st.write("vecf: {}".format(vecf))
+            for sf in st.session_state.file_status_list:
+                if sf["id"] == vecf.id:
+                    sf["vectorized"] = True
+
+    status_df = pd.DataFrame(st.session_state.file_status_list, columns=["filename", "staged", "vectorized"])
+    st.dataframe(status_df, use_container_width=True)
+
+    colw1, colw2 = st.columns(2)
+    # Staging unstaged files
+    to_stage = [f for f in st.session_state.file_status_list if not f["staged"]]
+    if to_stage:
+        colw1.markdown("{} files to stage".format(len(to_stage)))
+        if st.button("2) Stage"):
+            for f in to_stage:
+                with colw1:
+                    with st.spinner("staging {}".format(f["filename"])):
+                        ovsu.create_file_sync(doc_path, f["filename"])
             st.rerun()
+    else:
+        colw1.success("All uploaded files are staged")
 
-        else:
-            st.warning("Vector store not ready yet... come back in a few minutes and try again.")
+    # vectorizing unvectorized staged files
+    to_vectorize = [f for f in st.session_state.file_status_list if f["staged"] and not f["vectorized"]]
+    if to_vectorize:
+        colw2.markdown("**{} staged files to vectorize**".format(len(to_vectorize)))
+        if colw2.button("3) Vectorize all staged files"):
+            to_vec_fids = [f["id"] for f in to_vectorize]
+            with colw2:
+                with st.spinner("Launching vectorization of the staged files"):
+                    ovsu.add_files_to_vector_store_sync(vsid=st.session_state.vsid,
+                                                        file_ids=to_vec_fids)
+            st.rerun()
+    elif not to_stage and not to_vectorize:
+        colw2.success("All files staged and vectorized")
 
-    if st.session_state.has_docs:
-        st.subheader("Test document information retrieval")
-        query = st.text_input("Enter your query")
+    if st.session_state.vectorized_docs:
+        with st.spinner("Checking"):
+            st.session_state.vector_store_status = ovsu.check_vector_store_status_sync(st.session_state.vsid)
+        if st.session_state.vector_store_status is not None:
+            if st.session_state.vector_store_status == "completed":
+                st.success("All documents have been vectorized and are ready to be used.")
+                st.session_state.has_docs = True
+            else:
+                st.warning("Documents are still being vectorized, check again in a few minutes")
+                st.write("Current status: {}".format(st.session_state.vector_store_status))
+
+    st.divider()
 
 
 with tab3:
@@ -450,9 +450,12 @@ with tab3:
         - **Grammatical keywords**: {sas["description"]["grammatical_keywords"]}
         - **{st.session_state.indi_language} word(s) - concept(s) connections**: 
         """)
-        for connection in sas.get("connections", {}):
-            st.write("{} --> {}".format(connection, sas["connections"][connection]))
-
+        if sas.get("connections", {}) != {}:
+            for connection in sas.get("connections", {}):
+                st.write("{} --> {}".format(connection, sas["connections"][connection]))
+        else:
+            st.write("No connection created.")
+        st.markdown("**Semantic-Structural Graph:**")
         html = sdu.plot_semantic_graph_pyvis(sas["description"])
         components.html(html, height=600, width=1000)
 
@@ -539,7 +542,7 @@ with tab3:
         st.markdown(f"**English**: {slap['source']}")
         referents = [r["designation"]
                     for r in slap["description"]["referents"]]
-        words = stats.custom_split(slap["target"], DELIMITERS)
+        words = stats.custom_split(slap["target"], st.session_state.delimiters)
 
         for referent in referents:
             connected_words = st.multiselect(f"{referent} Is expressed by",
@@ -590,4 +593,12 @@ with tab3:
         st.write(st.session_state.hard_kw_retrieval_results)
 
 
-st.divider()
+
+st.sidebar.divider()
+st.sidebar.write("✅ CQ Ready" if st.session_state.has_bayesian else "CQ: Not ready")
+st.sidebar.write("✅ Docs Ready" if st.session_state.has_docs else "Docs: Not ready")
+st.sidebar.write("✅ Pairs Ready" if st.session_state.has_pairs else "Pairs: Not ready")
+#st.sidebar.write("✅ Mono Ready" if st.session_state.has_monolingual else "Mono: Not ready")
+st.sidebar.divider()
+if st.session_state.has_bayesian or st.session_state.has_docs or st.session_state.has_pairs:
+    st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")

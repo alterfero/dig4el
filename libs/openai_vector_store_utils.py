@@ -1,189 +1,159 @@
-
 import os
 import openai
 import requests
 from io import BytesIO
+import asyncio
+import aiofiles
 
 api_key = os.getenv("OPEN_AI_KEY")
+client = openai.AsyncOpenAI(api_key=api_key)
 
-def create_vector_store(name):
-    client = openai.OpenAI(api_key=api_key)
-    vector_store = client.vector_stores.create(name=name)
-    print(vector_store)
 
-def list_vector_stores():
-    out_dict = {}
-    client = openai.OpenAI(api_key=api_key)
-    vector_stores = client.vector_stores.list()
-    print(vector_stores)
-    for vs in vector_stores:
-        out_dict[vs.name] = vs.id
-    return out_dict
+async def list_files(includes=None):
+    files_response = await client.files.list()
+    files = files_response.data
+    if includes is not None:
+        filtered_files = [f for f in files if includes in f.filename]
+    else:
+        filtered_files = files
+    return filtered_files
 
-def create_file(file_path):
-    client = openai.OpenAI(api_key=api_key)
-    if file_path.startswith("http://") or file_path.startswith("https://"):
-        # Download the file content from the URL
-        response = requests.get(file_path)
-        file_content = BytesIO(response.content)
-        file_name = file_path.split("/")[-1]
-        file_tuple = (file_name, file_content)
-        result = client.files.create(
-            file=file_tuple,
+
+async def create_file(path, filename):
+    async with aiofiles.open(os.path.join(path, filename), "rb") as file_content:
+        file_bytes = await file_content.read()
+        result = await client.files.create(
+            file=(filename, file_bytes),
             purpose="assistants"
         )
-    else:
-        # Handle local file path
-        with open(file_path, "rb") as file_content:
-            result = client.files.create(
-                file=file_content,
-                purpose="assistants"
-            )
-    print(result.id)
+    print(f"Uploaded file {filename}, id: {result.id}")
     return result.id
 
-def add_file_to_vector_store(vector_store_name, file_name):
-    client = openai.OpenAI(api_key=api_key)
-    # get vector store
-    vs_list = client.vector_stores.list()
-    active_vs = [vs for vs in vs_list if vs.name == vector_store_name]
-    if active_vs == []:
-        print("No vector store with that name")
-        print(vs_list)
-        return None
-    else:
-        vector_store = active_vs[0]
-        available_files = client.files.list()
-        target_file = [f for f in available_files if f.filename == file_name]
-        if target_file == []:
-            print("No file on openai available with that name")
-            print(available_files)
-            return None
-        else:
-            file = target_file[0]
-            file_id = file.id
-            client.vector_stores.files.create(
-                vector_store_id=vector_store.id,
-                file_id=file_id
-            )
-            return client.vector_stores.files.list(
-                vector_store_id=vector_store.id
-            )
 
-
-def list_files():
-    client = openai.OpenAI(api_key=api_key)
-    files = client.files.list()
-    print(files)
-
-def get_vector_store_id_from_name(vs_name):
-    client = openai.OpenAI(api_key=api_key)
-    vs_list = client.vector_stores.list()
-    active_vs = [vs for vs in vs_list if vs.name == vector_store_name]
-    if active_vs == []:
-        print("No vector store with that name")
-        print(vs_list)
-        return None
-    else:
-        vector_store = active_vs[0]
-        return vector_store.id
-
-def add_all_files_from_folder_to_oa(folder_path):
-    client = openai.OpenAI(api_key=api_key)
-    uploaded_filenames = []
-    print(os.listdir(folder_path))
-    usable_filenames = [f for f in os.listdir(folder_path) if f[-4:] in [".pdf", ".docx"]]
-    existing_filenames = [f.filename for f in client.files.list()]
-    print("{} files will be used".format(len(usable_filenames)))
-    for file_name in usable_filenames:
-        if file_name in existing_filenames:
-            print("{} already uploaded".format(file_name))
-        else:
-            file_path = os.path.join(folder_path, file_name)
-            with open(file_path, "rb") as file_content:
-                result = client.files.create(
-                    file=file_content,
-                    purpose="assistants"
-                )
-            print("{} processed, id={}".format(file_name, result.id))
-            uploaded_filenames.append(file_name)
-    print("All files added")
-    return uploaded_filenames
-
-
-def delete_all_files():
-    client = openai.OpenAI(api_key=api_key)
-    files = client.files.list()
+async def delete_all_files():
+    files_response = await client.files.list()
+    files = files_response.data
     for file in files:
-        client.files.delete(file.id)
+        await client.files.delete(file.id)
 
 
-def add_all_files_from_folder_to_vector_store(vs_name,
-                                              folder_path,
-                                              create_vs_if_needed=True,
-                                              replace_previous_if_existing=True):
-    client = openai.OpenAI(api_key=api_key)
-    # get vector store
-    vs_list = client.vector_stores.list()
-    active_vs = [vs for vs in vs_list if vs.name == vs_name]
-    if active_vs == []:
-        if create_vs_if_needed:
-            vector_store = client.vector_stores.create(name=vs_name)
-            print("Vector store {} created".format(vs_name))
-        else:
-            print("No vector store with that name")
-            print(vs_list)
-            return None
-    else:
-        tmp_vs = active_vs[0]
-        if replace_previous_if_existing:
-            client.vector_stores.delete(tmp_vs.id)
-            print("Resetting existing vector store {}".format(vs_name))
-            vector_store = client.vector_stores.create(name=vs_name)
-        else:
-            vector_store = tmp_vs
+async def delete_files_containing(fn_part):
+    files_response = await client.files.list()
+    files = files_response.data
+    for file in files:
+        if fn_part in file.filename:
+            await client.files.delete(file.id)
 
-        # add all files from local folder to oa
-        print("Adding all compatible files from {}".format(folder_path))
-        uploaded_filenames = add_all_files_from_folder_to_oa(folder_path)
-        print("Adding all these files to the {} vector store".format(vector_store.name))
-        available_filenames = [f.filename for f in client.files.list() if f.filename in uploaded_filenames]
-        print("{} files to add".format(len(available_filenames)))
-        for file_name in available_filenames:
-            print("adding {}".format(file_name))
-            add_file_to_vector_store(vs_name, file_name)
-        print("All files added, check status for processing")
-        return vector_store.id
 
-def check_vector_store_status(vs_name):
-    client = openai.OpenAI(api_key=api_key)
-    # get vector store
-    vs_list = client.vector_stores.list()
+async def create_vector_store(name):
+    vector_store = await client.vector_stores.create(name=name)
+    print(f"Created vector_store {vector_store.id}")
+    return vector_store.id
+
+
+async def delete_vector_store(vid):
+    await client.vector_stores.delete(vid)
+
+
+async def list_vector_stores():
+    vss = await client.vector_stores.list()
+    return vss.data
+
+async def list_files_in_vector_store(vid):
+    vector_stores_response = await client.vector_stores.files.list(vector_store_id=vid)
+    return vector_stores_response.data
+
+
+async def add_files_to_vector_store(vsid, file_ids):
+    batch = await client.vector_stores.file_batches.create_and_poll(
+        vector_store_id=vsid,
+        file_ids=file_ids
+    )
+    return True
+
+async def get_vector_store_id_from_name(vs_name):
+    vs_list = await client.vector_stores.list()
     active_vs = [vs for vs in vs_list if vs.name == vs_name]
     if active_vs == []:
         print("No vector store with that name")
         print(vs_list)
         return None
     else:
-        print("found vector store {}".format(vs_name))
+        vector_store = active_vs[0]
+        return vector_store.id
+
+
+async def check_vector_store_status(vsid):
+    print("check_vector_store_status")
+    # get vector store
+    vs_list_response = await client.vector_stores.list()
+    active_vs = [vs for vs in vs_list_response.data if vs.id == vsid]
+    if active_vs == []:
+        print("No vector store with that id")
+        print(vs_list_response)
+        return None
+    else:
+        print("found vector store {}".format(vsid))
         vector_store = active_vs[0]
         print("id: {}".format(vector_store.id))
-        result = client.vector_stores.files.list(
+        result = await client.vector_stores.files.list(
             vector_store_id=vector_store.id
         )
-    return result.data[0].status
-
-local_file_path = "/Users/sebastienchristian/Desktop/d/01-These/language_lib/iaai/"
-
-
-# create_file(local_file_path+file_name)
-#list_files()
-#add_file_to_vector_store("Mwotlap", "3_Krausse_Francois_final.pdf")
-#add_all_files_from_folder_to_vector_store("iaai", local_file_path)
-# check_vector_store_status("Tahitian_documents")
-# list_vector_stores()
+    print(result)
+    try:
+        return result.data[0].status
+    except:
+        return "No status found"
 
 
-## DOCUMENTATION
-# https://platform.openai.com/docs/api-reference/vector-stores
-# https://platform.openai.com/docs/guides/tools-file-search
+# ================================= SYNC CALLS =====================================
+
+def list_files_sync(includes=None):
+    return asyncio.run(list_files(includes=includes))
+
+
+def create_file_sync(path, filename):
+    return asyncio.run(create_file(path, filename))
+
+
+def delete_files_containing_sync(fn_part):
+    return asyncio.run(delete_files_containing(fn_part))
+
+
+def list_vector_stores_sync():
+    return asyncio.run(list_vector_stores())
+
+
+def list_files_in_vector_store_sync(vid):
+    return asyncio.run(list_files_in_vector_store(vid))
+
+
+def create_vector_store_sync(name):
+    return asyncio.run(create_vector_store(name))
+
+
+def delete_vector_store_sync(vid):
+    return asyncio.run(delete_vector_store(vid))
+
+
+def add_files_to_vector_store_sync(vsid, file_ids):
+    return asyncio.run(add_files_to_vector_store(vsid, file_ids))
+
+
+def check_vector_store_status_sync(vs_name):
+    return asyncio.run(check_vector_store_status(vs_name))
+
+
+# ================================= TEST SCRIPTS ====================================
+
+#delete_vector_store_sync('vs_6891146bea508191b24bd91bfadf5c7b')
+
+# def print_vs_list():
+#     vss = list_vector_stores_sync()
+#     for vs in vss:
+#         print(vs)
+# print_vs_list()
+
+#print(list_files_in_vector_store_sync("vs_6891146bea508191b24bd91bfadf5c7b"))
+#print(list_files_sync())
+#delete_files_containing_sync("hypothese")

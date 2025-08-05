@@ -2,6 +2,8 @@ import openai
 import os
 api_key = os.getenv("OPEN_AI_KEY")
 
+# https://platform.openai.com/docs/assistants/tools/file-search
+
 def file_search_request(vector_store_names, prompt):
     client = openai.OpenAI(api_key=api_key)
     # get vector store

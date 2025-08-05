@@ -13,6 +13,14 @@ doc_info = {
   "pairs": [],
   "outputs": {}
 }
+default_delimiters = [" ",
+    ".",
+    ",",
+    ";",
+    ":",
+    "!",
+    "?",
+    "\u2026"]
 
 def create_ld(BASE_LD_PATH, lname):
     os.mkdir(os.path.join(BASE_LD_PATH, lname))
@@ -32,6 +40,8 @@ def create_ld(BASE_LD_PATH, lname):
 
     with open(os.path.join(BASE_LD_PATH, lname, "info.json"), "w") as f:
         json.dump(doc_info, f)
+    with open(os.path.join(BASE_LD_PATH, lname, "delimiters.json"), "w") as f:
+        json.dump(default_delimiters, f)
 
 def display_file_manager(folder_path: str, file_extensions: list[str] = None):
     """

@@ -33,41 +33,41 @@ st.set_page_config(
 
 delimiters = json.load(open("./data/delimiters.json"))
 delimiters_bank = [
-    " ",  # Space
-    ".",  # Period or dot
-    "?",  # Interrogation mark
-    "!",  # Exclamation mark
-    ",",  # Comma
-    "·",  # Middle dot (interpunct)
-    "‧",  # Small interpunct (used in some East Asian scripts)
-    "․",  # Armenian full stop
-    "-",  # Hyphen or dash (used in compound words or some languages)
-    "_",  # Underscore (used in some digital texts and programming)
-    "‿",  # Tironian sign (used in Old Irish)
-    "、",  # Japanese comma
-    "。",  # Japanese/Chinese full stop
-    "።",  # Ge'ez (Ethiopian script) word separator
-    ":",  # Colon
-    ";",  # Semicolon
-    "؟",  # Arabic question mark
-    "٬",  # Arabic comma
-    "؛",  # Arabic semicolon
-    "۔",  # Urdu full stop
-    "।",  # Devanagari danda (used in Hindi and other Indic languages)
-    "॥",  # Double danda (used in Sanskrit and other Indic texts)
-    "𐩖",  # South Arabian word divider
-    "𐑀",  # Old Hungarian word separator
-    "་",  # Tibetan Tsheg (used in Tibetan script)
-    "᭞",  # Sundanese word separator
-    "᠂",  # Mongolian comma
-    "᠃",  # Mongolian full stop
-    " ",  # Ogham space mark (used in ancient Irish writing)
-    "꓿",  # Lisu word separator
-    "፡",  # Ge'ez word separator
-    "'",  # Apostrophe (used for contractions and possessives)
-    "…",  # Ellipsis
-    "–",  # En dash
-    "—",  # Em dash
+    " ",
+    ".",
+    "?",
+    "!",
+    ",",
+    "·",
+    "‧",
+    "․",
+    "-",
+    "_",
+    "‿",
+    "、",
+    "。",
+    "።",
+    ":",
+    ";",
+    "؟",
+    "٬",
+    "؛",
+    "۔",
+    "।",
+    "॥",
+    "𐩖",
+    "𐑀",
+    "་",
+    "᭞",
+    "᠂",
+    "᠃",
+    " ",
+    "꓿",
+    "፡",
+    "'",
+    "…",
+    "–",
+    "—"
 ]
 key_counter = 0
 
@@ -92,7 +92,8 @@ if "current_sentence_number" not in st.session_state:
     st.session_state["current_sentence_number"] = 1
 if "available_target_languages" not in st.session_state:
     st.session_state["available_target_languages"] = list(wu.language_pk_id_by_name.keys())
-
+if "target_language" not in st.session_state:
+    st.session_state["target_language"] = st.session_state["available_target_languages"][0]
 if "delimiters" not in st.session_state:
     st.session_state["delimiters"] = delimiters["English"]
 if "pivot_language" not in st.session_state:
@@ -136,7 +137,7 @@ with st.popover("information and tutorial"):
 
 with st.sidebar:
     st.subheader("DIG4EL")
-    st.page_link("home2.py", label="Home", icon=":material/home:")
+    st.page_link("home.py", label="Home", icon=":material/home:")
     st.page_link("pages/dashboard.py", label="Back to Dashboard", icon=":material/home:")
 
 if not st.session_state["loaded_existing_transcription"]:

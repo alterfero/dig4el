@@ -433,6 +433,17 @@ def generate_lesson_docx_from_aggregated_output(content, indi_language, readers_
         aex.add_run(f'{s["target"]}', style='Strong')
         document.add_paragraph(f'({s["source"]})', "Normal")
 
+    document.add_heading("Sources", level=1)
+    sources = content["sources"]
+    document.add_heading("Documents: ", level=2)
+    for d in sources["documents"]:
+        document.add_paragraph(d, style="List Bullet")
+    document.add_heading("Conversational Questionnaires: ", level=2)
+    for d in sources["cqs"]:
+        document.add_paragraph(d, style="List Bullet")
+    document.add_heading("Sentence pairs: ", level=2)
+    for d in sources["pairs"]:
+        document.add_paragraph(d, style="List Bullet")
     # Save to a BytesIO buffer instead of disk
     docx_buffer = BytesIO()
     document.save(docx_buffer)

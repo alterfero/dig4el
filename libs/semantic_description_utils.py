@@ -2,12 +2,8 @@ from __future__ import annotations
 
 import json
 import os
-import openai
-import asyncio
-from agents import Agent, ModelSettings, function_tool, Runner
 from libs import semantic_description_agents as sda
-from typing import List, Literal, Tuple, Union, Optional
-from pydantic import BaseModel, Field, Extra
+from typing import List
 from collections import defaultdict
 import pkg_resources
 from pyvis.network import Network

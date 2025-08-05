@@ -1,3 +1,4 @@
+aiofiles==24.1.0
 altair==5.1.2
 annotated-types==0.7.0
 anyio==4.9.0

@@ -40,6 +40,8 @@ if "use_cq" not in st.session_state:
     st.session_state.use_cq = True
 if "cq_knowledge" not in st.session_state:
     st.session_state.cq_knowledge = None
+if "cq_files" not in st.session_state:
+    st.session_state.cq_files = None
 if "is_doc" not in st.session_state:
     st.session_state.is_doc = False
 if "use_doc" not in st.session_state:
@@ -48,6 +50,8 @@ if "is_pairs" not in st.session_state:
     st.session_state.is_pairs = False
 if "use_pairs" not in st.session_state:
     st.session_state.use_pairs = True
+if "pairs_files" not in st.session_state:
+    st.session_state.pairs_files = None
 if "info_dict" not in st.session_state:
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r") as f:
         st.session_state.info_dict = json.load(f)
@@ -121,6 +125,9 @@ if info["outputs"] != {}:
 if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_knowledge")):
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_knowledge", "cq_knowledge.json"), "r") as f:
         st.session_state.cq_knowledge = json.load(f)
+    st.session_state.cq_files = [fn
+                                for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_translations"))
+                                if fn[-5:]==".json"]
     st.session_state.is_cq = True
 else:
     st.session_state.cq_knowledge = False
@@ -133,6 +140,9 @@ if st.session_state.vs_name != "":
 # pairs
 if "index.pkl" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
                                           "sentence_pairs", "vectors")):
+    st.session_state.pairs_files = [fn
+                                    for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "pairs"))
+                                    if fn[-5:] == ".json"]
     st.session_state.is_pairs = True
 
 st.sidebar.write("✅ CQ Ready" if st.session_state.is_cq else "No CQ")
@@ -172,15 +182,15 @@ if st.session_state.run_sources:
                                                                                              alterlingua_sentences)
     # document agent
     if st.session_state.is_doc and st.session_state.use_doc:
-        vs_names = [st.session_state.info_dict["documents"]["oa_vector_store_name"]]
+        vsids = [st.session_state.info_dict["documents"]["oa_vector_store_id"]]
         with st.spinner("Generating contribution from documents"):
             full_response = gga.file_search_request_sync(st.session_state.indi,
-                                                           vs_names,
+                                                           vsids,
                                                            query)
             raw_response = full_response.output[1].content
             st.session_state.documents_contribution = {
                 "text": raw_response[0].text,
-                "sources": raw_response[0].annotations
+                "sources": list(set([a.filename for a in raw_response[0].annotations]))
             }
 
     # sentence pairs selection
@@ -276,27 +286,41 @@ if (st.session_state.alterlingua_contribution
                 sentence_pairs=sentence_pairs_blob
             )
 
+            # adding sources
+            st.session_state.output_dict["sources"] = {
+                "cqs": st.session_state.cq_files,
+                "documents": st.session_state.documents_contribution["sources"],
+                "pairs": st.session_state.pairs_files
+            }
+
         st.session_state.run_aggregation = False
         st.success("Done! Output available.")
 
 if st.session_state.output_dict:
-    st.subheader("Store and/or download the output below")
+    st.subheader("Store and/or download the output")
     if st.sidebar.checkbox("Show JSON output"):
         st.write(st.session_state.output_dict)
     fn = "dig4el_aggregated_output_"
     fn += st.session_state.indi + "_"
     fn += u.clean_sentence(query, filename=True, filename_length=50)
     fn += ".json"
-    docx = ogu.generate_lesson_docx_from_aggregated_output(st.session_state.output_dict,
-                                                           st.session_state.indi,
-                                                           st.session_state.readers_language)
+
+    docx = None
+    try:
+        docx = ogu.generate_lesson_docx_from_aggregated_output(st.session_state.output_dict,
+                                                               st.session_state.indi,
+                                                               st.session_state.readers_language)
+    except:
+        st.write("Generation of docx failed")
 
     # Save outputs
     if st.button("Store output (and share it with others)"):
+
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w") as f:
             json.dump(st.session_state.output_dict, f)
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn[:-5]+".docx"), "wb") as f:
-            f.write(docx.getvalue())
+        if docx:
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn[:-5]+".docx"), "wb") as f:
+                f.write(docx.getvalue())
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r") as f:
             info = json.load(f)
         info["outputs"][query] = fn
@@ -309,10 +333,11 @@ if st.session_state.output_dict:
     colz.download_button(label="Download JSON output",
                          data=json.dumps(st.session_state.output_dict),
                          file_name=fn)
-    colx.download_button(label="Download DOCX output",
-                         data=docx,
-                         file_name=fn[:-5]+".docx",
-                         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                         key="final_docx")
+    if docx:
+        colx.download_button(label="Download DOCX output",
+                             data=docx,
+                             file_name=fn[:-5]+".docx",
+                             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                             key="final_docx")
 
 

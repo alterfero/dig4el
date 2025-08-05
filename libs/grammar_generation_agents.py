@@ -197,7 +197,7 @@ async def contribute_from_alterlingua(query: str, sentences: list[dict]) -> dict
     result = await Runner.run(cq_alterlingua_agent, data)
     return result.final_output.dict()
 
-async def file_search_request(indi_language: str, vector_store_names: list[str], query: str):
+async def file_search_request(indi_language: str, vsids: list[str], query: str):
     prompt = f"""
     You are an agent specialized in retrieving grammatical information about {indi_language} in provided documents.
     to answer a user's query. Retrieve all relevant information from the documents and compile them into a detailed 
@@ -209,9 +209,9 @@ async def file_search_request(indi_language: str, vector_store_names: list[str],
     client = openai.OpenAI(api_key=api_key)
     # get vector store
     vs_list = client.vector_stores.list()
-    active_vs = [vs for vs in vs_list if vs.name in vector_store_names]
+    active_vs = [vs for vs in vs_list if vs.id in vsids]
     if active_vs == []:
-        print("No vector store with any of these name")
+        print("No vector store with this id")
         print(vs_list)
         return None
     else:
@@ -265,8 +265,8 @@ def contribute_from_alterlingua_sync(query: str, sentences: list[dict]) -> dict:
     return asyncio.run(contribute_from_alterlingua(query, sentences))
 
 
-def file_search_request_sync(indi_language: str, vector_store_names: list[str], query: str):
-    return asyncio.run(file_search_request(indi_language, vector_store_names, query))
+def file_search_request_sync(indi_language: str, vsids: list[str], query: str):
+    return asyncio.run(file_search_request(indi_language, vsids, query))
 
 def create_lesson_sync(indi_language, source_language, readers_type,
                        grammatical_params,

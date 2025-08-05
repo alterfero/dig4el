@@ -1,10 +1,1 @@
-{
-  "language": "Abkhaz-Adyge",
-  "documents": {
-    "vectorized": [],
-    "oa_vector_store_name": "",
-    "oa_vector_store_id": ""
-  },
-  "pairs": [],
-  "outputs": {}
-}
+{"language": "Abkhaz-Adyge", "documents": {"vectorized": [], "oa_vector_store_name": "", "oa_vector_store_id": "vs_68926a038e388191a1f28fc96e93c1d2"}, "pairs": [], "outputs": {}}
