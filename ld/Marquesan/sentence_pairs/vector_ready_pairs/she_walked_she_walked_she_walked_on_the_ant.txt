@@ -1,1 +1,0 @@
-" SOURCE LANGUAGE: She walked, she walked, she walked on, the ant.... TARGET LANGUAGE: Ua he'e, ua he'e, ua he'e, ua he'e te k\u014d e e e.. GRAMMATICAL DESCRIPTION:  GRAMMATICAL KEYWORDS: "

@@ -1,1 +1,0 @@
-" SOURCE LANGUAGE: The ant proposed: \"From 'Oui'a to the beach at 'Omo'a.\". TARGET LANGUAGE: Pe'au te k\u014d : \"Mei 'Oui'a io he one i 'Omo'a.\". GRAMMATICAL DESCRIPTION:  GRAMMATICAL KEYWORDS: "

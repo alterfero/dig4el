@@ -1,1 +1,0 @@
-" SOURCE LANGUAGE: She will mock us.. TARGET LANGUAGE: Ha'ame'eme'ea tatou e te k\u014d.. CONCEPT - TARGET WORD(S) RELATIONS:  She: te, k\u014d. mocking action: ha'ame'eme'ea. us: tatou. GRAMMATICAL DESCRIPTION:  GRAMMATICAL KEYWORDS: "

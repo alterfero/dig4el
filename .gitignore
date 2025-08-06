@@ -1,3 +1,4 @@
 .sqtreamlit/secrets.toml
 venv/
 CQ_transcriptions_not_shared/
+ld/

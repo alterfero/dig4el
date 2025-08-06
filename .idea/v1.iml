@@ -5,6 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/venv2" />
+      <excludeFolder url="file://$MODULE_DIR$/ld" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (v1)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

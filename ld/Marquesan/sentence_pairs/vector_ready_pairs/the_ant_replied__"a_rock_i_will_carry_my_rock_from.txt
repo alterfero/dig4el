@@ -1,1 +1,0 @@
-" SOURCE LANGUAGE: The ant replied: \"A rock. I will carry my rock from 'Oui'a to the beach at 'Omo'a.\". TARGET LANGUAGE: Pe'au ai te k\u014d : \"E ke\u2019\u0101. E 'ave au i t\u0101\u2019u ke\u2019\u0101, mi 'Oui'a, e 'ave i no he one i 'Omo'a.\". GRAMMATICAL DESCRIPTION:  GRAMMATICAL KEYWORDS: "

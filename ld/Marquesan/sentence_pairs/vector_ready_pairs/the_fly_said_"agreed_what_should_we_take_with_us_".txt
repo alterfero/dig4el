@@ -1,1 +1,0 @@
-" SOURCE LANGUAGE: The fly said, \"Agreed. What should we take with us?\". TARGET LANGUAGE: Pe'au te ti'au'e : \"Ati\u2019i. E aha ta taua e 'ave ?\". GRAMMATICAL DESCRIPTION:  GRAMMATICAL KEYWORDS: "
