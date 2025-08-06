@@ -46,7 +46,7 @@ def parse_flex_xml(xml_content):
     return data
 
 
-st.title("FLEX XML Linguistics Visualizer")
+st.title("FLEX XML Visualizer")
 
 uploaded_file = st.file_uploader("Upload XML file", type="xml")
 

@@ -35,9 +35,7 @@ st.set_page_config(
 )
 
 BASE_LD_PATH = os.path.join(
-    os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
-    "storage"
-)
+    os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"), "storage")
 
 if "indi_language" not in st.session_state:
     st.session_state["indi_language"] = "Abkhaz-Adyge"
