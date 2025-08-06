@@ -234,7 +234,7 @@ SCORE_MIN = 0.85
 
 K = 50
 
-BASE_LD_PATH = "./ld/"
+BASE_LD_PATH = os.getenv('RAILWAY_VOLUME_MOUNT_PATH', './ld')
 
 # ==================================================================
 

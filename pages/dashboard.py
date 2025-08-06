@@ -34,7 +34,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-BASE_LD_PATH = "./ld"
+BASE_LD_PATH = os.getenv('RAILWAY_VOLUME_MOUNT_PATH', './ld')
 
 if "indi_language" not in st.session_state:
     st.session_state["indi_language"] = "Abkhaz-Adyge"

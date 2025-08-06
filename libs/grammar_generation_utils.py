@@ -1,10 +1,7 @@
 import json
 import os
 
-with open("paths.json", "r") as f:
-    paths = json.load(f)
-BASE_LD_FOLDER = paths["BASE_LD_FOLDER"]
-
+BASE_LD_FOLDER = os.getenv('RAILWAY_VOLUME_MOUNT_PATH', './ld')
 
 def extract_parameter_names_from_cq_knowledge(indi_language: str):
     with open(os.path.join(BASE_LD_FOLDER, indi_language, "cq", "cq_knowledge", "cq_knowledge.json"), "r") as fi:

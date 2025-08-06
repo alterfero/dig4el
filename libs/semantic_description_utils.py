@@ -8,7 +8,7 @@ from collections import defaultdict
 import pkg_resources
 from pyvis.network import Network
 
-BASE_LD_PATH = "./ld/"
+BASE_LD_PATH = os.getenv('RAILWAY_VOLUME_MOUNT_PATH', './ld')
 
 def description_dict_to_kw(description_dict: dict) -> List[str]:
 

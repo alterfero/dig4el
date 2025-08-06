@@ -23,7 +23,7 @@ from libs import grammar_generation_utils as ggu
 from libs import output_generation_utils as ogu
 from libs import retrieval_augmented_generation_utils as ragu
 
-BASE_LD_PATH = "./ld/"
+BASE_LD_PATH = os.getenv('RAILWAY_VOLUME_MOUNT_PATH', './ld')
 
 if "indi" not in st.session_state:
     try:
