@@ -35,7 +35,7 @@ st.set_page_config(
 )
 
 BASE_LD_PATH = os.path.join(
-    os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "/ld"),
+    os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
     "storage"
 )
 
