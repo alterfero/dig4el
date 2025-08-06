@@ -487,7 +487,7 @@ with tab3:
                     len(st.session_state.sentence_pairs) - len(new_pairs)
                 ))
             for pair in new_pairs:
-                squ.enqueue_sentence_pair(pair, os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
+                job_id = squ.enqueue_sentence_pair(pair, os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
 
     if st.session_state.enriching_pairs:
         st.markdown("""The sentence augmentation will continue even if you close this page. 

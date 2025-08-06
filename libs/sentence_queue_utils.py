@@ -28,7 +28,7 @@ from libs import semantic_description_utils as sdu
 # Default Redis connection details
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
-
+redis_client = Redis.from_url(REDIS_URL)
 
 def _process_sentence_pair(sentence_pair: Dict, output_dir: str) -> Dict:
     """Worker task to enrich a sentence pair and append it to a JSONL file."""
@@ -37,28 +37,14 @@ def _process_sentence_pair(sentence_pair: Dict, output_dir: str) -> Dict:
     result = sdu.add_description_and_keywords_to_sentence_pair(sentence_pair)
     if result is not None:
         filename = u.clean_sentence(sentence_pair["source"], filename=True) + ".json"
+        # write file to volume
         with open(os.path.join(output_dir, filename), "a", encoding="utf-8") as f:
             f.write(json.dumps(result, ensure_ascii=False) + "\n")
     return result
 
 
 def enqueue_sentence_pair(sentence_pair: Dict, output_dir: str) -> str:
-    """Enqueue a sentence pair for processing.
-
-    Parameters
-    ----------
-    sentence_pair : dict
-        Source/target sentence pair.
-    output_file : str
-        Path to the JSONL file where results will be appended.
-
-    Returns
-    -------
-    str
-        The job ID for tracking.
-    """
-    redis_conn = Redis.from_url(REDIS_URL)
-    q = Queue(QUEUE_NAME, connection=redis_conn)
+    q = Queue(QUEUE_NAME, connection=redis_client)
     job = q.enqueue(
         _process_sentence_pair,
         sentence_pair,
