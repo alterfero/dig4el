@@ -29,7 +29,10 @@ https://www.sbert.net/
 
 # def sentence_pair_dict_to_sentence_pair_txt(sentence_pair_dict: dict) -> str:
 
-BASE_LD_PATH = os.getenv('RAILWAY_VOLUME_MOUNT_PATH', './ld')
+BASE_LD_PATH = os.path.join(
+    os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
+    "storage"
+)
 
 def compute_embeddings_and_FAISS_index(
         sentences: list[str],
