@@ -15,12 +15,8 @@
 
 import streamlit as st
 import time
-with st.spinner("Loading resources..."):
-    time.sleep(10)
-
 import os
 import pandas as pd
-
 import json
 from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
