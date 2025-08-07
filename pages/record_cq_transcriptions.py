@@ -450,8 +450,3 @@ if st.session_state["cq_is_chosen"]:
     colf, colg = st.columns(2)
     colf.download_button(label="**download your transcription**",
                          data=json.dumps(st.session_state["recording"], indent=4), file_name=filename)
-    colf.markdown("""Downloading the transcription saves your transcription on your computer.""")
-    colg.markdown("""
-                Nothing is stored on the server -> **Save your work!**
-                DIG4EL creates one file per questionnaire, that you can then re-load to continue working on it, or share with anyone you want.  
-                  """)

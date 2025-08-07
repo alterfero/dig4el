@@ -18,6 +18,7 @@ import streamlit as st
 import json
 from libs import utils as u
 from libs import glottolog_utils as gu
+from libs import file_manager_utils as fmu
 from libs import grammar_generation_agents as gga
 from libs import grammar_generation_utils as ggu
 from libs import output_generation_utils as ogu
@@ -28,6 +29,8 @@ BASE_LD_PATH = os.path.join(
     "storage"
 )
 
+if "aa_path_check" not in st.session_state:
+    st.session_state.aa_path_check = False
 if "indi" not in st.session_state:
     try:
         st.session_state.indi = st.session_state.indi_language
@@ -96,6 +99,7 @@ if st.session_state.indi == "Abkhaz-Adyge":
         st.session_state.indi = selected_language
         st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi,
                                                                        "glottocode not found")
+        fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r") as f:
             st.session_state.info_dict = json.load(f)
 else:

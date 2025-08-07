@@ -101,23 +101,21 @@ def vectorize_vaps(indi_language):
 
 def save_index_id_to_meta_and_metadata(index, id_to_meta, indi_language):
     path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors")
-    index_path = os.path.join(path, "index.pkl")
+    os.makedirs(path, exist_ok=True)
+    index_path = os.path.join(path, "index.faiss")
     id_to_meta_path = os.path.join(path, "id_to_meta.json")
-    with open(index_path, 'wb') as f:
-        pickle.dump(index, f)
+    faiss.write_index(index, index_path)
     with open(id_to_meta_path, 'w') as f:
         json.dump(id_to_meta, f)
 
 def load_index_and_id_to_meta(indi_language):
     path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors")
-    index_path = os.path.join(path, "index.pkl")
+    index_path = os.path.join(path, "index.faiss")
     id_to_meta_path = os.path.join(path, "id_to_meta.json")
-    with open(index_path, 'rb') as f:
-        index = pickle.load(f)
+    index = faiss.read_index(index_path)
     with open(id_to_meta_path, 'r') as f:
         id_to_meta = json.load(f)
     return index, id_to_meta
-
 
 def retrieve_similar(query: str, index, id_to_meta,
                      model_name='all-MiniLM-L6-v2', k=5, normalize=True,
