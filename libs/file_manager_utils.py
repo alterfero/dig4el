@@ -23,25 +23,40 @@ default_delimiters = [" ",
     "\u2026"]
 
 def create_ld(BASE_LD_PATH, lname):
-    os.mkdir(os.path.join(BASE_LD_PATH, lname))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "cq"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "cq", "cq_translations"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "cq", "cq_knowledge"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions", "sources"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions", "embeddings"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "augmented_pairs"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "pairs"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "vector_ready_pairs"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "vectors"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "monolingual"))
-    os.mkdir(os.path.join(BASE_LD_PATH, lname, "outputs"))
-
-    with open(os.path.join(BASE_LD_PATH, lname, "info.json"), "w") as f:
-        json.dump(doc_info, f)
-    with open(os.path.join(BASE_LD_PATH, lname, "delimiters.json"), "w") as f:
-        json.dump(default_delimiters, f)
+    if lname not in os.listdir(BASE_LD_PATH):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname))
+    if "cq" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "cq"))
+    if "cq_translations" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "cq")):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "cq", "cq_translations"))
+    if "cq_knowledge" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "cq")):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "cq", "cq_knowledge"))
+    if "descriptions" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions"))
+    if "sources" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "descriptions")):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions", "sources"))
+    if "embeddings" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "descriptions")):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions", "embeddings"))
+    if "sentence_pairs" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs"))
+    if "augmented_pairs" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs")):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "augmented_pairs"))
+    if "pairs" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs")):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "pairs"))
+    if "vector_ready_pairs" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs")):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "vector_ready_pairs"))
+    if "vectors" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs")):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "vectors"))
+    if "monolingual" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "monolingual"))
+    if "outputs" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "outputs"))
+    if "info.json" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
+        with open(os.path.join(BASE_LD_PATH, lname, "info.json"), "w") as f:
+            json.dump(doc_info, f)
+    if "delimiters.json" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
+        with open(os.path.join(BASE_LD_PATH, lname, "delimiters.json"), "w") as f:
+            json.dump(default_delimiters, f)
 
 def display_file_manager(folder_path: str, file_extensions: list[str] = None):
     """

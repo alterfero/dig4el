@@ -37,6 +37,12 @@ st.set_page_config(
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"), "storage")
 
+
+if "aa_path_check" not in st.session_state:
+    st.session_state.aa_path_check = False
+if "indi_path_check" not in st.session_state:
+    st.session_state.indi_path_check = False
+
 if "indi_language" not in st.session_state:
     st.session_state["indi_language"] = "Abkhaz-Adyge"
 if "indi_glottocode" not in st.session_state:
@@ -92,6 +98,9 @@ if "vector_store_status" not in st.session_state:
 PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
 CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
 JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
+
+if not st.session_state.aa_path_check:
+    fmu.create_ld(BASE_LD_PATH, "Abkhaz-Adyge")
 
 if "index.pkl" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs", "vectors")):
     st.session_state.has_pairs = True
@@ -154,8 +163,7 @@ if st.button("Select {}".format(selected_language)):
     st.session_state.indi_language = selected_language
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language,
                                                                    "glottocode not found")
-    if st.session_state.indi_language not in os.listdir(os.path.join(BASE_LD_PATH)):
-        fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
+    fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r") as f:
         st.session_state.info_doc = json.load(f)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "delimiters.json"), "r") as f:
