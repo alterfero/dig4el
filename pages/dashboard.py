@@ -568,15 +568,14 @@ with tab3:
 
     st.subheader("4. Index augmented pairs to make them ready for use")
     if st.button("Index !"):
-        if sdu.get_vector_ready_pairs(st.session_state.indi_language):
-            st.success("Augmented pairs prepared for vectorization")
-        if ragu.vectorize_vaps(st.session_state.indi_language):
-            st.success("Augmented pairs vectorized and indexed")
-        ragu.create_hard_kw_index(st.session_state.indi_language)
-        st.session_state.has_pairs = True
-        st.rerun()
-
-
+        with st.spinner("Indexing..."):
+            if sdu.get_vector_ready_pairs(st.session_state.indi_language):
+                st.success("Augmented pairs prepared for vectorization")
+            if ragu.vectorize_vaps(st.session_state.indi_language):
+                st.success("Augmented pairs vectorized and indexed")
+            ragu.create_hard_kw_index(st.session_state.indi_language)
+            st.session_state.has_pairs = True
+            st.rerun()
 
     if st.session_state.has_pairs:
         st.divider()
@@ -592,11 +591,13 @@ with tab3:
         if "hard_kw_retrieval_results" not in st.session_state:
             st.session_state.hard_kw_retrieval_results = []
         if st.button("Submit"):
-            st.session_state.query_results = ragu.retrieve_similar(query,
-                                                                   index=index,
-                                                                   id_to_meta=id_to_meta,
-                                                                   k=5)
-            st.session_state.hard_kw_retrieval_results = ragu.hard_retrieve_from_query(query, st.session_state.indi_language)
+            with st.spinner("Retrieving sentences from vectors"):
+                st.session_state.query_results = ragu.retrieve_similar(query,
+                                                                       index=index,
+                                                                       id_to_meta=id_to_meta,
+                                                                       k=5)
+            with st.spinner("Retrieving sentences from keywords"):
+                st.session_state.hard_kw_retrieval_results = ragu.hard_retrieve_from_query(query, st.session_state.indi_language)
 
         st.write("Vector results: ")
         st.write(st.session_state.query_results)

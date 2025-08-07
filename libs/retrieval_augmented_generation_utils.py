@@ -92,10 +92,8 @@ def vectorize_vaps(indi_language):
 
         with open(os.path.join(vec_path, "embeddings.pkl"), "wb") as f:
             pickle.dump(embeddings, f)
-        with open(os.path.join(vec_path, "index.pkl"), "wb") as f:
-            pickle.dump(index, f)
-        with open(os.path.join(vec_path, "id_to_meta.json"), "w") as f:
-            json.dump(id_to_meta, f)
+
+        save_index_id_to_meta_and_metadata(index, id_to_meta, indi_language)
 
         return True
 
@@ -119,7 +117,7 @@ def load_index_and_id_to_meta(indi_language):
 
 def retrieve_similar(query: str, index, id_to_meta,
                      model_name='all-MiniLM-L6-v2', k=5, normalize=True,
-                     min_score=0.3):
+                     min_score=0.5):
     k = min(len(id_to_meta.keys()), k)
     model = SentenceTransformer(model_name)
     q_vec = model.encode([query], convert_to_numpy=True)

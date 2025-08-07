@@ -1,10 +1,4 @@
-import streamlit as st
 import xml.etree.ElementTree as ET
-import pandas as pd
-import json
-
-if "sentence_pairs" not in st.session_state:
-    st.session_state.sentence_pairs = None
 
 def parse_flex_xml(xml_content):
     root = ET.fromstring(xml_content)
@@ -42,48 +36,9 @@ def parse_flex_xml(xml_content):
 
         data.append({
             "Sentence Number": sentence_num,
-            "Sentence": sentence_urn,
+            "Sentence (URN)": sentence_urn,
             "Words": words_data
         })
 
     return data
-
-def _convert_to_sentence_pairs(data):
-    pairs = []
-    for item in data:
-        pairs.append(
-            {
-                "source": "",
-                "target": item["Sentence"],
-                "gloss": item["Words"]
-            }
-        )
-    return pairs
-
-st.title("FLEX XML Visualizer")
-
-uploaded_file = st.file_uploader("Upload XML file", type="xml")
-
-if uploaded_file:
-    xml_content = uploaded_file.read().decode("utf-8")
-    parsed_data = parse_flex_xml(xml_content)
-    st.session_state.sentence_pairs = _convert_to_sentence_pairs(parsed_data)
-    if st.session_state.sentence_pairs:
-        st.download_button("Download sentence pairs",
-                           data=json.dumps(st.session_state.sentence_pairs),
-                           file_name="sentence_pairs_from_flex.json",
-                           mime="application/json"
-                           )
-
-    for sentence in parsed_data:
-        st.subheader(f"Sentence {sentence['Sentence Number']}")
-        st.write(sentence["Sentence"])
-
-        for word in sentence["Words"]:
-            st.markdown(f"**{word['Word']}** - *{word['Gloss']}*")
-
-            if word['Morphemes']:
-                morph_df = pd.DataFrame(word['Morphemes'])
-                st.table(morph_df)
-
 
