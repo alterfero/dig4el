@@ -264,15 +264,16 @@ if (st.session_state.alterlingua_contribution
                 with open(os.path.join(BASE_LD_PATH, st.session_state.indi,
                                        "sentence_pairs", "augmented_pairs", spf), "r") as f:
                     sp = json.load(f)
-                sps.append(
-                    {
+                    sapd = {
                         st.session_state.indi: sp["target"],
                         "source": sp["source"],
                         "grammatical_description": sp["description"]["grammatical_description"],
                         "enunciation": sp["description"]["enunciation"],
-                        "concept-words_connections": sp.get("connections", "no connections")
+                        "concept-words_connections": sp.get("connections", "no connections"),
+                        "gloss": sp.get("gloss", "no gloss")
                     }
-                )
+
+                sps.append(sapd)
             sentence_pairs_blob = json.dumps(sps)
         else:
             sentence_pairs_blob = "No available sentence pairs."

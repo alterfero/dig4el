@@ -116,7 +116,7 @@ def load_index_and_id_to_meta(indi_language):
     return index, id_to_meta
 
 def retrieve_similar(query: str, index, id_to_meta,
-                     model_name='all-MiniLM-L6-v2', k=5, normalize=True,
+                     model_name='all-MiniLM-L6-v2', k=10, normalize=True,
                      min_score=0.5):
     k = min(len(id_to_meta.keys()), k)
     model = SentenceTransformer(model_name)
@@ -135,12 +135,12 @@ def retrieve_similar(query: str, index, id_to_meta,
     scores, ids = dists[0], idxs[0]
     results = []
     for score, idx in zip(scores, ids):
-        if normalize:
-            if score < min_score:
-                continue
-        else:
-            if score > min_score:  # lower L2 is better
-                continue
+        # if normalize:
+        #     if score < min_score:
+        #         continue
+        # else:
+        #     if score > min_score:  # lower L2 is better
+        #         continue
 
         results.append(id_to_meta[str(int(idx))])
         print("id_to_meta: {}, score:{}".format(id_to_meta[str(int(idx))]["filename"], score))

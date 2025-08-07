@@ -1,12 +1,12 @@
 from __future__ import annotations
 
+import copy
 import json
 import os
 from libs import semantic_description_agents as sda
 from typing import List
 from collections import defaultdict
 import pkg_resources
-from pyvis.network import Network
 
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
@@ -97,19 +97,12 @@ def add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None |
         return None
     else:
         description = sda.describe_sentence_sync(source_sentence)
-        # print("*************************")
-        # print("*      DESCRIPTION      *")
-        # print("*************************")
-        # print(description)
         keywords = description.get("grammatical_keywords", [])
         keywords += description_dict_to_kw(description)
         keywords = list(set(keywords))
         description["grammatical_keywords"] = keywords
-        augmented_pair = {
-                "source": sentence_pair["source"],
-                "target": sentence_pair["target"],
-                "description": description,
-            }
+        augmented_pair = copy.deepcopy(sentence_pair)
+        augmented_pair["description"] = description
         return augmented_pair
 
 def build_keyword_index(enriched_pairs: List) -> dict:
@@ -131,7 +124,7 @@ def plot_semantic_graph_pyvis(data,
                               referent_color="#C680B6",
                               top_node_color="#729EA1",
                               predicate_color="#C2D5D6"):
-
+    from pyvis.network import Network
     # ensure PyVis can find its Jinja templates
     template_dir = pkg_resources.resource_filename("pyvis", "templates")
 

@@ -356,8 +356,8 @@ with tab2:
 with tab3:
 
     st.write(f"""
-    1. Sentence pairs must be organized in a JSON file "source":"sentence in English", 
-    "target": "sentence in the target language" etc. 
+    1. Sentence pairs must be organized in a JSON file as list [] of "source":"sentence in English", 
+    "target": "sentence in the target language". 
     2. DIG4EL *augments* these pairs using a LLM, adding a grammatical description and a semantic graph. 
     It is a long process. The *augmented pairs* file is then stored for future use, on the server and you
     should also keep a copy on your computer.
@@ -401,7 +401,7 @@ with tab3:
                     if "source" in sentence_pairs[0].keys() and "target" in sentence_pairs[0].keys():
                         valid_file = True
                     else:
-                        st.write(
+                        st.warning(
                             "This is a JSON file, but not a sentence pair file formatted as a list of 'source' and 'target' keys()")
                 except:
                     st.write("Not a correctly formatted JSON file.")
@@ -466,6 +466,8 @@ with tab3:
                 st.write("{} --> {}".format(connection, sas["connections"][connection]))
         else:
             st.write("No connection created.")
+        if sas.get("gloss", None):
+            st.write(sas["gloss"])
         st.markdown("**Semantic-Structural Graph:**")
         html = sdu.plot_semantic_graph_pyvis(sas["description"])
         components.html(html, height=600, width=1000)
