@@ -205,11 +205,7 @@ if st.session_state.run_sources:
         with st.spinner("Retrieving a helpful selection of augmented pairs"):
             # retrieve N sentences using embeddings
             index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "index.pkl")
-            with open(index_path, "rb") as f:
-                index = pickle.load(f)
-            id_to_meta_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "id_to_meta.json")
-            with open(id_to_meta_path, "r") as f:
-                id_to_meta = json.load(f)
+            index, id_to_meta = ragu.load_index_and_id_to_meta(st.session_state.indi)
             vec_retrieved = ragu.retrieve_similar(query, index, id_to_meta, k=10, min_score=0.3)
             vecf_retrieved = [i["filename"][:-4]+".json" for i in vec_retrieved]
             # retrieve sentences from keywords

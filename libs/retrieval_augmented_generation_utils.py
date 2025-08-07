@@ -123,8 +123,14 @@ def retrieve_similar(query: str, index, id_to_meta,
     k = min(len(id_to_meta.keys()), k)
     model = SentenceTransformer(model_name)
     q_vec = model.encode([query], convert_to_numpy=True)
+
     if normalize:
         faiss.normalize_L2(q_vec)
+
+    print("FAISS version:", faiss.__version__)
+    print("Index type:", type(index))
+    print("Index class:", index.__class__)
+    print("Index module:", index.__class__.__module__)
 
     dists, idxs = index.search(q_vec, k)
 

@@ -12,9 +12,15 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+import streamlit as st
+import time
+with st.spinner("Loading resources..."):
+    time.sleep(10)
+
 import os
 import pandas as pd
-import streamlit as st
+
 import json
 from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
