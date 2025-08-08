@@ -19,9 +19,22 @@
 import os
 from redis import Redis
 from rq import SpawnWorker, Queue
+import time
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
+
+def wait_for_redis(url: str, retries: int = 20, delay: float = 0.5) -> Redis:
+    last_err = None
+    for _ in range(retries):
+        try:
+            conn = Redis.from_url(url)
+            conn.ping()
+            return conn
+        except Exception as e:
+            last_err = e
+            time.sleep(delay)
+    raise last_err
 
 def main() -> None:
     redis_conn = Redis.from_url(REDIS_URL)
