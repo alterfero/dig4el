@@ -25,6 +25,8 @@ QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
 
 def main() -> None:
     redis_conn = Redis.from_url(REDIS_URL)
+    print("=================== REDIS WORKER =============================================")
+    print(f"Connecting to Redis at: {REDIS_URL}")
     queue = Queue('sentence', connection=redis_conn)
     worker = SpawnWorker([queue])
     worker.work()
