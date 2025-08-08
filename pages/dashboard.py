@@ -41,7 +41,8 @@ BASE_LD_PATH = os.path.join(
 
 
 if "aa_path_check" not in st.session_state:
-    st.session_state.aa_path_check = False
+    fmu.create_ld(BASE_LD_PATH, "Abkhaz-Adyge")
+
 if "indi_path_check" not in st.session_state:
     st.session_state.indi_path_check = False
 
@@ -80,6 +81,11 @@ if "sentence_pairs" not in st.session_state:
     st.session_state.sentence_pairs = None
 if "enriching_pairs" not in st.session_state:
     st.session_state.enriching_pairs = False
+if "batch_id" not in st.session_state:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r") as f:
+        content = json.load(f)
+    st.session_state.batch_id = content.get("batch_id", "no batch ID in batch_id_store")
+    st.session_state.batch_id = None
 if "enriched_pairs" not in st.session_state:
     st.session_state.enriched_pairs = []
 if "pairs_in_queue" not in st.session_state:
@@ -96,13 +102,14 @@ if "file_status_list" not in st.session_state:
     st.session_state.file_status_list = {}
 if "vector_store_status" not in st.session_state:
     st.session_state.vector_store_status = None
+if "available_vector_stores" not in st.session_state:
+    st.session_state.available_vector_stores = ovsu.list_vector_stores_sync()
 
 PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
 CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
 JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
 
-if not st.session_state.aa_path_check:
-    fmu.create_ld(BASE_LD_PATH, "Abkhaz-Adyge")
+
 
 if "index.pkl" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs", "vectors")):
     st.session_state.has_pairs = True
@@ -117,39 +124,6 @@ def generate_sentence_pairs_signatures(sentence_pairs: list[dict]) -> list[str]:
         sig_list.append(u.clean_sentence(sentence_pair["source"], filename=True))
     return sig_list
 
-
-def check_augmentation_progress() -> None:
-    """Update session state based on ongoing background jobs.
-    by comparing sentences in the sentence file with files in the
-    augmented_pairs folder"""
-    # all jobs
-    with open(CURRENT_JOB_SIG_FILE, "r") as f:
-        all_jobs = json.load(f)
-    # done jobs
-    processed_jobs = [filename[:-5] for filename in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
-                      if filename[:-5] in all_jobs]
-
-    st.session_state.pairs_in_queue = list(set(all_jobs).difference(set(processed_jobs)))
-    st.session_state.enriching_pairs = len(processed_jobs) < len(all_jobs)
-    st.session_state.jobs_total = len(all_jobs)
-    st.session_state.jobs_processed = processed_jobs
-
-    print("st.session_state.jobs_total: {}".format(st.session_state.jobs_total))
-    print("all_jobs: {}".format(all_jobs))
-    print("st.session_state.jobs_processed: {}".format(st.session_state.jobs_processed))
-
-
-    if len(st.session_state.jobs_processed) == len(all_jobs):
-        print("!!!! ALL JOBS DONE !!!")
-        os.remove(CURRENT_JOB_SIG_FILE)
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r") as f:
-            info_dict = json.load(f)
-        for item in info_dict["pairs"]:
-            if item["filename"] == st.session_state.selected_pairs_filename:
-                item["augmented"] = True
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as f:
-            json.dump(info_dict, f)
-        st.session_state.info_doc = info_dict
 
 with st.sidebar:
     st.subheader("DIG4EL")
@@ -274,9 +248,9 @@ with tab2:
                                         } for d in st.session_state.uploaded_docs]
 
     # checking if vector store exists from api call and info, create one if needed
-    available_vector_stores = ovsu.list_vector_stores_sync()
+
     vsid_from_info_dict = st.session_state.info_doc["documents"].get("oa_vector_store_id", None)
-    if vsid_from_info_dict is not None and vsid_from_info_dict in [vs.id for vs in available_vector_stores]:
+    if vsid_from_info_dict is not None and vsid_from_info_dict in [vs.id for vs in st.session_state.available_vector_stores]:
         st.session_state.vsid = vsid_from_info_dict
         print("VSID found and matches ({})".format(st.session_state.vsid))
         st.session_state.has_vector_store = True
@@ -434,7 +408,8 @@ with tab3:
 
     st.subheader("2. Augment sentence pairs with automatic grammatical descriptions")
     st.markdown("""Sentence pairs are augmented with grammatical descriptions, so they can be used efficiently.
-    This is a long process (around 30 seconds per sentence pair) that will run in the background once started.  
+    This is a long process (up to 2 minutes per sentence) that will run in the background once started (you can
+    leave this page or turn off your computer and come back later.)
     """)
 
     # Display available augmented pairs
@@ -487,7 +462,6 @@ with tab3:
             disabled=st.session_state.enriching_pairs,
         )
         if create_btn and not st.session_state.enriching_pairs:  # augmentation launched only if previous one done
-            st.session_state.enriching_pairs = True
             pairs_signatures = generate_sentence_pairs_signatures(st.session_state.sentence_pairs)
             with open(CURRENT_JOB_SIG_FILE, "w") as f:
                 json.dump(pairs_signatures, f)
@@ -499,32 +473,49 @@ with tab3:
                 st.write("{} sentences discarded: they already have been augmented".format(
                     len(st.session_state.sentence_pairs) - len(new_pairs)
                 ))
-            for pair in new_pairs:
-                job_id = squ.enqueue_sentence_pair(pair, os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
 
-    if st.session_state.enriching_pairs:
-        st.markdown("""The sentence augmentation will continue even if you close this page. 
-        Keeping the page open will allow you to monitor the progress. The augmented sentence file 
-        will be saved on the server once augmentation is finished, ready for use.""")
-        if st.button("Show progress update"):
-            check_augmentation_progress()
-            total = st.session_state.jobs_total
-            processed = len(st.session_state.jobs_processed)
-            st.progress(processed / total if total else 0.0, "Sentence augmentation in progress...")
-            st.write("Processed {}/{}".format(processed, total))
-        if st.checkbox("Show sentences"):
-            cola, cols = st.columns(2)
-            cola.write("To process")
-            for item in st.session_state.pairs_in_queue:
-                cola.write(item)
-            cols.write("Processed")
-            for item in st.session_state.jobs_processed:
-                cols.write(item)
+            st.session_state.batch_id = squ.enqueue_batch(new_pairs)
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "w") as f:
+                json.dump({"batch_id": st.session_state.batch_id}, f)
+
+            st.session_state.enriching_pairs = True
+
+    progress = squ.get_batch_progress(st.session_state.batch_id)
+
+    if progress["queued"] != progress["finished"] + progress["failed"]:
+        st.markdown("""The sentence augmentation is in progress. It is a long process (up to 2 minutes per sentence)
+        that will continue even if you close this page or turn off your computer. You can come back anytime 
+        and press the progress update button below to check on progress and make completed augmentations 
+        available for use. 
+        """)
+
+        if st.button("Show progress update (re-click to see progress)"):
+            progress = squ.get_batch_progress(st.session_state.batch_id)
+            st.write(progress)
+
     else:
-        st.write("The last sentence pairs augmentation job is complete, you can start a new one.")
+        if progress["queued"] != 0:
+            progress = squ.get_batch_progress(st.session_state.batch_id)
+            st.markdown("""
+            The last sentence pairs augmentation job is complete, you can use augmented sentences 
+            and save them on your computer if you want to keep the raw form (best format to use with other software). 
+            If some sentences have not been augmented, you can re-launch the same augmentation work and only the 
+            non-augmented sentences will be picked up. 
+                        """)
+            n_to_write = progress["finished"]
+            n_written = squ.persist_finished_results(batch_id=st.session_state.batch_id,
+                                                     output_dir=os.path.join(BASE_LD_PATH,
+                                                                             st.session_state.indi_language,
+                                                                             "sentence_pairs",
+                                                                             "augmented_pairs"))
+            st.success("{} sentence to write, {} sentences written".format(n_to_write, n_written))
+
+            print("Batch {} cleared".format(st.session_state.batch_id))
+            squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
+
 
     # ADD WORD-CONCEPT CONNECTIONS
-    st.subheader("3. Connect word(s) and concept(s)")
+    st.subheader("3. Connect word(s) and concept(s) in augmented sentences")
     st.write("This step is manual and adds a lot of information to the corpus.")
 
     #build aug_sent_df

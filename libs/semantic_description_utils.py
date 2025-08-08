@@ -4,9 +4,10 @@ import copy
 import json
 import os
 from libs import semantic_description_agents as sda
-from typing import List
+from typing import List, Tuple
 from collections import defaultdict
 import pkg_resources
+from libs import utils as u
 
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
@@ -90,7 +91,7 @@ def TEST_add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> N
         return augmented_pair
 
 
-def add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None | dict:
+def add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None | Tuple[dict, str]:
     source_sentence = sentence_pair.get("source", "")
     if source_sentence == "":
         print("No source in {}".format(sentence_pair))
@@ -103,7 +104,11 @@ def add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None |
         description["grammatical_keywords"] = keywords
         augmented_pair = copy.deepcopy(sentence_pair)
         augmented_pair["description"] = description
-        return augmented_pair
+
+        # filename
+        filename = u.clean_sentence(source_sentence, filename=True)
+
+        return augmented_pair, filename
 
 def build_keyword_index(enriched_pairs: List) -> dict:
     """
