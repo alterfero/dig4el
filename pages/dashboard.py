@@ -85,7 +85,6 @@ if "batch_id" not in st.session_state:
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r") as f:
         content = json.load(f)
     st.session_state.batch_id = content.get("batch_id", "no batch ID in batch_id_store")
-    st.session_state.batch_id = None
 if "enriched_pairs" not in st.session_state:
     st.session_state.enriched_pairs = []
 if "pairs_in_queue" not in st.session_state:
