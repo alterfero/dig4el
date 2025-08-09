@@ -239,3 +239,7 @@ def clear_batch(batch_id: str, delete_jobs: bool = False) -> dict:
         "removed_batch_keys": removed_keys,
         "removed_jobs": removed_jobs
     }
+
+def flush_all():
+    redis_client.flushall()
+

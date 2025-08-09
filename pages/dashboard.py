@@ -142,6 +142,9 @@ if st.button("Select {}".format(selected_language)):
         st.session_state.info_doc = json.load(f)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "delimiters.json"), "r") as f:
         st.session_state.delimiters = json.load(f)
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r") as f:
+        content = json.load(f)
+    st.session_state.batch_id = content.get("batch_id", "no batch ID in batch_id_store")
     PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
     CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
     JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
@@ -477,16 +480,23 @@ with tab3:
                 json.dump({"batch_id": st.session_state.batch_id}, f)
 
             st.session_state.enriching_pairs = True
-
-    progress = squ.get_batch_progress(st.session_state.batch_id)
-    st.write("Queue status: {}".format(progress))
-    if st.button("Save processed sentences on server"):
-        n_written = squ.persist_finished_results(batch_id=st.session_state.batch_id)
-        st.success("{} augmented pairs saved.")
-    if st.button("Clear batch"):
-        print("Clearing batch {}".format(st.session_state.batch_id))
-        squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
-
+    if st.checkbox("Redis info"):
+        progress = squ.get_batch_progress(st.session_state.batch_id)
+        st.write("Queue status: {}".format(progress))
+        if st.button("Save processed sentences on server"):
+            n_written = squ.persist_finished_results(batch_id=st.session_state.batch_id)
+            st.success("{} augmented pairs saved.")
+        if st.button("Clear batch"):
+            print("Clearing batch {}".format(st.session_state.batch_id))
+            squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
+        manual_batch_id = st.text_input("Enter manually a batch_id")
+        if st.button("Use this batch_id"):
+            st.session_state.batch_id = manual_batch_id
+            st.rerun()
+        ti = st.text_input("DANGER ZONE: flush all")
+        if ti == "flush all":
+            squ.flush_all()
+            st.rerun()
 
     if progress["queued"] != progress["finished"] + progress["failed"]:
         st.markdown("""The sentence augmentation is in progress. It is a long process (up to 2 minutes per sentence)
