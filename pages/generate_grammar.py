@@ -141,7 +141,8 @@ else:
 
 # documents
 st.session_state.vs_name = st.session_state.info_dict["documents"]["oa_vector_store_name"]
-if st.session_state.vs_name != "":
+
+if st.session_state.info_dict["documents"]["oa_vector_store_id"] != "":
     st.session_state.is_doc = True
 
 # pairs
