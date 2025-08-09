@@ -175,6 +175,7 @@ def load_job_return(job: Job):
 
 
 def persist_finished_results(batch_id: str, output_dir: str, max_items: int = 1000) -> int:
+    print("Persist finished results")
     os.makedirs(output_dir, exist_ok=True)
 
     finished_key = f"batch:{batch_id}:finished"
@@ -198,10 +199,11 @@ def persist_finished_results(batch_id: str, output_dir: str, max_items: int = 10
             continue
 
         fname = result.get("filename", job.id) + ".json"
+        print("Writing {} on volume".format(fname))
         with open(os.path.join(output_dir, fname), "w", encoding="utf-8") as f:
             json.dump(result.get("result", result), f, ensure_ascii=False)
         written += 1
-
+    print("Written {} job results on volume".format(written))
     return written
 
 

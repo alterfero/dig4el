@@ -134,7 +134,7 @@ if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state
         st.session_state.cq_knowledge = json.load(f)
     st.session_state.cq_files = [fn
                                 for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_translations"))
-                                if fn[-5:]==".json"]
+                                if fn[-5:] ==".json"]
     st.session_state.is_cq = True
 else:
     st.session_state.cq_knowledge = False
