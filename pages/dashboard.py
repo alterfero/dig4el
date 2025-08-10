@@ -484,7 +484,11 @@ with tab3:
         progress = squ.get_batch_progress(st.session_state.batch_id)
         st.write("Queue status: {}".format(progress))
         if st.button("Save processed sentences on server"):
-            n_written = squ.persist_finished_results(batch_id=st.session_state.batch_id)
+            n_written = squ.persist_finished_results(batch_id=st.session_state.batch_id,
+                                                     output_dir=os.path.join(BASE_LD_PATH,
+                                                                  st.session_state.indi_language,
+                                                                  "sentence_pairs",
+                                                                  "augmented_pairs"))
             st.success("{} augmented pairs saved.")
         if st.button("Clear batch"):
             print("Clearing batch {}".format(st.session_state.batch_id))
