@@ -421,3 +421,5 @@ def update_concept_names_in_transcription(transcription):
 #                     with open(join(recordings_folder, cq[:-5], language, recording), "w") as f:
 #                         json.dump(recording_json, f, indent=4)
 #                         print("Recording {} cleaned".format(recording))
+
+# print(clean_sentence("Have you seen pictures of my family?", filename=True))

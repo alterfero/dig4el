@@ -498,6 +498,7 @@ with tab3:
             squ.flush_all()
             st.rerun()
 
+    progress = squ.get_batch_progress(st.session_state.batch_id)
     if progress["queued"] != progress["finished"] + progress["failed"]:
         st.markdown("""The sentence augmentation is in progress. It is a long process (up to 2 minutes per sentence)
         that will continue even if you close this page or turn off your computer. You can come back anytime 
