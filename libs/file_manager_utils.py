@@ -57,7 +57,7 @@ def create_ld(BASE_LD_PATH, lname):
     if "delimiters.json" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
         with open(os.path.join(BASE_LD_PATH, lname, "delimiters.json"), "w") as f:
             json.dump(default_delimiters, f)
-    if "batch_id_store" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
+    if "batch_id_store.json" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
         bids = {"batch_id": "no_id_set"}
         with open(os.path.join(BASE_LD_PATH, lname, "batch_id_store.json"), "w") as f:
             json.dump(bids, f)
