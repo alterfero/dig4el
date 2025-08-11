@@ -140,15 +140,16 @@ def add_files_to_vector_store_sync(vsid, file_ids):
     return asyncio.run(add_files_to_vector_store(vsid, file_ids))
 
 
-def check_vector_store_status_sync(vs_name):
-    return asyncio.run(check_vector_store_status(vs_name))
+def check_vector_store_status_sync(vsid):
+    return asyncio.run(check_vector_store_status(vsid))
 
 
 # ================================= TEST SCRIPTS ====================================
 
-#delete_vector_store_sync('vs_6891146bea508191b24bd91bfadf5c7b')
-
+# delete_vector_store_sync('vs_689a3af047d88191b21b7f18a5ee1020')
+#
 # def print_vs_list():
+#     print("OA Vector Stores list")
 #     vss = list_vector_stores_sync()
 #     for vs in vss:
 #         print(vs)

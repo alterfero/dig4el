@@ -267,6 +267,8 @@ with tab2:
     # list which uploaded files are staged
     with st.spinner("Listing staged files"):
         st.session_state.staged = ovsu.list_files_sync()
+        print("Listing staged files")
+        print(st.session_state.staged)
     for staf in st.session_state.staged:
         for sf in st.session_state.file_status_list:
             if staf.filename == sf["filename"]:
@@ -304,10 +306,10 @@ with tab2:
     to_vectorize = [f for f in st.session_state.file_status_list if f["staged"] and not f["vectorized"]]
     if to_vectorize:
         colw2.markdown("**{} staged files to vectorize**".format(len(to_vectorize)))
-        if colw2.button("3) Vectorize all staged files"):
+        if colw2.button("3) Vectorize all {} unvectorized staged files".format(len([f["id"] for f in to_vectorize]))):
             to_vec_fids = [f["id"] for f in to_vectorize]
             with colw2:
-                with st.spinner("Launching vectorization of the staged files"):
+                with st.spinner("Launching vectorization of staged files"):
                     ovsu.add_files_to_vector_store_sync(vsid=st.session_state.vsid,
                                                         file_ids=to_vec_fids)
             st.rerun()

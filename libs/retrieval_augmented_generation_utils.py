@@ -90,9 +90,6 @@ def vectorize_vaps(indi_language):
 
         embeddings, index, id_to_meta = compute_embeddings_and_FAISS_index(vaps, id_to_meta)
 
-        with open(os.path.join(vec_path, "embeddings.pkl"), "wb") as f:
-            pickle.dump(embeddings, f)
-
         save_index_id_to_meta_and_metadata(index, id_to_meta, indi_language)
 
         return True
