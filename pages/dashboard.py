@@ -489,7 +489,7 @@ with tab3:
                                                                   st.session_state.indi_language,
                                                                   "sentence_pairs",
                                                                   "augmented_pairs"))
-            st.success("{} augmented pairs saved.")
+            st.success("{} augmented pairs saved.".format(n_written))
         if st.button("Clear batch"):
             print("Clearing batch {}".format(st.session_state.batch_id))
             squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
@@ -530,9 +530,6 @@ with tab3:
                                                                              "sentence_pairs",
                                                                              "augmented_pairs"))
             st.success("{} sentence to write, {} sentences written".format(n_to_write, n_written))
-
-            print("Batch {} cleared".format(st.session_state.batch_id))
-            squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
 
 
     # ADD WORD-CONCEPT CONNECTIONS
