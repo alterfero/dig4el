@@ -107,9 +107,17 @@ def load_index_and_id_to_meta(indi_language):
     path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors")
     index_path = os.path.join(path, "index.faiss")
     id_to_meta_path = os.path.join(path, "id_to_meta.json")
-    index = faiss.read_index(index_path)
-    with open(id_to_meta_path, 'r') as f:
-        id_to_meta = json.load(f)
+    if "index.faiss" in os.listdir(path):
+        index = faiss.read_index(index_path)
+    else:
+        print("No index.faiss available, returning None")
+        index = None
+    if "id_to_meta.json" in os.listdir(path):
+        with open(id_to_meta_path, 'r') as f:
+            id_to_meta = json.load(f)
+    else:
+        print("No id_to_meta.json available, returning None")
+        id_to_meta = None
     return index, id_to_meta
 
 def retrieve_similar(query: str, index, id_to_meta,

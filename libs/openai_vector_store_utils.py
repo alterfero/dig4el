@@ -105,6 +105,19 @@ async def check_vector_store_status(vsid):
     except:
         return "No status found"
 
+async def delete_empty_vector_stores():
+    vss = await list_vector_stores()
+    to_delete = [vs for vs in vss if vs.file_counts.total == 0]
+    print("Deleting {} vector store among {}".format(len(to_delete), len(vss)))
+    for vs in to_delete:
+        print("deleting {}".format(vs.id))
+        await delete_vector_store(vs.id)
+    print("New VS list: ")
+    vss_post = await list_vector_stores()
+    print("{} vector stores remaining".format(len(vss_post)))
+    print([vs.id for vs in vss_post])
+    return vss_post
+
 
 # ================================= SYNC CALLS =====================================
 
@@ -144,6 +157,10 @@ def check_vector_store_status_sync(vsid):
     return asyncio.run(check_vector_store_status(vsid))
 
 
+def delete_empty_vector_stores_sync():
+    return asyncio.run(delete_empty_vector_stores())
+
+
 # ================================= TEST SCRIPTS ====================================
 
 # delete_vector_store_sync('vs_689a3af047d88191b21b7f18a5ee1020')
@@ -158,3 +175,4 @@ def check_vector_store_status_sync(vsid):
 #print(list_files_in_vector_store_sync("vs_6891146bea508191b24bd91bfadf5c7b"))
 #print(list_files_sync())
 #delete_files_containing_sync("hypothese")
+delete_empty_vector_stores_sync()

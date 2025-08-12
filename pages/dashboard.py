@@ -306,6 +306,10 @@ with tab2:
     to_vectorize = [f for f in st.session_state.file_status_list if f["staged"] and not f["vectorized"]]
     if to_vectorize:
         colw2.markdown("**{} staged files to vectorize**".format(len(to_vectorize)))
+        if st.checkbox("Check details"):
+            st.write("Vector Store ID: {}".format(st.session_state.vsid))
+            st.write("Files to vectorize: ")
+            st.write(to_vectorize)
         if colw2.button("3) Vectorize all {} unvectorized staged files".format(len([f["id"] for f in to_vectorize]))):
             to_vec_fids = [f["id"] for f in to_vectorize]
             with colw2:
