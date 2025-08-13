@@ -223,7 +223,7 @@ with tab2:
     # DOCUMENTS
     st.divider()
     doc_path = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "descriptions", "sources")
-    st.subheader("Upload new documents from your computer to our server")
+    st.subheader("Upload new documents from your computer to DIG4EL server")
     st.session_state.uploaded_docs = [d for d in os.listdir(doc_path) if d[-3:] in ["txt", "ocx", "pdf"]]
 
     new_documents = st.file_uploader(
@@ -262,10 +262,12 @@ with tab2:
     vsid_from_info_dict = st.session_state.info_doc["documents"].get("oa_vector_store_id", None)
     if vsid_from_info_dict is not None and vsid_from_info_dict in [vs.id for vs in st.session_state.available_vector_stores]:
         st.session_state.vsid = vsid_from_info_dict
+        st.write("An existing vector store has been found.")
         print("VSID found and matches ({})".format(st.session_state.vsid))
         st.session_state.has_vector_store = True
     else:
         print("No VSID found in info_dict matching an existing VSID: Creating a vector store")
+        st.write("No vector store found with ID {}".format(st.session_state.vsid))
         with st.spinner("Creating new vector store"):
             st.session_state.vsid = ovsu.create_vector_store_sync(st.session_state.indi_language + "_documents")
             st.session_state.info_doc["documents"]["oa_vector_store_id"] = st.session_state.vsid
@@ -317,6 +319,7 @@ with tab2:
         colw2.markdown("**{} staged files to vectorize**".format(len(to_vectorize)))
         if st.checkbox("Check details"):
             st.write("Vector Store ID: {}".format(st.session_state.vsid))
+            st.write([vs for vs in ovsu.list_vector_stores_sync() if vs.id == st.session_state.vsid])
             st.write("Files to vectorize: ")
             st.write(to_vectorize)
         if colw2.button("3) Vectorize all {} unvectorized staged files".format(len([f["id"] for f in to_vectorize]))):
@@ -325,7 +328,7 @@ with tab2:
                 with st.spinner("Launching vectorization of staged files"):
                     ovsu.add_files_to_vector_store_sync(vsid=st.session_state.vsid,
                                                         file_ids=to_vec_fids)
-            st.rerun()
+
     elif not to_stage and not to_vectorize:
         colw2.success("All files staged and vectorized")
 
@@ -348,14 +351,15 @@ with tab3:
         st.write(f"""
         1. **Prepare sentence pairs** in a CSV (Comma-Separated Value) file with "source" and "target" columns. 
         The easiest way to create a suitable CSV file is to create a spreadsheet (Excel, Pages, Open Office...) 
-        with a column "source" and a column "target". On each line, write the sentence in the mainstream language 
+        with a "source" column and a "target" column. On each line, write the sentence in the mainstream language 
         in the "source" column, and in the language you are working on in the "target" column. Then you can *save as* 
-        or *export* as .csv. You can also upload a JSON following the downloadable template. 
+        or *export* as .csv. You can also directly upload a JSON following the downloadable template. 
         2. DIG4EL **augments** these pairs using a LLM, adding a grammatical description and a semantic graph. 
         It is a long process. The *augmented pairs* file is then stored for future use, on the server and you
         should also keep a copy on your computer.
         3. You are then invited to **connect {st.session_state.indi_language} word(s) with concept(s)** in sentences.
-        4. The **augmented pair** file is then used to provide relevant augmented pairs to grammatical descriptions 
+        4. Finally, click on the "Index" button. 
+        The **augmented pair** file is then used to provide relevant augmented pairs to grammatical descriptions 
         (Retrieval-Augmented Generation, or RAG). 
         """)
         v1, v2, v3 = st.columns(3)
@@ -471,7 +475,7 @@ with tab3:
 
         st.markdown(f"""
         - **{st.session_state.indi_language}**: **{sas["target"]}**
-        - **English**: {sas["source"]}
+        - **Pivot**: {sas["source"]}
         - **Intent**: {sas["description"]["enunciation"]["intent"]}.
         - **Enunciation**: {sas["description"]["enunciation"]["mood"]} mood, 
         {sas["description"]["enunciation"]["mood"]} voice, 
@@ -487,9 +491,10 @@ with tab3:
             st.write("No connection created.")
         if sas.get("gloss", None):
             st.write(sas["gloss"])
-        st.markdown("**Semantic-Structural Graph:**")
-        html = sdu.plot_semantic_graph_pyvis(sas["description"])
-        components.html(html, height=600, width=1000)
+        if st.checkbox("Show Semantic-Structural Graph (Beta)"):
+            st.markdown("**Semantic-Structural Graph:** If it fails, just press the 'r' key on your keyboard.")
+            html = sdu.plot_semantic_graph_pyvis(sas["description"])
+            components.html(html, height=600, width=1000)
 
     # add new pairs
     if len(st.session_state.info_doc["pairs"]) > 0:
@@ -577,7 +582,9 @@ with tab3:
 
     # ADD WORD-CONCEPT CONNECTIONS
     st.subheader("3. Connect word(s) and concept(s) in augmented sentences")
-    st.write("This step is manual and adds a lot of information to the corpus.")
+    st.markdown("""This step is manual and adds a lot of information to the corpus.\\
+    Open a sentence by clicking in the colored border on the left of the sentence, then associate one or 
+    multiple target words with each proposed meaning. """)
 
     #build aug_sent_df
     aps = []
