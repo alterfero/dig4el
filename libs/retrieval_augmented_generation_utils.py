@@ -130,11 +130,6 @@ def retrieve_similar(query: str, index, id_to_meta,
     if normalize:
         faiss.normalize_L2(q_vec)
 
-    print("FAISS version:", faiss.__version__)
-    print("Index type:", type(index))
-    print("Index class:", index.__class__)
-    print("Index module:", index.__class__.__module__)
-
     dists, idxs = index.search(q_vec, k)
 
     scores, ids = dists[0], idxs[0]

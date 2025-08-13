@@ -237,15 +237,16 @@ def plot_semantic_graph_pyvis(data,
 
 def build_vector_ready_augmented_pair(augmented_pair: dict) -> str:
     out_str = ""
-    out_str += " SOURCE LANGUAGE: " + augmented_pair["source"] + "."
-    out_str += " TARGET LANGUAGE: " + augmented_pair["target"] + "."
-    if augmented_pair.get("connections", None) not in [None, {}]:
-        out_str += " CONCEPT - TARGET WORD(S) RELATIONS: "
-        for concept, words in augmented_pair["connections"].items():
-            if words != "":
-                out_str += " " + concept + ": " + ", ".join(words) + "."
-    out_str += " GRAMMATICAL DESCRIPTION: " + augmented_pair["description"].get("grammatical_description"+".", "")
-    out_str += " GRAMMATICAL KEYWORDS: " + ", ".join(augmented_pair["description"].get("grammatical_keywords"+".", ""))
+    out_str += augmented_pair["source"] + "."
+    # out_str += " TARGET LANGUAGE: " + augmented_pair["target"] + "."
+    # if augmented_pair.get("connections", None) not in [None, {}]:
+    #     out_str += " CONCEPT - TARGET WORD(S) RELATIONS: "
+    #     for concept, words in augmented_pair["connections"].items():
+    #         if words != "":
+    #             out_str += " " + concept + ": " + ", ".join(words) + "."
+    out_str += augmented_pair["description"]["grammatical_description"] + "."
+    out_str += ", ".join(augmented_pair["description"]["grammatical_keywords"]) + "."
+    out_str = out_str.replace("..", ".")
     return out_str
 
 def get_vector_ready_pairs(indi_language):
@@ -264,6 +265,6 @@ def get_vector_ready_pairs(indi_language):
             vapf = apf[:-5] + ".txt"
 
             with open(os.path.join(output_path, vapf), "w") as f:
-                json.dump(vap, f)
+                f.write(vap)
         return True
 
