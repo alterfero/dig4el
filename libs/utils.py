@@ -20,8 +20,44 @@ from os.path import isfile, join
 from os import listdir
 import pandas as pd
 import hashlib
+import streamlit as st
 
 from collections.abc import Mapping, Sequence
+
+
+def csv_to_dict(csv_file_path):
+    """
+    Streamlit widget: upload a CSV with columns ['source','target'] and
+    convert it to a list[dict] ready for json.dumps.
+    Returns:
+        records (list[dict]) or None if no valid file uploaded yet.
+    """
+
+    try:
+        # Read CSV; pandas handles quotes/commas inside fields
+        df = pd.read_csv(csv_file_path)  # assumes comma-separated
+    except Exception as e:
+        st.error(f"Couldn't read CSV: {e}")
+        return None
+
+    # Validate columns
+    required = {"source", "target"}
+    missing = required - set(df.columns)
+    if missing:
+        print(f"Missing required column(s): {', '.join(sorted(missing))}")
+        print(f"Found columns: {list(df.columns)}")
+        return None
+
+    # Keep only needed columns, drop fully empty rows, coerce to str, strip whitespace
+    df = df[list(required)]
+    df = df.dropna(how="all", subset=["source", "target"]).fillna("")
+    for col in ["source", "target"]:
+        df[col] = df[col].astype(str).str.strip()
+
+    # Build records
+    records = df.to_dict(orient="records")
+
+    return records
 
 
 def flatten(obj, parent_key=()):

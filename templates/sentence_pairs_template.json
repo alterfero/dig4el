@@ -1,0 +1,15 @@
+[
+  {
+    "source": "Sentence 1 in source language",
+    "target": "Sentence 1 in target language"
+  },
+  {
+    "source": "Sentence 2 in source language",
+    "target": "Sentence 2 in target language"
+  },
+  {
+    "source": "Sentence 2 in source language",
+    "target": "Sentence 2 in target language"
+  }
+
+]

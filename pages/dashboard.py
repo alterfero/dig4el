@@ -24,7 +24,6 @@ from libs import openai_vector_store_utils as ovsu
 from libs import sentence_queue_utils as squ
 from libs import semantic_description_utils as sdu
 from libs import retrieval_augmented_generation_utils as ragu
-from libs import grammar_generation_agents as gga
 import streamlit.components.v1 as components
 from libs import utils as u
 from libs import stats
@@ -124,12 +123,21 @@ def generate_sentence_pairs_signatures(sentence_pairs: list[dict]) -> list[str]:
 
 
 with st.sidebar:
-    st.subheader("DIG4EL")
+    st.image("./pics/dig4el_logo_sidebar.png")
     st.page_link("home.py", label="Home", icon=":material/home:")
-    st.page_link("pages/generate_grammar.py", label="Generate grammar", icon=":material/bolt:")
 
 st.header("Sources Dashboard")
-st.write("Upload and create sources for grammatical descriptions")
+with st.popover("Using the dashboard"):
+    st.markdown("""
+1. Select a language, then click the **Select Language** button.  
+2. Explore the three available tabs:  
+
+   - **CQ** (Conversational Questionnaires): Create or upload translations of conversational questionnaires—dialogues designed to capture detailed grammatical information about the language.  
+   - **Documents**: Upload public PDF documents related to the language, such as academic papers, articles, Wikipedia pages, or any other source containing reliable grammatical information.  
+   - **Sentence Pairs**: Provide sentences in a mainstream language along with their translations in the target language.  
+
+Once data is available, the **Generate** button and corresponding menu option will appear.
+    """)
 
 colq, colw = st.columns(2)
 selected_language = colq.selectbox("What language are we working on?", gu.GLOTTO_LANGUAGE_LIST)
@@ -154,16 +162,16 @@ st.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
 st.markdown("#### Using the tabs below, add information about {}".format((st.session_state.indi_language)))
 
 st.divider()
-tab1, tab2, tab3 = st.tabs(["CQ Inferences", "Documents", "Sentence Pairs"])
+tab1, tab2, tab3 = st.tabs(["CQ", "Documents", "Sentence Pairs"])
 with tab1:
     st.markdown("""
-    If you don't have created Conversational Questionnaires yet, you can do it with "Enter CQ Translations". 
-    If you have CQ translations, you can go to "Generate CQ Knowledge". You will be directed back here once the CQ
-    Knowledge is built. 
+   To create new Conversational Questionnaires translations, head to "Enter CQ Translations".
+    
+    If you already entered CQ translations with DIG4EL, you can go to "Use existing translations". 
+    You will be directed back here once the CQ knowledge is built. 
     """)
-    st.page_link("pages/record_cq_transcriptions.py", label="Enter CQ translations", icon=":material/contract_edit:")
-    st.page_link("pages/infer_from_knowledge_and_cqs.py", label="Generate CQ Knowledge from existing CQs",
-                 icon=":material/contract_edit:")
+    st.page_link("pages/record_cq_transcriptions.py", label="👉🏽 Create new DIG4EL CQ translations")
+    st.page_link("pages/infer_from_knowledge_and_cqs.py", label="👉🏽 Prepare DIG4EL CQ translations for content generation")
 
     if st.session_state.indi_language in os.listdir(BASE_LD_PATH):
         if "cq" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language)):
@@ -182,34 +190,35 @@ with tab1:
                         st.session_state.has_bayesian = True
                         st.rerun()
 
-    cq_knowledge_file = st.file_uploader("Upload a CQ Knowledge JSON file")
-    if cq_knowledge_file is not None:
-        with open(cq_knowledge_file, "r") as f:
-            st.session_state.bayesian_data = json.load(f)
-        st.session_state.has_bayesian = True
+    # cq_knowledge_file = st.file_uploader("Upload a CQ Knowledge JSON file")
+    # if cq_knowledge_file is not None:
+    #     with open(cq_knowledge_file, "r") as f:
+    #         st.session_state.bayesian_data = json.load(f)
+    #     st.session_state.has_bayesian = True
 
     if st.session_state.has_bayesian:
         st.success("✅ CQ knowledge ready")
 
 with tab2:
-    st.write("""
-            The Document Knowledge is created by indexing the content of the documents you are providing in 
-            so-called **'vector stores'**.
-            These documents you share will be 
-            1) **Upload**: Documents are uploaded to our server.
-            2) **Staging**: Documents are staged to be used by remote LLM processes.
-            3) **Vectorization**: Documents are divided into short parts, and each part is indexed. The technical
-            term for this step is **vectorization**. We will use this term to avoid confusion with other types of indexing used. 
-            At the end of the process, the documents are stored in a **vector store**. 
-            
-            **Use only documents that are public**. They will not be shared, but their content will be used 
-             and their origin referenced. 
-             
-             Rename your documents to make their title and author(s) explicit in the document name. Avoid using spaces or punctuation in the name. 
-            For example: author_noam_chomsky_title_the_architecture_of_language.pdf
-            
-             """
-             )
+    with st.popover("How to upload and prepare documents"):
+        st.write("""
+                The Document Knowledge is created by indexing the content of the documents you are providing in 
+                so-called **'vector stores'**.
+                These documents you share will be 
+                1) **Upload**: Documents are uploaded to our server.
+                2) **Staging**: Documents are staged to be used by remote LLM processes.
+                3) **Vectorization**: Documents are divided into short parts, and each part is indexed. The technical
+                term for this step is **vectorization**. We will use this term to avoid confusion with other types of indexing used. 
+                At the end of the process, the documents are stored in a **vector store**. 
+                
+                **Use only documents that are public**. They will not be shared, but their content will be used 
+                 and their origin referenced. 
+                 
+                 Rename your documents to make their title and author(s) explicit in the document name. Avoid using spaces or punctuation in the name. 
+                For example: author_noam_chomsky_title_the_architecture_of_language.pdf
+                
+                 """
+                 )
 
     # DOCUMENTS
     st.divider()
@@ -267,8 +276,8 @@ with tab2:
     # list which uploaded files are staged
     with st.spinner("Listing staged files"):
         st.session_state.staged = ovsu.list_files_sync()
-        print("Listing staged files")
-        print(st.session_state.staged)
+        # print("Listing staged files")
+        # print(st.session_state.staged)
     for staf in st.session_state.staged:
         for sf in st.session_state.file_status_list:
             if staf.filename == sf["filename"]:
@@ -325,7 +334,7 @@ with tab2:
             st.session_state.vector_store_status = ovsu.check_vector_store_status_sync(st.session_state.vsid)
         if st.session_state.vector_store_status is not None:
             if st.session_state.vector_store_status == "completed":
-                st.success("All documents have been vectorized and are ready to be used.")
+                st.success("Vectorization done.")
                 st.session_state.has_docs = True
             else:
                 st.warning("Documents are still being vectorized, check again in a few minutes")
@@ -335,22 +344,43 @@ with tab2:
 
 
 with tab3:
+    with st.popover("How to create, upload and prepare sentence pairs"):
+        st.write(f"""
+        1. **Prepare sentence pairs** in a CSV (Comma-Separated Value) file with "source" and "target" columns. 
+        The easiest way to create a suitable CSV file is to create a spreadsheet (Excel, Pages, Open Office...) 
+        with a column "source" and a column "target". On each line, write the sentence in the mainstream language 
+        in the "source" column, and in the language you are working on in the "target" column. Then you can *save as* 
+        or *export* as .csv. You can also upload a JSON following the downloadable template. 
+        2. DIG4EL **augments** these pairs using a LLM, adding a grammatical description and a semantic graph. 
+        It is a long process. The *augmented pairs* file is then stored for future use, on the server and you
+        should also keep a copy on your computer.
+        3. You are then invited to **connect {st.session_state.indi_language} word(s) with concept(s)** in sentences.
+        4. The **augmented pair** file is then used to provide relevant augmented pairs to grammatical descriptions 
+        (Retrieval-Augmented Generation, or RAG). 
+        """)
+        v1, v2, v3 = st.columns(3)
+        with v1:
+            st.download_button("Download an Excel template", "./templates/sentence_pairs_template.xls",
+                               mime="application/vnd.ms-excel",
+                               file_name="dig4el_sentence_pairs_template.xls")
+            st.markdown("In Excel, do save as... csv, as shown below. ")
+            st.image("./pics/excel_convert.png")
+        with v2:
+            st.download_button("Download a CSV template", "./templates/sentence_pairs_template.csv",
+                               mime="text/csv",
+                               file_name="dig4el_sentence_pairs_template.csv")
+            st.markdown("A CSV file is a simple text file you can create in any text editor if you don't have a spreadsheet software available.")
+        with v3:
+            st.download_button("Download a JSON template", "./templates/sentence_pairs_template.json",
+                               mime="application/json",
+                               file_name="dig4el_sentence_pairs_template.json")
+            st.markdown("A JSON file is also a simple text file you can create with a text editor.")
 
-    st.write(f"""
-    1. Sentence pairs must be organized in a JSON file as list [] of "source":"sentence in English", 
-    "target": "sentence in the target language". 
-    2. DIG4EL *augments* these pairs using a LLM, adding a grammatical description and a semantic graph. 
-    It is a long process. The *augmented pairs* file is then stored for future use, on the server and you
-    should also keep a copy on your computer.
-    3. You are invited to connect {st.session_state.indi_language} word(s) with concept(s) in sentences.
-    4. The *augmented pair* file is then used to provide relevant augmented pairs to grammatical descriptions 
-    (Retrieval-Augmented Generation, or RAG). 
-    """)
     st.subheader("1. Add sentence pairs files")
     available_pairs = st.session_state.info_doc["pairs"]
     available_pairs_filenames = []
     if available_pairs == []:
-        st.write("No sentence pair file available")
+        st.write("No sentence pair file available yet")
     else:
         available_pairs_filenames = [p["filename"] for p in st.session_state.info_doc["pairs"]]
         df_display = pd.DataFrame(st.session_state.info_doc["pairs"])
@@ -358,12 +388,12 @@ with tab3:
         st.dataframe(df_display)
 
     new_pair_file = st.file_uploader(
-        "Add a new sentence pair JSON to the server",
+        "Add a new sentence pair file to the server (.csv or .json)",
         accept_multiple_files=False
     )
 
     # Upload sentence pairs file
-    if new_pair_file and new_pair_file.name.endswith(".json"):
+    if new_pair_file and new_pair_file.name[-4:] in ["json", ".csv"]:
         if new_pair_file.name in available_pairs_filenames:
             replace_ok = st.checkbox("This file is already on the server, replace it?", value=False)
         else:
@@ -376,9 +406,15 @@ with tab3:
             if name and origin and author:
                 info_entered = True
             valid_file = False
+            server_filename = None
             if info_entered and st.button("Add this file to sentence pairs on the server"):
                 try:
-                    sentence_pairs = json.load(new_pair_file)
+                    if new_pair_file.name[-4:] == ".csv":
+                        sentence_pairs = u.csv_to_dict(new_pair_file)
+                        server_filename = new_pair_file.name[:-4] + ".json"
+                    else:
+                        sentence_pairs = json.load(new_pair_file)
+                        server_filename = new_pair_file.name
                     if "source" in sentence_pairs[0].keys() and "target" in sentence_pairs[0].keys():
                         valid_file = True
                     else:
@@ -387,20 +423,21 @@ with tab3:
                 except:
                     st.write("Not a correctly formatted JSON file.")
             if valid_file:
-                st.success("Adding {} to the server".format(new_pair_file.name))
-                with open(os.path.join(PAIRS_BASE_PATH, "pairs", new_pair_file.name), "w") as f:
+
+                st.success("Adding {} to the server".format(server_filename))
+                with open(os.path.join(PAIRS_BASE_PATH, "pairs", server_filename), "w") as f:
                     json.dump(sentence_pairs, f)
-                st.success(f"Saved `{new_pair_file.name}` on the server.")
+                st.success(f"Saved `{server_filename}` on the server.")
 
                 # UPDATE INFO_DOC
-                if new_pair_file.name in available_pairs_filenames:
+                if server_filename in available_pairs_filenames:
                     i = [i for i in st.session_state.info_doc["pairs"].index if
-                         st.session_state.info_doc["pairs"]["filename"] == new_pair_file.name][0]
+                         st.session_state.info_doc["pairs"]["filename"] == server_filename][0]
                     del (st.session_state.info_doc["pairs"][i])
 
                 st.session_state.info_doc["pairs"].append(
                     {
-                        "filename": new_pair_file.name,
+                        "filename": server_filename,
                         "name": name,
                         "origin": origin,
                         "author": author,

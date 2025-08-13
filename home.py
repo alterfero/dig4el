@@ -7,24 +7,41 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-st.header("DIG4EL")
-st.markdown("### Digital Inferential Grammars for Endangered Languages")
+st.markdown("## Assisted grammatical description of endangered languages")
 
-st.markdown("DIG4EL is a research software prototype designed to support the computer-assisted creation of grammatical second-language learning material"
-            "for endangered languages.")
-st.markdown("The method combines")
-st.markdown("- The theoretical framework of **Radical Construction Grammar** (Croft, 2001).")
-st.markdown("- An efficient and engaging method for data collection in the field, namely **Conversational Questionnaires** (François, 2019).")
-st.markdown("- The use of accumulated linguistic knowledge from over 2,500 of the world's languages, thanks to the **World Atlas of Language Structures** (Dryer & Haspelmath,2013) and **Grambank** (Skirgård et al., 2023)")
-st.markdown("- The craft of **teaching the grammar of threatened and endangered languages**  (Vernaudon, 2018).")
-st.markdown("- Original natural language processing (NLP) algorithms leveraging **Graph-based Meaning Representations** and **Bayesian networks**. (Christian, 2025)")
+st.markdown("""*DIG4EL (Digital Inferential Grammar for Endangered Languages) is a research software prototype designed to support the computer-assisted creation of 
+            **grammar-learning material for linguists and teachers of endangered languages**. DIG4EL combines multiple 
+            sources of information about a given language using **responsible** Artificial Intelligence processes. 
+            DIG4EL follows the [FAIR](https://www.go-fair.org/fair-principles/) and 
+            [CARE](https://www.gida-global.org/care) principles for data governance and respect of their owners.*""")
+c1, c2, c3 = st.columns([1,3,1])
+with c2:
+    st.image("./pics/diagram_1.png", use_column_width=True)
+st.link_button("Click here to go to the dashboard", "./pages/dashboard", use_container_width=True)
+
+with st.popover("Notice", use_container_width=True):
+    st.markdown(""" 
+    *Notice: DIG4EL is currently in the early production stage.*
+1) **Public nature of language data**: Any information you provide about a language, including documents created with or uploaded to DIG4EL, may be publicly accessible. Such content may be displayed to other users and incorporated into the system’s generation processes.
+2) **Expert review requirement**: System outputs are provided for expert review and editing. All outputs are available in editable formats for this purpose.
+3) **Limitation of liability**: The DIG4EL team disclaims any responsibility for the use, modification, or distribution of system outputs by third parties.
+4) **Access to resource-intensive features**: Certain computationally intensive features are restricted. Researchers working on the description or teaching of endangered languages may request access by contacting the DIG4EL team.
+    """)
+
+with st.popover("Getting started", use_container_width=True):
+    st.subheader("Getting started")
+    st.markdown("""CLick on **Dashboard** on the left menu or below this paragraph. This is where you will be able
+                to create and upload information about a language. From there, once there is some data, the menu 
+                will show a **generate** item that will bring you to a page where you can ask DIG4EL to generate 
+                content.
+                """)
+    st.page_link(page="./pages/dashboard.py", label="Go to the dashboard️", icon="➡️")
 
 with st.popover("References", use_container_width=True):
     st.markdown("**Enhancing grammatical documentation for endangered languages with graph-based meaning representation and Loopy Belief Propagation**")
     st.markdown("Christian S. (2025). Natural Language Processing Journal.")
     st.markdown("[https://doi.org/10.1016/j.nlp.2025.100164](https://doi.org/10.1016/j.nlp.2025.100164)")
-    st.markdown("**Radical Construction Grammar**")
-    st.markdown("Croft W. 2001. Radical Construction Grammar. Oxford University Press.")
+
     st.markdown("**World Atlas of Language Structures**")
     st.markdown(
         "Dryer, Matthew S. & Haspelmath, Martin (eds.) 2013. The World Atlas of Language Structures Online. Leipzig: Max Planck Institute for Evolutionary Anthropology.")
@@ -68,21 +85,23 @@ If you use this software in your research, please cite:
 
 Source code: https://github.com/alterfero/dig4el
 """)
-st.markdown("------------------------------------------------------")
+st.divider()
+
+st.markdown("""DIG4EL is a research effort supported by the [CNRS](https://www.cnrs.fr/en) as part 
+of the [Heliceo](https://www.cnrs.fr/en/ri2-project/heliceo) project, 
+managed by the [Maison des Sciences de l'Homme du Pacifique](https://recherche.upf.pf/en/laboratoire/maison-des-sciences-de-lhomme-du-pacifique/)
+ in the [University of French Polynesia](https://www.upf.pf/en).
+""")
+
+st.image("./pics/logos.png")
+
+
 
 with st.sidebar:
-    st.subheader("DIG4EL")
+    st.image("./pics/dig4el_logo_sidebar.png")
     st.page_link("home.py", label="Home", icon=":material/home:")
+    st.page_link("pages/dashboard.py", label="Dashboard", icon=":material/dashboard:")
+    st.page_link("pages/DIG4EL_processes_menu.py", label="Processes", icon=":material/manufacturing:")
 
-    st.write("**Base features**")
-    st.page_link("pages/2_CQ_Transcription_Recorder.py", label="Record transcription", icon=":material/contract_edit:")
-    st.page_link("pages/Transcriptions_explorer.py", label="Explore transcriptions", icon=":material/search:")
-    st.page_link("pages/Grammatical_Description.py", label="Generate Grammars", icon=":material/menu_book:")
 
-    st.write("**Expert features**")
-    st.page_link("pages/4_CQ Editor.py", label="Edit CQs", icon=":material/question_exchange:")
-    st.page_link("pages/Concept_graph_editor.py", label="Edit Concept Graph", icon=":material/device_hub:")
-
-    st.write("**Explore DIG4EL processes**")
-    st.page_link("pages/DIG4EL_processes_menu.py", label="DIG4EL processes", icon=":material/schema:")
 

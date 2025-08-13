@@ -20,9 +20,8 @@ from os.path import isfile, join
 import time
 from libs import graphs_utils
 from libs import utils, stats, wals_utils as wu
-from random import randint
 from libs import output_generation_utils as ogu
-from io import BytesIO
+from libs import glottolog_utils as gu
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -91,7 +90,7 @@ if "cq_is_chosen" not in st.session_state:
 if "current_sentence_number" not in st.session_state:
     st.session_state["current_sentence_number"] = 1
 if "available_target_languages" not in st.session_state:
-    st.session_state["available_target_languages"] = list(wu.language_pk_id_by_name.keys())
+    st.session_state["available_target_languages"] = [l for l in gu.GLOTTO_LANGUAGE_LIST.keys()]
 if "target_language" not in st.session_state:
     st.session_state["target_language"] = st.session_state["available_target_languages"][0]
 if "delimiters" not in st.session_state:
@@ -116,33 +115,32 @@ if "cq_id_dict" not in st.session_state:
         cq_id_dict[cq_json["uid"]] = {"filename": cq, "content": cq_json}
     st.session_state["cq_id_dict"] = cq_id_dict
 
-st.title("Enter CQ Translations")
+st.title("Create Conversational Questionnaires translations")
 
 with st.popover("information and tutorial"):
     st.markdown("""This page allows to record the transcription of Conversational Questionnaires. 
                 You can either start a new transcription or continue working on a DIG4EL transcription you have on your computer. 
-                ***Your inputs will not be saved on the server!*** Make sure you use the 'save' button at the bottom of the page to save the file on your computer (one per Conversational Questionnaire).
-                
+                **Your inputs will not be saved on the server!** Make sure you use the 'save' button at the bottom of 
+                the page to save the file on your computer (one per Conversational Questionnaire).\\
                 The interface allows entering each segment in the target language in the 'Equivalent in ...' field.
                 Once entered the equivalent of the segment in the target language, press the return key to enable the concept(s)-word(s) association. 
                 This series of fields allow to match concepts expressed in the segment with word(s) in the target language, a word being a sequence
                 of characters between two spaces/punctuation marks. All the words contributing to a concept can be entered in each field. 
                 - Fields can be left empty.
                 - Multiple words from the drop-down list can be associated with a single concept.
-                - The same word can be associated with several concepts.
-      
-                Watch the tutorial:
+                - The same word can be associated with several concepts.\\
+                **Watch the tutorial**:
                 """)
     st.video("https://youtu.be/QTmukcvL3fU")
 
 with st.sidebar:
-    st.subheader("DIG4EL")
+    st.image("./pics/dig4el_logo_sidebar.png")
     st.page_link("home.py", label="Home", icon=":material/home:")
     st.page_link("pages/dashboard.py", label="Back to Dashboard", icon=":material/home:")
 
 if not st.session_state["loaded_existing_transcription"]:
-    with st.expander("Load an existing DIG4EL transcription"):
-        existing_recording = st.file_uploader("Load an existing recording", type="json")
+    with st.expander("Resume working on an existing DIG4EL translation on your computer"):
+        existing_recording = st.file_uploader("Load an existing DIG4EL CQ translation", type="json")
         if existing_recording is not None:
             st.session_state["recording"] = json.load(existing_recording)
             print("Existing recording loaded: ", existing_recording.name)
@@ -198,9 +196,9 @@ else:  ## if not loaded_existing_transcription
     else:
         default_data = st.session_state["recording"]["data"]
 
-with st.expander("Start a new transcription or edit the header of an existing one"):
+with st.expander("Start a new translation"):
     st.markdown(
-        """***Don't forget to save your transcription using the 'Save' button at the bottom of the page. 
+        """***Don't forget to save your translation using the 'Save' button at the bottom of the page. 
     Nothing is saved on the server.***""")
     interviewer = st.text_input("Interviewer", value=default_interviewer, key="interviewer" + str(key_counter))
     key_counter += 1
@@ -229,7 +227,6 @@ with st.expander("Start a new transcription or edit the header of an existing on
     st.session_state["recording"]["delimiters"] = st.multiselect("verify and edit word separators if needed",
                                                                  delimiters_bank, default=default_delimiters)
     st.session_state["delimiters"] = st.session_state["recording"]["delimiters"]
-    st.write("Active delimiters: {}".format(st.session_state["recording"]["delimiters"]))
 
     pl = st.selectbox("Choose a pivot language", available_pivot_languages,
                       index=available_pivot_languages.index(default_pivot_language))

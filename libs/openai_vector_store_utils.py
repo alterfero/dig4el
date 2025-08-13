@@ -175,4 +175,6 @@ def delete_empty_vector_stores_sync():
 #print(list_files_in_vector_store_sync("vs_6891146bea508191b24bd91bfadf5c7b"))
 #print(list_files_sync())
 #delete_files_containing_sync("hypothese")
-delete_empty_vector_stores_sync()
+# delete_empty_vector_stores_sync()
+
+# add_files_to_vector_store_sync("vs_689a3a91a7c48191ab56e68301d892a2", ["file-Y86RUhvJq3qVvsfizLG4m6"])
