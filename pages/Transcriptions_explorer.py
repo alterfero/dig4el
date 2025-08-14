@@ -216,7 +216,7 @@ with st.expander("Input", expanded=True):
                                                                                    include_particularization=st.session_state["include_particularization"],
                                                                                    keep_target_words=st.session_state["keep_target_words"])
                 with open("./data/knowledge/current_kg.json", "w") as f:
-                    json.dump(st.session_state["knowledge_graph"], f, indent=4)
+                    json.dump(st.session_state["knowledge_graph"], f, ensure_ascii=False, indent=4)
                 st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                     len(st.session_state["cq_transcriptions"]), len(st.session_state["knowledge_graph"]),
                     total_target_word_count, len(unique_words)))
@@ -254,7 +254,7 @@ with st.expander("Input", expanded=True):
                                                                                    include_particularization=st.session_state["include_particularization"],
                                                                                    keep_target_words=st.session_state["keep_target_words"])
                 with open("./data/knowledge/current_kg.json", "w") as f:
-                    json.dump(st.session_state["knowledge_graph"], f, indent=4)
+                    json.dump(st.session_state["knowledge_graph"], f, ensure_ascii=False, indent=4)
                 st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                     len(st.session_state["cq_transcriptions"]), len(st.session_state["knowledge_graph"]),
                     total_target_word_count, len(unique_words)))

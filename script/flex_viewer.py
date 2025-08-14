@@ -70,7 +70,7 @@ if uploaded_file:
     st.session_state.sentence_pairs = _convert_to_sentence_pairs(parsed_data)
     if st.session_state.sentence_pairs:
         st.download_button("Download sentence pairs",
-                           data=json.dumps(st.session_state.sentence_pairs),
+                           data=json.dumps(st.session_state.sentence_pairs, ensure_ascii=False),
                            file_name="sentence_pairs_from_flex.json",
                            mime="application/json"
                            )

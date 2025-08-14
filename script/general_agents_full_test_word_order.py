@@ -181,7 +181,7 @@ def process_excluded_language(excluded_lid: str):
         average_score = average_score / len(general_result_dict)
 
         with open("../test_results/truth_table_{}_excluded_epoch_{}.json".format(excluded_lid, epoch), "w") as f:
-            json.dump(truth_table, f)
+            json.dump(truth_table, f, ensure_ascii=False)
 
 # RESULT ANALYSIS =======================================================================================
 def analyze_results():
