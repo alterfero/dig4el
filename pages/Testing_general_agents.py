@@ -431,16 +431,16 @@ if len(st.session_state["ga_domains"]) > 0:
                 st.write("**Consensus accuracy on unknown values by language.**")
                 st.bar_chart(pd.DataFrame(scoring_table).T)
 
-                st.download_button("Download scoring table", json.dumps(scoring_table, indent=4),
-                                   file_name="scoring_table.json")
+                st.download_button("Download scoring table", json.dumps(scoring_table, ensure_ascii=False, indent=4),
+                                    file_name="scoring_table.json")
 
                 st.write("**Truth table of consensus on unknown values by language.**")
                 st.table(truth_table)
-                st.download_button("Download truth table", json.dumps(truth_table, indent=4),
-                                   file_name="truth_table.json")
+                st.download_button("Download truth table", json.dumps(truth_table, ensure_ascii=False, indent=4),
+                                    file_name="truth_table.json")
 
                 with open("./data/binary_truth_table_tmp.json", "w") as f:
-                    json.dump(binary_truth_table, f)
+                    json.dump(binary_truth_table, f, ensure_ascii=False)
                 st.write("**detailed consensus by language**")
                 st.table(general_result_dict)
 else:

@@ -36,7 +36,7 @@ if "concepts_kson" not in st.session_state:
 print("PAGE RELOAD")
 print("focus: {}".format(st.session_state["focus"]))
 
-st.download_button(label="download your Concept Graph", data=json.dumps(st.session_state["concepts_kson"], indent=4),
+st.download_button(label="download your Concept Graph", data=json.dumps(st.session_state["concepts_kson"], ensure_ascii=False, indent=4),
                        file_name="cg_.json")
 
 def on_focus_change():
