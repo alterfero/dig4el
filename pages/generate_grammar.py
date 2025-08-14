@@ -243,12 +243,12 @@ if (st.session_state.alterlingua_contribution
 
         if st.session_state.is_cq and st.session_state.use_cq:
             tmp_p_blob = json.dumps([p for p in st.session_state.cq_knowledge["grammar_priors"]
-                                     if p["Parameter"] in st.session_state.relevant_parameters])
+                                     if p["Parameter"] in st.session_state.relevant_parameters], ensure_ascii=False)
             if tmp_p_blob == "":
                 tmp_p_blob = "No relevant grammatical parameter."
             selected_params_blob = tmp_p_blob
             alterlingua_explanation = st.session_state.alterlingua_contribution["explanation"]
-            alterlingua_examples = json.dumps(st.session_state.alterlingua_contribution["examples"])
+            alterlingua_examples = json.dumps(st.session_state.alterlingua_contribution["examples"], ensure_ascii=False)
         else:
             selected_params_blob = "No relevant grammatical parameter."
             alterlingua_explanation = "No description from sentence analysis."
@@ -275,7 +275,7 @@ if (st.session_state.alterlingua_contribution
                     }
 
                 sps.append(sapd)
-            sentence_pairs_blob = json.dumps(sps)
+            sentence_pairs_blob = json.dumps(sps, ensure_ascii=False)
         else:
             sentence_pairs_blob = "No available sentence pairs."
 
@@ -326,22 +326,26 @@ if st.session_state.output_dict:
     # Save outputs
     if st.button("Store output (and share it with others)"):
 
+
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w", encoding='utf-8') as f:
-            json.dump(st.session_state.output_dict, f)
+            json.dump(st.session_state.output_dict, f, ensure_ascii=False)
+
         if docx:
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn[:-5]+".docx"), "wb") as f:
                 f.write(docx.getvalue())
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
             info = json.load(f)
         info["outputs"][query] = fn
+
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w", encoding='utf-8') as f:
-            info = json.dump(info, f)
+            json.dump(info, f, ensure_ascii=False)
+
         st.success("Output stored and available")
 
     # Download outputs
     colz, colx = st.columns(2)
     colz.download_button(label="Download JSON output",
-                         data=json.dumps(st.session_state.output_dict),
+                         data=json.dumps(st.session_state.output_dict, ensure_ascii=False),
                          file_name=fn)
     if docx:
         colx.download_button(label="Download DOCX output",

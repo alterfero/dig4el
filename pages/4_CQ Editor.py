@@ -388,7 +388,7 @@ with colz.container():
         #print(st.session_state["cq"]["dialog"][str(st.session_state["counter"])])
         st.rerun()
 
-    coli.download_button(label="download your Conversational Questionnaire", data=json.dumps(st.session_state["cq"], indent=4),
+    coli.download_button(label="download your Conversational Questionnaire", data=json.dumps(st.session_state["cq"], ensure_ascii=False, indent=4),
                        file_name="cq_" + st.session_state["cq"]["title"] + "_" + st.session_state["uid"] + ".json")
 
     if colo.button("Reset sentence"):

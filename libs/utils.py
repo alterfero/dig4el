@@ -46,11 +46,13 @@ def normalize_user_strings(obj):
 
 def save_json_normalized(data, fp, *args, **kwargs):
     """Wrapper around :func:`json.dump` that normalizes strings before saving."""
+    kwargs.setdefault("ensure_ascii", False)
     json.dump(normalize_user_strings(data), fp, *args, **kwargs)
 
 
 def dumps_json_normalized(data, *args, **kwargs):
     """Wrapper around :func:`json.dumps` that normalizes strings before serializing."""
+    kwargs.setdefault("ensure_ascii", False)
     return json.dumps(normalize_user_strings(data), *args, **kwargs)
 
 
@@ -168,8 +170,10 @@ def add_field_to_concept_json(concept_json_file, field_name, field_value):
         data = json.load(f)
     for concept in data.keys():
         data[concept][field_name] = field_value
+
     with open(concept_json_file, "w", encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
     print(f"Field {field_name} added to {concept_json_file}")
 
 def get_key_by_value(d, target_value):

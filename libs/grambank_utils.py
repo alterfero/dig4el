@@ -65,8 +65,10 @@ def build_vname_by_vid():
     for pid in grambank_param_value_dict.keys():
         for vid, valueinfo in grambank_param_value_dict[pid]["pvalues"].items():
             grambank_vname_by_vid[vid] = valueinfo["vname"]
+
     with open("../external_data/grambank_derived/grambank_vname_by_vid.json", "w", encoding='utf-8') as f:
-        json.dump(grambank_vname_by_vid, f, indent=4)
+        json.dump(grambank_vname_by_vid, f, ensure_ascii=False, indent=4)
+
 
 
 def get_grambank_language_data_by_id_or_name(language_id, language_name=None):
@@ -310,8 +312,9 @@ def build_grambank_pvalues_by_language():
         elif item["Language_ID"] in grambank_pvalues_by_language.keys() and item["Code_ID"] != "":
             grambank_pvalues_by_language[item["Language_ID"]].append(item["Code_ID"])
     print("grambank_pvalues_by_language built, {} data points.".format(entry_count))
-    with open("../external_data/grambank_derived/grambank_pvalues_by_language.json", "w", encoding='utf-8') as f:
-        json.dump(grambank_pvalues_by_language, f, indent=4)
+
+    with open("../external_data/grambank_derived/grambank_pvalues_by_language.json", "w") as f:
+        json.dump(grambank_pvalues_by_language, f, ensure_ascii=False, indent=4)
 
 
 def build_grambank_language_id_by_vid():
@@ -327,7 +330,7 @@ def build_grambank_language_id_by_vid():
             grambank_language_id_by_vid[item["Code_ID"]].append(item["Language_ID"])
     print("grambank_language_id_by_pvalue_id built, {} data points.".format(entry_count))
     with open("../external_data/grambank_derived/grambank_language_id_by_vid.json", "w", encoding='utf-8') as f:
-        json.dump(grambank_language_id_by_vid, f, indent=4)
+        json.dump(grambank_language_id_by_vid, f, ensure_ascii=False, indent=4)
 
 
 def build_grambank_language_by_lid():
@@ -344,8 +347,7 @@ def build_grambank_language_by_lid():
             "macroarea": item["Macroarea"]
         }
     with open("../external_data/grambank_derived/language_by_lid.json", "w", encoding='utf-8') as f:
-        json.dump(language_by_lid, f, indent=4)
-
+        json.dump(language_by_lid, f, ensure_ascii=False, indent=4)
 
 def build_grambank_pname_by_pid():
     # grambank pname_by_pid and pid_by_name
@@ -357,10 +359,12 @@ def build_grambank_pname_by_pid():
         for param in params:
             grambank_pname_by_pid[param["ID"]] = param["Name"]
             grambank_pid_by_pname[param["Name"]] = param["ID"]
+
     with open("../external_data/grambank_derived/grambank_pname_by_pid.json", "w", encoding='utf-8') as f:
-        json.dump(grambank_pname_by_pid, f, indent=4)
+        json.dump(grambank_pname_by_pid, f, ensure_ascii=False, indent=4)
     with open("../external_data/grambank_derived/grambank_pid_by_pname.json", "w", encoding='utf-8') as f:
-        json.dump(grambank_pid_by_pname, f, indent=4)
+        json.dump(grambank_pid_by_pname, f, ensure_ascii=False, indent=4)
+
 
 
 def build_grambank_param_value_dict():
@@ -388,8 +392,10 @@ def build_grambank_param_value_dict():
                     }
                 }
             }
+
     with open("../external_data/grambank_derived/grambank_param_value_dict.json", "w", encoding='utf-8') as f:
-        json.dump(grambank_param_value_dict, f, indent=4)
+        json.dump(grambank_param_value_dict, f, ensure_ascii=False, indent=4)
+
         
         
 def build_pid_by_vid():
@@ -399,8 +405,10 @@ def build_pid_by_vid():
         items = [row for row in dict_reader]
     for item in items:
         pid_by_vid[item["ID"]] = item["Parameter_ID"]
+
     with open("../external_data/grambank_derived/parameter_id_by_value_id.json", "w", encoding='utf-8') as f:
-        json.dump(pid_by_vid, f, indent=4)
+        json.dump(pid_by_vid, f, ensure_ascii=False, indent=4)
+
 
 
 def build_vids_by_lid():
@@ -413,8 +421,10 @@ def build_vids_by_lid():
             vids_by_lid[item["Language_ID"]].append(item["Code_ID"])
         else:
             vids_by_lid[item["Language_ID"]] = [item["Code_ID"]]
+
     with open("../external_data/grambank_derived/pvalue_ids_by_language_id.json", "w", encoding='utf-8') as f:
-        json.dump(vids_by_lid, f, indent=4)
+        json.dump(vids_by_lid, f, ensure_ascii=False, indent=4)
+
 
 
 def build_lid_by_family():
@@ -424,5 +434,7 @@ def build_lid_by_family():
             lid_by_family[ldata["family"]] = [lid]
         else:
             lid_by_family[ldata["family"]].append(lid)
+
     with open("../external_data/grambank_derived/lid_by_family.json", "w", encoding='utf-8') as f:
-        json.dump(lid_by_family, f, indent=4)
+        json.dump(lid_by_family, f, ensure_ascii=False, indent=4)
+

@@ -19,32 +19,32 @@ def generate_transcription_doc(cq, target_language, pivot_language):
         target_language = "target language"
 
     document = Document()
-    document.add_heading('Conversational Questionnaire', 0)
-    document.add_heading(f'"{cq["title"]}"', 0)
-    document.add_heading("Information", 1)
+    document.add_heading(safe_text('Conversational Questionnaire'), 0)
+    document.add_heading(safe_text(f'"{cq["title"]}"'), 0)
+    document.add_heading(safe_text("Information"), 1)
     table = document.add_table(rows=5, cols=2, style="Light Grid")  # Fixed column count
     row_cells0 = table.rows[0].cells
-    row_cells0[0].text = "Target language"
+    row_cells0[0].text = safe_text("Target language")
     if target_language != "target language":
-        row_cells0[1].text = target_language
+        row_cells0[1].text = safe_text(target_language)
     row_cells1 = table.rows[1].cells
-    row_cells1[0].text = "Transcription made by"
+    row_cells1[0].text = safe_text("Transcription made by")
     row_cells2 = table.rows[2].cells
-    row_cells2[0].text = f"Content in {target_language} provided by"
+    row_cells2[0].text = safe_text(f"Content in {target_language} provided by")
     row_cells3 = table.rows[3].cells
-    row_cells3[0].text = "Location"
+    row_cells3[0].text = safe_text("Location")
     row_cells4 = table.rows[4].cells
-    row_cells4[0].text = "Date"
+    row_cells4[0].text = safe_text("Date")
 
     document.add_page_break()
 
-    document.add_heading("Full dialog in English", 1)
-    document.add_paragraph(cq["context"])
+    document.add_heading(safe_text("Full dialog in English"), 1)
+    document.add_paragraph(safe_text(cq["context"]))
     dialog_table = document.add_table(rows=1, cols=3, style="Table Grid")  # Fixed column count
     hdr_cells = dialog_table.rows[0].cells
-    hdr_cells[0].text = "Index"
-    hdr_cells[1].text = cq["speakers"]["A"]["name"]
-    hdr_cells[2].text = cq["speakers"]["B"]["name"]
+    hdr_cells[0].text = safe_text("Index")
+    hdr_cells[1].text = safe_text(cq["speakers"]["A"]["name"])
+    hdr_cells[2].text = safe_text(cq["speakers"]["B"]["name"])
     dialog_length = len(cq["dialog"])
     for index in range(1, dialog_length + 1):
         content = cq["dialog"][str(index)]
@@ -53,17 +53,17 @@ def generate_transcription_doc(cq, target_language, pivot_language):
             i = content["legacy index"]
         else:
             i = str(index)
-        row_cells[0].text = i
+        row_cells[0].text = safe_text(i)
         if content["speaker"] == "A":
-            row_cells[1].text = content["text"]
-            row_cells[2].text = ""
+            row_cells[1].text = safe_text(content["text"])
+            row_cells[2].text = safe_text("")
         elif content["speaker"] == "B":
-            row_cells[1].text = ""
-            row_cells[2].text = content["text"]
+            row_cells[1].text = safe_text("")
+            row_cells[2].text = safe_text(content["text"])
 
     document.add_page_break()
 
-    document.add_heading("Transcription", 1)
+    document.add_heading(safe_text("Transcription"), 1)
 
     for index in range(1, dialog_length + 1):
         content = cq["dialog"][str(index)]
@@ -71,35 +71,35 @@ def generate_transcription_doc(cq, target_language, pivot_language):
             i = content["legacy index"]
         else:
             i = str(index)
-        document.add_paragraph("")
-        document.add_heading(f'{i}: {content["text"]}', 2)
+        document.add_paragraph(safe_text(""))
+        document.add_heading(safe_text(f'{i}: {content["text"]}'), 2)
         transcription_table = document.add_table(rows=0, cols=2, style="Table Grid")
         row_cells = transcription_table.add_row().cells
-        row_cells[0].text = "Pivot (if not English)"
-        row_cells[1].text = ""
+        row_cells[0].text = safe_text("Pivot (if not English)")
+        row_cells[1].text = safe_text("")
         row_cells = transcription_table.add_row().cells
-        row_cells[0].text = f'Sentence in {target_language}'
-        row_cells[1].text = ""
-        document.add_paragraph(" ")
+        row_cells[0].text = safe_text(f'Sentence in {target_language}')
+        row_cells[1].text = safe_text("")
+        document.add_paragraph(safe_text(" "))
         p = document.add_paragraph()
-        p.add_run("Connections between word(s) and concept(s):").bold = True
-        document.add_paragraph("In this segment, which word(s) contribute to which concept(s) below? One word can appear in multiple concepts, or in none. Multiple words can appear in a single concept.")
+        p.add_run(safe_text("Connections between word(s) and concept(s):")).bold = True
+        document.add_paragraph(safe_text("In this segment, which word(s) contribute to which concept(s) below? One word can appear in multiple concepts, or in none. Multiple words can appear in a single concept."))
         concept_table = document.add_table(rows=1, cols=2, style="Table Grid")
         hdr_cells = concept_table.rows[0].cells
-        hdr_cells[0].text = "Concept"
-        hdr_cells[1].text = "Word(s) contributing to this concept"
+        hdr_cells[0].text = safe_text("Concept")
+        hdr_cells[1].text = safe_text("Word(s) contributing to this concept")
         if content.get("intent", []) != []:
             row_cells = concept_table.add_row().cells
-            row_cells[0].text = f'Intent: {"+".join(content["intent"])}'
-            row_cells[1].text = ""
+            row_cells[0].text = safe_text(f'Intent: {"+".join(content["intent"])}')
+            row_cells[1].text = safe_text("")
         if content.get("predicate", []) != []:
             row_cells = concept_table.add_row().cells
-            row_cells[0].text = f'Type of predicate: {"+".join(content["predicate"])}'
-            row_cells[1].text = ""
+            row_cells[0].text = safe_text(f'Type of predicate: {"+".join(content["predicate"])}')
+            row_cells[1].text = safe_text("")
         for c in content["concept"]:
             row_cells = concept_table.add_row().cells
-            row_cells[0].text = c
-            row_cells[1].text = ""
+            row_cells[0].text = safe_text(c)
+            row_cells[1].text = safe_text("")
 
     # Save to a BytesIO buffer instead of disk
     docx_buffer = BytesIO()
@@ -113,20 +113,20 @@ def generate_docx_from_kg_index_list(kg, delimiters, kg_index_list):
     kg = utils.normalize_user_strings(kg)
     delimiters = utils.normalize_user_strings(delimiters)
     document = Document()
-    document.add_heading('Partial corpus', 0)
+    document.add_heading(safe_text('Partial corpus'), 0)
     item_counter = 0
     for index in kg_index_list:
         item_counter += 1
         data = kg[index]
         gloss = kgu.build_super_gloss_df(kg, index, delimiters,  output_dict=True)
-        document.add_paragraph("""Entry {}""".format(item_counter), style='List Bullet')
-        pex = document.add_paragraph(" ", "Normal")
-        pex.add_run(f'{data["recording_data"]["translation"]}', style='Strong')
-        document.add_paragraph(f'{data["sentence_data"]["text"]}', "Normal")
-        document.add_paragraph(f'''
+        document.add_paragraph(safe_text("""Entry {}""".format(item_counter)), style='List Bullet')
+        pex = document.add_paragraph(safe_text(" "), "Normal")
+        pex.add_run(safe_text(f'{data["recording_data"]["translation"]}'), style='Strong')
+        document.add_paragraph(safe_text(f'{data["sentence_data"]["text"]}'), "Normal")
+        document.add_paragraph(safe_text(f'''
         Intent: {", ".join(data["sentence_data"]["intent"])}
         Type of predicate: {", ".join(data["sentence_data"]["predicate"])}
-        ''', "Normal")
+        '''), "Normal")
 
         # Define the number of rows (one header + words) and columns
         num_words = len(gloss)
@@ -134,19 +134,19 @@ def generate_docx_from_kg_index_list(kg, delimiters, kg_index_list):
 
         # Populate header row
         hdr_cells = table.rows[0].cells
-        hdr_cells[0].text = ""
-        hdr_cells[1].text = "Concept"
-        hdr_cells[2].text = "Internal Particularisation"
-        hdr_cells[3].text = "Relational Particularisation"
+        hdr_cells[0].text = safe_text("")
+        hdr_cells[1].text = safe_text("Concept")
+        hdr_cells[2].text = safe_text("Internal Particularisation")
+        hdr_cells[3].text = safe_text("Relational Particularisation")
 
         # Populate the table with data
         for i, w in enumerate(gloss, start=1):
             row_cells = table.rows[i].cells
-            row_cells[0].text = w["word"]
-            row_cells[1].text = w["concept"]
-            row_cells[2].text = w["internal particularization"]
-            row_cells[3].text = w["relational particularization"]
-        document.add_paragraph("""   """)
+            row_cells[0].text = safe_text(w["word"])
+            row_cells[1].text = safe_text(w["concept"])
+            row_cells[2].text = safe_text(w["internal particularization"])
+            row_cells[3].text = safe_text(w["relational particularization"])
+        document.add_paragraph(safe_text("""   """))
 
     # Save to a BytesIO buffer instead of disk
     docx_buffer = BytesIO()
@@ -158,7 +158,7 @@ def generate_docx_from_kg_index_list(kg, delimiters, kg_index_list):
 _MAX_WORD_COLS = 63             # Word hard‑limit on columns  :contentReference[oaicite:0]{index=0}
 _BAD_XML_CHARS_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
 
-def _safe_text(value: object) -> str:
+def safe_text(value: object) -> str:
     """Return XML‑safe, non‑None, length‑capped string for a table cell."""
     if value is None or (isinstance(value, float) and pd.isna(value)):
         return ""
@@ -199,12 +199,12 @@ def add_dataframe_table(doc: Document,
 
     # ---- header row -----------------------------------------------------
     for cell, col in zip(table.rows[0].cells, df.columns):
-        cell.text = _safe_text(col)
+        cell.text = safe_text(col)
 
     # ---- data rows ------------------------------------------------------
     for _, row in df.iterrows():
         for cell, val in zip(table.add_row().cells, row):
-            cell.text = _safe_text(val)
+            cell.text = safe_text(val)
 
 
 STRIP_IDX_RE = re.compile(r'(_\d+|\(\d+\))$', re.VERBOSE)  # to remove indexes _1 or (1) added to target words
@@ -313,20 +313,20 @@ def add_concept_graph(doc: Document, df: pd.DataFrame) -> None:
 
 def generate_docx_from_hybrid_output(content, language, gloss_format="table"):
     document = Document()
-    document.add_heading('Learning {}'.format(language), 0)
+    document.add_heading(safe_text('Learning {}'.format(language)), 0)
     if "introduction" in content.keys():
-        document.add_heading('Introduction', 1)
-        document.add_paragraph(content["introduction"]["description"])
+        document.add_heading(safe_text('Introduction'), 1)
+        document.add_paragraph(safe_text(content["introduction"]["description"]))
     for chapter in content["chapters"]:
-        document.add_heading(chapter["title"], 1)
-        document.add_paragraph(chapter["explanation"])
+        document.add_heading(safe_text(chapter["title"]), 1)
+        document.add_paragraph(safe_text(chapter["explanation"]))
         e_counter = 0
         for example in chapter["examples"]:
             e_counter += 1
-            document.add_paragraph("""Example {}""".format(e_counter), style='List Bullet')
-            pex = document.add_paragraph(" ", "Normal")
-            pex.add_run(f'{example["target"]}', style='Strong')
-            document.add_paragraph(f'{example["english"]}', "Normal")
+            document.add_paragraph(safe_text("""Example {}""".format(e_counter)), style='List Bullet')
+            pex = document.add_paragraph(safe_text(" "), "Normal")
+            pex.add_run(safe_text(f'{example["target"]}'), style='Strong')
+            document.add_paragraph(safe_text(f'{example["english"]}'), "Normal")
 
             df = parse_alterlingua(example["gloss"])
 
@@ -335,7 +335,7 @@ def generate_docx_from_hybrid_output(content, language, gloss_format="table"):
             elif gloss_format == "graph":
                 add_concept_graph(document, df)
 
-            document.add_paragraph("""   """)
+            document.add_paragraph(safe_text("""   """))
 
     # Save to a BytesIO buffer instead of disk
     docx_buffer = BytesIO()
@@ -346,23 +346,23 @@ def generate_docx_from_hybrid_output(content, language, gloss_format="table"):
 
 def generate_plain_language_docx_from_hybrid_output(content, language):
     document = Document()
-    document.add_heading('Learning {}'.format(language), 0)
+    document.add_heading(safe_text('Learning {}'.format(language)), 0)
     if "introduction" in content.keys():
-        document.add_heading('Introduction', 1)
-        document.add_paragraph(content["introduction"]["description"])
+        document.add_heading(safe_text('Introduction'), 1)
+        document.add_paragraph(safe_text(content["introduction"]["description"]))
     for chapter in content["chapters"]:
-        document.add_heading(chapter["title"], 1)
-        document.add_paragraph(chapter["explanation"])
+        document.add_heading(safe_text(chapter["title"]), 1)
+        document.add_paragraph(safe_text(chapter["explanation"]))
         e_counter = 0
         for example in chapter["examples"]:
             e_counter += 1
-            document.add_paragraph("""Example {}""".format(e_counter), style='List Bullet')
-            pex = document.add_paragraph(" ", "Normal")
-            pex.add_run(f'{example["target"]}', style='Strong')
-            document.add_paragraph(f'{example["english"]}', "Normal")
-            document.add_paragraph("""   """)
-            document.add_paragraph(f'{example["gloss"]}', "Normal")
-            document.add_paragraph("""   """)
+            document.add_paragraph(safe_text("""Example {}""".format(e_counter)), style='List Bullet')
+            pex = document.add_paragraph(safe_text(" "), "Normal")
+            pex.add_run(safe_text(f'{example["target"]}'), style='Strong')
+            document.add_paragraph(safe_text(f'{example["english"]}'), "Normal")
+            document.add_paragraph(safe_text("""   """))
+            document.add_paragraph(safe_text(f'{example["gloss"]}'), "Normal")
+            document.add_paragraph(safe_text("""   """))
 
     # Save to a BytesIO buffer instead of disk
     docx_buffer = BytesIO()
@@ -415,44 +415,44 @@ def generate_lesson_docx_from_aggregated_output(content, indi_language, readers_
 
     document = Document()
 
-    document.add_heading(content["title"], level=1)
-    document.add_paragraph("  ")
-    document.add_paragraph(_safe_text(content["introduction"]))
+    document.add_heading(safe_text(content["title"]), level=1)
+    document.add_paragraph(safe_text("  "))
+    document.add_paragraph(safe_text(content["introduction"]))
 
     for section in content["sections"]:
-        document.add_heading(_safe_text(section["focus"]), level=2)
-        document.add_paragraph(_safe_text(section["description"]["description"]))
-        document.add_paragraph(locit["for example"] + ": ")
-        pex = document.add_paragraph(" ", "Normal")
-        tt = _safe_text(section["example"]["target_sentence"])
-        pex.add_run(f'{tt}', style='Strong')
-        tm = _safe_text(section["example"]["source_sentence"])
-        document.add_paragraph(f'({tm})', "Normal")
-        document.add_paragraph(_safe_text(section["example"]["description"]))
+        document.add_heading(safe_text(section["focus"]), level=2)
+        document.add_paragraph(safe_text(section["description"]["description"]))
+        document.add_paragraph(safe_text(locit["for example"] + ": "))
+        pex = document.add_paragraph(safe_text(" "), "Normal")
+        tt = safe_text(section["example"]["target_sentence"])
+        pex.add_run(safe_text(f'{tt}'), style='Strong')
+        tm = safe_text(section["example"]["source_sentence"])
+        document.add_paragraph(safe_text(f'({tm})'), "Normal")
+        document.add_paragraph(safe_text(section["example"]["description"]))
 
-    document.add_heading(locit["in conclusion"], level=1)
-    document.add_paragraph(" ")
-    document.add_paragraph(_safe_text(content["conclusion"]))
+    document.add_heading(safe_text(locit["in conclusion"]), level=1)
+    document.add_paragraph(safe_text(" "))
+    document.add_paragraph(safe_text(content["conclusion"]))
 
-    document.add_heading(locit["more_examples"] + ": ")
-    document.add_paragraph(" ")
+    document.add_heading(safe_text(locit["more_examples"] + ": "))
+    document.add_paragraph(safe_text(" "))
     for i, s in enumerate(content["translation_drills"]):
-        aex = document.add_paragraph(" ", style="List Bullet")
-        tma = _safe_text(s["target"])
-        aex.add_run(f'{tma}', style='Strong')
-        document.add_paragraph(f'({s["source"]})', "Normal")
+        aex = document.add_paragraph(safe_text(" "), style="List Bullet")
+        tma = safe_text(s["target"])
+        aex.add_run(safe_text(f'{tma}'), style='Strong')
+        document.add_paragraph(safe_text(f'({s["source"]})'), "Normal")
 
-    document.add_heading("Sources", level=1)
+    document.add_heading(safe_text("Sources"), level=1)
     sources = content["sources"]
-    document.add_heading("Documents: ", level=2)
+    document.add_heading(safe_text("Documents: "), level=2)
     for d in sources["documents"]:
-        document.add_paragraph(d, style="List Bullet")
-    document.add_heading("Conversational Questionnaires: ", level=2)
+        document.add_paragraph(safe_text(d), style="List Bullet")
+    document.add_heading(safe_text("Conversational Questionnaires: "), level=2)
     for d in sources["cqs"]:
-        document.add_paragraph(d, style="List Bullet")
-    document.add_heading("Sentence pairs: ", level=2)
+        document.add_paragraph(safe_text(d), style="List Bullet")
+    document.add_heading(safe_text("Sentence pairs: "), level=2)
     for d in sources["pairs"]:
-        document.add_paragraph(d, style="List Bullet")
+        document.add_paragraph(safe_text(d), style="List Bullet")
     # Save to a BytesIO buffer instead of disk
     docx_buffer = BytesIO()
     document.save(docx_buffer)
@@ -465,26 +465,26 @@ def generate_docx_from_grammar_json(grammar_json, language):
     h1_index = 0
     h2_index = 0
     document = Document()
-    document.add_heading('{}: Elements of grammar.'.format(language), 0)
+    document.add_heading(safe_text('{}: Elements of grammar.'.format(language)), 0)
     for topic, content in grammar_json.items():
         h1_index += 1
-        document.add_heading(f"{str(h1_index)}. {topic}", 1)
+        document.add_heading(safe_text(f"{str(h1_index)}. {topic}"), 1)
         for parameter, description in content.items():
             h2_index += 1
-            document.add_heading(f"{str(h1_index)}.{str(h2_index)}. {topic}: {parameter}", 2)
+            document.add_heading(safe_text(f"{str(h1_index)}.{str(h2_index)}. {topic}: {parameter}"), 2)
             intro_text = f"""
             In {language}, {parameter} is mainly {description["main value"]}
             """
-            p = document.add_paragraph(intro_text)
+            p = document.add_paragraph(safe_text(intro_text))
             for value, examples in description["examples by value"].items():
-                document.add_heading(f"""Example of {value}: """, 3)
+                document.add_heading(safe_text(f"""Example of {value}: """), 3)
                 example_counter = 0
                 for example in examples:
                     example_counter += 1
-                    document.add_paragraph("""Example {}""".format(example_counter), style='List Bullet')
-                    pex = document.add_paragraph(" ", "Normal")
-                    pex.add_run(f'{example["translation"]}', style='Strong')
-                    document.add_paragraph(f'{example["english sentence"]}', "Normal")
+                    document.add_paragraph(safe_text("""Example {}""".format(example_counter)), style='List Bullet')
+                    pex = document.add_paragraph(safe_text(" "), "Normal")
+                    pex.add_run(safe_text(f'{example["translation"]}'), style='Strong')
+                    document.add_paragraph(safe_text(f'{example["english sentence"]}'), "Normal")
 
                     # Define the number of rows (one header + words) and columns
                     num_words = len(example["gloss"])
@@ -492,19 +492,19 @@ def generate_docx_from_grammar_json(grammar_json, language):
 
                     # Populate header row
                     hdr_cells = table.rows[0].cells
-                    hdr_cells[0].text = language
-                    hdr_cells[1].text = "Concept"
-                    hdr_cells[2].text = "Internal Particularisation"
-                    hdr_cells[3].text = "Relational Particularisation"
+                    hdr_cells[0].text = safe_text(language)
+                    hdr_cells[1].text = safe_text("Concept")
+                    hdr_cells[2].text = safe_text("Internal Particularisation")
+                    hdr_cells[3].text = safe_text("Relational Particularisation")
 
                     # Populate the table with data
                     for i, (w, g) in enumerate(example["gloss"].items(), start=1):
                         row_cells = table.rows[i].cells
-                        row_cells[0].text = w
-                        row_cells[1].text = g["concept"]
-                        row_cells[2].text = g["internal particularization"]
-                        row_cells[3].text = g["relational particularization"]
-                    document.add_paragraph("""   """)
+                        row_cells[0].text = safe_text(w)
+                        row_cells[1].text = safe_text(g["concept"])
+                        row_cells[2].text = safe_text(g["internal particularization"])
+                        row_cells[3].text = safe_text(g["relational particularization"])
+                    document.add_paragraph(safe_text("""   """))
 
         # Save to a BytesIO buffer instead of disk
         docx_buffer = BytesIO()
