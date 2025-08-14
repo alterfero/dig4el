@@ -15,7 +15,7 @@
 import json
 from libs import graphs_utils as gu
 
-with open("../data/concepts.json", "r") as f:
+with open("../data/concepts.json", "r", encoding='utf-8') as f:
     concepts = json.load(f)
 
 def get_concept_type(concept):

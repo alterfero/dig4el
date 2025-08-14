@@ -82,7 +82,7 @@ def vectorize_vaps(indi_language):
         vaps = []
         id_to_meta = []
         for vapf in vapsf:
-            with open(os.path.join(vaps_path, vapf), "r") as f:
+            with open(os.path.join(vaps_path, vapf), "r", encoding='utf-8') as f:
                 content = f.read()
                 vaps.append(content)
                 id_to_meta.append({
@@ -101,7 +101,7 @@ def save_index_id_to_meta_and_metadata(index, id_to_meta, indi_language):
     index_path = os.path.join(path, "index.faiss")
     id_to_meta_path = os.path.join(path, "id_to_meta.json")
     faiss.write_index(index, index_path)
-    with open(id_to_meta_path, 'w') as f:
+    with open(id_to_meta_path, 'w', encoding='utf-8') as f:
         utils.save_json_normalized(id_to_meta, f)
 
 def load_index_and_id_to_meta(indi_language):
@@ -114,7 +114,7 @@ def load_index_and_id_to_meta(indi_language):
         print("No index.faiss available, returning None")
         index = None
     if "id_to_meta.json" in os.listdir(path):
-        with open(id_to_meta_path, 'r') as f:
+        with open(id_to_meta_path, 'r', encoding='utf-8') as f:
             id_to_meta = json.load(f)
     else:
         print("No id_to_meta.json available, returning None")
@@ -162,7 +162,7 @@ def create_hard_kw_index(indi_language):
     apsf = [f for f in os.listdir(aps_path) if f[-5:] == ".json"]
     kwi = {}
     for apf in apsf:
-        with open(os.path.join(aps_path, apf), "r") as f:
+        with open(os.path.join(aps_path, apf), "r", encoding='utf-8') as f:
             ap = json.load(f)
         kws = ap["description"].get("grammatical_keywords", [])
         kws += stats.custom_split(ap["description"].get("grammatical_description", ""))
@@ -173,14 +173,14 @@ def create_hard_kw_index(indi_language):
                     kwi[kw].append(apf)
             else:
                 kwi[kw] = [apf]
-    with open(os.path.join(vec_path, "hard_index.json"), "w") as f:
+    with open(os.path.join(vec_path, "hard_index.json"), "w", encoding='utf-8') as f:
         utils.save_json_normalized(kwi, f)
     return kwi
 
 def hard_retrieve_from_query(query: str, indi_language: str) -> list[str]:
     kwif = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors", "hard_index.json")
     results = []
-    with open(kwif, "r") as f:
+    with open(kwif, "r", encoding='utf-8') as f:
         kwi = json.load(f)
     parsed_query = stats.custom_split(query)
     for w in parsed_query:
@@ -202,9 +202,9 @@ def cq_to_sentence_pairs(cq_transcription_dict: dict) -> list[dict]:
         )
     return out
 
-# with open("/Users/sebastienchristian/Desktop/d/01-These/Engine/v1/ld/Tahitian/cq/cq_translations/recording_cq_Going fishing_1716315461_Tahitian_Jacques Vernaudon_Mirose Paia_1748856964.json", "r") as f:
+# with open("/Users/sebastienchristian/Desktop/d/01-These/Engine/v1/ld/Tahitian/cq/cq_translations/recording_cq_Going fishing_1716315461_Tahitian_Jacques Vernaudon_Mirose Paia_1748856964.json", "r", encoding='utf-8') as f:
 #     spd = json.load(f)
 # sp = cq_to_sentence_pairs(spd)
-# with open("./going_fishing_sentence_pairs.json", "w") as f:
+# with open("./going_fishing_sentence_pairs.json", "w", encoding='utf-8') as f:
 #     json.dump(sp, f)
 

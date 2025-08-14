@@ -258,13 +258,13 @@ def get_vector_ready_pairs(indi_language):
         return True
     else:
         for apf in apfs:
-            with open(os.path.join(input_path, apf), "r") as f:
+            with open(os.path.join(input_path, apf), "r", encoding='utf-8') as f:
                 ap = json.load(f)
 
             vap = build_vector_ready_augmented_pair(ap)
             vapf = apf[:-5] + ".txt"
 
-            with open(os.path.join(output_path, vapf), "w") as f:
+            with open(os.path.join(output_path, vapf), "w", encoding='utf-8') as f:
                 f.write(vap)
         return True
 

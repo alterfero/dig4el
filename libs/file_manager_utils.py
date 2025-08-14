@@ -53,14 +53,14 @@ def create_ld(BASE_LD_PATH, lname):
     if "outputs" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
         os.mkdir(os.path.join(BASE_LD_PATH, lname, "outputs"))
     if "info.json" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
-        with open(os.path.join(BASE_LD_PATH, lname, "info.json"), "w") as f:
+        with open(os.path.join(BASE_LD_PATH, lname, "info.json"), "w", encoding='utf-8') as f:
             u.save_json_normalized(doc_info, f)
     if "delimiters.json" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
-        with open(os.path.join(BASE_LD_PATH, lname, "delimiters.json"), "w") as f:
+        with open(os.path.join(BASE_LD_PATH, lname, "delimiters.json"), "w", encoding='utf-8') as f:
             u.save_json_normalized(default_delimiters, f)
     if "batch_id_store.json" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
         bids = {"batch_id": "no_id_set"}
-        with open(os.path.join(BASE_LD_PATH, lname, "batch_id_store.json"), "w") as f:
+        with open(os.path.join(BASE_LD_PATH, lname, "batch_id_store.json"), "w", encoding='utf-8') as f:
             u.save_json_normalized(bids, f)
 
 def display_file_manager(folder_path: str, file_extensions: list[str] = None):

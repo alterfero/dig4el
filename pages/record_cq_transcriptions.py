@@ -30,7 +30,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-delimiters = json.load(open("./data/delimiters.json"))
+delimiters = json.load(open("./data/delimiters.json", encoding='utf-8'))
 delimiters_bank = [
     " ",
     ".",
@@ -74,12 +74,12 @@ questionnaires_folder = "./questionnaires"
 # cq_list is the list of json files in the questionnaires folder
 cq_list = [f for f in listdir(questionnaires_folder) if isfile(join(questionnaires_folder, f)) and f.endswith(".json")]
 
-concepts_kson = json.load(open("./data/concepts.json"))
+concepts_kson = json.load(open("./data/concepts.json", encoding='utf-8'))
 available_pivot_languages = list(wu.language_pk_id_by_name.keys())
 questionnaires_folder = "./questionnaires"
 
 if "concepts" not in st.session_state:
-    with open("./data/concepts.json", "r") as f:
+    with open("./data/concepts.json", "r", encoding='utf-8') as f:
         st.session_state["concepts"] = json.load(f)
 if "predicates_list" not in st.session_state:
     st.session_state["predicates_list"] = graphs_utils.get_leaves_from_node(st.session_state["concepts"], "PREDICATE")
@@ -111,7 +111,7 @@ if "existing_filename" not in st.session_state:
 if "cq_id_dict" not in st.session_state:
     cq_id_dict = {}
     for cq in cq_list:
-        cq_json = json.load(open(join(questionnaires_folder, cq)))
+        cq_json = json.load(open(join(questionnaires_folder, cq), encoding='utf-8'))
         cq_id_dict[cq_json["uid"]] = {"filename": cq, "content": cq_json}
     st.session_state["cq_id_dict"] = cq_id_dict
 
@@ -247,7 +247,7 @@ with st.expander("Start a new translation"):
 
 if st.session_state["cq_is_chosen"]:
     # load the json file
-    cq = json.load(open(join(questionnaires_folder, st.session_state["current_cq"])))
+    cq = json.load(open(join(questionnaires_folder, st.session_state["current_cq"]), encoding='utf-8'))
     number_of_sentences = len(cq["dialog"])
     st.session_state["recording"]["cq_uid"] = cq["uid"]
 

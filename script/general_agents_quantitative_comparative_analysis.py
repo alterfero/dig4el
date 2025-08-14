@@ -83,8 +83,9 @@ if __name__ == "__main__":
         with Pool(num_processes) as pool:
             out_list = pool.map(create_naive_vs_dig4el_accuracy_list, test_data)
 
-        with open("../test_result_analysis/summaries/comparative_results_baseline_vs_dig4el.json", "w") as f:
+        with open("../test_result_analysis/summaries/comparative_results_baseline_vs_dig4el.json", "w", encoding='utf-8') as f:
             json.dump(out_list, f, ensure_ascii=False)
+
     if ANALYZE:
         def bootstrap_ci(data, func=np.mean, n_bootstrap=10000, ci=95):
             rng = np.random.default_rng(seed=42)
@@ -94,7 +95,7 @@ if __name__ == "__main__":
             upper = np.percentile(stat, 100 - (100 - ci) / 2)
             return stat.mean(), (lower, upper), stat
 
-        with open("../test_result_analysis/summaries/comparative_results_baseline_vs_dig4el.json", "r") as f:
+        with open("../test_result_analysis/summaries/comparative_results_baseline_vs_dig4el.json", "r", encoding='utf-8') as f:
             results = json.load(f)
 
         df = pd.DataFrame(results)

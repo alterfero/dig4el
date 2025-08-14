@@ -59,7 +59,7 @@ if "use_pairs" not in st.session_state:
 if "pairs_files" not in st.session_state:
     st.session_state.pairs_files = None
 if "info_dict" not in st.session_state:
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r") as f:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
         st.session_state.info_dict = json.load(f)
 if "query" not in st.session_state:
     st.session_state.query = None
@@ -100,14 +100,14 @@ if st.session_state.indi == "Abkhaz-Adyge":
         st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi,
                                                                        "glottocode not found")
         fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r") as f:
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
             st.session_state.info_dict = json.load(f)
 else:
     colq.markdown(f"Working on **{st.session_state.indi}**")
     colq.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
 
 # PROPOSING EXISTING DOCUMENTS
-with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r") as f:
+with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
     info = json.load(f)
 if info["outputs"] != {}:
     st.subheader("Access stored outputs from previous queries")
@@ -130,7 +130,7 @@ if info["outputs"] != {}:
 
 # cq
 if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_knowledge")):
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_knowledge", "cq_knowledge.json"), "r") as f:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_knowledge", "cq_knowledge.json"), "r", encoding='utf-8') as f:
         st.session_state.cq_knowledge = json.load(f)
     st.session_state.cq_files = [fn
                                 for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_translations"))
@@ -263,7 +263,7 @@ if (st.session_state.alterlingua_contribution
             sps = []
             for spf in st.session_state.selected_pairs:
                 with open(os.path.join(BASE_LD_PATH, st.session_state.indi,
-                                       "sentence_pairs", "augmented_pairs", spf), "r") as f:
+                                       "sentence_pairs", "augmented_pairs", spf), "r", encoding='utf-8') as f:
                     sp = json.load(f)
                     sapd = {
                         st.session_state.indi: sp["target"],
@@ -326,16 +326,20 @@ if st.session_state.output_dict:
     # Save outputs
     if st.button("Store output (and share it with others)"):
 
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w") as f:
+
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w", encoding='utf-8') as f:
             json.dump(st.session_state.output_dict, f, ensure_ascii=False)
+
         if docx:
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn[:-5]+".docx"), "wb") as f:
                 f.write(docx.getvalue())
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r") as f:
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
             info = json.load(f)
         info["outputs"][query] = fn
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w") as f:
+
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w", encoding='utf-8') as f:
             json.dump(info, f, ensure_ascii=False)
+
         st.success("Output stored and available")
 
     # Download outputs

@@ -180,8 +180,10 @@ def process_excluded_language(excluded_lid: str):
                 binary_truth_table[language][upn] = 0
         average_score = average_score / len(general_result_dict)
 
-        with open("../test_results/truth_table_{}_excluded_epoch_{}.json".format(excluded_lid, epoch), "w") as f:
+
+        with open("../test_results/truth_table_{}_excluded_epoch_{}.json".format(excluded_lid, epoch), "w", encoding='utf-8') as f:
             json.dump(truth_table, f, ensure_ascii=False)
+
 
 # RESULT ANALYSIS =======================================================================================
 def analyze_results():

@@ -32,13 +32,13 @@ st.set_page_config(
 if "current_cpt" not in st.session_state:
     st.session_state["current_cpt"] = wu.cpt
 if "parameter_pk_by_name_filtered" not in st.session_state:
-    with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
+    with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json", encoding='utf-8') as f:
         st.session_state["parameter_pk_by_name_filtered"] = json.load(f)
 if "parameter_pk_by_name" not in st.session_state:
-    with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
+    with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json", encoding='utf-8') as f:
         st.session_state["parameter_pk_by_name"] = json.load(f)
 if "domain_elements_pk_by_parameter_pk" not in st.session_state:
-    with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", encoding='utf-8') as f:
         st.session_state["domain_elements_pk_by_parameter_pk"] = json.load(f)
 if "parameter_pk_by_domain_element_pk" not in st.session_state:
     st.session_state["parameter_pk_by_domain_element_pk"] = {}
@@ -47,7 +47,7 @@ if "parameter_pk_by_domain_element_pk" not in st.session_state:
             st.session_state["parameter_pk_by_domain_element_pk"][str(depk)] = str(param_pk)
 
 if "domain_element_by_pk" not in st.session_state:
-    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json", encoding='utf-8') as f:
         st.session_state["domain_element_by_pk"] = json.load(f)
 if "parameter_name_by_pk" not in st.session_state:
     tmp = {}

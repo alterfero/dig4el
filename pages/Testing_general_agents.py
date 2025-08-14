@@ -66,7 +66,7 @@ if "languages chosen by user" not in st.session_state:
 if "ga_domains" not in st.session_state:
     st.session_state["ga_domains"] = []
 if "ga_params_by_domain" not in st.session_state:
-    with open("./external_data/wals_derived/ga_params_by_domain.json", "r") as f:
+    with open("./external_data/wals_derived/ga_params_by_domain.json", "r", encoding='utf-8') as f:
         st.session_state["ga_params_by_domain"] = json.load(f)
 if "available_param_pk_by_name" not in st.session_state:
     st.session_state["available_param_pk_by_name"] = {}
@@ -439,8 +439,10 @@ if len(st.session_state["ga_domains"]) > 0:
                 st.download_button("Download truth table", json.dumps(truth_table, ensure_ascii=False, indent=4),
                                     file_name="truth_table.json")
 
-                with open("./data/binary_truth_table_tmp.json", "w") as f:
+
+                with open("./data/binary_truth_table_tmp.json", "w", encoding='utf-8') as f:
                     json.dump(binary_truth_table, f, ensure_ascii=False)
+
                 st.write("**detailed consensus by language**")
                 st.table(general_result_dict)
 else:

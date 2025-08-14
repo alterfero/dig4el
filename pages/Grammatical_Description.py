@@ -97,7 +97,7 @@ if "prompt_content" not in st.session_state:
 if "output" not in st.session_state:
     st.session_state["output"] = {}
 if "params_by_topic" not in st.session_state:
-    with open("./external_data/params_by_topic.json", "r") as f:
+    with open("./external_data/params_by_topic.json", "r", encoding='utf-8') as f:
         st.session_state["params_by_topic"] = json.load(f)
 if "docx_file_ready" not in st.session_state:
     st.session_state["docx_file_ready"] = False
@@ -451,7 +451,7 @@ with st.expander("Inputs"):
                 st.session_state["cq_transcriptions"],
                 st.session_state["tl_name"],
                 st.session_state["delimiters"])
-            with open("./data/knowledge/current_kg.json", "w") as f:
+            with open("./data/knowledge/current_kg.json", "w", encoding='utf-8') as f:
                 u.save_json_normalized(st.session_state["kg"], f, indent=4)
             st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                 len(st.session_state["cq_transcriptions"]), len(st.session_state["kg"]),
@@ -473,7 +473,7 @@ with st.expander("Inputs"):
                 st.session_state["delimiters"] = st.session_state["cq_transcriptions"][0]["delimiters"]
                 print("Word separators have been explicitly entered in the transcription.")
             elif st.session_state["tl_name"] in wu.language_pk_id_by_name.keys():
-                with open("./data/delimiters.json", "r") as f:
+                with open("./data/delimiters.json", "r", encoding='utf-8') as f:
                     delimiters_dict = json.load(f)
                     st.session_state["delimiters"] = delimiters_dict[st.session_state["tl_name"]]
                     print("Word separators are retrieved from a file.")
@@ -495,7 +495,7 @@ with st.expander("Inputs"):
                 st.session_state["cq_transcriptions"] = []
                 for t in os.listdir(tpath):
                     if t.endswith(".json"):
-                        with open(os.path.join(tpath, t)) as f:
+                        with open(os.path.join(tpath, t), encoding='utf-8') as f:
                             new_cq = json.load(f)
                             st.session_state["cq_transcriptions"].append(new_cq)
             if st.session_state["cq_transcriptions"] != []:
@@ -505,7 +505,7 @@ with st.expander("Inputs"):
                     st.session_state["cq_transcriptions"],
                     st.session_state["tl_name"],
                     st.session_state["delimiters"])
-                with open("./data/knowledge/current_kg.json", "w") as f:
+                with open("./data/knowledge/current_kg.json", "w", encoding='utf-8') as f:
                     u.save_json_normalized(st.session_state["kg"], f, indent=4)
                 st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                     len(st.session_state["cq_transcriptions"]), len(st.session_state["kg"]),
@@ -531,7 +531,7 @@ with st.expander("Inputs"):
                     st.session_state["delimiters"] = st.session_state["cq_transcriptions"][0]["delimiters"]
                     print("Word separators have been explicitly entered in the transcription.")
                 elif st.session_state["tl_name"] in wu.language_pk_id_by_name.keys():
-                    with open("./data/delimiters.json", "r") as f:
+                    with open("./data/delimiters.json", "r", encoding='utf-8') as f:
                         delimiters_dict = json.load(f)
                         st.session_state["delimiters"] = delimiters_dict[st.session_state["tl_name"]]
                         print("Word separators are retrieved from a file.")
@@ -1174,7 +1174,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
     colqw.download_button("📥 As JSON",
                        u.dumps_json_normalized(st.session_state["prompt_content"], indent=4),
                        file_name="grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
-    with open("./data/current_gram.json", "w") as f:
+    with open("./data/current_gram.json", "w", encoding='utf-8') as f:
         u.save_json_normalized(st.session_state["prompt_content"], f, indent=4)
     st.session_state["generate_description"] = True
     #st.write(st.session_state["prompt_content"])

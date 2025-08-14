@@ -5,7 +5,7 @@ from matplotlib.colors import Normalize
 from matplotlib import cm
 
 def verify_square_table_integrity(filepath):
-    with open(filepath, "r") as f:
+    with open(filepath, "r", encoding='utf-8') as f:
         table = json.load(f)
 
     keys = set(table.keys())

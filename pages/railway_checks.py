@@ -18,7 +18,7 @@ st.write("Current path: {}".format(st.session_state.path))
 for item in os.listdir(os.path.join(*st.session_state.path)):
     if st.button(item, key=item):
         if item.endswith(".json"):
-            with open(os.path.join(*st.session_state.path, item), "r") as f:
+            with open(os.path.join(*st.session_state.path, item), "r", encoding='utf-8') as f:
                 st.session_state.content = json.load(f)
             st.rerun()
         else:

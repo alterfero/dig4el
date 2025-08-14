@@ -26,15 +26,15 @@ import pickle
 
 # GLOBAL VARIABLES
 try:
-    with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", encoding='utf-8') as f:
         domain_elements_pk_by_parameter_pk = json.load(f)
-    with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
+    with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json", encoding='utf-8') as f:
         parameter_pk_by_name_filtered = json.load(f)
     default_wals_cpt = pd.read_json("./external_data/wals_derived/de_conditional_probability_df.json")
 except FileNotFoundError:
-    with open("../external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
+    with open("../external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", encoding='utf-8') as f:
         domain_elements_pk_by_parameter_pk = json.load(f)
-    with open("../external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
+    with open("../external_data/wals_derived/parameter_pk_by_name_filtered.json", encoding='utf-8') as f:
         parameter_pk_by_name_filtered = json.load(f)
     default_wals_cpt = pd.read_json("../external_data/wals_derived/de_conditional_probability_df.json")
 

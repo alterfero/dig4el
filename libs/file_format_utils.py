@@ -85,7 +85,7 @@ def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath):
         })
 
     # Output JSON
-    with open("sentence_pairs.json", "w") as f:
+    with open("sentence_pairs.json", "w", encoding='utf-8') as f:
         utils.save_json_normalized(data, f)
 
 pangloss_xml_to_sentence_pairs_json("/Users/sebastienchristian/Desktop/iaai_docs/pangloss.xml")

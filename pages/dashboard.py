@@ -71,7 +71,7 @@ if "has_pairs" not in st.session_state:
 if "has_monolingual" not in st.session_state:
     st.session_state.has_monolingual = False
 if "info_doc" not in st.session_state:
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json")) as f:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), encoding='utf-8') as f:
         st.session_state.info_doc = json.load(f)
 if "selected_pairs_filename" not in st.session_state:
     st.session_state.selected_pairs_filename = ""
@@ -82,7 +82,7 @@ if "sentence_pairs" not in st.session_state:
 if "enriching_pairs" not in st.session_state:
     st.session_state.enriching_pairs = False
 if "batch_id" not in st.session_state:
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r") as f:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r", encoding='utf-8') as f:
         content = json.load(f)
     st.session_state.batch_id = content.get("batch_id", "no batch ID in batch_id_store")
 if "enriched_pairs" not in st.session_state:
@@ -113,7 +113,7 @@ if "index.pkl" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_la
     st.session_state.has_pairs = True
 
 def save_info_dict():
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as fdi:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w", encoding='utf-8') as fdi:
         utils.save_json_normalized(st.session_state.info_doc, fdi)
 
 def generate_sentence_pairs_signatures(sentence_pairs: list[dict]) -> list[str]:
@@ -147,11 +147,11 @@ if st.button("Select {}".format(selected_language)):
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language,
                                                                    "glottocode not found")
     fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r") as f:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r", encoding='utf-8') as f:
         st.session_state.info_doc = json.load(f)
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "delimiters.json"), "r") as f:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "delimiters.json"), "r", encoding='utf-8') as f:
         st.session_state.delimiters = json.load(f)
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r") as f:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r", encoding='utf-8') as f:
         content = json.load(f)
     st.session_state.batch_id = content.get("batch_id", "no batch ID in batch_id_store")
     PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
@@ -186,14 +186,14 @@ with tab1:
                         with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
                                                "cq",
                                                "cq_knowledge",
-                                               "cq_knowledge.json"), "r") as f:
+                                               "cq_knowledge.json"), "r", encoding='utf-8') as f:
                             st.session_state.bayesian_data = json.load(f)
                         st.session_state.has_bayesian = True
                         st.rerun()
 
     # cq_knowledge_file = st.file_uploader("Upload a CQ Knowledge JSON file")
     # if cq_knowledge_file is not None:
-    #     with open(cq_knowledge_file, "r") as f:
+    #     with open(cq_knowledge_file, "r", encoding='utf-8') as f:
     #         st.session_state.bayesian_data = json.load(f)
     #     st.session_state.has_bayesian = True
 
@@ -430,7 +430,7 @@ with tab3:
             if valid_file:
 
                 st.success("Adding {} to the server".format(server_filename))
-                with open(os.path.join(PAIRS_BASE_PATH, "pairs", server_filename), "w") as f:
+                with open(os.path.join(PAIRS_BASE_PATH, "pairs", server_filename), "w", encoding='utf-8') as f:
                     utils.save_json_normalized(sentence_pairs, f)
                 st.success(f"Saved `{server_filename}` on the server.")
 
@@ -449,7 +449,7 @@ with tab3:
                         "augmented": False
                     }
                 )
-                with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as f:
+                with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w", encoding='utf-8') as f:
                     utils.save_json_normalized(st.session_state.info_doc, f)
                 st.rerun()
 
@@ -471,7 +471,7 @@ with tab3:
         selected_augmented_sentence = st.selectbox("Select a sentence",
                                                    [s[:-5] for s in available_augmented_sentences])
         seleced_augmented_sentence_file = selected_augmented_sentence + ".json"
-        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", seleced_augmented_sentence_file), "r") as f:
+        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", seleced_augmented_sentence_file), "r", encoding='utf-8') as f:
             sas = json.load(f)
 
         st.markdown(f"""
@@ -503,7 +503,7 @@ with tab3:
                                                                 [item["filename"]
                                                                  for item in st.session_state.info_doc["pairs"]])
 
-        with open(os.path.join(PAIRS_BASE_PATH, "pairs", st.session_state.selected_pairs_filename), "r") as f:
+        with open(os.path.join(PAIRS_BASE_PATH, "pairs", st.session_state.selected_pairs_filename), "r", encoding='utf-8') as f:
             st.session_state.sentence_pairs = json.load(f)
 
         # user triggers augmentation
@@ -513,7 +513,7 @@ with tab3:
         )
         if create_btn and not st.session_state.enriching_pairs:  # augmentation launched only if previous one done
             pairs_signatures = generate_sentence_pairs_signatures(st.session_state.sentence_pairs)
-            with open(CURRENT_JOB_SIG_FILE, "w") as f:
+            with open(CURRENT_JOB_SIG_FILE, "w", encoding='utf-8') as f:
                 utils.save_json_normalized(pairs_signatures, f)
             # Pass jobs to Redis
             new_pairs = [pair for pair in st.session_state.sentence_pairs
@@ -525,7 +525,7 @@ with tab3:
                 ))
 
             st.session_state.batch_id = squ.enqueue_batch(new_pairs)
-            with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "w") as f:
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "w", encoding='utf-8') as f:
                 utils.save_json_normalized({"batch_id": st.session_state.batch_id}, f)
 
             st.session_state.enriching_pairs = True
@@ -592,7 +592,7 @@ with tab3:
     for ap_file in [fn
                     for fn in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
                     if fn[-5:] == ".json"]:
-        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file), "r") as f:
+        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file), "r", encoding='utf-8') as f:
             ap = json.load(f)
         aps.append(
             {
@@ -607,7 +607,7 @@ with tab3:
 
     if selected["selection"]["rows"] != []:
         selected_ap = aps[selected["selection"]["rows"][0]]
-        with open(selected_ap["filename"], "r") as f:
+        with open(selected_ap["filename"], "r", encoding='utf-8') as f:
             slap = json.load(f)
         if not slap.get("connections", None):
             slap["connections"] = {}
@@ -624,7 +624,7 @@ with tab3:
                                              key="cw"+referent)
             slap["connections"][referent] = connected_words
         if st.button("Submit connections"):
-            with open(selected_ap["filename"], "w") as f:
+            with open(selected_ap["filename"], "w", encoding='utf-8') as f:
                 utils.save_json_normalized(slap, f)
                 st.success("Connections saved in {}".format(selected_ap["filename"]))
 
