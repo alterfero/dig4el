@@ -28,10 +28,6 @@ st.markdown("""*DIG4EL (Digital Inferential Grammar for Endangered Languages) is
             sources of information about a given language using **responsible** Artificial Intelligence processes. 
             DIG4EL follows the [FAIR](https://www.go-fair.org/fair-principles/) and 
             [CARE](https://www.gida-global.org/care) principles for data governance and respect of their owners.*""")
-c1, c2, c3 = st.columns([1,3,1])
-with c2:
-    st.image("./pics/diagram_1.png", use_column_width=True)
-st.link_button("Click here to go to the dashboard", "./pages/dashboard", use_container_width=True)
 
 with st.popover("Notice", use_container_width=True):
     st.markdown(""" 

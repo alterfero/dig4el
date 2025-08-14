@@ -73,6 +73,12 @@ for d in dirs:
         st.rerun()
 
 st.subheader("Files")
+if st.text_input("erase all files?") == "erase all files":
+    for i, fname in enumerate(files):
+        fpath = os.path.join(current_path, fname)
+        with st.spinner("{}/{} deleting {}".format(i, len(files), fpath)):
+            os.remove(fpath)
+        st.rerun()
 for fname in files:
     fpath = os.path.join(current_path, fname)
     with st.expander(fname):
