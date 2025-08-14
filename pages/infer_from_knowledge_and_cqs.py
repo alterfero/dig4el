@@ -407,7 +407,7 @@ with st.expander("Inputs"):
                                                "cq",
                                                "cq_translations",
                                                cq.name), "w") as f:
-                            json.dump(updated_cq, f)
+                            u.save_json_normalized(updated_cq, f)
                         st.success("{} added to the online repository".format(cq.name))
                     st.session_state["cq_transcriptions"].append(updated_cq)
             st.session_state["loaded_existing"] = True
@@ -423,7 +423,7 @@ with st.expander("Inputs"):
                 st.session_state["tl_name"],
                 st.session_state["delimiters"])
             with open("./data/knowledge/current_kg.json", "w") as f:
-                json.dump(st.session_state["kg"], f, indent=4)
+                u.save_json_normalized(st.session_state["kg"], f, indent=4)
             st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                 len(st.session_state["cq_transcriptions"]), len(st.session_state["kg"]),
                 total_target_word_count, len(unique_words)))
@@ -1102,14 +1102,14 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                            "cq",
                            "cq_knowledge",
                            "cq_knowledge.json"), "w") as f:
-        json.dump(json_blob, f)
+        u.save_json_normalized(json_blob, f)
     st.success("CQ knowledge completed and added to the knowledge bank!")
     st.session_state.has_bayesian = True
     st.session_state.bayesian_data = json_blob
     st.page_link("pages/dashboard.py", label="Back to dashboard", icon=":material/contract_edit:")
 
     # st.download_button(label=" 📥You can download CQ Knowledge results for future use.📥",
-    #                    data=json.dumps(json_blob),
+    #                    data=u.save_json_normalizeds(json_blob),
     #                    file_name="dig4el_cq_knowledge.json"
     #                    )
 

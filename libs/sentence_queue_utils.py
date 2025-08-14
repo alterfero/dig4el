@@ -188,10 +188,9 @@ def persist_finished_results(batch_id: str, output_dir: str, max_items: int = 10
 
     written = 0
     for job in jobs:
+        job.refresh()
         if job is None:
             continue
-        job.refresh()  # <- important
-
         result = job.return_value()
         if not result:
             print(f"Job {job.id}: no return value (status={job.get_status()})")
@@ -201,7 +200,7 @@ def persist_finished_results(batch_id: str, output_dir: str, max_items: int = 10
         fname = result.get("filename", job.id) + ".json"
         print("Writing {} on volume".format(fname))
         with open(os.path.join(output_dir, fname), "w", encoding="utf-8") as f:
-            json.dump(result.get("result", result), f, ensure_ascii=False)
+            u.save_json_normalized(result.get("result", result), f, ensure_ascii=False)
         written += 1
     print("Written {} job results on volume".format(written))
     return written

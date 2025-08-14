@@ -7,6 +7,7 @@ import numpy as np
 import pickle
 import torch
 from libs import stats
+from libs import utils
 
 """
 Implementing Retrieval-Augmented Generation (RAG) to add relevant pairs of sentences from a parallel corpus
@@ -101,7 +102,7 @@ def save_index_id_to_meta_and_metadata(index, id_to_meta, indi_language):
     id_to_meta_path = os.path.join(path, "id_to_meta.json")
     faiss.write_index(index, index_path)
     with open(id_to_meta_path, 'w') as f:
-        json.dump(id_to_meta, f)
+        utils.save_json_normalized(id_to_meta, f)
 
 def load_index_and_id_to_meta(indi_language):
     path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors")
@@ -173,7 +174,7 @@ def create_hard_kw_index(indi_language):
             else:
                 kwi[kw] = [apf]
     with open(os.path.join(vec_path, "hard_index.json"), "w") as f:
-        json.dump(kwi, f)
+        utils.save_json_normalized(kwi, f)
     return kwi
 
 def hard_retrieve_from_query(query: str, indi_language: str) -> list[str]:

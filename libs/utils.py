@@ -21,8 +21,39 @@ from os import listdir
 import pandas as pd
 import hashlib
 import streamlit as st
+import unicodedata
 
 from collections.abc import Mapping, Sequence
+
+
+def normalize_text(text: str) -> str:
+    """Normalize *text* to NFC form."""
+    return unicodedata.normalize("NFC", text)
+
+
+def normalize_user_strings(obj):
+    """Recursively apply :func:`normalize_text` to all strings in *obj*."""
+    if isinstance(obj, str):
+        return normalize_text(obj)
+    if isinstance(obj, Mapping):
+        return {k: normalize_user_strings(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [normalize_user_strings(v) for v in obj]
+    if isinstance(obj, tuple):
+        return tuple(normalize_user_strings(v) for v in obj)
+    return obj
+
+
+def save_json_normalized(data, fp, *args, **kwargs):
+    """Wrapper around :func:`json.dump` that normalizes strings before saving."""
+    json.dump(normalize_user_strings(data), fp, *args, **kwargs)
+
+
+def dumps_json_normalized(data, *args, **kwargs):
+    """Wrapper around :func:`json.dumps` that normalizes strings before serializing."""
+    return json.dumps(normalize_user_strings(data), *args, **kwargs)
+
+
 
 
 def csv_to_dict(csv_file_path):

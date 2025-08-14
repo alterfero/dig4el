@@ -146,7 +146,7 @@ if st.session_state.info_dict["documents"]["oa_vector_store_id"] != "":
     st.session_state.is_doc = True
 
 # pairs
-if "index.pkl" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
+if "index.faiss" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
                                           "sentence_pairs", "vectors")):
     st.session_state.pairs_files = [fn
                                     for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "pairs"))
@@ -205,7 +205,7 @@ if st.session_state.run_sources:
     if st.session_state.is_pairs and st.session_state.use_pairs:
         with st.spinner("Retrieving a helpful selection of augmented pairs"):
             # retrieve N sentences using embeddings
-            index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "index.pkl")
+            index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "index.faiss")
             index, id_to_meta = ragu.load_index_and_id_to_meta(st.session_state.indi)
             vec_retrieved = ragu.retrieve_similar(query, index, id_to_meta, k=10, min_score=0.3)
             vecf_retrieved = [i["filename"][:-4]+".json" for i in vec_retrieved]
@@ -302,6 +302,11 @@ if (st.session_state.alterlingua_contribution
         st.success("Done! Output available.")
 
 if st.session_state.output_dict:
+    st.markdown(f"""Remember: This raw output, available here or stored by other users, is a 
+                raw output from DIG4EL: It most probably contains inaccuracies and errors. 
+                It is meant to be edited and used by an expert of the 
+                {st.session_state.indi} language. 
+                """)
     st.subheader("Store and/or download the output")
     if st.sidebar.checkbox("Show JSON output"):
         st.write(st.session_state.output_dict)
@@ -344,5 +349,46 @@ if st.session_state.output_dict:
                              file_name=fn[:-5]+".docx",
                              mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                              key="final_docx")
+
+    st.divider()
+    st.subheader("Output")
+    st.divider()
+
+    o = st.session_state.output_dict
+    st.title(o["title"])
+    st.write(o["introduction"])
+    st.divider()
+    for section in o["sections"]:
+        st.subheader(section["focus"])
+        st.write(section["description"]["description"])
+        st.markdown(f"**{section['example']['target_sentence']}**")
+        st.markdown(f"*{section['example']['source_sentence']}*")
+        st.write(section["example"]["description"])
+    st.subheader("Conclusion")
+    st.write(o["conclusion"])
+    st.divider()
+    st.subheader("More examples")
+    for i, s in enumerate(o["translation_drills"]):
+        st.write("{}".format(i+1))
+        st.markdown(f"**{s['target']}**")
+        st.markdown(f"*{s['source']}*")
+    st.divider()
+    st.subheader("Sources")
+    sources = o["sources"]
+    if "documents" in sources.keys() and sources["documents"] is not None and sources["documents"] != []:
+        st.markdown("### Documents")
+        for d in sources["documents"]:
+            st.markdown(f"- {d}")
+    if "cqs" in sources.keys() and sources["cqs"] is not None and sources["cqs"] != []:
+        st.markdown("### Conversational Questionnaires")
+        for d in sources["cqs"]:
+            st.markdown(f"- {d}")
+    if "pairs" in sources.keys() and sources["pairs"] is not None and sources["pairs"] != []:
+        st.markdown("### Sentence Pairs")
+        for d in sources["pairs"]:
+            st.markdown(f"- {d}")
+
+
+
 
 

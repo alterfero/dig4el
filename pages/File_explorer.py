@@ -73,12 +73,16 @@ for d in dirs:
         st.rerun()
 
 st.subheader("Files")
+dtrigger = False
 if st.text_input("erase all files?") == "erase all files":
+    dtrigger = True
+if dtrigger:
     for i, fname in enumerate(files):
         fpath = os.path.join(current_path, fname)
         with st.spinner("{}/{} deleting {}".format(i, len(files), fpath)):
             os.remove(fpath)
-        st.rerun()
+    dtrigger = False
+    st.rerun()
 for fname in files:
     fpath = os.path.join(current_path, fname)
     with st.expander(fname):

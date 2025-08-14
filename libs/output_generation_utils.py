@@ -1,6 +1,7 @@
 import json
 from docx import Document
 from libs import knowledge_graph_utils as kgu
+from libs import utils
 from io import BytesIO
 import re
 from collections import defaultdict
@@ -11,6 +12,9 @@ from html import escape
 import jinja2
 
 def generate_transcription_doc(cq, target_language, pivot_language):
+    cq = utils.normalize_user_strings(cq)
+    target_language = utils.normalize_text(target_language)
+    pivot_language = utils.normalize_text(pivot_language)
     if target_language in ["English", ""]:
         target_language = "target language"
 
@@ -105,8 +109,9 @@ def generate_transcription_doc(cq, target_language, pivot_language):
     return docx_buffer
 
 
-
 def generate_docx_from_kg_index_list(kg, delimiters, kg_index_list):
+    kg = utils.normalize_user_strings(kg)
+    delimiters = utils.normalize_user_strings(delimiters)
     document = Document()
     document.add_heading('Partial corpus', 0)
     item_counter = 0
@@ -160,6 +165,7 @@ def _safe_text(value: object) -> str:
     text = str(value)
     # strip control chars Word’s XML parser can’t handle
     text = _BAD_XML_CHARS_RE.sub("", text)
+    text = utils.normalize_text(text)
     # Word has no documented per‑cell limit, but 32 K keeps you well clear
     return text[:32760]
 
@@ -411,26 +417,29 @@ def generate_lesson_docx_from_aggregated_output(content, indi_language, readers_
 
     document.add_heading(content["title"], level=1)
     document.add_paragraph("  ")
-    document.add_paragraph(content["introduction"])
+    document.add_paragraph(_safe_text(content["introduction"]))
 
     for section in content["sections"]:
-        document.add_heading(section["focus"], level=2)
-        document.add_paragraph(section["description"]["description"])
+        document.add_heading(_safe_text(section["focus"]), level=2)
+        document.add_paragraph(_safe_text(section["description"]["description"]))
         document.add_paragraph(locit["for example"] + ": ")
         pex = document.add_paragraph(" ", "Normal")
-        pex.add_run(f'{section["example"]["target_sentence"]}', style='Strong')
-        document.add_paragraph(f'({section["example"]["source_sentence"]})', "Normal")
-        document.add_paragraph(section["example"]["description"])
+        tt = _safe_text(section["example"]["target_sentence"])
+        pex.add_run(f'{tt}', style='Strong')
+        tm = _safe_text(section["example"]["source_sentence"])
+        document.add_paragraph(f'({tm})', "Normal")
+        document.add_paragraph(_safe_text(section["example"]["description"]))
 
     document.add_heading(locit["in conclusion"], level=1)
     document.add_paragraph(" ")
-    document.add_paragraph(content["conclusion"])
+    document.add_paragraph(_safe_text(content["conclusion"]))
 
     document.add_heading(locit["more_examples"] + ": ")
     document.add_paragraph(" ")
     for i, s in enumerate(content["translation_drills"]):
         aex = document.add_paragraph(" ", style="List Bullet")
-        aex.add_run(f'{s["target"]}', style='Strong')
+        tma = _safe_text(s["target"])
+        aex.add_run(f'{tma}', style='Strong')
         document.add_paragraph(f'({s["source"]})', "Normal")
 
     document.add_heading("Sources", level=1)
@@ -450,8 +459,6 @@ def generate_lesson_docx_from_aggregated_output(content, indi_language, readers_
     docx_buffer.seek(0)  # Reset buffer position
 
     return docx_buffer
-
-
 
 
 def generate_docx_from_grammar_json(grammar_json, language):

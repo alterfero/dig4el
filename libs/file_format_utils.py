@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import json
+from libs import utils
 
 
 def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath):
@@ -85,6 +86,6 @@ def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath):
 
     # Output JSON
     with open("sentence_pairs.json", "w") as f:
-        json.dump(data, f)
+        utils.save_json_normalized(data, f)
 
 pangloss_xml_to_sentence_pairs_json("/Users/sebastienchristian/Desktop/iaai_docs/pangloss.xml")

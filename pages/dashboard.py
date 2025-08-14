@@ -24,6 +24,7 @@ from libs import openai_vector_store_utils as ovsu
 from libs import sentence_queue_utils as squ
 from libs import semantic_description_utils as sdu
 from libs import retrieval_augmented_generation_utils as ragu
+from libs import utils
 import streamlit.components.v1 as components
 from libs import utils as u
 from libs import stats
@@ -113,7 +114,7 @@ if "index.pkl" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_la
 
 def save_info_dict():
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as fdi:
-        json.dump(st.session_state.info_doc, fdi)
+        utils.save_json_normalized(st.session_state.info_doc, fdi)
 
 def generate_sentence_pairs_signatures(sentence_pairs: list[dict]) -> list[str]:
     sig_list = []
@@ -430,7 +431,7 @@ with tab3:
 
                 st.success("Adding {} to the server".format(server_filename))
                 with open(os.path.join(PAIRS_BASE_PATH, "pairs", server_filename), "w") as f:
-                    json.dump(sentence_pairs, f)
+                    utils.save_json_normalized(sentence_pairs, f)
                 st.success(f"Saved `{server_filename}` on the server.")
 
                 # UPDATE INFO_DOC
@@ -449,7 +450,7 @@ with tab3:
                     }
                 )
                 with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w") as f:
-                    json.dump(st.session_state.info_doc, f)
+                    utils.save_json_normalized(st.session_state.info_doc, f)
                 st.rerun()
 
     # AUGMENT SENTENCE PAIRS
@@ -513,7 +514,7 @@ with tab3:
         if create_btn and not st.session_state.enriching_pairs:  # augmentation launched only if previous one done
             pairs_signatures = generate_sentence_pairs_signatures(st.session_state.sentence_pairs)
             with open(CURRENT_JOB_SIG_FILE, "w") as f:
-                json.dump(pairs_signatures, f)
+                utils.save_json_normalized(pairs_signatures, f)
             # Pass jobs to Redis
             new_pairs = [pair for pair in st.session_state.sentence_pairs
                          if u.clean_sentence(pair["source"], filename=True) + ".json"
@@ -525,7 +526,7 @@ with tab3:
 
             st.session_state.batch_id = squ.enqueue_batch(new_pairs)
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "w") as f:
-                json.dump({"batch_id": st.session_state.batch_id}, f)
+                utils.save_json_normalized({"batch_id": st.session_state.batch_id}, f)
 
             st.session_state.enriching_pairs = True
     if st.checkbox("Redis info"):
@@ -624,11 +625,11 @@ with tab3:
             slap["connections"][referent] = connected_words
         if st.button("Submit connections"):
             with open(selected_ap["filename"], "w") as f:
-                json.dump(slap, f)
+                utils.save_json_normalized(slap, f)
                 st.success("Connections saved in {}".format(selected_ap["filename"]))
 
     st.subheader("4. Index augmented pairs to make them ready for use")
-    if st.button("Index !"):
+    if st.button("Index!"):
         with st.spinner("Indexing..."):
             if sdu.get_vector_ready_pairs(st.session_state.indi_language):
                 st.success("Augmented pairs prepared for vectorization")

@@ -452,7 +452,7 @@ with st.expander("Inputs"):
                 st.session_state["tl_name"],
                 st.session_state["delimiters"])
             with open("./data/knowledge/current_kg.json", "w") as f:
-                json.dump(st.session_state["kg"], f, indent=4)
+                u.save_json_normalized(st.session_state["kg"], f, indent=4)
             st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                 len(st.session_state["cq_transcriptions"]), len(st.session_state["kg"]),
                 total_target_word_count, len(unique_words)))
@@ -506,7 +506,7 @@ with st.expander("Inputs"):
                     st.session_state["tl_name"],
                     st.session_state["delimiters"])
                 with open("./data/knowledge/current_kg.json", "w") as f:
-                    json.dump(st.session_state["kg"], f, indent=4)
+                    u.save_json_normalized(st.session_state["kg"], f, indent=4)
                 st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                     len(st.session_state["cq_transcriptions"]), len(st.session_state["kg"]),
                     total_target_word_count, len(unique_words)))
@@ -1172,10 +1172,10 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
     st.markdown("#### Download raw grammatical description with examples.")
     colqw, colqe = st.columns(2)
     colqw.download_button("📥 As JSON",
-                       json.dumps(st.session_state["prompt_content"], indent=4),
+                       u.dumps_json_normalized(st.session_state["prompt_content"], indent=4),
                        file_name="grammatical_description_of_{}.json".format(st.session_state["tl_name"]))
     with open("./data/current_gram.json", "w") as f:
-        json.dump(st.session_state["prompt_content"], f, indent=4)
+        u.save_json_normalized(st.session_state["prompt_content"], f, indent=4)
     st.session_state["generate_description"] = True
     #st.write(st.session_state["prompt_content"])
     docx_file = ogu.generate_docx_from_grammar_json(st.session_state["prompt_content"], st.session_state["tl_name"])
@@ -1442,7 +1442,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         print("User payload")
         print(user_payload)
 
-    user_payload += json.dumps(json_blob, ensure_ascii=False)
+    user_payload += u.save_json_normalizeds(json_blob, ensure_ascii=False)
 
     messages = [
         {"role": "system", "content": system_prompt},
@@ -1534,7 +1534,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         request_info.write("Intermediate output available")
 
         col41.download_button("Download JSON with gloss tables",
-                           json.dumps(st.session_state["output"], indent=4),
+                           u.save_json_normalizeds(st.session_state["output"], indent=4),
                            file_name="hybrid_grammatical_description_of_{}.json".format(
                                st.session_state["tl_name"]), key="inter_json")
         if col42.button("Generate docx with gloss tables", key="generate_inter_docx"):
@@ -1609,7 +1609,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
         col51, col52, col53 = st.columns(3)
         request_info.success("Done.")
         col51.download_button("Download final JSON",
-                              json.dumps(st.session_state["final_output"], indent=4),
+                              u.dumps_json_normalized(st.session_state["final_output"], indent=4),
                               file_name="{}_grammar_plain.json".format(
                                   st.session_state["tl_name"]), key="final_json")
 

@@ -29,6 +29,9 @@ st.markdown("""*DIG4EL (Digital Inferential Grammar for Endangered Languages) is
             DIG4EL follows the [FAIR](https://www.go-fair.org/fair-principles/) and 
             [CARE](https://www.gida-global.org/care) principles for data governance and respect of their owners.*""")
 
+
+
+
 with st.popover("Notice", use_container_width=True):
     st.markdown(""" 
     *Notice: DIG4EL is currently in the early production stage.*

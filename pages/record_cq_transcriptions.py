@@ -446,4 +446,4 @@ if st.session_state["cq_is_chosen"]:
                 + str(int(time.time())) + ".json")
     colf, colg = st.columns(2)
     colf.download_button(label="**download your transcription**",
-                         data=json.dumps(st.session_state["recording"], indent=4), file_name=filename)
+                         data=utils.dumps_json_normalized(st.session_state["recording"], indent=4), file_name=filename)
