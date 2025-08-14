@@ -164,11 +164,11 @@ def csv_to_dict(file_path):
 
 def add_field_to_concept_json(concept_json_file, field_name, field_value):
     """Add a field to a concept json file."""
-    with open(concept_json_file, "r") as f:
+    with open(concept_json_file, "r", encoding='utf-8') as f:
         data = json.load(f)
     for concept in data.keys():
         data[concept][field_name] = field_value
-    with open(concept_json_file, "w") as f:
+    with open(concept_json_file, "w", encoding='utf-8') as f:
         json.dump(data, f, indent=4)
     print(f"Field {field_name} added to {concept_json_file}")
 
@@ -299,7 +299,7 @@ def replace_concept_name_in_tree(old_concept_name, new_concept_name, root_direct
 def replace_concept_names_everywhere():
 
     print("Loading concept_name_update.json")
-    with open("../data/lookup_tables/concept_name_update.json", "r") as f:
+    with open("../data/lookup_tables/concept_name_update.json", "r", encoding='utf-8') as f:
         concept_name_update = json.load(f)
         print("Loaded concept_name_update.json")
 
@@ -478,14 +478,14 @@ def update_concept_names_in_transcription(transcription):
 #                 if ".DS_Store" in recordings:
 #                     recordings.remove(".DS_Store")
 #                 for recording in recordings:
-#                     recording_json = json.load(open(join(recordings_folder, cq[:-5], language, recording)))
+#                     recording_json = json.load(open(join(recordings_folder, cq[:-5], language, recording), encoding='utf-8'))
 #                     for item in recording_json["data"]:
 #                         recording_json["data"][item]["translation"] = (
 #                             normalize_sentence(recording_json["data"][item]["translation"]))
 #                         for concept_word in recording_json["data"][item]["concept_words"]:
 #                             recording_json["data"][item]["concept_words"][concept_word] = (
 #                                 normalize_sentence(recording_json["data"][item]["concept_words"][concept_word]))
-#                     with open(join(recordings_folder, cq[:-5], language, recording), "w") as f:
+#                     with open(join(recordings_folder, cq[:-5], language, recording), "w", encoding='utf-8') as f:
 #                         json.dump(recording_json, f, indent=4)
 #                         print("Recording {} cleaned".format(recording))
 

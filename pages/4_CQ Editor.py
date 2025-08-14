@@ -87,7 +87,7 @@ def reset_current_dialog():
     print("reset_current_dialog executed")
 
 
-concepts_kson = json.load(open("./data/concepts.json"))
+concepts_kson = json.load(open("./data/concepts.json", encoding='utf-8'))
 intent_list = graphs_utils.get_leaves_from_node(concepts_kson, "INTENT")
 predicate_list = graphs_utils.get_leaves_from_node(concepts_kson, "PREDICATE")
 

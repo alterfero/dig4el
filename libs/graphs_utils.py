@@ -19,7 +19,7 @@ from libs import utils
 from streamlit_agraph import agraph, Node, Edge, Config
 
 def load_json(json_filename):
-    with open("./data/"+json_filename) as knowledge_file:
+    with open("./data/"+json_filename, encoding='utf-8') as knowledge_file:
         kf = knowledge_file.read()
         kkf = kf.replace("'", '"')
         knowledge_json = json.loads(kkf)

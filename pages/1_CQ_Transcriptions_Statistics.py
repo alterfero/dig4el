@@ -56,8 +56,8 @@ def build_gloss_df(entry):
 
 st.title("Statistics and exploration of CQ transcriptions")
 
-concept_kson = json.load(open("./data/concepts.json"))
-delimiters = json.load(open("./data/delimiters.json"))
+concept_kson = json.load(open("./data/concepts.json", encoding='utf-8'))
+delimiters = json.load(open("./data/delimiters.json", encoding='utf-8'))
 available_target_languages = list(delimiters.keys())
 
 language = st.selectbox("Select a language", available_target_languages, index=0)

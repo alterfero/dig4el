@@ -36,79 +36,79 @@ from multiprocessing import Pool, cpu_count
 
 # GLOBAL VARIABLES
 try:
-    with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
+    with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json", encoding='utf-8') as f:
         parameter_pk_by_name = json.load(f)
-    with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
+    with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json", encoding='utf-8') as f:
         parameter_pk_by_name_filtered = json.load(f)
-    with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/language_by_pk_lookup_table.json", encoding='utf-8') as f:
         language_by_pk = json.load(f)
-    with open("./external_data/wals_derived/domain_elements_by_language.json") as f:
+    with open("./external_data/wals_derived/domain_elements_by_language.json", encoding='utf-8') as f:
         domain_elements_by_language = json.load(f)
-    with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", encoding='utf-8') as f:
         domain_elements_pk_by_parameter_pk = json.load(f)
-    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json", encoding='utf-8') as f:
         domain_element_by_pk = json.load(f)
-    with open("./external_data/wals_derived/language_pk_by_family.json") as f:
+    with open("./external_data/wals_derived/language_pk_by_family.json", encoding='utf-8') as f:
         language_pk_by_family = json.load(f)
-    with open("./external_data/wals_derived/language_pk_by_subfamily.json") as f:
+    with open("./external_data/wals_derived/language_pk_by_subfamily.json", encoding='utf-8') as f:
         language_pk_by_subfamily = json.load(f)
-    with open("./external_data/wals_derived/language_pk_by_genus.json") as f:
+    with open("./external_data/wals_derived/language_pk_by_genus.json", encoding='utf-8') as f:
         language_pk_by_genus = json.load(f)
-    with open("./external_data/wals_derived/language_pk_by_macroarea.json") as f:
+    with open("./external_data/wals_derived/language_pk_by_macroarea.json", encoding='utf-8') as f:
         language_pk_by_macroarea = json.load(f)
-    with open("./external_data/wals_derived/language_pk_id_by_name.json") as f:
+    with open("./external_data/wals_derived/language_pk_id_by_name.json", encoding='utf-8') as f:
         language_pk_id_by_name = json.load(f)
-    with open("./external_data/wals_derived/value_by_domain_element_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/value_by_domain_element_pk_lookup_table.json", encoding='utf-8') as f:
         value_by_domain_element_pk = json.load(f)
-    with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json", encoding='utf-8') as f:
         valueset_by_pk = json.load(f)
-    with open("./external_data/wals_derived/n_param_by_language_id.json") as f:
+    with open("./external_data/wals_derived/n_param_by_language_id.json", encoding='utf-8') as f:
         n_param_by_language_id = json.load(f)
-    with open("./external_data/wals_derived/language_info_by_id_lookup_table.json") as f:
+    with open("./external_data/wals_derived/language_info_by_id_lookup_table.json", encoding='utf-8') as f:
         language_info_by_id = json.load(f)
-    with open("./external_data/wals_derived/param_pk_by_de_pk.json") as f:
+    with open("./external_data/wals_derived/param_pk_by_de_pk.json", encoding='utf-8') as f:
         param_pk_by_de_pk = json.load(f)
-    with open("./external_data/wals_derived/params_pk_by_language_pk.json") as f:
+    with open("./external_data/wals_derived/params_pk_by_language_pk.json", encoding='utf-8') as f:
         params_pk_by_language_pk = json.load(f)
-    with open("./external_data/wals_derived/language_pk_by_id.json") as f:
+    with open("./external_data/wals_derived/language_pk_by_id.json", encoding='utf-8') as f:
         language_pk_by_id = json.load(f)
     cpt = pd.read_json("./external_data/wals_derived/de_conditional_probability_df.json")
     cpt.index = cpt.index.astype(str)
     cpt.columns = cpt.columns.astype(str)
 except FileNotFoundError:
-    with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
+    with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json", encoding='utf-8') as f:
         parameter_pk_by_name = json.load(f)
-    with open("../external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
+    with open("../external_data/wals_derived/parameter_pk_by_name_filtered.json", encoding='utf-8') as f:
         parameter_pk_by_name_filtered = json.load(f)
-    with open("../external_data/wals_derived/language_by_pk_lookup_table.json") as f:
+    with open("../external_data/wals_derived/language_by_pk_lookup_table.json", encoding='utf-8') as f:
         language_by_pk = json.load(f)
-    with open("../external_data/wals_derived/domain_elements_by_language.json") as f:
+    with open("../external_data/wals_derived/domain_elements_by_language.json", encoding='utf-8') as f:
         domain_elements_by_language = json.load(f)
-    with open("../external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
+    with open("../external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", encoding='utf-8') as f:
         domain_elements_pk_by_parameter_pk = json.load(f)
-    with open("../external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+    with open("../external_data/wals_derived/domain_element_by_pk_lookup_table.json", encoding='utf-8') as f:
         domain_element_by_pk = json.load(f)
-    with open("../external_data/wals_derived/language_pk_by_family.json") as f:
+    with open("../external_data/wals_derived/language_pk_by_family.json", encoding='utf-8') as f:
         language_pk_by_family = json.load(f)
-    with open("../external_data/wals_derived/language_pk_by_subfamily.json") as f:
+    with open("../external_data/wals_derived/language_pk_by_subfamily.json", encoding='utf-8') as f:
         language_pk_by_subfamily = json.load(f)
-    with open("../external_data/wals_derived/language_pk_by_genus.json") as f:
+    with open("../external_data/wals_derived/language_pk_by_genus.json", encoding='utf-8') as f:
         language_pk_by_genus = json.load(f)
-    with open("../external_data/wals_derived/language_pk_by_macroarea.json") as f:
+    with open("../external_data/wals_derived/language_pk_by_macroarea.json", encoding='utf-8') as f:
         language_pk_by_macroarea = json.load(f)
-    with open("../external_data/wals_derived/language_pk_id_by_name.json") as f:
+    with open("../external_data/wals_derived/language_pk_id_by_name.json", encoding='utf-8') as f:
         language_pk_id_by_name = json.load(f)
-    with open("../external_data/wals_derived/value_by_domain_element_pk_lookup_table.json") as f:
+    with open("../external_data/wals_derived/value_by_domain_element_pk_lookup_table.json", encoding='utf-8') as f:
         value_by_domain_element_pk = json.load(f)
-    with open("../external_data/wals_derived/valueset_by_pk_lookup_table.json") as f:
+    with open("../external_data/wals_derived/valueset_by_pk_lookup_table.json", encoding='utf-8') as f:
         valueset_by_pk = json.load(f)
-    with open("../external_data/wals_derived/language_info_by_id_lookup_table.json") as f:
+    with open("../external_data/wals_derived/language_info_by_id_lookup_table.json", encoding='utf-8') as f:
         language_info_by_id = json.load(f)
-    with open("../external_data/wals_derived/param_pk_by_de_pk.json") as f:
+    with open("../external_data/wals_derived/param_pk_by_de_pk.json", encoding='utf-8') as f:
         param_pk_by_de_pk = json.load(f)
-    with open("../external_data/wals_derived/params_pk_by_language_pk.json") as f:
+    with open("../external_data/wals_derived/params_pk_by_language_pk.json", encoding='utf-8') as f:
         params_pk_by_language_pk = json.load(f)
-    with open("../external_data/wals_derived/language_pk_by_id.json") as f:
+    with open("../external_data/wals_derived/language_pk_by_id.json", encoding='utf-8') as f:
         language_pk_by_id = json.load(f)
     cpt = pd.read_json("../external_data/wals_derived/de_conditional_probability_df.json")
     cpt.index = cpt.index.astype(str)
@@ -125,7 +125,7 @@ def build_language_pk_by_id():
             language_pk_by_id[language_by_pk[lpk]["id"]] = lpk
         except KeyError:
             print("no id field in language pk {}".format(lpk))
-    with open("../external_data/wals_derived/language_pk_by_id.json", "w") as f:
+    with open("../external_data/wals_derived/language_pk_by_id.json", "w", encoding='utf-8') as f:
         json.dump(language_pk_by_id, f, indent=4)
 
 
@@ -136,7 +136,7 @@ def build_param_pk_by_de_pk():
         for depk in depks:
             if depk not in param_pk_by_de_pk.keys():
                 param_pk_by_de_pk[depk] = ppk
-    with open("../external_data/wals_derived/param_pk_by_de_pk.json", "w") as f:
+    with open("../external_data/wals_derived/param_pk_by_de_pk.json", "w", encoding='utf-8') as f:
         json.dump(param_pk_by_de_pk, f, indent=4)
 
 def build_param_name_by_de_name():
@@ -145,7 +145,7 @@ def build_param_name_by_de_name():
         ppk = info["parameter_pk"]
         p_name = parameter_name_by_pk[str(ppk)]
         param_name_by_de_name[info["name"]] = p_name
-    with open("../external_data/wals_derived/param_name_by_de_name.json", "w") as f:
+    with open("../external_data/wals_derived/param_name_by_de_name.json", "w", encoding='utf-8') as f:
         json.dump(param_name_by_de_name, f, indent=4)
 
 def build_params_pk_by_language_pk():
@@ -159,7 +159,7 @@ def build_params_pk_by_language_pk():
                     params_pk_by_language_pk[language_pk].append(ppk)
             else:
                 print("build_params_pk_by_language_pk: {} not in param_pk_by_de_pk".format(depk))
-    with open("../external_data/wals_derived/params_pk_by_language_pk.json", "w") as f:
+    with open("../external_data/wals_derived/params_pk_by_language_pk.json", "w", encoding='utf-8') as f:
         json.dump(params_pk_by_language_pk, f, indent=4)
 
 
@@ -309,11 +309,11 @@ def build_number_of_params_by_language_id():
         n_param = len(get_language_data_by_id(id))
         out_dict[id] = n_param
         print("{} / {}".format(c, n))
-    with open("./external_data/wals_derived/n_param_by_language_id.json", "w") as f:
+    with open("./external_data/wals_derived/n_param_by_language_id.json", "w", encoding='utf-8') as f:
         json.dump(out_dict, f)
 
 def build_domain_elements_by_language_and_languages_by_domain_element():
-    with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/language_by_pk_lookup_table.json", encoding='utf-8') as f:
         language_by_pk = json.load(f)
     domain_elements_by_language = {}
     languages_by_domain_element = {}
@@ -335,9 +335,9 @@ def build_domain_elements_by_language_and_languages_by_domain_element():
                     languages_by_domain_element[domain_element] = [language_pk]
         except:
             print("issue with a result dict on language {}".format(language_id))
-    with open("./external_data/wals_derived/domain_elements_by_language.json", "w") as f:
+    with open("./external_data/wals_derived/domain_elements_by_language.json", "w", encoding='utf-8') as f:
         json.dump(domain_elements_by_language, f)
-    with open("./external_data/wals_derived/languages_by_domain_element.json", "w") as f:
+    with open("./external_data/wals_derived/languages_by_domain_element.json", "w", encoding='utf-8') as f:
         json.dump(languages_by_domain_element, f)
 
 #  ================ COMPUTING AND STORING CONDITIONAL PROBABILITY TABLE ========
@@ -428,7 +428,7 @@ def build_conditional_probability_table(filtered_params=True,
         "../external_data/wals_derived/"
         "domain_element_by_pk_lookup_table.json"
     )
-    domain_element_pk_list = list(json.load(open(lookup_file)).keys())
+    domain_element_pk_list = list(json.load(open(lookup_file, encoding='utf-8')).keys())
 
     # ---- 3. compute CPT ----------------------------------------------------
     cpt = pd.DataFrame(index=domain_element_pk_list,
@@ -542,7 +542,7 @@ def build_conditional_probability_table_multiprocessing(filtered_params=True,
         "../external_data/wals_derived/"
         "domain_element_by_pk_lookup_table.json"
     )
-    domain_element_pk_list = list(json.load(open(lookup_file)))
+    domain_element_pk_list = list(json.load(open(lookup_file, encoding='utf-8')))
 
     # ---- 3. compute CPT ----------------------------------------------------
     num_processes = min(cpu_count() - 1, len(domain_element_pk_list))
@@ -697,43 +697,43 @@ def build_conditional_probability_table_multiprocessing(filtered_params=True,
 #         output_filename += "_macroarea" + "-".join(language_filter["macroarea"])
 #     output_filename += ".json"
 #
-#     # with open("./external_data/wals_derived/full_de_conditional_probability.json", "w") as f:
+#     # with open("./external_data/wals_derived/full_de_conditional_probability.json", "w", encoding='utf-8') as f:
 #     #     json.dump(full_proba_dict, f)
 #     cpt.to_json(output_folder + output_filename)
 #     return cpt
 
 def get_available_wals_languages_dict():
     language_dict = {}
-    with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/language_by_pk_lookup_table.json", encoding='utf-8') as f:
         language_by_pk_lookup_table = json.load(f)
     for lpk in language_by_pk_lookup_table.keys():
         language_dict[language_by_pk_lookup_table[lpk]["name"]] = {
             "pk": lpk,
             "id": language_by_pk_lookup_table[lpk]["id"]
         }
-    with open("./external_data/wals_derived/language_pk_id_by_name.json", "w") as f:
+    with open("./external_data/wals_derived/language_pk_id_by_name.json", "w", encoding='utf-8') as f:
         json.dump(language_dict, f)
     return language_dict
 
 def get_wals_language_data_by_id_or_name(language_id, language_name=None):
     try:
-        with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
+        with open("./external_data/wals_derived/language_by_pk_lookup_table.json", encoding='utf-8') as f:
             language_by_pk_lookup_table = json.load(f)
-        with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json") as f:
+        with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json", encoding='utf-8') as f:
             valueset_by_pk_lookup_table = json.load(f)
-        with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+        with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json", encoding='utf-8') as f:
             domainelement_by_pk_lookup_table = json.load(f)
-        with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
+        with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json", encoding='utf-8') as f:
             parameter_pk_by_name = json.load(f)
         values = u.csv_to_dict("./external_data/wals-master/raw/value.csv")
     except FileNotFoundError:
-        with open("../external_data/wals_derived/language_by_pk_lookup_table.json") as f:
+        with open("../external_data/wals_derived/language_by_pk_lookup_table.json", encoding='utf-8') as f:
             language_by_pk_lookup_table = json.load(f)
-        with open("../external_data/wals_derived/valueset_by_pk_lookup_table.json") as f:
+        with open("../external_data/wals_derived/valueset_by_pk_lookup_table.json", encoding='utf-8') as f:
             valueset_by_pk_lookup_table = json.load(f)
-        with open("../external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+        with open("../external_data/wals_derived/domain_element_by_pk_lookup_table.json", encoding='utf-8') as f:
             domainelement_by_pk_lookup_table = json.load(f)
-        with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
+        with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json", encoding='utf-8') as f:
             parameter_pk_by_name = json.load(f)
         values = u.csv_to_dict("../external_data/wals-master/raw/value.csv")
 
@@ -792,13 +792,13 @@ def build_parameter_pk_by_name_lookup_table():
     for entry in parameter:
         parameter_pk_by_name_lookup_table[entry["name"]] = str(entry["pk"])
     # store the lookup table in a file
-    with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json", "w") as f:
+    with open("../external_data/wals_derived/parameter_pk_by_name_lookup_table.json", "w", encoding='utf-8') as f:
         json.dump(parameter_pk_by_name_lookup_table, f)
     return parameter_pk_by_name_lookup_table
 
 def load_parameter_pk_by_name_lookup_table():
     if "parameter_pk_by_name_lookup_table.json" in os.listdir("./external_data/wals_derived/"):
-        with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json") as f:
+        with open("./external_data/wals_derived/parameter_pk_by_name_lookup_table.json", encoding='utf-8') as f:
             return json.load(f)
     else:
         print("domain_elements_pk_by_parameter_pk_lookup_table not found in the file system, building it.")
@@ -814,13 +814,13 @@ def build_domain_elements_pk_by_parameter_pk_lookup_table():
         else:
             domain_elements_pk_by_parameter_pk_lookup_table[entry["parameter_pk"]].append(str(entry["pk"]))
     # store the lookup table in a file
-    with open("../external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", "w") as f:
+    with open("../external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", "w", encoding='utf-8') as f:
         json.dump(domain_elements_pk_by_parameter_pk_lookup_table, f)
     return domain_elements_pk_by_parameter_pk_lookup_table
 
 def load_domain_elements_pk_by_parameter_pk_lookup_table():
     if "domain_elements_pk_by_parameter_pk_lookup_table.json" in os.listdir("./external_data/wals_derived/"):
-        with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
+        with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", encoding='utf-8') as f:
             return json.load(f)
     else:
         print("domain_elements_pk_by_parameter_pk_lookup_table not found in the file system, building it.")
@@ -836,7 +836,7 @@ def build_domain_element_by_pk_lookup_table():
         else:
             domain_element_by_pk_lookup_table[entry["pk"]].append(entry)
     # store the lookup table in a file
-    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json", "w") as f:
+    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json", "w", encoding='utf-8') as f:
         json.dump(domain_element_by_pk_lookup_table, f)
     return domain_element_by_pk_lookup_table
 
@@ -858,13 +858,13 @@ def build_value_by_domain_element_pk_lookup_table():
         else:
             value_by_domain_element_pk_lookup_table[value["domainelement_pk"]].append(value)
     # store the lookup table in a file
-    with open("./external_data/wals_derived/value_by_domain_element_pk_lookup_table.json", "w") as f:
+    with open("./external_data/wals_derived/value_by_domain_element_pk_lookup_table.json", "w", encoding='utf-8') as f:
         json.dump(value_by_domain_element_pk_lookup_table, f)
     return value_by_domain_element_pk_lookup_table
 
 def load_value_by_domain_element_pk_lookup_table():
     if "value_by_domain_element_pk_lookup_table.json" in os.listdir("./external_data/wals_derived/"):
-        with open("./external_data/wals_derived/value_by_domain_element_pk_lookup_table.json", "r") as f:
+        with open("./external_data/wals_derived/value_by_domain_element_pk_lookup_table.json", "r", encoding='utf-8') as f:
             return json.load(f)
     else:
         print("build_value_by_domain_element_pk_lookup_table not found in the file system, building it.")
@@ -877,13 +877,13 @@ def build_valueset_by_pk_lookup_table():
     for v in valueset:
         valueset_by_pk_lookup_table[v["pk"]] = v
     # store the lookup table in a file
-    with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json", "w") as f:
+    with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json", "w", encoding='utf-8') as f:
         json.dump(valueset_by_pk_lookup_table, f)
     return valueset_by_pk_lookup_table
 
 def load_valueset_by_pk_lookup_table():
     if "valueset_by_pk_lookup_table.json" in os.listdir("./external_data/wals_derived/"):
-        with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json", "r") as f:
+        with open("./external_data/wals_derived/valueset_by_pk_lookup_table.json", "r", encoding='utf-8') as f:
             return json.load(f)
     else:
         print("valueset_by_pk_lookup_table not found in the file system, building it.")
@@ -896,13 +896,13 @@ def build_language_by_pk_lookup_table():
     for l in language:
         language_by_pk_lookup_table[l["pk"]] = l
     # store the lookup table in a file
-    with open("./external_data/wals_derived/language_by_pk_lookup_table.json", "w") as f:
+    with open("./external_data/wals_derived/language_by_pk_lookup_table.json", "w", encoding='utf-8') as f:
         json.dump(language_by_pk_lookup_table, f)
     return language_by_pk_lookup_table
 
 def load_language_by_pk_lookup_table():
     if "language_by_pk_lookup_table.json" in os.listdir("./external_data/wals_derived/"):
-        with open("./external_data/wals_derived/language_by_pk_lookup_table.json", "r") as f:
+        with open("./external_data/wals_derived/language_by_pk_lookup_table.json", "r", encoding='utf-8') as f:
             return json.load(f)
     else:
         print("language_by_pk_lookup_table not found in the file system, building it.")
@@ -921,13 +921,13 @@ def build_language_info_by_id_lookup_table():
             "genus":l["GenusNEW"]
         }
     # store the lookup table in a file
-    with open("./external_data/wals_derived/language_info_by_id_lookup_table.json", "w") as f:
+    with open("./external_data/wals_derived/language_info_by_id_lookup_table.json", "w", encoding='utf-8') as f:
         json.dump(language_info_by_id_lookup_table, f)
     return language_info_by_id_lookup_table
 
 def load_language_info_by_id_lookup_table():
     if "language_info_by_id_lookup_table.json" in os.listdir("./external_data/wals_derived/"):
-        with open("./external_data/wals_derived/language_info_by_id_lookup_table.json", "r") as f:
+        with open("./external_data/wals_derived/language_info_by_id_lookup_table.json", "r", encoding='utf-8') as f:
             return json.load(f)
     else:
         print("language_info_by_id_lookup_table not found in the file system, building it.")
@@ -947,16 +947,16 @@ def update_delimiter_file():
     for language_name in wals_language_dict.keys():
         if language_name not in delimiters.keys():
             delimiters[language_name] = [" ", ".", ",", ";", ":", "!", "?", "…", "'"]
-    with open("./data/delimiters.json", "w") as f:
+    with open("./data/delimiters.json", "w", encoding='utf-8') as f:
         json.dump(delimiters, f)
 
 def build_domain_elements_pk_by_parameter_pk_lookup_table_filtered():
     """creates the reduced domain_element_by_pk json based on a limited list of paramaters"""
-    with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json") as f:
+    with open("./external_data/wals_derived/parameter_pk_by_name_filtered.json", encoding='utf-8') as f:
         filtered_params = json.load(f)
-    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table.json", encoding='utf-8') as f:
         domain_element_by_pk_lookup_table = json.load(f)
-    with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/domain_elements_pk_by_parameter_pk_lookup_table.json", encoding='utf-8') as f:
         domain_elements_pk_by_parameter_pk = json.load(f)
 
     filtered_de = {}
@@ -972,13 +972,13 @@ def build_domain_elements_pk_by_parameter_pk_lookup_table_filtered():
         else:
             print("{} not in domain_elements_pk_by_parameter_pk".format(param_pk))
 
-    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table_filtered.json", "w") as f:
+    with open("./external_data/wals_derived/domain_element_by_pk_lookup_table_filtered.json", "w", encoding='utf-8') as f:
         json.dump(filtered_de, f)
 
 def build_language_pk_by_family_subfamily_genus_macroarea():
-    with open("./external_data/wals_derived/language_info_by_id_lookup_table.json") as f:
+    with open("./external_data/wals_derived/language_info_by_id_lookup_table.json", encoding='utf-8') as f:
         language_info_by_id = json.load(f)
-    with open("./external_data/wals_derived/language_by_pk_lookup_table.json") as f:
+    with open("./external_data/wals_derived/language_by_pk_lookup_table.json", encoding='utf-8') as f:
         language_by_pk = json.load(f)
 
     language_pk_by_id = {}
@@ -1023,11 +1023,11 @@ def build_language_pk_by_family_subfamily_genus_macroarea():
         else:
             print("{} not in language_pk_by_id")
 
-    with open("./external_data/wals_derived/language_pk_by_family.json", "w") as f:
+    with open("./external_data/wals_derived/language_pk_by_family.json", "w", encoding='utf-8') as f:
         json.dump(language_pk_by_family, f)
-    with open("./external_data/wals_derived/language_pk_by_subfamily.json", "w") as f:
+    with open("./external_data/wals_derived/language_pk_by_subfamily.json", "w", encoding='utf-8') as f:
         json.dump(language_pk_by_subfamily, f)
-    with open("./external_data/wals_derived/language_pk_by_genus.json", "w") as f:
+    with open("./external_data/wals_derived/language_pk_by_genus.json", "w", encoding='utf-8') as f:
         json.dump(language_pk_by_genus, f)
-    with open("./external_data/wals_derived/language_pk_by_macroarea.json", "w") as f:
+    with open("./external_data/wals_derived/language_pk_by_macroarea.json", "w", encoding='utf-8') as f:
         json.dump(language_pk_by_macroarea, f)

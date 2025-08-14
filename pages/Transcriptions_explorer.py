@@ -65,7 +65,7 @@ if "pfilter" not in st.session_state:
 if "cdict" not in st.session_state:
     st.session_state["cdict"] = {}
 if "concept_graph" not in st.session_state:
-    with open("./data/concepts.json", "r") as f:
+    with open("./data/concepts.json", "r", encoding='utf-8') as f:
         st.session_state["cg"] = json.load(f)
 if "use_alterlingua" not in st.session_state:
     st.session_state["use_alterlingua"] = False
@@ -215,7 +215,7 @@ with st.expander("Input", expanded=True):
                                                                                    replace_target_words=True,
                                                                                    include_particularization=st.session_state["include_particularization"],
                                                                                    keep_target_words=st.session_state["keep_target_words"])
-                with open("./data/knowledge/current_kg.json", "w") as f:
+                with open("./data/knowledge/current_kg.json", "w", encoding='utf-8') as f:
                     json.dump(st.session_state["knowledge_graph"], f, indent=4)
                 st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                     len(st.session_state["cq_transcriptions"]), len(st.session_state["knowledge_graph"]),
@@ -236,7 +236,7 @@ with st.expander("Input", expanded=True):
                 st.session_state["cq_transcriptions"] = []
                 for t in os.listdir(tpath):
                     if t.endswith(".json"):
-                        with open(os.path.join(tpath, t)) as f:
+                        with open(os.path.join(tpath, t), encoding='utf-8') as f:
                             new_cq = json.load(f)
                             st.session_state["cq_transcriptions"].append(new_cq)
             if st.session_state["cq_transcriptions"] != []:
@@ -253,7 +253,7 @@ with st.expander("Input", expanded=True):
                                                                                    replace_target_words=True,
                                                                                    include_particularization=st.session_state["include_particularization"],
                                                                                    keep_target_words=st.session_state["keep_target_words"])
-                with open("./data/knowledge/current_kg.json", "w") as f:
+                with open("./data/knowledge/current_kg.json", "w", encoding='utf-8') as f:
                     json.dump(st.session_state["knowledge_graph"], f, indent=4)
                 st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
                     len(st.session_state["cq_transcriptions"]), len(st.session_state["knowledge_graph"]),

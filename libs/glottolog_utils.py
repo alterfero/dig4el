@@ -2,7 +2,7 @@ import json
 
 PREFIX = "."
 
-with open(PREFIX + "/external_data/glottolog_derived/languages.json", "r") as f:
+with open(PREFIX + "/external_data/glottolog_derived/languages.json", "r", encoding='utf-8') as f:
     GLOTTO_LANGUAGE_LIST = json.load(f)
 
 def languages_csv_to_json():

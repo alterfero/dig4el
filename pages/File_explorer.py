@@ -95,7 +95,7 @@ for fname in files:
             st.rerun()
         if fname.endswith(".json"):
             try:
-                with open(fpath, "r") as jf:
+                with open(fpath, "r", encoding='utf-8') as jf:
                     st.json(json.load(jf))
             except Exception as e:
                 st.warning(f"Could not read JSON: {e}")

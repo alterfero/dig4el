@@ -11,7 +11,7 @@ import pandas as pd
 IPKS = ["QUANTIFIER", "ASPECT", "EVENT TENSE", "POLARITY", "DEFINITENESS"]
 RPKS = ["AGENT", "PATIENT", "OBLIQUE", "POSSESSOR", "POSSESSEE"]
 
-# delimiters = json.load(open("./data/delimiters.json"))
+# delimiters = json.load(open("./data/delimiters.json", encoding='utf-8'))
 
 def consolidate_cq_transcriptions(transcriptions_list, language, delimiters):
     try:
@@ -24,9 +24,9 @@ def consolidate_cq_transcriptions(transcriptions_list, language, delimiters):
     # preparing the list of available cqs
     for cq in cq_json_list:
         # load the cq json file
-        cq_json = json.load(open(join(cq_folder, cq)))
+        cq_json = json.load(open(join(cq_folder, cq), encoding='utf-8'))
         uid = cq_json["uid"]
-        cq_content = json.load(open(join(cq_folder, cq)))
+        cq_content = json.load(open(join(cq_folder, cq), encoding='utf-8'))
         cq_id_dict[uid] = {"filename": cq, "content": cq_content}
     # filtering out transcriptions that don't have a known cq_uid
     filtered_recordings = {}
@@ -410,7 +410,7 @@ def get_kg_entry_from_pivot_sentence(kg, pivot_sentence):
 
 def build_alterlingua_list_from_kg(kg, delimiters):
     out_list = []
-    with open("./data/concepts.json", "r") as f:
+    with open("./data/concepts.json", "r", encoding='utf-8') as f:
         cg = json.load(f)
     altered_kg = build_alterlingua_kg(kg,
                                       delimiters,

@@ -4,21 +4,21 @@ import pickle
 
 def create_eng_corpus_from_kg_file():
     corpus = []
-    with open("../data/knowledge/current_kg.json", "r") as f:
+    with open("../data/knowledge/current_kg.json", "r", encoding='utf-8') as f:
         kg = json.load(f)
     for index, data in kg.items():
         corpus.append(data["sentence_data"]["text"])
-    with open("../data/embeddings/corpus_single_eng.json", "w") as f:
+    with open("../data/embeddings/corpus_single_eng.json", "w", encoding='utf-8') as f:
         json.dump(corpus, f, indent=4)
     return corpus
 
 def create_target_corpus_from_kg_file():
     corpus = []
-    with open("../data/knowledge/current_kg.json") as f:
+    with open("../data/knowledge/current_kg.json", encoding='utf-8') as f:
         kg = json.load(f)
     for index, data in kg.items():
         corpus.append(data["recording_data"]["translation"])
-    with open("../data/embeddings/corpus_single_target.json", "w") as f:
+    with open("../data/embeddings/corpus_single_target.json", "w", encoding='utf-8') as f:
         json.dump(corpus, f, indent=4)
     return corpus
 
@@ -28,7 +28,7 @@ auth_key = "5433546d-d4ba-4f42-863b-c8b1b00123e6:fx"
 translator = deepl.Translator(auth_key)
 target_lang_list = ["BG", "CS", "DA", "DE", "EL", "ES", "ET", "FI", "FR", "HU", "ID", "IT", "JA", "KO", "LT", "LV", "NB", "NL", "PL", "PT-PT", "RO", "RU", "SK", "SL", "SV", "TR", "UK", "ZH"]
 
-with open("../data/embeddings/corpus_single_eng.json", "r") as f:
+with open("../data/embeddings/corpus_single_eng.json", "r", encoding='utf-8') as f:
     corpus_english = json.load(f)
 corpus = {}
 
@@ -47,10 +47,10 @@ for target_language in target_lang_list:
         print("{}: {} ==> {}".format(sentence_count, entry, translation.text))
     print("translation done for {}".format(target_language))
     print("{} sentences translated, {} character translated.".format(len(corpus[target_language]), n_char))
-    with open(f"../data/embeddings/corpus_adding_{target_language}.json", "w") as f:
+    with open(f"../data/embeddings/corpus_adding_{target_language}.json", "w", encoding='utf-8') as f:
         json.dump(corpus, f, indent=4)
     print(f"../data/embeddings/corpus_adding_{target_language}.json file saved")
 
-with open("../data/embeddings/corpus_deepl.json", "w") as f:
+with open("../data/embeddings/corpus_deepl.json", "w", encoding='utf-8') as f:
     json.dump(corpus, f, indent=4)
 

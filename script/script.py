@@ -10,14 +10,14 @@ from libs import retrieval_augmented_generation_utils as ragu
 import streamlit as st
 import json
 
-with open("/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/sentence pairs/mwotlap_english_parallel_corpus_cleaned.json", "r") as f:
+with open("/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/sentence pairs/mwotlap_english_parallel_corpus_cleaned.json", "r", encoding='utf-8') as f:
     sentence_pairs = list(json.load(f))
 
-# with open("/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/sentence pairs/output.jsonl", "w") as f:
+# with open("/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/sentence pairs/output.jsonl", "w", encoding='utf-8') as f:
 #     for item in sentence_pairs:
 #         f.write(json.dumps(item, ensure_ascii=False) + "\n")
 #
-# with open("/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/sentence pairs/output.jsonl", "r") as f:
+# with open("/Users/sebastienchristian/Desktop/d/01-These/language_lib/mwotlap/sentence pairs/output.jsonl", "r", encoding='utf-8') as f:
 #     items = [json.loads(line) for line in f]
 
 # eng_sentences = [item["english"] for item in sentence_pairs]
