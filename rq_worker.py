@@ -18,11 +18,12 @@
 
 import os
 from redis import Redis
-from rq import SpawnWorker, Queue
+from rq import SpawnWorker, Worker, Queue
 import time
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
+WORKER_TTL = 420
 
 def wait_for_redis(url: str, retries: int = 20, delay: float = 0.5) -> Redis:
     last_err = None
@@ -41,7 +42,15 @@ def main() -> None:
     print("=================== REDIS WORKER =============================================")
     print(f"Connecting to Redis at: {REDIS_URL}")
     queue = Queue('sentence', connection=redis_conn)
-    worker = SpawnWorker([queue])
+    if os.getenv("CODE_LOCATION", "non-mac") == "mac":
+        print("New worker on Mac")
+        worker = SpawnWorker([queue], worker_ttl=WORKER_TTL)
+    elif os.getenv("CODE_LOCATION", "non-mac") == "railway":
+        print("New worker on Railway")
+        worker = Worker([queue], worker_ttl=WORKER_TTL)
+    else:
+        print("New worker not on Mac or Railway... did you forget to set the CODE_LOCATION environment variable?")
+        worker = SpawnWorker([queue], worker_ttl=WORKER_TTL)
     worker.work()
 
 if __name__ == "__main__":

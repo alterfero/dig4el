@@ -31,7 +31,7 @@ from libs import semantic_description_utils as sdu
 # Default Redis connection details
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
-RESULT_TTL_SECONDS = "604800"  # 7 days
+RESULT_TTL_SECONDS = 604800  # 7 days
 redis_client = Redis.from_url(REDIS_URL)
 
 
@@ -122,9 +122,6 @@ def get_batch_progress(batch_id: str) -> Dict:
     pipe.scard(key("finished"))
     pipe.scard(key("failed"))
     total, queued, started, finished, failed = pipe.execute()
-
-    # derive ‘queued’ by set math if you prefer:
-    # queued = total - started - finished - failed
 
     pct = (finished / total * 100) if total else 0.0
     return {
