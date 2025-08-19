@@ -187,6 +187,7 @@ def hard_retrieve_from_query(query: str, indi_language: str) -> list[str]:
         ks = [k for k in kwi.keys() if w in k]
         if ks != []:
             results += [kwi[k] for k in ks][0]
+    print("Hard retrieve from query {}: {}".format(query, results))
     print(results)
     results = list(set(results))
     return results

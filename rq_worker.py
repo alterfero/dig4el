@@ -23,7 +23,7 @@ import time
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
-WORKER_TTL = 420
+WORKER_TTL = 86400
 
 def wait_for_redis(url: str, retries: int = 20, delay: float = 0.5) -> Redis:
     last_err = None

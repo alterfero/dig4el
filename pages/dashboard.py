@@ -355,12 +355,11 @@ with tab3:
         with a "source" column and a "target" column. On each line, write the sentence in the mainstream language 
         in the "source" column, and in the language you are working on in the "target" column. Then you can *save as* 
         or *export* as .csv. You can also directly upload a JSON following the downloadable template. 
-        2. DIG4EL **augments** these pairs using a LLM, adding a grammatical description and a semantic graph. 
-        It is a long process. The *augmented pairs* file is then stored for future use, on the server and you
+        2. DIG4EL **prepares** these pairs using a LLM. It is a long process. The *prepared pairs* file is then stored for future use, on the server and you
         should also keep a copy on your computer.
         3. You are then invited to **connect {st.session_state.indi_language} word(s) with concept(s)** in sentences.
         4. Finally, click on the "Index" button. 
-        The **augmented pair** file is then used to provide relevant augmented pairs to grammatical descriptions 
+        The **prepared pair** file is then used to provide relevant prepared pairs to grammatical descriptions 
         (Retrieval-Augmented Generation, or RAG). 
         """)
         v1, v2, v3 = st.columns(3)
@@ -456,7 +455,7 @@ with tab3:
     # AUGMENT SENTENCE PAIRS
 
     st.subheader("2. Augment sentence pairs with automatic grammatical descriptions")
-    st.markdown("""Sentence pairs are augmented with grammatical descriptions, so they can be used efficiently.
+    st.markdown("""Sentence pairs are prepared with grammatical descriptions, so they can be used efficiently.
     This is a long process (up to 2 minutes per sentence) that will run in the background once started (you can
     leave this page or turn off your computer and come back later.)
     """)
@@ -466,8 +465,8 @@ with tab3:
                                      for fn in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
                                      if fn[-5:] == ".json"
                                      ]
-    st.markdown("**{} Available augmented sentences**".format(len(available_augmented_sentences)))
-    if st.checkbox("Explore augmented sentences"):
+    st.markdown("**{} Available prepared sentences**".format(len(available_augmented_sentences)))
+    if st.checkbox("Explore prepared sentences"):
         selected_augmented_sentence = st.selectbox("Select a sentence",
                                                    [s[:-5] for s in available_augmented_sentences])
         seleced_augmented_sentence_file = selected_augmented_sentence + ".json"

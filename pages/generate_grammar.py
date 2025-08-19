@@ -203,7 +203,7 @@ if st.session_state.run_sources:
 
     # sentence pairs selection
     if st.session_state.is_pairs and st.session_state.use_pairs:
-        with st.spinner("Retrieving a helpful selection of augmented pairs"):
+        with st.spinner("Retrieving a helpful selection of prepared pairs"):
             # retrieve N sentences using embeddings
             index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "index.faiss")
             index, id_to_meta = ragu.load_index_and_id_to_meta(st.session_state.indi)
