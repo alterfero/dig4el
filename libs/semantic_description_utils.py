@@ -74,36 +74,18 @@ def description_dict_to_kw(description_dict: dict) -> List[str]:
     return kw
 
 
-def TEST_add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None | dict:
-    source_sentence = sentence_pair.get("source", "")
-    if source_sentence == "":
-        print("No source in {}".format(sentence_pair))
-        return None
-    else:
-
-        augmented_pair = {
-                "source": sentence_pair["source"],
-                "target": sentence_pair["target"],
-                "description_dict": "description_dict",
-                "description_text": "description_text",
-                "grammatical_keywords": "keywords"
-            }
-        return augmented_pair
-
-
 def add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None | Tuple[dict, str]:
     source_sentence = sentence_pair.get("source", "")
     if source_sentence == "":
         print("No source in {}".format(sentence_pair))
         return None
     else:
-        description = sda.describe_sentence_sync(source_sentence)
-        keywords = description.get("grammatical_keywords", [])
-        keywords += description_dict_to_kw(description)
-        keywords = list(set(keywords))
-        description["grammatical_keywords"] = keywords
+        result = sda.describe_sentence_sync(source_sentence)
+
         augmented_pair = copy.deepcopy(sentence_pair)
-        augmented_pair["description"] = description
+        augmented_pair["description"] = result.dense_input
+        augmented_pair["keywords"] = result.keywords
+        augmented_pair["key_translation_concepts"] = result.key_translation_concepts
 
         # filename
         filename = u.clean_sentence(source_sentence, filename=True)
@@ -237,15 +219,8 @@ def plot_semantic_graph_pyvis(data,
 
 def build_vector_ready_augmented_pair(augmented_pair: dict) -> str:
     out_str = ""
-    out_str += augmented_pair["source"] + "."
-    # out_str += " TARGET LANGUAGE: " + augmented_pair["target"] + "."
-    # if augmented_pair.get("connections", None) not in [None, {}]:
-    #     out_str += " CONCEPT - TARGET WORD(S) RELATIONS: "
-    #     for concept, words in augmented_pair["connections"].items():
-    #         if words != "":
-    #             out_str += " " + concept + ": " + ", ".join(words) + "."
-    out_str += augmented_pair["description"]["grammatical_description"] + "."
-    out_str += ", ".join(augmented_pair["description"]["grammatical_keywords"]) + "."
+    out_str += augmented_pair["source"] + ": "
+    out_str += augmented_pair["description"] + "."
     out_str = out_str.replace("..", ".")
     return out_str
 
@@ -267,4 +242,9 @@ def get_vector_ready_pairs(indi_language):
             with open(os.path.join(output_path, vapf), "w", encoding='utf-8') as f:
                 f.write(vap)
         return True
+
+
+
+
+
 

@@ -52,9 +52,9 @@ def _process_sentence_pair(sentence_pair: Dict, batch_id: Optional[str] = None) 
         job.save_meta()
         print(job.meta)
 
-        result, filename = sdu.add_description_and_keywords_to_sentence_pair(sentence_pair)  # ~3 min
+        result, filename = sdu.add_description_and_keywords_to_sentence_pair(sentence_pair)
         if result is None:
-            raise RuntimeError("Enrichment returned None")
+            raise RuntimeError("Augmentation returned None")
 
         # update meta upon success
         job.meta["progress"] = {"stage": "done", "ts": time.time()}

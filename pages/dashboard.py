@@ -355,11 +355,11 @@ with tab3:
         with a "source" column and a "target" column. On each line, write the sentence in the mainstream language 
         in the "source" column, and in the language you are working on in the "target" column. Then you can *save as* 
         or *export* as .csv. You can also directly upload a JSON following the downloadable template. 
-        2. DIG4EL **prepares** these pairs using a LLM. It is a long process. The *prepared pairs* file is then stored for future use, on the server and you
+        2. DIG4EL **prepares** these pairs using a LLM. It is a long process. The *augmented pairs* file is then stored for future use, on the server and you
         should also keep a copy on your computer.
         3. You are then invited to **connect {st.session_state.indi_language} word(s) with concept(s)** in sentences.
         4. Finally, click on the "Index" button. 
-        The **prepared pair** file is then used to provide relevant prepared pairs to grammatical descriptions 
+        The **augmented pair** file is then used to provide relevant augmented pairs to grammatical descriptions 
         (Retrieval-Augmented Generation, or RAG). 
         """)
         v1, v2, v3 = st.columns(3)
@@ -455,7 +455,7 @@ with tab3:
     # AUGMENT SENTENCE PAIRS
 
     st.subheader("2. Augment sentence pairs with automatic grammatical descriptions")
-    st.markdown("""Sentence pairs are prepared with grammatical descriptions, so they can be used efficiently.
+    st.markdown("""Sentence pairs are augmented with grammatical descriptions, so they can be used efficiently.
     This is a long process (up to 2 minutes per sentence) that will run in the background once started (you can
     leave this page or turn off your computer and come back later.)
     """)
@@ -465,23 +465,20 @@ with tab3:
                                      for fn in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
                                      if fn[-5:] == ".json"
                                      ]
-    st.markdown("**{} Available prepared sentences**".format(len(available_augmented_sentences)))
-    if st.checkbox("Explore prepared sentences"):
+    st.markdown("**{} Available augmented sentences**".format(len(available_augmented_sentences)))
+    if st.checkbox("Explore augmented sentences"):
         selected_augmented_sentence = st.selectbox("Select a sentence",
                                                    [s[:-5] for s in available_augmented_sentences])
-        seleced_augmented_sentence_file = selected_augmented_sentence + ".json"
-        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", seleced_augmented_sentence_file), "r", encoding='utf-8') as f:
+        selected_augmented_sentence_file = selected_augmented_sentence + ".json"
+        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", selected_augmented_sentence_file), "r", encoding='utf-8') as f:
             sas = json.load(f)
 
         st.markdown(f"""
         - **{st.session_state.indi_language}**: **{sas["target"]}**
         - **Pivot**: {sas["source"]}
-        - **Intent**: {sas["description"]["enunciation"]["intent"]}.
-        - **Enunciation**: {sas["description"]["enunciation"]["mood"]} mood, 
-        {sas["description"]["enunciation"]["mood"]} voice, 
-        emphasis on {sas["description"]["enunciation"]["emphasis"]}.
-        - **Short grammatical description**: {sas["description"]["grammatical_description"]}
-        - **Grammatical keywords**: {sas["description"]["grammatical_keywords"]}
+        - **Description**: {sas["description"]}
+        - **Grammatical keywords**: {sas["keywords"]}
+        - **Key translation concepts**: {sas["key_translation_concepts"]}
         - **{st.session_state.indi_language} word(s) - concept(s) connections**: 
         """)
         if sas.get("connections", {}) != {}:
@@ -491,10 +488,10 @@ with tab3:
             st.write("No connection created.")
         if sas.get("gloss", None):
             st.write(sas["gloss"])
-        if st.checkbox("Show Semantic-Structural Graph (Beta)"):
-            st.markdown("**Semantic-Structural Graph:** If it fails, just press the 'r' key on your keyboard.")
-            html = sdu.plot_semantic_graph_pyvis(sas["description"])
-            components.html(html, height=600, width=1000)
+        # if st.checkbox("Show Semantic-Structural Graph (Beta)"):
+        #     st.markdown("**Semantic-Structural Graph:** If it fails, just press the 'r' key on your keyboard.")
+        #     html = sdu.plot_semantic_graph_pyvis(sas["description"])
+        #     components.html(html, height=600, width=1000)
 
     # add new pairs
     if len(st.session_state.info_doc["pairs"]) > 0:
@@ -578,6 +575,9 @@ with tab3:
                                                                              "sentence_pairs",
                                                                              "augmented_pairs"))
             st.success("{} sentence to write, {} sentences written".format(n_to_write, n_written))
+            if st.button("clear batch"):
+                squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
+                st.rerun()
 
 
     # ADD WORD-CONCEPT CONNECTIONS
@@ -612,20 +612,19 @@ with tab3:
             slap["connections"] = {}
         st.markdown(f"**{st.session_state.indi_language}**: {slap['target']}")
         st.markdown(f"**English**: {slap['source']}")
-        referents = [r["designation"]
-                    for r in slap["description"]["referents"]]
+        key_translation_concepts = slap["key_translation_concepts"]
         words = stats.custom_split(slap["target"], st.session_state.delimiters)
 
-        for referent in referents:
-            connected_words = st.multiselect(f"{referent} Is expressed by",
+        for ktc in key_translation_concepts:
+            connected_words = st.multiselect(f"**{ktc}** Is expressed by",
                                              words,
-                                             default=slap["connections"].get(referent, []),
-                                             key="cw"+referent)
-            slap["connections"][referent] = connected_words
+                                             default=slap["connections"].get(ktc, []),
+                                             key="cw"+ktc)
+            slap["connections"][ktc] = connected_words
         if st.button("Submit connections"):
             with open(selected_ap["filename"], "w", encoding='utf-8') as f:
                 utils.save_json_normalized(slap, f)
-                st.success("Connections saved in {}".format(selected_ap["filename"]))
+                st.success("Connections saved")
 
     st.subheader("4. Index augmented pairs to make them ready for use")
     if st.button("Index!"):
@@ -666,12 +665,5 @@ with tab3:
         st.write(st.session_state.hard_kw_retrieval_results)
 
 
-
-st.sidebar.divider()
-st.sidebar.write("✅ CQ Ready" if st.session_state.has_bayesian else "CQ: Not ready")
-st.sidebar.write("✅ Docs Ready" if st.session_state.has_docs else "Docs: Not ready")
-st.sidebar.write("✅ Pairs Ready" if st.session_state.has_pairs else "Pairs: Not ready")
-#st.sidebar.write("✅ Mono Ready" if st.session_state.has_monolingual else "Mono: Not ready")
-st.sidebar.divider()
 if st.session_state.has_bayesian or st.session_state.has_docs or st.session_state.has_pairs:
     st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")

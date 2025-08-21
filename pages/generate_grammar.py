@@ -23,6 +23,7 @@ from libs import grammar_generation_agents as gga
 from libs import grammar_generation_utils as ggu
 from libs import output_generation_utils as ogu
 from libs import retrieval_augmented_generation_utils as ragu
+from libs import semantic_description_utils
 
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
@@ -106,11 +107,16 @@ else:
     colq.markdown(f"Working on **{st.session_state.indi}**")
     colq.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
 
-# PROPOSING EXISTING DOCUMENTS
+# PROPOSING EXISTING OUTPUTS FROM PREVIOUS QUERIES
 with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
     info = json.load(f)
 if info["outputs"] != {}:
     st.subheader("Access stored outputs from previous queries")
+    st.markdown("""
+    These outputs are **raw outputs** from DIG4EL, provided for research purposes.
+    **They have not been corrected** by an expert of the language and may contain errors and inaccuracies. **They 
+    should not be used as is for teaching or learning** the language described. 
+    """)
     slq = st.selectbox("Select a query to access the files", [q for q in info["outputs"].keys()])
     coln, colm = st.columns(2)
     if info["outputs"][slq] in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs")):

@@ -164,9 +164,7 @@ def create_hard_kw_index(indi_language):
     for apf in apsf:
         with open(os.path.join(aps_path, apf), "r", encoding='utf-8') as f:
             ap = json.load(f)
-        kws = ap["description"].get("grammatical_keywords", [])
-        kws += stats.custom_split(ap["description"].get("grammatical_description", ""))
-        kws = list(set(kws))
+        kws = ap.get("keywords", [])
         for kw in kws:
             if kw in kwi.keys():
                 if apf not in kwi[kw]:
