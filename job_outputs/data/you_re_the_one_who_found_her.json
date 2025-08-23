@@ -1,0 +1,35 @@
+{
+  "target": "Nēk a m-ekas me kē en.",
+  "source": "You're the one who found her.",
+  "description": "the intent is assert. | the voice is active with unspecified emphasis. | the predicate type is equative. | the predicate is be, copular, other, tense present, aspect none, mood realis, polarity affirmative. | theme is known, person 2, quantity singular, definiteness definite.",
+  "keywords": [
+    "assert",
+    "active",
+    "unspecified",
+    "equative",
+    "be",
+    "copular",
+    "other",
+    "present",
+    "none",
+    "realis",
+    "affirmative",
+    "theme",
+    "known",
+    "singular",
+    "definite"
+  ],
+  "key_translation_concepts": [
+    "you",
+    "assertion of identity",
+    "copula be",
+    "present tense",
+    "one as predicate nominative",
+    "relative clause",
+    "finding action",
+    "past tense",
+    "her (object pronoun)",
+    "second person singular",
+    "definite reference"
+  ]
+}

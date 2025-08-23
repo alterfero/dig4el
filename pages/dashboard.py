@@ -489,10 +489,7 @@ with tab3:
             st.write("No connection created.")
         if sas.get("gloss", None):
             st.write(sas["gloss"])
-        # if st.checkbox("Show Semantic-Structural Graph (Beta)"):
-        #     st.markdown("**Semantic-Structural Graph:** If it fails, just press the 'r' key on your keyboard.")
-        #     html = sdu.plot_semantic_graph_pyvis(sas["description"])
-        #     components.html(html, height=600, width=1000)
+
 
     # add new pairs
     if len(st.session_state.info_doc["pairs"]) > 0:
@@ -505,9 +502,7 @@ with tab3:
 
         # user triggers augmentation
         create_btn = st.button(
-            "Augment {} (long process, LLM use)".format(st.session_state.selected_pairs_filename),
-            disabled=st.session_state.enriching_pairs,
-        )
+            "Augment {} (long process, LLM use)".format(st.session_state.selected_pairs_filename))
         if create_btn and not st.session_state.enriching_pairs:  # augmentation launched only if previous one done
             pairs_signatures = generate_sentence_pairs_signatures(st.session_state.sentence_pairs)
             with open(CURRENT_JOB_SIG_FILE, "w", encoding='utf-8') as f:
@@ -524,18 +519,39 @@ with tab3:
             st.session_state.batch_id = squ.enqueue_batch(new_pairs)
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "w", encoding='utf-8') as f:
                 utils.save_json_normalized({"batch_id": st.session_state.batch_id}, f)
+        # if st.button("Save processed sentences on server"):
+        #     n_written = squ.persist_finished_results(batch_id=st.session_state.batch_id,
+        #                                              output_dir=os.path.join(BASE_LD_PATH,
+        #                                                                      st.session_state.indi_language,
+        #                                                                      "sentence_pairs",
+        #                                                                      "augmented_pairs"))
+        #     st.success("{} augmented pairs saved.".format(n_written))
 
-            st.session_state.enriching_pairs = True
+        if st.button("Save new augmented sentences on server"):
+            with st.spinner("Saving augmented pairs..."):
+                new_pairs = [pair for pair in st.session_state.sentence_pairs
+                             if u.clean_sentence(pair["source"], filename=True) + ".json"
+                             not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
+                c = 0
+                for new_pair in new_pairs:
+                    key = u.clean_sentence(new_pair["source"], filename=True)
+                    value = squ.retrieve_from_redis(key)
+                    if value:
+                        c += 1
+                        new_augmented_pair = json.loads(squ.retrieve_from_redis(key))
+                        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs",
+                                               key + ".json"), "w") as f:
+                            json.dump(new_augmented_pair, f, indent=2, ensure_ascii=False)
+            st.success("{} new augmented pairs saved, {} augmented_pairs available now in {}".format(
+                c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))),
+                                  st.session_state.indi_language))
+
+
+
     if st.checkbox("Redis info"):
         progress = squ.get_batch_progress(st.session_state.batch_id)
         st.write("Queue status: {}".format(progress))
-        if st.button("Save processed sentences on server"):
-            n_written = squ.persist_finished_results(batch_id=st.session_state.batch_id,
-                                                     output_dir=os.path.join(BASE_LD_PATH,
-                                                                  st.session_state.indi_language,
-                                                                  "sentence_pairs",
-                                                                  "augmented_pairs"))
-            st.success("{} augmented pairs saved.".format(n_written))
+
         if st.button("Clear batch"):
             print("Clearing batch {}".format(st.session_state.batch_id))
             squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)

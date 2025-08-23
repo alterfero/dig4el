@@ -56,9 +56,9 @@ def _process_sentence_pair(sentence_pair: Dict, batch_id: Optional[str] = None) 
 
         result, filename = sdu.add_description_and_keywords_to_sentence_pair(sentence_pair)
 
-        # save on worker's volume
-        with open(os.path.join(DATA_PATH, filename), "w") as f:
-            json.dump(result, indent=2, ensure_ascii=False)
+        # independently save on Redis with the filename as key
+        redis_client.set(filename, json.dumps(result))
+        print("pre-saved results on Redis with key {}".format(filename))
 
 
         if result is None:
@@ -95,7 +95,7 @@ def enqueue_sentence_pair(sentence_pair: Dict, batch_id: Optional[str]) -> str:
         _process_sentence_pair,
         sentence_pair,
         batch_id,
-        job_timeout=900,          # 15 min to be safe
+        job_timeout=86400,          # 24h
         result_ttl=RESULT_TTL_SECONDS,
         ttl=RESULT_TTL_SECONDS,   # keep queued jobs around
         failure_ttl=RESULT_TTL_SECONDS
@@ -209,6 +209,10 @@ def persist_finished_results(batch_id: str, output_dir: str, max_items: int = 10
         written += 1
     print("Written {} job results on volume".format(written))
     return written
+
+
+def retrieve_from_redis(key):
+    return redis_client.get(key)
 
 
 def clear_batch(batch_id: str, delete_jobs: bool = False) -> dict:
