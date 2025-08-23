@@ -33,10 +33,7 @@ BASE_LD_PATH = os.path.join(
 if "aa_path_check" not in st.session_state:
     st.session_state.aa_path_check = False
 if "indi" not in st.session_state:
-    try:
-        st.session_state.indi = st.session_state.indi_language
-    except AttributeError:
-        st.session_state.indi = "Abkhaz-Adyge"
+    st.session_state.indi = "Tahitian"
 if "readers_language" not in st.session_state:
     st.session_state.readers_language = "English"
 if "vs_name" not in st.session_state:
@@ -92,19 +89,28 @@ with st.sidebar:
     st.page_link("pages/dashboard.py", label="Source dashboard", icon=":material/search:")
     st.divider()
 
+
+
 colq, colw = st.columns(2)
-if st.session_state.indi == "Abkhaz-Adyge":
-    selected_language = colq.selectbox("What language are we generating learning content for?",
-                                       gu.GLOTTO_LANGUAGE_LIST)
-    if colq.button("Select {}".format(selected_language)):
-        st.session_state.indi = selected_language
-        st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi,
-                                                                       "glottocode not found")
-        fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
-            st.session_state.info_dict = json.load(f)
+
+# languages with existing data
+l_with_data = [l for l in os.listdir(os.path.join(BASE_LD_PATH)) if os.path.isdir(os.path.join(BASE_LD_PATH, l))]
+
+selected_language = colq.selectbox("What language are we generating learning content for?",
+                                   l_with_data, index=l_with_data.index(st.session_state.indi))
+if colq.button("Select {}".format(selected_language)):
+    st.session_state.indi = selected_language
+    st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi,
+                                                                   "glottocode not found")
+    fmu.create_ld(BASE_LD_PATH, st.session_state.indi)
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
+        st.session_state.info_dict = json.load(f)
+
+
 else:
     colq.markdown(f"Working on **{st.session_state.indi}**")
+    st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi,
+                                                                   "glottocode not found")
     colq.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
 
 # PROPOSING EXISTING OUTPUTS FROM PREVIOUS QUERIES

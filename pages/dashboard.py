@@ -126,6 +126,7 @@ def generate_sentence_pairs_signatures(sentence_pairs: list[dict]) -> list[str]:
 with st.sidebar:
     st.image("./pics/dig4el_logo_sidebar.png")
     st.page_link("home.py", label="Home", icon=":material/home:")
+    st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")
 
 st.header("Sources Dashboard")
 with st.popover("Using the dashboard"):
@@ -333,7 +334,7 @@ with tab2:
     elif not to_stage and not to_vectorize:
         colw2.success("All files staged and vectorized")
 
-    if st.session_state.vectorized_docs:
+    if st.session_state.vectorized_docs and st.button("Check vectorization status"):
         with st.spinner("Checking"):
             st.session_state.vector_store_status = ovsu.check_vector_store_status_sync(st.session_state.vsid)
         if st.session_state.vector_store_status is not None:
@@ -663,7 +664,3 @@ with tab3:
         st.write(st.session_state.query_results)
         st.write("Keywords results: ")
         st.write(st.session_state.hard_kw_retrieval_results)
-
-
-if st.session_state.has_bayesian or st.session_state.has_docs or st.session_state.has_pairs:
-    st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")

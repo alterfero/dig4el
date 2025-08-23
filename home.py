@@ -9,17 +9,17 @@ st.set_page_config(
 )
 
 
-components.html("""
-<div style="
-  width:100%; height:90px;
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  background:#252729; box-shadow:0 2px 8px rgba(0,0,0,.15);
-">
-  <span style="color:#EAEAE4; font-size:18px; font-weight:700;">
-    New release rolling out this week! Some UX turbulence expected.
-  </span>
-</div>
-""", height=90)
+# components.html("""
+# <div style="
+#   width:100%; height:90px;
+#   display:flex; align-items:center; justify-content:center; gap:12px;
+#   background:#252729; box-shadow:0 2px 8px rgba(0,0,0,.15);
+# ">
+#   <span style="color:#EAEAE4; font-size:18px; font-weight:700;">
+#     New release rolling out this week! Some UX turbulence expected.
+#   </span>
+# </div>
+# """, height=90)
 
 st.markdown("## Assisted grammatical description of endangered languages")
 
@@ -36,6 +36,7 @@ with st.popover("Notice", use_container_width=True):
     st.markdown(""" 
     *Notice: DIG4EL is currently in the early production stage.*
 1) **Public nature of language data**: Any information you provide about a language, including documents created with or uploaded to DIG4EL, may be publicly accessible. Such content may be displayed to other users and incorporated into the system’s generation processes.
+    Each language has a unique *caretaker* who can organize and optimize the uploaded content, connect with us if you want any change made.
 2) **Expert review requirement**: System outputs are provided for expert review and editing. All outputs are available in editable formats for this purpose.
 3) **Limitation of liability**: The DIG4EL team disclaims any responsibility for the use, modification, or distribution of system outputs by third parties.
 4) **Access to resource-intensive features**: Certain computationally intensive features are restricted. Researchers working on the description or teaching of endangered languages may request access by contacting the DIG4EL team.
@@ -112,7 +113,8 @@ st.image("./pics/logos.png")
 with st.sidebar:
     st.image("./pics/dig4el_logo_sidebar.png")
     st.page_link("home.py", label="Home", icon=":material/home:")
-    st.page_link("pages/dashboard.py", label="Dashboard", icon=":material/dashboard:")
+    st.page_link("pages/dashboard.py", label="Source dashboard", icon=":material/search:")
+    st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")
     st.page_link("pages/DIG4EL_processes_menu.py", label="Processes", icon=":material/manufacturing:")
 
 

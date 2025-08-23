@@ -33,6 +33,8 @@ REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 QUEUE_NAME = os.getenv("QUEUE_NAME", "sentence")
 RESULT_TTL_SECONDS = 604800  # 7 days
 redis_client = Redis.from_url(REDIS_URL)
+DATA_PATH = os.path.join(
+    os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./job_outputs"), "data")
 
 
 def _process_sentence_pair(sentence_pair: Dict, batch_id: Optional[str] = None) -> Optional[Dict]:
@@ -53,6 +55,12 @@ def _process_sentence_pair(sentence_pair: Dict, batch_id: Optional[str] = None) 
         print(job.meta)
 
         result, filename = sdu.add_description_and_keywords_to_sentence_pair(sentence_pair)
+
+        # save on worker's volume
+        with open(os.path.join(DATA_PATH, filename), "w") as f:
+            json.dump(result, indent=2, ensure_ascii=False)
+
+
         if result is None:
             raise RuntimeError("Augmentation returned None")
 
@@ -185,9 +193,9 @@ def persist_finished_results(batch_id: str, output_dir: str, max_items: int = 10
 
     written = 0
     for job in jobs:
-        job.refresh()
         if job is None:
             continue
+        job.refresh()
         result = job.return_value()
         if not result:
             print(f"Job {job.id}: no return value (status={job.get_status()})")
