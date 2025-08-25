@@ -280,9 +280,8 @@ if (st.session_state.alterlingua_contribution
                     sapd = {
                         st.session_state.indi: sp["target"],
                         "source": sp["source"],
-                        "grammatical_description": sp["description"]["grammatical_description"],
-                        "enunciation": sp["description"]["enunciation"],
-                        "concept-words_connections": sp.get("connections", "no connections"),
+                        "grammatical_description": sp["description"],
+                        "concept-words_connections": sp.get("key_translation_concepts", "no connections"),
                         "gloss": sp.get("gloss", "no gloss")
                     }
 

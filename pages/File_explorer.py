@@ -17,6 +17,8 @@ import json
 import os
 from libs import openai_vector_store_utils as vsu
 import streamlit as st
+import zipfile
+import tempfile
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -73,6 +75,20 @@ for d in dirs:
         st.rerun()
 
 st.subheader("Files")
+if st.button("Download All Files"):
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".zip") as tmp_zip:
+        with zipfile.ZipFile(tmp_zip.name, "w") as zipf:
+            for fname in files:
+                fpath = os.path.join(current_path, fname)
+                zipf.write(fpath, arcname=fname)  # Add file to the ZIP archive
+        tmp_zip.seek(0)
+        with open(tmp_zip.name, "rb") as zip_bytes:
+            st.download_button(
+                label="Download All Files as ZIP",
+                data=zip_bytes,
+                file_name="all_files.zip",
+                mime="application/zip"
+            )
 dtrigger = False
 if st.text_input("erase all files?") == "erase all files":
     dtrigger = True

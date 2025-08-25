@@ -177,29 +177,18 @@ with tab1:
 
     if st.session_state.indi_language in os.listdir(BASE_LD_PATH):
         if "cq" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language)):
+            existing_cqs = [f for f in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq", "cq_translations")) if f.endswith(".json")]
+            if existing_cqs:
+                st.success("{} CQ translations available: ".format(len(existing_cqs)))
+                for cqfn in existing_cqs:
+                    st.write("- {}".format(cqfn))
             if "cq_knowledge" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq")):
                 if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
                                                                   "cq",
                                                                   "cq_knowledge")):
 
-                    st.success("**There is an existing CQ Knowledge file, use it?**")
-                    if st.button("Yes, Use existing CQ Knowledge in {}".format(st.session_state.indi_language)):
-                        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
-                                               "cq",
-                                               "cq_knowledge",
-                                               "cq_knowledge.json"), "r", encoding='utf-8') as f:
-                            st.session_state.bayesian_data = json.load(f)
-                        st.session_state.has_bayesian = True
-                        st.rerun()
-
-    # cq_knowledge_file = st.file_uploader("Upload a CQ Knowledge JSON file")
-    # if cq_knowledge_file is not None:
-    #     with open(cq_knowledge_file, "r", encoding='utf-8') as f:
-    #         st.session_state.bayesian_data = json.load(f)
-    #     st.session_state.has_bayesian = True
-
-    if st.session_state.has_bayesian:
-        st.success("✅ CQ knowledge ready")
+                    st.success("Knowledge from CQs has been computed.")
+                    st.write("Feel free to add or edit CQ translations and re-compute inferences.")
 
 with tab2:
     with st.popover("How to upload and prepare documents"):
@@ -466,8 +455,9 @@ with tab3:
                                      for fn in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
                                      if fn[-5:] == ".json"
                                      ]
-    st.markdown("**{} Available augmented sentences**".format(len(available_augmented_sentences)))
-    if st.checkbox("Explore augmented sentences"):
+    coln, colm = st.columns(2)
+    coln.markdown("**{} Available augmented sentences**".format(len(available_augmented_sentences)))
+    if len(available_augmented_sentences) > 0 and colm.checkbox("Explore augmented sentences"):
         selected_augmented_sentence = st.selectbox("Select a sentence",
                                                    [s[:-5] for s in available_augmented_sentences])
         selected_augmented_sentence_file = selected_augmented_sentence + ".json"
@@ -501,6 +491,7 @@ with tab3:
             st.session_state.sentence_pairs = json.load(f)
 
         # user triggers augmentation
+        progress = squ.get_batch_progress(st.session_state.batch_id)
         create_btn = st.button(
             "Augment {} (long process, LLM use)".format(st.session_state.selected_pairs_filename))
         if create_btn and not st.session_state.enriching_pairs:  # augmentation launched only if previous one done
@@ -515,20 +506,58 @@ with tab3:
                 st.write("{} sentences discarded: they already have been augmented".format(
                     len(st.session_state.sentence_pairs) - len(new_pairs)
                 ))
-
             st.session_state.batch_id = squ.enqueue_batch(new_pairs)
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "w", encoding='utf-8') as f:
                 utils.save_json_normalized({"batch_id": st.session_state.batch_id}, f)
-        # if st.button("Save processed sentences on server"):
-        #     n_written = squ.persist_finished_results(batch_id=st.session_state.batch_id,
-        #                                              output_dir=os.path.join(BASE_LD_PATH,
-        #                                                                      st.session_state.indi_language,
-        #                                                                      "sentence_pairs",
-        #                                                                      "augmented_pairs"))
-        #     st.success("{} augmented pairs saved.".format(n_written))
 
-        if st.button("Save new augmented sentences on server"):
-            with st.spinner("Saving augmented pairs..."):
+        if st.button("Save new augmented sentences"):
+            new_pairs = [pair for pair in st.session_state.sentence_pairs
+                         if u.clean_sentence(pair["source"], filename=True) + ".json"
+                         not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
+            c = 0
+            for new_pair in new_pairs:
+                key = u.clean_sentence(new_pair["source"], filename=True)
+                value = squ.retrieve_from_redis(key)
+                if value:
+                    c += 1
+                    new_augmented_pair = json.loads(squ.retrieve_from_redis(key))
+                    with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs",
+                                           key + ".json"), "w") as f:
+                        json.dump(new_augmented_pair, f, indent=2, ensure_ascii=False)
+            st.success("{} new augmented pairs saved, {} augmented_pairs available now in {}".format(
+                c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))) - 1,
+                                  st.session_state.indi_language))
+
+    progress = squ.get_batch_progress(st.session_state.batch_id)
+    if progress["queued"] != progress["finished"] + progress["failed"]:
+        st.markdown("""The sentence augmentation is in progress. It is a long process (up to 2 minutes per sentence)
+        that will continue even if you close this page or turn off your computer. You can come back anytime 
+        and press the progress update button below to check on progress and make completed augmentations 
+        available for use. You can also click anytime on the "Save new augmented sentences" button 
+        to retrieve new augmented sentence. 
+        """)
+
+        progress = squ.get_batch_progress(st.session_state.batch_id)
+        st.progress("Progress", progress["percent_complete"])
+
+    with st.sidebar:
+        if st.checkbox("Redis info"):
+            progress = squ.get_batch_progress(st.session_state.batch_id)
+            st.write("Queue status: {}".format(progress))
+
+            if st.button("Clear batch"):
+                print("Clearing batch {}".format(st.session_state.batch_id))
+                squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
+            manual_batch_id = st.text_input("Enter manually a batch_id")
+            if st.button("Use this batch_id"):
+                st.session_state.batch_id = manual_batch_id
+                st.rerun()
+            ti = st.text_input("DANGER ZONE: flush all")
+            if ti == "flush all":
+                squ.flush_all()
+                st.rerun()
+
+            if st.button("Save new augmented sentences", key="side_save"):
                 new_pairs = [pair for pair in st.session_state.sentence_pairs
                              if u.clean_sentence(pair["source"], filename=True) + ".json"
                              not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
@@ -542,60 +571,9 @@ with tab3:
                         with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs",
                                                key + ".json"), "w") as f:
                             json.dump(new_augmented_pair, f, indent=2, ensure_ascii=False)
-            st.success("{} new augmented pairs saved, {} augmented_pairs available now in {}".format(
-                c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))),
-                                  st.session_state.indi_language))
-
-
-
-    if st.checkbox("Redis info"):
-        progress = squ.get_batch_progress(st.session_state.batch_id)
-        st.write("Queue status: {}".format(progress))
-
-        if st.button("Clear batch"):
-            print("Clearing batch {}".format(st.session_state.batch_id))
-            squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
-        manual_batch_id = st.text_input("Enter manually a batch_id")
-        if st.button("Use this batch_id"):
-            st.session_state.batch_id = manual_batch_id
-            st.rerun()
-        ti = st.text_input("DANGER ZONE: flush all")
-        if ti == "flush all":
-            squ.flush_all()
-            st.rerun()
-
-    progress = squ.get_batch_progress(st.session_state.batch_id)
-    if progress["queued"] != progress["finished"] + progress["failed"]:
-        st.markdown("""The sentence augmentation is in progress. It is a long process (up to 2 minutes per sentence)
-        that will continue even if you close this page or turn off your computer. You can come back anytime 
-        and press the progress update button below to check on progress and make completed augmentations 
-        available for use. 
-        """)
-
-        if st.button("Show progress update (re-click to see progress)"):
-            progress = squ.get_batch_progress(st.session_state.batch_id)
-            st.write(progress)
-
-    else:
-        if progress["queued"] != 0:
-            progress = squ.get_batch_progress(st.session_state.batch_id)
-            st.markdown("""
-            The last sentence pairs augmentation job is complete, you can use augmented sentences 
-            and save them on your computer if you want to keep the raw form (best format to use with other software). 
-            If some sentences have not been augmented, you can re-launch the same augmentation work and only the 
-            non-augmented sentences will be picked up. 
-                        """)
-            n_to_write = progress["finished"]
-            n_written = squ.persist_finished_results(batch_id=st.session_state.batch_id,
-                                                     output_dir=os.path.join(BASE_LD_PATH,
-                                                                             st.session_state.indi_language,
-                                                                             "sentence_pairs",
-                                                                             "augmented_pairs"))
-            st.success("{} sentence to write, {} sentences written".format(n_to_write, n_written))
-            if st.button("clear batch"):
-                squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
-                st.rerun()
-
+                st.success("{} new augmented pairs saved, {} augmented_pairs available now in {}".format(
+                    c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))) - 1,
+                    st.session_state.indi_language))
 
     # ADD WORD-CONCEPT CONNECTIONS
     st.subheader("3. Connect word(s) and concept(s) in augmented sentences")
