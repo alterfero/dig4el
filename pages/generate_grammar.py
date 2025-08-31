@@ -274,18 +274,22 @@ if (st.session_state.alterlingua_contribution
         if st.session_state.is_pairs and st.session_state.use_pairs:
             sps = []
             for spf in st.session_state.selected_pairs:
-                with open(os.path.join(BASE_LD_PATH, st.session_state.indi,
-                                       "sentence_pairs", "augmented_pairs", spf), "r", encoding='utf-8') as f:
-                    sp = json.load(f)
-                    sapd = {
-                        st.session_state.indi: sp["target"],
-                        "source": sp["source"],
-                        "grammatical_description": sp["description"],
-                        "concept-words_connections": sp.get("key_translation_concepts", "no connections"),
-                        "gloss": sp.get("gloss", "no gloss")
-                    }
-
-                sps.append(sapd)
+                if spf in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
+                                       "sentence_pairs", "augmented_pairs")):
+                    with open(os.path.join(BASE_LD_PATH, st.session_state.indi,
+                                           "sentence_pairs", "augmented_pairs", spf), "r", encoding='utf-8') as f:
+                        sp = json.load(f)
+                        sapd = {
+                            st.session_state.indi: sp["target"],
+                            "source": sp["source"],
+                            "grammatical_description": sp["description"],
+                            "concept-words_connections": sp.get("key_translation_concepts", "no connections"),
+                            "gloss": sp.get("gloss", "no gloss")
+                        }
+                    sps.append(sapd)
+                else:
+                    print("Augmented pair file {} not found in ".format(spf, os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
+                                       "sentence_pairs", "augmented_pairs"))))
             sentence_pairs_blob = json.dumps(sps, ensure_ascii=False)
         else:
             sentence_pairs_blob = "No available sentence pairs."

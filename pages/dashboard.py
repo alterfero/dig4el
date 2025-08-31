@@ -538,7 +538,10 @@ with tab3:
         """)
 
         progress = squ.get_batch_progress(st.session_state.batch_id)
-        st.progress("Progress", progress["percent_complete"])
+        try:
+            st.progress(int(progress["percent_complete"]), "Progress")
+        except:
+            st.write(progress)
 
     with st.sidebar:
         if st.checkbox("Redis info"):
