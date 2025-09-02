@@ -374,12 +374,15 @@ if st.session_state.run_sources:
             # retrieve N sentences using embeddings
             index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "index.faiss")
             index, id_to_meta = ragu.load_index_and_id_to_meta(st.session_state.indi)
-            vec_retrieved = ragu.retrieve_similar(query, index, id_to_meta, k=10, min_score=0.3)
-            vecf_retrieved = [i["filename"][:-4]+".json" for i in vec_retrieved]
-            # retrieve sentences from keywords
-            kw_retrieved = ragu.hard_retrieve_from_query(query, st.session_state.indi)
-            # aggregate
-            st.session_state.selected_pairs = list(set(vecf_retrieved + kw_retrieved))
+            if index and id_to_meta:
+                vec_retrieved = ragu.retrieve_similar(query, index, id_to_meta, k=10, min_score=0.3)
+                vecf_retrieved = [i["filename"][:-4]+".json" for i in vec_retrieved]
+                # retrieve sentences from keywords
+                kw_retrieved = ragu.hard_retrieve_from_query(query, st.session_state.indi)
+                # aggregate
+                st.session_state.selected_pairs = list(set(vecf_retrieved + kw_retrieved))
+            else:
+                st.session_state.selected_pairs = []
 
     st.session_state.run_sources = False
 
