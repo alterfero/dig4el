@@ -202,7 +202,7 @@ username    = st.session_state.get("username", None)
 
 if auth_status:
     role = cfg["credentials"]["usernames"].get(username, {}).get("role", "guest")
-    if cfg["credentials"]["usernames"].get(username, {}).get("email", "") in st.session_state.info_doc.get("caretaker", []):
+    if cfg["credentials"]["usernames"].get(username, {}).get("email", "") in st.session_state.info_dict.get("caretaker", []):
         role = "caretaker"
     title = ""
     if role in ["admin", "caretaker"]:
@@ -483,6 +483,7 @@ if st.session_state.output_dict:
     fn = "dig4el_aggregated_output_"
     fn += st.session_state.indi + "_"
     fn += u.clean_sentence(query, filename=True, filename_length=50)
+    fn += f"_({st.session_state.readers_language})"
     fn += ".json"
 
     docx = None
