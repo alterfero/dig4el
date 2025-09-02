@@ -147,6 +147,7 @@ lesson_agent = Agent(
     
     COMPLY WITH THE FOLLOWING:
     - Do not add information from any other source or from your own knowledge. 
+    - Add ALL relevant information from all the available sources.
     - Adapt your output to the type of readers: The output must be in the language and the type readers, adapted to 
     the type of readers, and insist on contrasts between the endangered language and the language of the readers 
     when describing grammar. 
@@ -164,8 +165,7 @@ lesson_agent = Agent(
     - List of sentence pairs, some with explicit connections between the concepts in the sentence and words in 
         the endangered language sentence. 
     
-    NOTE ON INPUTS: If there are contradictions between inputs, the description coming from the compilation of 
-    documents is always considered as the most trustworthy. 
+    NOTE ON INPUTS: If there are contradictions between inputs, be explicit about it and cite the diverging sources.
         
     OUTPUT: Grammar lesson in the reader's language. The grammar lesson is structured as follows:
     - A title, derived from the user query

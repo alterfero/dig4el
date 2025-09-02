@@ -225,7 +225,6 @@ if auth_status:
             authenticator.reset_password(username, location="sidebar")
             save_config_atomic(cfg, CFG_PATH)  # <-- persist the updated hash
             st.success("Password updated.")
-
         authenticator.logout(button_name="Logout", location="sidebar", key="auth_logout")
 
 elif auth_status is False:
@@ -798,3 +797,7 @@ with tab3:
         st.write(st.session_state.query_results)
         st.write("Keywords results: ")
         st.write(st.session_state.hard_kw_retrieval_results)
+
+if role == "admin":
+    with st.sidebar:
+        st.page_link("pages/File_explorer.py", label="danger zone")

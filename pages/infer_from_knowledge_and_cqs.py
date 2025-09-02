@@ -40,6 +40,7 @@ st.set_page_config(
 
 if "tl_name" not in st.session_state:
     st.session_state["tl_name"] = ""
+
 if "tl_wals_pk" not in st.session_state:
     st.session_state["tl_wals_pk"] = ""
 if "tl_grambank_id" not in st.session_state:

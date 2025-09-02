@@ -468,6 +468,11 @@ if (st.session_state.alterlingua_contribution
                 "pairs": st.session_state.pairs_files
             }
 
+            # adding identifiers, date etc.
+            from datetime import datetime
+            now = datetime.now()
+            st.session_state.output_dict["date"] = now.strftime("%A, %-d %B %Y at %H:%M")
+
         st.session_state.run_aggregation = False
         st.success("Done! Output available.")
 
@@ -497,7 +502,6 @@ if st.session_state.output_dict:
     # Save outputs
     if st.button("Store output (and share it with others)"):
 
-
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w", encoding='utf-8') as f:
             json.dump(st.session_state.output_dict, f, ensure_ascii=False)
 
@@ -506,7 +510,8 @@ if st.session_state.output_dict:
                 f.write(docx.getvalue())
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
             info = json.load(f)
-        info["outputs"][query] = fn
+            qk = f"{query}_({st.session_state.readers_language})"
+        info["outputs"][qk] = fn
 
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w", encoding='utf-8') as f:
             json.dump(info, f, ensure_ascii=False)
