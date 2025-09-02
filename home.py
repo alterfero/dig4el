@@ -30,7 +30,7 @@ st.markdown("""*DIG4EL (Digital Inferential Grammar for Endangered Languages) is
             [CARE](https://www.gida-global.org/care) principles for data governance and respect of their owners.*""")
 
 
-with st.popover("Notice", width="stretch"):
+with st.popover("Notice", use_container_width=True):
     st.markdown(""" 
     *Notice: DIG4EL is currently in the early production stage.*
 1) **Public nature of outputs**: DIG4EL outputs may incorporate content from all data created or uploaded 
@@ -46,7 +46,7 @@ Researchers working on the description or teaching of endangered languages may r
 the DIG4EL team.
     """)
 
-with st.popover("Guests, Members and Caretakers", width="stretch"):
+with st.popover("Guests, Members and Caretakers", use_container_width=True):
     st.markdown("""
     - You can explore DIG4EL without logging in, as a **Guest**. Guests have access only to a restricted 
     set of languages and cannot upload or augment data. However, they can generate content within 
@@ -58,7 +58,7 @@ with st.popover("Guests, Members and Caretakers", width="stretch"):
     DIG4EL holds about the languages they manage. Contact us if you would like to become a Caretaker!
     """)
 
-with st.popover("Getting started", width="stretch"):
+with st.popover("Getting started", use_container_width=True):
     st.subheader("Getting started")
     get1, get2 = st.columns(2)
     with get1:
@@ -69,7 +69,7 @@ with st.popover("Getting started", width="stretch"):
         or click on **Generate Grammar** to use available data to generate grammatical descriptions."
                     """)
 
-with st.popover("References", width="stretch"):
+with st.popover("References", use_container_width=True):
 
     st.markdown("**Acknowledgement**")
     st.markdown("We want to express here our profound gratitude to all community members from all over the world who generously shared their time, knowledge, languages, and insights, to make this work possible. ")
