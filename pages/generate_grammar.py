@@ -24,10 +24,21 @@ from libs import grammar_generation_utils as ggu
 from libs import output_generation_utils as ogu
 from libs import retrieval_augmented_generation_utils as ragu
 from libs import semantic_description_utils
+import streamlit_authenticator as stauth
+import yaml
+from pathlib import Path
+import tempfile
 
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
     "storage"
+)
+
+st.set_page_config(
+    page_title="DIG4EL",
+    page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 if "aa_path_check" not in st.session_state:
@@ -75,26 +86,166 @@ if "selected_pairs" not in st.session_state:
     st.session_state.selected_pairs = None
 if "output_dict" not in st.session_state:
     st.session_state.output_dict = None
+if "is_guest" not in st.session_state:
+    st.session_state.is_guest = None
 
-st.set_page_config(
-    page_title="DIG4EL",
-    page_icon="🧊",
-    layout="wide",
-    initial_sidebar_state="expanded"
+# ----- HELPERS -----------------------------------------------------------------------------------
+def display_output(output_dict):
+    o = output_dict
+    st.title(o["title"])
+    st.write(o["introduction"])
+    st.divider()
+    for section in o["sections"]:
+        st.subheader(section["focus"])
+        st.write(section["description"]["description"])
+        st.markdown(f"**{section['example']['target_sentence']}**")
+        st.markdown(f"*{section['example']['source_sentence']}*")
+        st.write(section["example"]["description"])
+    st.subheader("Conclusion")
+    st.write(o["conclusion"])
+    st.divider()
+    st.subheader("More examples")
+    for i, s in enumerate(o["translation_drills"]):
+        st.write("{}".format(i + 1))
+        st.markdown(f"**{s['target']}**")
+        st.markdown(f"*{s['source']}*")
+    st.divider()
+    st.subheader("Sources")
+    sources = o.get("sources", {})
+    if "documents" in sources.keys() and sources["documents"] is not None and sources["documents"] != []:
+        st.markdown("### Documents")
+        for d in sources["documents"]:
+            st.markdown(f"- {d}")
+    if "cqs" in sources.keys() and sources["cqs"] is not None and sources["cqs"] != []:
+        st.markdown("### Conversational Questionnaires")
+        for d in sources["cqs"]:
+            st.markdown(f"- {d}")
+    if "pairs" in sources.keys() and sources["pairs"] is not None and sources["pairs"] != []:
+        st.markdown("### Sentence Pairs")
+        for d in sources["pairs"]:
+            st.markdown(f"- {d}")
+
+# ------ AUTH SETUP --------------------------------------------------------------------------------
+CFG_PATH = Path(
+    os.getenv("AUTH_CONFIG_PATH") or
+    os.path.join(os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"), "storage", "auth_config.yaml")
 )
+# Cookie secret (override YAML)
+COOKIE_KEY = os.getenv("AUTH_COOKIE_KEY", None)
+
+# ---------- Load config ----------
+def load_config(path: Path) -> dict:
+    if not path.exists():
+        print("load auth config failed, no config file")
+        st.stop()  # fail fast; create it before running
+    with open(path, "r", encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+    if COOKIE_KEY:
+        cfg.setdefault("cookie", {})["key"] = COOKIE_KEY
+    return cfg
+
+# --- helper: atomic YAML write ---
+def save_config_atomic(data: dict, path: Path):
+    d = os.path.dirname(path) or "."
+    with tempfile.NamedTemporaryFile("w", delete=False, dir=d, encoding="utf-8") as tmp:
+        yaml.safe_dump(data, tmp, sort_keys=False, allow_unicode=True)
+        tmp_path = tmp.name
+    os.replace(tmp_path, path)  # atomic on POSIX
+
+cfg = load_config(CFG_PATH)
+authenticator = stauth.Authenticate(
+    cfg["credentials"],
+    cfg["cookie"]["name"],
+    cfg["cookie"]["key"],
+    cfg["cookie"]["expiry_days"],
+    auto_hash=True
+)
+# -------------------------------------------------------------------------------------------
 
 with st.sidebar:
-    st.subheader("DIG4EL")
+    st.image("./pics/dig4el_logo_sidebar.png")
+    st.divider()
     st.page_link("home.py", label="Home", icon=":material/home:")
     st.page_link("pages/dashboard.py", label="Source dashboard", icon=":material/search:")
     st.divider()
 
+# AUTH UI AND FLOW -----------------------------------------------------------------------
+if st.session_state["username"] is None:
+    if st.button("Use without loging in"):
+        st.session_state.is_guest = True
+# ---------- Guest path: skip rendering the login widget entirely ----------
+if st.session_state.is_guest:
+    st.session_state["authentication_status"] = True
+    st.session_state["username"] = "guest"
+    st.session_state["name"] = "Guest"
 
+else:
+    authenticator.login(
+        location="main",                 # "main" | "sidebar" | "unrendered"
+        max_concurrent_users=20,         # soft cap; useful for small apps
+        max_login_attempts=5,            # lockout window is managed internally
+        fields={                         # optional label overrides
+            "Form name": "Sign in",
+            "Username": "email",
+            "Password": "Password",
+            "Login": "Sign in",
+        },
+        captcha=False,                    # simple built-in captcha
+        single_session=True,             # block multiple sessions per user
+        clear_on_submit=True,
+        key="login_form_v1",             # avoid WidgetID collisions
+    )
 
+auth_status = st.session_state.get("authentication_status", None)
+name        = st.session_state.get("name", None)
+username    = st.session_state.get("username", None)
+
+if auth_status:
+    role = cfg["credentials"]["usernames"].get(username, {}).get("role", "guest")
+    if cfg["credentials"]["usernames"].get(username, {}).get("email", "") in st.session_state.info_doc.get("caretaker", []):
+        role = "caretaker"
+    title = ""
+    if role in ["admin", "caretaker"]:
+        title = role
+    st.sidebar.success(f"Hello, {title} {name or username}")
+    if st.session_state.is_guest:
+        if st.sidebar.button("Logout", key="guest_logout"):
+            for x in ("is_guest", "authentication_status", "username", "name"):
+                st.session_state.pop(x, None)
+            st.rerun()
+    else:
+        if st.sidebar.checkbox("Change password"):
+            with st.sidebar:
+                st.markdown("""Passwords must 
+                - Be between 8 and 20 characters long, 
+                - Contain at least one digit,
+                - Contain at least one uppercase letter,
+                - Contain at least one special character (@$!%*?&)""")
+            authenticator.reset_password(username, location="sidebar")
+            save_config_atomic(cfg, CFG_PATH)  # <-- persist the updated hash
+            st.success("Password updated.")
+
+        authenticator.logout(button_name="Logout", location="sidebar", key="auth_logout")
+
+elif auth_status is False:
+    role = None
+    st.error("Invalid credentials")
+    st.write("Try again. If you have forgotten your password, contact sebastien.christian@upf.pf")
+    st.stop()
+
+else:
+    role = None
+    st.info("Please log in or click on the 'Use without loging in' button")
+
+# ------------------------------------------------------------------------------------------------
 colq, colw = st.columns(2)
 
 # languages with existing data
 l_with_data = [l for l in os.listdir(os.path.join(BASE_LD_PATH)) if os.path.isdir(os.path.join(BASE_LD_PATH, l))]
+if role == "guest":
+    l_with_data = ["Tahitian"]
+    colq.markdown(
+        "**Note**: *As a guest, you can perform generation on a restricted collection of language. Contact us to access more languages!*")
 
 selected_language = colq.selectbox("What language are we generating learning content for?",
                                    l_with_data, index=l_with_data.index(st.session_state.indi))
@@ -105,8 +256,6 @@ if colq.button("Select {}".format(selected_language)):
     fmu.create_ld(BASE_LD_PATH, st.session_state.indi)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
         st.session_state.info_dict = json.load(f)
-
-
 else:
     colq.markdown(f"Working on **{st.session_state.indi}**")
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi,
@@ -137,6 +286,12 @@ if info["outputs"] != {}:
                                  data=docxf,
                                  file_name=info["outputs"][slq][:-5]+".docx",
                                  mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    if info["outputs"][slq] in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs")):
+        with st.expander("Click here to see the output"):
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", info["outputs"][slq]),
+                      "rb") as jsonf:
+                display_output(json.load(jsonf))
+
 
 # GATHERING MATERIAL
 
@@ -372,40 +527,9 @@ if st.session_state.output_dict:
     st.divider()
     st.subheader("Output")
     st.divider()
+    display_output(st.session_state.output_dict)
 
-    o = st.session_state.output_dict
-    st.title(o["title"])
-    st.write(o["introduction"])
-    st.divider()
-    for section in o["sections"]:
-        st.subheader(section["focus"])
-        st.write(section["description"]["description"])
-        st.markdown(f"**{section['example']['target_sentence']}**")
-        st.markdown(f"*{section['example']['source_sentence']}*")
-        st.write(section["example"]["description"])
-    st.subheader("Conclusion")
-    st.write(o["conclusion"])
-    st.divider()
-    st.subheader("More examples")
-    for i, s in enumerate(o["translation_drills"]):
-        st.write("{}".format(i+1))
-        st.markdown(f"**{s['target']}**")
-        st.markdown(f"*{s['source']}*")
-    st.divider()
-    st.subheader("Sources")
-    sources = o["sources"]
-    if "documents" in sources.keys() and sources["documents"] is not None and sources["documents"] != []:
-        st.markdown("### Documents")
-        for d in sources["documents"]:
-            st.markdown(f"- {d}")
-    if "cqs" in sources.keys() and sources["cqs"] is not None and sources["cqs"] != []:
-        st.markdown("### Conversational Questionnaires")
-        for d in sources["cqs"]:
-            st.markdown(f"- {d}")
-    if "pairs" in sources.keys() and sources["pairs"] is not None and sources["pairs"] != []:
-        st.markdown("### Sentence Pairs")
-        for d in sources["pairs"]:
-            st.markdown(f"- {d}")
+
 
 
 

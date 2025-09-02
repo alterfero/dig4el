@@ -30,17 +30,35 @@ st.markdown("""*DIG4EL (Digital Inferential Grammar for Endangered Languages) is
             [CARE](https://www.gida-global.org/care) principles for data governance and respect of their owners.*""")
 
 
-with st.popover("Notice", use_container_width=True):
+with st.popover("Notice", width="stretch"):
     st.markdown(""" 
     *Notice: DIG4EL is currently in the early production stage.*
-1) **Public nature of language data**: Any information you provide about a language, including documents created with or uploaded to DIG4EL, may be publicly accessible. Such content may be displayed to other users and incorporated into the system’s generation processes.
-    Each language has a unique *caretaker* who can organize and optimize the uploaded content, connect with us if you want any change made.
-2) **Expert review requirement**: System outputs are provided for expert review and editing. All outputs are available in editable formats for this purpose.
-3) **Limitation of liability**: The DIG4EL team disclaims any responsibility for the use, modification, or distribution of system outputs by third parties.
-4) **Access to resource-intensive features**: Certain computationally intensive features are restricted. Researchers working on the description or teaching of endangered languages may request access by contacting the DIG4EL team.
+1) **Public nature of outputs**: DIG4EL outputs may incorporate content from all data created or uploaded 
+about a language. The dissemination of these outputs is beyond the control and knowledge of the DIG4EL team. 
+The DIG4EL team assumes no responsibility or liability for the use, interpretation, or redistribution of 
+these outputs. 
+2) **Expert review requirement**: System outputs are provided for expert review and editing. All outputs are 
+available in editable formats for this purpose.
+3) **Limitation of liability**: The DIG4EL team disclaims any responsibility for the use, modification, 
+or distribution of system outputs by third parties.
+4) **Access to resource-intensive features**: Certain computationally intensive features are restricted. 
+Researchers working on the description or teaching of endangered languages may request access by contacting 
+the DIG4EL team.
     """)
 
-with st.popover("Getting started", use_container_width=True):
+with st.popover("Guests, Members and Caretakers", width="stretch"):
+    st.markdown("""
+    - You can explore DIG4EL without logging in, as a **Guest**. Guests have access only to a restricted 
+    set of languages and cannot upload or augment data. However, they can generate content within 
+    the restricted collection.
+    - **Members** can log in to access additional features. **If you are working on a language or teaching it**, 
+    contact us to become a Member!
+    - Each language has designated **Caretakers**. Caretakers are Members with full upload 
+    and augmentation rights for one or more languages. They can add, remove, and edit all the information 
+    DIG4EL holds about the languages they manage. Contact us if you would like to become a Caretaker!
+    """)
+
+with st.popover("Getting started", width="stretch"):
     st.subheader("Getting started")
     get1, get2 = st.columns(2)
     with get1:
@@ -51,7 +69,7 @@ with st.popover("Getting started", use_container_width=True):
         or click on **Generate Grammar** to use available data to generate grammatical descriptions."
                     """)
 
-with st.popover("References", use_container_width=True):
+with st.popover("References", width="stretch"):
 
     st.markdown("**Acknowledgement**")
     st.markdown("We want to express here our profound gratitude to all community members from all over the world who generously shared their time, knowledge, languages, and insights, to make this work possible. ")
@@ -109,7 +127,7 @@ st.markdown("""
 DIG4EL prototype 
 Version 1.0.1
 
-Copyright © 2024 Sebastien Christian,
+Copyright © 2025 Sebastien Christian,
 Licensed under GNU Affero General Public License v3.0.
 
 If you use this software in your research, please cite:

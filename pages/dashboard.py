@@ -28,6 +28,10 @@ from libs import utils
 import streamlit.components.v1 as components
 from libs import utils as u
 from libs import stats
+import streamlit_authenticator as stauth
+import yaml
+from pathlib import Path
+import tempfile
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -38,7 +42,6 @@ st.set_page_config(
 
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"), "storage")
-
 
 if "aa_path_check" not in st.session_state:
     fmu.create_ld(BASE_LD_PATH, "Abkhaz-Adyge")
@@ -103,11 +106,49 @@ if "vector_store_status" not in st.session_state:
     st.session_state.vector_store_status = None
 if "available_vector_stores" not in st.session_state:
     st.session_state.available_vector_stores = ovsu.list_vector_stores_sync()
+if "is_guest" not in st.session_state:
+    st.session_state.is_guest = None
+
+# ------ AUTH SETUP --------------------------------------------------------------------------------
+CFG_PATH = Path(
+    os.getenv("AUTH_CONFIG_PATH") or
+    os.path.join(os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"), "storage", "auth_config.yaml")
+)
+# Cookie secret (override YAML)
+COOKIE_KEY = os.getenv("AUTH_COOKIE_KEY", None)
+
+# ---------- Load config ----------
+def load_config(path: Path) -> dict:
+    if not path.exists():
+        print("load auth config failed, no config file")
+        st.stop()  # fail fast; create it before running
+    with open(path, "r", encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+    if COOKIE_KEY:
+        cfg.setdefault("cookie", {})["key"] = COOKIE_KEY
+    return cfg
+
+# --- helper: atomic YAML write ---
+def save_config_atomic(data: dict, path: Path):
+    d = os.path.dirname(path) or "."
+    with tempfile.NamedTemporaryFile("w", delete=False, dir=d, encoding="utf-8") as tmp:
+        yaml.safe_dump(data, tmp, sort_keys=False, allow_unicode=True)
+        tmp_path = tmp.name
+    os.replace(tmp_path, path)  # atomic on POSIX
+
+cfg = load_config(CFG_PATH)
+authenticator = stauth.Authenticate(
+    cfg["credentials"],
+    cfg["cookie"]["name"],
+    cfg["cookie"]["key"],
+    cfg["cookie"]["expiry_days"],
+    auto_hash=True
+)
+# -------------------------------------------------------------------------------------------
 
 PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
 CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
 JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
-
 
 if "index.pkl" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs", "vectors")):
     st.session_state.has_pairs = True
@@ -122,11 +163,82 @@ def generate_sentence_pairs_signatures(sentence_pairs: list[dict]) -> list[str]:
         sig_list.append(u.clean_sentence(sentence_pair["source"], filename=True))
     return sig_list
 
-
 with st.sidebar:
     st.image("./pics/dig4el_logo_sidebar.png")
+    st.divider()
     st.page_link("home.py", label="Home", icon=":material/home:")
     st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")
+    st.divider()
+
+# AUTH UI AND FLOW -----------------------------------------------------------------------
+if st.session_state["username"] is None:
+    if st.button("Use without loging in"):
+        st.session_state.is_guest = True
+# ---------- Guest path: skip rendering the login widget entirely ----------
+if st.session_state.is_guest:
+    st.session_state["authentication_status"] = True
+    st.session_state["username"] = "guest"
+    st.session_state["name"] = "Guest"
+
+else:
+    authenticator.login(
+        location="main",                 # "main" | "sidebar" | "unrendered"
+        max_concurrent_users=20,         # soft cap; useful for small apps
+        max_login_attempts=5,            # lockout window is managed internally
+        fields={                         # optional label overrides
+            "Form name": "Sign in",
+            "Username": "email",
+            "Password": "Password",
+            "Login": "Sign in",
+        },
+        captcha=False,                    # simple built-in captcha
+        single_session=True,             # block multiple sessions per user
+        clear_on_submit=True,
+        key="login_form_v1",             # avoid WidgetID collisions
+    )
+
+auth_status = st.session_state.get("authentication_status", None)
+name        = st.session_state.get("name", None)
+username    = st.session_state.get("username", None)
+
+if auth_status:
+    role = cfg["credentials"]["usernames"].get(username, {}).get("role", "guest")
+    if cfg["credentials"]["usernames"].get(username, {}).get("email", "") in st.session_state.info_doc.get("caretaker", []):
+        role = "caretaker"
+    title = ""
+    if role in ["admin", "caretaker"]:
+        title = role
+    st.sidebar.success(f"Hello, {title} {name or username}")
+    if st.session_state.is_guest:
+        if st.sidebar.button("Logout", key="guest_logout"):
+            for x in ("is_guest", "authentication_status", "username", "name"):
+                st.session_state.pop(x, None)
+            st.rerun()
+    else:
+        if st.sidebar.checkbox("Change password"):
+            with st.sidebar:
+                st.markdown("""Passwords must 
+                - Be between 8 and 20 characters long, 
+                - Contain at least one digit,
+                - Contain at least one uppercase letter,
+                - Contain at least one special character (@$!%*?&)""")
+            authenticator.reset_password(username, location="sidebar")
+            save_config_atomic(cfg, CFG_PATH)  # <-- persist the updated hash
+            st.success("Password updated.")
+
+        authenticator.logout(button_name="Logout", location="sidebar", key="auth_logout")
+
+elif auth_status is False:
+    role = None
+    st.error("Invalid credentials")
+    st.write("Try again. If you have forgotten your password, contact sebastien.christian@upf.pf")
+    st.stop()
+
+else:
+    role = None
+    st.info("Please log in or click on the 'Use without loging in' button")
+
+# ------------------
 
 st.header("Sources Dashboard")
 with st.popover("Using the dashboard"):
@@ -142,7 +254,12 @@ Once data is available, the **Generate** button and corresponding menu option wi
     """)
 
 colq, colw = st.columns(2)
-selected_language = colq.selectbox("What language are we working on?", gu.GLOTTO_LANGUAGE_LIST)
+if role == "guest":
+    llist = ["Tahitian"]
+else:
+    llist = gu.GLOTTO_LANGUAGE_LIST.keys()
+selected_language = colq.selectbox("What language are we working on?", llist)
+
 if st.button("Select {}".format(selected_language)):
     st.session_state.indi_language = selected_language
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language,
@@ -154,6 +271,8 @@ if st.button("Select {}".format(selected_language)):
         st.session_state.delimiters = json.load(f)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r", encoding='utf-8') as f:
         content = json.load(f)
+    if st.session_state.info_doc.get("caretaker", "") == cfg["credentials"]["usernames"].get(username, {}).get("email", ""):
+        role = "caretaker"
     st.session_state.batch_id = content.get("batch_id", "no batch ID in batch_id_store")
     PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
     CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
@@ -173,7 +292,8 @@ with tab1:
     You will be directed back here once the CQ knowledge is built. 
     """)
     st.page_link("pages/record_cq_transcriptions.py", label="👉🏽 Create new DIG4EL CQ translations")
-    st.page_link("pages/infer_from_knowledge_and_cqs.py", label="👉🏽 Prepare DIG4EL CQ translations for content generation")
+    if role in ["admin", "caretaker"]:
+        st.page_link("pages/infer_from_knowledge_and_cqs.py", label="👉🏽 Prepare DIG4EL CQ translations for content generation")
 
     if st.session_state.indi_language in os.listdir(BASE_LD_PATH):
         if "cq" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language)):
@@ -188,7 +308,6 @@ with tab1:
                                                                   "cq_knowledge")):
 
                     st.success("Knowledge from CQs has been computed.")
-                    st.write("Feel free to add or edit CQ translations and re-compute inferences.")
 
 with tab2:
     with st.popover("How to upload and prepare documents"):
@@ -217,25 +336,29 @@ with tab2:
     st.subheader("Upload new documents from your computer to DIG4EL server")
     st.session_state.uploaded_docs = [d for d in os.listdir(doc_path) if d[-3:] in ["txt", "ocx", "pdf"]]
 
-    new_documents = st.file_uploader(
-        "Add new PDF documents from your computer",
-        accept_multiple_files=True
-    )
-    if new_documents:
-        if st.button("Upload these documents"):
-            dest_dir = os.path.join(
-                BASE_LD_PATH,
-                st.session_state.indi_language,
-                "descriptions",
-                "sources"
-            )
-            for new_doc in new_documents:
-                dest_path = os.path.join(dest_dir, new_doc.name)
-                with open(dest_path, "wb") as f:
-                    f.write(new_doc.read())
-                st.success(f"Saved `{new_doc.name}` to server.")
-            st.session_state.uploaded_docs = [d for d in os.listdir(doc_path) if d[-3:] in ["txt", "ocx", "pdf"]]
-            st.rerun()
+    if role in ["admin", "caretaker"]:
+        new_documents = st.file_uploader(
+            "Add new PDF documents from your computer",
+            accept_multiple_files=True
+        )
+        if new_documents:
+            if st.button("Upload these documents"):
+                dest_dir = os.path.join(
+                    BASE_LD_PATH,
+                    st.session_state.indi_language,
+                    "descriptions",
+                    "sources"
+                )
+                for new_doc in new_documents:
+                    dest_path = os.path.join(dest_dir, new_doc.name)
+                    with open(dest_path, "wb") as f:
+                        f.write(new_doc.read())
+                    st.success(f"Saved `{new_doc.name}` to server.")
+                st.session_state.uploaded_docs = [d for d in os.listdir(doc_path) if d[-3:] in ["txt", "ocx", "pdf"]]
+                st.rerun()
+    else:
+        st.markdown("*Only caretakers can upload documents*")
+        st.markdown(f"*Contact us to propose documents*")
 
     st.divider()
     st.subheader("Status of uploaded files")
@@ -381,66 +504,69 @@ with tab3:
         st.markdown("**Available sentence pairs files**")
         st.dataframe(df_display)
 
-    new_pair_file = st.file_uploader(
-        "Add a new sentence pair file to the server (.csv or .json)",
-        accept_multiple_files=False
-    )
+    if role in ["admin", "caretaker"]:
+        new_pair_file = st.file_uploader(
+            "Add a new sentence pair file to the server (.csv or .json)",
+            accept_multiple_files=False
+        )
 
-    # Upload sentence pairs file
-    if new_pair_file and new_pair_file.name[-4:] in ["json", ".csv"]:
-        if new_pair_file.name in available_pairs_filenames:
-            replace_ok = st.checkbox("This file is already on the server, replace it?", value=False)
-        else:
-            replace_ok = True
-        if replace_ok:
-            info_entered = False
-            name = st.text_input("Name this corpus")
-            origin = st.text_input("Origin of the corpus")
-            author = st.text_input("Author/owner of the corpus")
-            if name and origin and author:
-                info_entered = True
-            valid_file = False
-            server_filename = None
-            if info_entered and st.button("Add this file to sentence pairs on the server"):
-                try:
-                    if new_pair_file.name[-4:] == ".csv":
-                        sentence_pairs = u.csv_to_dict(new_pair_file)
-                        server_filename = new_pair_file.name[:-4] + ".json"
-                    else:
-                        sentence_pairs = json.load(new_pair_file)
-                        server_filename = new_pair_file.name
-                    if "source" in sentence_pairs[0].keys() and "target" in sentence_pairs[0].keys():
-                        valid_file = True
-                    else:
-                        st.warning(
-                            "This is a JSON file, but not a sentence pair file formatted as a list of 'source' and 'target' keys()")
-                except:
-                    st.write("Not a correctly formatted JSON file.")
-            if valid_file:
+        # Upload sentence pairs file
+        if new_pair_file and new_pair_file.name[-4:] in ["json", ".csv"]:
+            if new_pair_file.name in available_pairs_filenames:
+                replace_ok = st.checkbox("This file is already on the server, replace it?", value=False)
+            else:
+                replace_ok = True
+            if replace_ok:
+                info_entered = False
+                name = st.text_input("Name this corpus")
+                origin = st.text_input("Origin of the corpus")
+                author = st.text_input("Author/owner of the corpus")
+                if name and origin and author:
+                    info_entered = True
+                valid_file = False
+                server_filename = None
+                if info_entered and st.button("Add this file to sentence pairs on the server"):
+                    try:
+                        if new_pair_file.name[-4:] == ".csv":
+                            sentence_pairs = u.csv_to_dict(new_pair_file)
+                            server_filename = new_pair_file.name[:-4] + ".json"
+                        else:
+                            sentence_pairs = json.load(new_pair_file)
+                            server_filename = new_pair_file.name
+                        if "source" in sentence_pairs[0].keys() and "target" in sentence_pairs[0].keys():
+                            valid_file = True
+                        else:
+                            st.warning(
+                                "This is a JSON file, but not a sentence pair file formatted as a list of 'source' and 'target' keys()")
+                    except:
+                        st.write("Not a correctly formatted JSON file.")
+                if valid_file:
 
-                st.success("Adding {} to the server".format(server_filename))
-                with open(os.path.join(PAIRS_BASE_PATH, "pairs", server_filename), "w", encoding='utf-8') as f:
-                    utils.save_json_normalized(sentence_pairs, f)
-                st.success(f"Saved `{server_filename}` on the server.")
+                    st.success("Adding {} to the server".format(server_filename))
+                    with open(os.path.join(PAIRS_BASE_PATH, "pairs", server_filename), "w", encoding='utf-8') as f:
+                        utils.save_json_normalized(sentence_pairs, f)
+                    st.success(f"Saved `{server_filename}` on the server.")
 
-                # UPDATE INFO_DOC
-                if server_filename in available_pairs_filenames:
-                    i = [i for i in st.session_state.info_doc["pairs"].index if
-                         st.session_state.info_doc["pairs"]["filename"] == server_filename][0]
-                    del (st.session_state.info_doc["pairs"][i])
+                    # UPDATE INFO_DOC
+                    if server_filename in available_pairs_filenames:
+                        i = [i for i in st.session_state.info_doc["pairs"].index if
+                             st.session_state.info_doc["pairs"]["filename"] == server_filename][0]
+                        del (st.session_state.info_doc["pairs"][i])
 
-                st.session_state.info_doc["pairs"].append(
-                    {
-                        "filename": server_filename,
-                        "name": name,
-                        "origin": origin,
-                        "author": author,
-                        "augmented": False
-                    }
-                )
-                with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w", encoding='utf-8') as f:
-                    utils.save_json_normalized(st.session_state.info_doc, f)
-                st.rerun()
+                    st.session_state.info_doc["pairs"].append(
+                        {
+                            "filename": server_filename,
+                            "name": name,
+                            "origin": origin,
+                            "author": author,
+                            "augmented": False
+                        }
+                    )
+                    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w", encoding='utf-8') as f:
+                        utils.save_json_normalized(st.session_state.info_doc, f)
+                    st.rerun()
+    else:
+        st.markdown("*Contact us to propose new sentence pairs files.*")
 
     # AUGMENT SENTENCE PAIRS
 
@@ -482,85 +608,36 @@ with tab3:
 
 
     # add new pairs
-    if len(st.session_state.info_doc["pairs"]) > 0:
-        st.session_state.selected_pairs_filename = st.selectbox("Select a sentence pairs file to augment",
-                                                                [item["filename"]
-                                                                 for item in st.session_state.info_doc["pairs"]])
+    if role in ["admin", "caretaker"]:
+        if len(st.session_state.info_doc["pairs"]) > 0:
+            st.session_state.selected_pairs_filename = st.selectbox("Select a sentence pairs file to augment",
+                                                                    [item["filename"]
+                                                                     for item in st.session_state.info_doc["pairs"]])
 
-        with open(os.path.join(PAIRS_BASE_PATH, "pairs", st.session_state.selected_pairs_filename), "r", encoding='utf-8') as f:
-            st.session_state.sentence_pairs = json.load(f)
+            with open(os.path.join(PAIRS_BASE_PATH, "pairs", st.session_state.selected_pairs_filename), "r", encoding='utf-8') as f:
+                st.session_state.sentence_pairs = json.load(f)
 
-        # user triggers augmentation
-        progress = squ.get_batch_progress(st.session_state.batch_id)
-        create_btn = st.button(
-            "Augment {} (long process, LLM use)".format(st.session_state.selected_pairs_filename))
-        if create_btn and not st.session_state.enriching_pairs:  # augmentation launched only if previous one done
-            pairs_signatures = generate_sentence_pairs_signatures(st.session_state.sentence_pairs)
-            with open(CURRENT_JOB_SIG_FILE, "w", encoding='utf-8') as f:
-                utils.save_json_normalized(pairs_signatures, f)
-            # Pass jobs to Redis
-            new_pairs = [pair for pair in st.session_state.sentence_pairs
-                         if u.clean_sentence(pair["source"], filename=True) + ".json"
-                         not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
-            if new_pairs != st.session_state.sentence_pairs:
-                st.write("{} sentences discarded: they already have been augmented".format(
-                    len(st.session_state.sentence_pairs) - len(new_pairs)
-                ))
-            st.session_state.batch_id = squ.enqueue_batch(new_pairs)
-            with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "w", encoding='utf-8') as f:
-                utils.save_json_normalized({"batch_id": st.session_state.batch_id}, f)
-
-        if st.button("Save new augmented sentences"):
-            new_pairs = [pair for pair in st.session_state.sentence_pairs
-                         if u.clean_sentence(pair["source"], filename=True) + ".json"
-                         not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
-            c = 0
-            for new_pair in new_pairs:
-                key = u.clean_sentence(new_pair["source"], filename=True)
-                value = squ.retrieve_from_redis(key)
-                if value:
-                    c += 1
-                    new_augmented_pair = json.loads(squ.retrieve_from_redis(key))
-                    with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs",
-                                           key + ".json"), "w") as f:
-                        json.dump(new_augmented_pair, f, indent=2, ensure_ascii=False)
-            st.success("{} new augmented pairs saved, {} augmented_pairs available now in {}".format(
-                c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))) - 1,
-                                  st.session_state.indi_language))
-
-    progress = squ.get_batch_progress(st.session_state.batch_id)
-    if progress["queued"] != progress["finished"] + progress["failed"]:
-        st.markdown("""The sentence augmentation is in progress. It is a long process (up to 2 minutes per sentence)
-        that will continue even if you close this page or turn off your computer. You can come back anytime 
-        and press the progress update button below to check on progress and make completed augmentations 
-        available for use. You can also click anytime on the "Save new augmented sentences" button 
-        to retrieve new augmented sentence. 
-        """)
-
-        progress = squ.get_batch_progress(st.session_state.batch_id)
-        try:
-            st.progress(int(progress["percent_complete"]), "Progress")
-        except:
-            st.write(progress)
-
-    with st.sidebar:
-        if st.checkbox("Redis info"):
+            # user triggers augmentation
             progress = squ.get_batch_progress(st.session_state.batch_id)
-            st.write("Queue status: {}".format(progress))
+            create_btn = st.button(
+                "Augment {} (long process, LLM use)".format(st.session_state.selected_pairs_filename))
+            if create_btn and not st.session_state.enriching_pairs:  # augmentation launched only if previous one done
+                pairs_signatures = generate_sentence_pairs_signatures(st.session_state.sentence_pairs)
+                with open(CURRENT_JOB_SIG_FILE, "w", encoding='utf-8') as f:
+                    utils.save_json_normalized(pairs_signatures, f)
+                # Pass jobs to Redis
+                new_pairs = [pair for pair in st.session_state.sentence_pairs
+                             if u.clean_sentence(pair["source"], filename=True) + ".json"
+                             not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
+                if new_pairs != st.session_state.sentence_pairs:
+                    st.write("{} sentences discarded: they already have been augmented".format(
+                        len(st.session_state.sentence_pairs) - len(new_pairs)
+                    ))
+                st.session_state.batch_id = squ.enqueue_batch(new_pairs)
+                with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "w", encoding='utf-8') as f:
+                    utils.save_json_normalized({"batch_id": st.session_state.batch_id}, f)
 
-            if st.button("Clear batch"):
-                print("Clearing batch {}".format(st.session_state.batch_id))
-                squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
-            manual_batch_id = st.text_input("Enter manually a batch_id")
-            if st.button("Use this batch_id"):
-                st.session_state.batch_id = manual_batch_id
-                st.rerun()
-            ti = st.text_input("DANGER ZONE: flush all")
-            if ti == "flush all":
-                squ.flush_all()
-                st.rerun()
-
-            if st.button("Save new augmented sentences", key="side_save"):
+            if st.button("Save new augmented sentences"):
                 new_pairs = [pair for pair in st.session_state.sentence_pairs
                              if u.clean_sentence(pair["source"], filename=True) + ".json"
                              not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
@@ -576,64 +653,124 @@ with tab3:
                             json.dump(new_augmented_pair, f, indent=2, ensure_ascii=False)
                 st.success("{} new augmented pairs saved, {} augmented_pairs available now in {}".format(
                     c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))) - 1,
-                    st.session_state.indi_language))
+                                      st.session_state.indi_language))
+
+        progress = squ.get_batch_progress(st.session_state.batch_id)
+        if progress["queued"] != progress["finished"] + progress["failed"]:
+            st.markdown("""The sentence augmentation is in progress. It is a long process (up to 2 minutes per sentence)
+            that will continue even if you close this page or turn off your computer. You can come back anytime 
+            and press the progress update button below to check on progress and make completed augmentations 
+            available for use. You can also click anytime on the "Save new augmented sentences" button 
+            to retrieve new augmented sentence. 
+            """)
+
+            progress = squ.get_batch_progress(st.session_state.batch_id)
+            try:
+                st.progress(int(progress["percent_complete"]), "Progress {}%, {}/{}".format(progress["percent_complete"],
+                                                                                                   progress["finished"],
+                                                                                                progress["queued"]))
+            except:
+                st.write(progress)
+    else:
+        st.divider()
+        st.markdown("*Only caretakers can trigger sentence augmentation*")
+
+    if role == "admin":
+        with st.sidebar:
+            if st.checkbox("Redis info"):
+                progress = squ.get_batch_progress(st.session_state.batch_id)
+                st.write("Queue status: {}".format(progress))
+
+                if st.button("Clear batch"):
+                    print("Clearing batch {}".format(st.session_state.batch_id))
+                    squ.clear_batch(batch_id=st.session_state.batch_id, delete_jobs=True)
+                manual_batch_id = st.text_input("Enter manually a batch_id")
+                if st.button("Use this batch_id"):
+                    st.session_state.batch_id = manual_batch_id
+                    st.rerun()
+                ti = st.text_input("DANGER ZONE: flush all")
+                if ti == "flush all":
+                    squ.flush_all()
+                    st.rerun()
+
+                if st.button("Save new augmented sentences", key="side_save"):
+                    new_pairs = [pair for pair in st.session_state.sentence_pairs
+                                 if u.clean_sentence(pair["source"], filename=True) + ".json"
+                                 not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
+                    c = 0
+                    for new_pair in new_pairs:
+                        key = u.clean_sentence(new_pair["source"], filename=True)
+                        value = squ.retrieve_from_redis(key)
+                        if value:
+                            c += 1
+                            new_augmented_pair = json.loads(squ.retrieve_from_redis(key))
+                            with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs",
+                                                   key + ".json"), "w") as f:
+                                json.dump(new_augmented_pair, f, indent=2, ensure_ascii=False)
+                    st.success("{} new augmented pairs saved, {} augmented_pairs available now in {}".format(
+                        c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))) - 1,
+                        st.session_state.indi_language))
 
     # ADD WORD-CONCEPT CONNECTIONS
-    st.subheader("3. Connect word(s) and concept(s) in augmented sentences")
-    st.markdown("""This step is manual and adds a lot of information to the corpus.\\
-    Open a sentence by clicking in the colored border on the left of the sentence, then associate one or 
-    multiple target words with each proposed meaning. """)
+    if role in ["admin", "caretaker"]:
+        st.subheader("3. Connect word(s) and concept(s) in augmented sentences")
+        st.markdown("""This step is manual and adds a lot of information to the corpus.\\
+        Open a sentence by clicking in the colored border on the left of the sentence, then associate one or 
+        multiple target words with each proposed meaning. """)
 
-    #build aug_sent_df
-    aps = []
-    for ap_file in [fn
-                    for fn in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
-                    if fn[-5:] == ".json"]:
-        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file), "r", encoding='utf-8') as f:
-            ap = json.load(f)
-        aps.append(
-            {
-                "source": ap["source"],
-                "target": ap["target"],
-                "connections": ap.get("connections", {}),
-                "filename": os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file)
-            }
-        )
-    aps_df = pd.DataFrame(aps, columns=["source", "target", "connections"])
-    selected = st.dataframe(aps_df, selection_mode="single-row", on_select="rerun", key="aps_df")
+        #build aug_sent_df
+        aps = []
+        for ap_file in [fn
+                        for fn in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
+                        if fn[-5:] == ".json"]:
+            with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file), "r", encoding='utf-8') as f:
+                ap = json.load(f)
+            aps.append(
+                {
+                    "source": ap["source"],
+                    "target": ap["target"],
+                    "connections": ap.get("connections", {}),
+                    "filename": os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file)
+                }
+            )
+        aps_df = pd.DataFrame(aps, columns=["source", "target", "connections"])
+        selected = st.dataframe(aps_df, selection_mode="single-row", on_select="rerun", key="aps_df")
 
-    if selected["selection"]["rows"] != []:
-        selected_ap = aps[selected["selection"]["rows"][0]]
-        with open(selected_ap["filename"], "r", encoding='utf-8') as f:
-            slap = json.load(f)
-        if not slap.get("connections", None):
-            slap["connections"] = {}
-        st.markdown(f"**{st.session_state.indi_language}**: {slap['target']}")
-        st.markdown(f"**English**: {slap['source']}")
-        key_translation_concepts = slap["key_translation_concepts"]
-        words = stats.custom_split(slap["target"], st.session_state.delimiters)
+        if selected["selection"]["rows"] != []:
+            selected_ap = aps[selected["selection"]["rows"][0]]
+            with open(selected_ap["filename"], "r", encoding='utf-8') as f:
+                slap = json.load(f)
+            if not slap.get("connections", None):
+                slap["connections"] = {}
+            st.markdown(f"**{st.session_state.indi_language}**: {slap['target']}")
+            st.markdown(f"**English**: {slap['source']}")
+            key_translation_concepts = slap["key_translation_concepts"]
+            words = stats.custom_split(slap["target"], st.session_state.delimiters)
 
-        for ktc in key_translation_concepts:
-            connected_words = st.multiselect(f"**{ktc}** Is expressed by",
-                                             words,
-                                             default=slap["connections"].get(ktc, []),
-                                             key="cw"+ktc)
-            slap["connections"][ktc] = connected_words
-        if st.button("Submit connections"):
-            with open(selected_ap["filename"], "w", encoding='utf-8') as f:
-                utils.save_json_normalized(slap, f)
-                st.success("Connections saved")
+            for ktc in key_translation_concepts:
+                connected_words = st.multiselect(f"**{ktc}** Is expressed by",
+                                                 words,
+                                                 default=slap["connections"].get(ktc, []),
+                                                 key="cw"+ktc)
+                slap["connections"][ktc] = connected_words
+            if st.button("Submit connections"):
+                with open(selected_ap["filename"], "w", encoding='utf-8') as f:
+                    utils.save_json_normalized(slap, f)
+                    st.success("Connections saved")
 
-    st.subheader("4. Index augmented pairs to make them ready for use")
-    if st.button("Index!"):
-        with st.spinner("Indexing..."):
-            if sdu.get_vector_ready_pairs(st.session_state.indi_language):
-                st.success("Augmented pairs prepared for vectorization")
-            if ragu.vectorize_vaps(st.session_state.indi_language):
-                st.success("Augmented pairs vectorized and indexed")
-            ragu.create_hard_kw_index(st.session_state.indi_language)
-            st.session_state.has_pairs = True
-            st.rerun()
+        st.subheader("4. Index augmented pairs to make them ready for use")
+        if st.button("Index!"):
+            with st.spinner("Indexing..."):
+                if sdu.get_vector_ready_pairs(st.session_state.indi_language):
+                    st.success("Augmented pairs prepared for vectorization")
+                if ragu.vectorize_vaps(st.session_state.indi_language):
+                    st.success("Augmented pairs vectorized and indexed")
+                ragu.create_hard_kw_index(st.session_state.indi_language)
+                st.session_state.has_pairs = True
+                st.rerun()
+    else:
+        st.divider()
+        st.markdown("*Contact us to make word(s)-concepts connections*")
 
     if st.session_state.has_pairs:
         st.divider()
