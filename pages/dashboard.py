@@ -32,6 +32,7 @@ import streamlit_authenticator as stauth
 import yaml
 from pathlib import Path
 import tempfile
+from libs import semantic_description_agents as sda
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -108,6 +109,10 @@ if "available_vector_stores" not in st.session_state:
     st.session_state.available_vector_stores = ovsu.list_vector_stores_sync()
 if "is_guest" not in st.session_state:
     st.session_state.is_guest = None
+if "caretaker_of" not in st.session_state:
+    st.session_state.caretaker_of = []
+if "caretaker_trigger" not in st.session_state:
+    st.session_state.caretaker_trigger = False
 
 # ------ AUTH SETUP --------------------------------------------------------------------------------
 CFG_PATH = Path(
@@ -179,7 +184,6 @@ if st.session_state.is_guest:
     st.session_state["authentication_status"] = True
     st.session_state["username"] = "guest"
     st.session_state["name"] = "Guest"
-
 else:
     authenticator.login(
         location="main",                 # "main" | "sidebar" | "unrendered"
@@ -203,7 +207,7 @@ username    = st.session_state.get("username", None)
 
 if auth_status:
     role = cfg["credentials"]["usernames"].get(username, {}).get("role", "guest")
-    if cfg["credentials"]["usernames"].get(username, {}).get("email", "") in st.session_state.info_doc.get("caretaker", []):
+    if st.session_state.indi_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
         role = "caretaker"
     title = ""
     if role in ["admin", "caretaker"]:
@@ -270,8 +274,12 @@ if st.button("Select {}".format(selected_language)):
         st.session_state.delimiters = json.load(f)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r", encoding='utf-8') as f:
         content = json.load(f)
-    if st.session_state.info_doc.get("caretaker", "") == cfg["credentials"]["usernames"].get(username, {}).get("email", ""):
+    if st.session_state.indi_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
         role = "caretaker"
+        if not st.session_state.caretaker_trigger:
+            st.session_state.caretaker_trigger = True
+            print("CARETAKER RERUN")
+            st.rerun()
     st.session_state.batch_id = content.get("batch_id", "no batch ID in batch_id_store")
     PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
     CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
@@ -410,7 +418,7 @@ with tab2:
                     sf["vectorized"] = True
 
     status_df = pd.DataFrame(st.session_state.file_status_list, columns=["filename", "staged", "vectorized"])
-    st.dataframe(status_df, use_container_width=True)
+    st.dataframe(status_df, width='stretch')
 
     colw1, colw2 = st.columns(2)
     # Staging unstaged files
@@ -651,7 +659,7 @@ with tab3:
                                                key + ".json"), "w") as f:
                             json.dump(new_augmented_pair, f, indent=2, ensure_ascii=False)
                 st.success("{} new augmented pairs saved, {} augmented_pairs available now in {}".format(
-                    c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))) - 1,
+                    c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))),
                                       st.session_state.indi_language))
 
         progress = squ.get_batch_progress(st.session_state.batch_id)
@@ -763,7 +771,11 @@ with tab3:
                 if sdu.get_vector_ready_pairs(st.session_state.indi_language):
                     st.success("Augmented pairs prepared for vectorization")
                 if ragu.vectorize_vaps(st.session_state.indi_language):
-                    st.success("Augmented pairs vectorized and indexed")
+                    st.success("Augmented pairs blobs vectorized and indexed")
+                if ragu.vectorize_sources(st.session_state.indi_language):
+                    st.success("Augmented pairs sources vectorized and indexed")
+                if ragu.vectorize_descriptions(st.session_state.indi_language):
+                    st.success("Augmented pairs descriptions vectorized and indexed")
                 ragu.create_hard_kw_index(st.session_state.indi_language)
                 st.session_state.has_pairs = True
                 st.rerun()
@@ -771,32 +783,60 @@ with tab3:
         st.divider()
         st.markdown("*Contact us to make word(s)-concepts connections*")
 
-    if st.session_state.has_pairs:
+    if role == "admin":
         st.divider()
         st.subheader("Test sentence pairs retrieval")
         with st.spinner("Refreshing keyword index"):
             ragu.create_hard_kw_index(st.session_state.indi_language)
-        with st.spinner("Loading vectors"):
-            index, id_to_meta = ragu.load_index_and_id_to_meta(st.session_state.indi_language)
+
         if "query_results" not in st.session_state:
             st.session_state.query_results = []
         query = st.text_input("Sentence retrieval test, enter a query")
 
         if "hard_kw_retrieval_results" not in st.session_state:
             st.session_state.hard_kw_retrieval_results = []
+
         if st.button("Submit"):
             with st.spinner("Retrieving sentences from vectors"):
-                st.session_state.query_results = ragu.retrieve_similar(query,
-                                                                       index=index,
-                                                                       id_to_meta=id_to_meta,
-                                                                       k=5)
+                try:
+                    sources_index, sources_id_to_meta = ragu.load_sources_index_and_id_to_meta(
+                        st.session_state.indi_language)
+                    descriptions_index, descriptions_id_to_meta = ragu.load_descriptions_index_and_id_to_meta(
+                        st.session_state.indi_language)
+                    sources_results = ragu.retrieve_similar(query, index=sources_index,
+                                                            id_to_meta=sources_id_to_meta, k=5)
+                    descriptions_results = ragu.retrieve_similar(query, index=descriptions_index,
+                                                            id_to_meta=descriptions_id_to_meta, k=5)
+                    st.write("Vectorized sources results: ")
+                    st.write(sources_results)
+                    st.write("Vectorized descriptions results: ")
+                    st.write(descriptions_results)
+                except:
+                    st.warning("No source or description vector-based results")
+
             with st.spinner("Retrieving sentences from keywords"):
                 st.session_state.hard_kw_retrieval_results = ragu.hard_retrieve_from_query(query, st.session_state.indi_language)
 
-        st.write("Vector results: ")
-        st.write(st.session_state.query_results)
-        st.write("Keywords results: ")
-        st.write(st.session_state.hard_kw_retrieval_results)
+            st.write("Keywords results: ")
+            st.write(st.session_state.hard_kw_retrieval_results)
+
+            st.write("Direct LLM results: ")
+
+            sentence_pool = []
+            for sf in [fn
+                       for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
+                                                         "sentence_pairs", "augmented_pairs"))
+                       if fn.endswith(".json")]:
+                with open(
+                        os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs", "augmented_pairs",
+                                     sf), encoding="utf-8") as f:
+                    tmpd = json.load(f)
+                    sentence_pool.append(tmpd["source"])
+
+            with st.spinner("LLM Selecting sentences"):
+                st.write("sentence pool created with {} sentences".format(len(sentence_pool)))
+                selection = sda.select_sentences_sync(query, sentence_pool)
+                st.write(selection.sentence_list)
 
 if role == "admin":
     with st.sidebar:

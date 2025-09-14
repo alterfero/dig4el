@@ -416,7 +416,9 @@ def generate_lesson_docx_from_aggregated_output(content, indi_language, readers_
     document = Document()
 
     document.add_heading(safe_text(content["title"]), level=1)
+
     document.add_paragraph(safe_text("  "))
+    document.add_paragraph("generated " + content.get("date", "unknown") + ", DIG4EL version " + content.get("version", "no version"))
     document.add_paragraph(safe_text(content["introduction"]))
 
     for section in content["sections"]:

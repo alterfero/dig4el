@@ -23,6 +23,7 @@ from libs import grammar_generation_agents as gga
 from libs import grammar_generation_utils as ggu
 from libs import output_generation_utils as ogu
 from libs import retrieval_augmented_generation_utils as ragu
+from libs import semantic_description_agents as sda
 from libs import semantic_description_utils
 import streamlit_authenticator as stauth
 import yaml
@@ -88,10 +89,13 @@ if "output_dict" not in st.session_state:
     st.session_state.output_dict = None
 if "is_guest" not in st.session_state:
     st.session_state.is_guest = None
+if "caretaker_trigger" not in st.session_state:
+    st.session_state.caretaker_trigger = False
 
 # ----- HELPERS -----------------------------------------------------------------------------------
 def display_output(output_dict):
     o = output_dict
+    st.write(f"Generated {o.get('date', 'date unknown')}, DIG4EL version {o.get('version', 'version unknown')}")
     st.title(o["title"])
     st.write(o["introduction"])
     st.divider()
@@ -202,7 +206,7 @@ username    = st.session_state.get("username", None)
 
 if auth_status:
     role = cfg["credentials"]["usernames"].get(username, {}).get("role", "guest")
-    if cfg["credentials"]["usernames"].get(username, {}).get("email", "") in st.session_state.info_dict.get("caretaker", []):
+    if st.session_state.indi in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
         role = "caretaker"
     title = ""
     if role in ["admin", "caretaker"]:
@@ -251,11 +255,21 @@ selected_language = colq.selectbox("What language are we generating learning con
                                    l_with_data, index=l_with_data.index(st.session_state.indi))
 if colq.button("Select {}".format(selected_language)):
     st.session_state.indi = selected_language
+    st.session_state.is_cq = False
+    st.session_state.is_doc = False
+    st.session_state.is_pairs = False
+
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi,
                                                                    "glottocode not found")
     fmu.create_ld(BASE_LD_PATH, st.session_state.indi)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
         st.session_state.info_dict = json.load(f)
+    if st.session_state.indi in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
+        role = "caretaker"
+    if not st.session_state.caretaker_trigger:
+        st.session_state.caretaker_trigger = True
+        print("CARETAKER RERUN")
+        st.rerun()
 else:
     colq.markdown(f"Working on **{st.session_state.indi}**")
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi,
@@ -313,12 +327,22 @@ if st.session_state.info_dict["documents"]["oa_vector_store_id"] != "":
     st.session_state.is_doc = True
 
 # pairs
-if "index.faiss" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
+if "description_vectors" not in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
                                           "sentence_pairs", "vectors")):
+    os.mkdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
+                                          "sentence_pairs", "vectors", "description_vectors"))
+
+if "index.faiss" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
+                                          "sentence_pairs", "vectors", "description_vectors")):
     st.session_state.pairs_files = [fn
                                     for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "pairs"))
                                     if fn[-5:] == ".json"]
+if [fn
+    for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "augmented_pairs"))
+    if fn[-5:] == ".json"]:
     st.session_state.is_pairs = True
+else:
+    st.warning("No augmented sentence pairs found.")
 
 st.sidebar.write("✅ CQ Ready" if st.session_state.is_cq else "No CQ")
 if st.session_state.is_cq:
@@ -333,14 +357,47 @@ if st.session_state.is_pairs:
 if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is_doc and st.session_state.use_doc)
     or (st.session_state.is_pairs and st.session_state.use_pairs)):
     st.subheader("Generate a new grammatical description")
-    query = st.text_input("Query")
-    if query is not None and query != st.session_state.query:
+    colq1, colq2 = st.columns(2)
+    colq1.markdown("Choose standard grammar lesson topics")
+    grammatical_topics_progression = [
+        "Basic sentence structure",
+        "Binary questions",
+        "Questions asking for information",
+        "Negation",
+        "Referring to participants (speaker, addressee, others)",
+        "Referring to things: quantity and number",
+        "Referring to things: specificity and proximity",
+        "Referring to things: possession",
+        "Describing things",
+        "Saying what something or someone is (identification)",
+        "Stating existence and location",
+        "Talking about actions and states in the present/general time",
+        "Talking about past events",
+        "Talking about future plans or predictions",
+        "How actions unfold: ongoing, completed, habitual (if used)",
+        "Marking who does what to whom",
+        "Giving instructions and requests",
+        "Expressing place and direction",
+        "Linking ideas: addition, contrast, cause",
+        "Ability, necessity, and permission",
+        "Politeness and social formulas",
+        "Classifiers or measure words (if used)"
+    ]
+    query_standard = colq1.selectbox("Select a standard grammar lesson", ["no selection"] + grammatical_topics_progression)
+    colq2.markdown("Or enter your custom query")
+    query_custom = colq2.text_input("query")
+    if query_standard != "no selection":
+        query = query_standard
+    elif query_custom is not None:
+        query = query_custom
+    else:
+        query = None
+    if (query_custom is not None or query_standard != "no selection") and query is not None and query != st.session_state.query:
         if st.button("submit"):
             st.session_state.query = query
             st.session_state.relevant_parameters = None
             st.session_state.alterlingua_contribution = None
             st.session_state.run_sources = True
-
 
 if st.session_state.run_sources:
 
@@ -370,19 +427,39 @@ if st.session_state.run_sources:
 
     # sentence pairs selection
     if st.session_state.is_pairs and st.session_state.use_pairs:
-        with st.spinner("Retrieving a helpful selection of prepared pairs"):
-            # retrieve N sentences using embeddings
-            index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "index.faiss")
-            index, id_to_meta = ragu.load_index_and_id_to_meta(st.session_state.indi)
-            if index and id_to_meta:
-                vec_retrieved = ragu.retrieve_similar(query, index, id_to_meta, k=10, min_score=0.3)
-                vecf_retrieved = [i["filename"][:-4]+".json" for i in vec_retrieved]
+        with st.spinner("Retrieving a helpful selection of sentence pairs"):
+            # retrieve N sentences using embeddings XXX RULED OUT, NOT RELEVANT ENOUGH
+            # index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "description_vectors", "index.faiss")
+            # index, id_to_meta = ragu.load_descriptions_index_and_id_to_meta(st.session_state.indi)
+            # if index and id_to_meta:
+            #     vec_retrieved = ragu.retrieve_similar(query, index, id_to_meta, k=10, min_score=0.3)
+            #     vecf_retrieved = [i["filename"][:-4]+".json" for i in vec_retrieved]
                 # retrieve sentences from keywords
-                kw_retrieved = ragu.hard_retrieve_from_query(query, st.session_state.indi)
-                # aggregate
-                st.session_state.selected_pairs = list(set(vecf_retrieved + kw_retrieved))
-            else:
-                st.session_state.selected_pairs = []
+            kw_retrieved = ragu.hard_retrieve_from_query(query, st.session_state.indi)
+            print("KW-retrieved sentences: {}".format(kw_retrieved))
+            # Direct LLM retrieve
+            sentence_pool = []
+            for sf in [fn
+                       for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
+                                                         "sentence_pairs", "augmented_pairs"))
+                       if fn.endswith(".json")]:
+                with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs",
+                                       "augmented_pairs", sf), encoding="utf-8") as f:
+                    tmpd = json.load(f)
+                    sentence_pool.append(tmpd["source"])
+            #st.write("sentence pool created with {} sentences".format(len(sentence_pool)))
+            llm_selection_raw = sda.select_sentences_sync(query, sentence_pool)
+            llm_selection = llm_selection_raw.sentence_list
+            llm_filenames_retrieved = []
+            for sentence in llm_selection:
+                expected_filename = u.clean_sentence(sentence, filename=True) + ".json"
+                if expected_filename in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs",
+                                                     "augmented_pairs")):
+                    llm_filenames_retrieved.append(expected_filename)
+                else:
+                    print("no {} file in augmented sentences".format(expected_filename))
+            # aggregate
+            st.session_state.selected_pairs = list(set(llm_filenames_retrieved + kw_retrieved))
 
     st.session_state.run_sources = False
 
@@ -402,7 +479,8 @@ if (st.session_state.alterlingua_contribution
     st.divider()
     st.header("Aggregation")
     st.session_state.readers_language = st.selectbox("What is the language of readers?",
-                                    ["Bislama", "English", "French", "Japanese", "Swedish"])
+                                    ["Bislama", "Chinese", "English", "French", "Japanese", "Russian",
+                                     "Spanish", "Swedish"])
     readers_type = st.selectbox("The grammar is generated for...",
                                 ["Teenage beginners", "Adult beginners", "Linguists"])
     document_format = st.selectbox("Format", ["Grammar lesson"])
@@ -475,6 +553,10 @@ if (st.session_state.alterlingua_contribution
             from datetime import datetime
             now = datetime.now()
             st.session_state.output_dict["date"] = now.strftime("%A, %-d %B %Y at %H:%M")
+            with open("version.json", "r") as f:
+                v = json.load(f)
+                version = v.get("version", "no version")
+            st.session_state.output_dict["version"] = version
 
         st.session_state.run_aggregation = False
         st.success("Done! Output available.")

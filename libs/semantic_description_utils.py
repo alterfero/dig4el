@@ -81,10 +81,11 @@ def add_description_and_keywords_to_sentence_pair(sentence_pair: dict) -> None |
         return None
     else:
         result = sda.describe_sentence_sync(source_sentence)
+        description_string, kw = result.make_facet_str()
 
         augmented_pair = copy.deepcopy(sentence_pair)
-        augmented_pair["description"] = result.dense_input
-        augmented_pair["keywords"] = result.keywords
+        augmented_pair["description"] = description_string
+        augmented_pair["keywords"] = kw
         augmented_pair["key_translation_concepts"] = result.key_translation_concepts
 
         # filename
@@ -224,6 +225,7 @@ def build_vector_ready_augmented_pair(augmented_pair: dict) -> str:
     out_str = out_str.replace("..", ".")
     return out_str
 
+
 def get_vector_ready_pairs(indi_language):
     input_path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "augmented_pairs")
     output_path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vector_ready_pairs")
@@ -239,9 +241,30 @@ def get_vector_ready_pairs(indi_language):
             vap = build_vector_ready_augmented_pair(ap)
             vapf = apf[:-5] + ".txt"
 
+            source_vap = ap["source"]
+            source_vapf = apf[:-5] + ".txt"
+            description_vap = ap["description"]
+            description_vapf = apf[:-5] + ".txt"
+
+            if "sources" not in os.listdir(os.path.join(output_path)):
+                os.mkdir(os.path.join(output_path, "sources"))
+            if "descriptions" not in os.listdir(os.path.join(output_path)):
+                os.mkdir(os.path.join(output_path, "descriptions"))
+
             with open(os.path.join(output_path, vapf), "w", encoding='utf-8') as f:
                 f.write(vap)
+            with open(os.path.join(output_path, "sources", source_vapf), "w", encoding='utf-8') as f:
+                f.write(source_vap)
+            with open(os.path.join(output_path, "descriptions", description_vapf), "w", encoding='utf-8') as f:
+                f.write(description_vap)
+
         return True
+
+
+
+
+
+
 
 
 

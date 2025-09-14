@@ -9,24 +9,6 @@ import torch
 from libs import stats
 from libs import utils
 
-"""
-Implementing Retrieval-Augmented Generation (RAG) to add relevant pairs of sentences from a parallel corpus
-to a user LLM prompt.
-Functions below allow to:
-- generate an embedding for each sentence pair. 
-- index these embeddings 
-- save and load indexes. 
-- use user prompt embedding to select the N most relevant sentences to add to the prompt. 
-
-Uses SentenceTransformers
-Sentence Transformers (a.k.a. SBERT) is the go-to Python module for accessing, using, 
-and training state-of-the-art embedding and reranker models. 
-It can be used to compute embeddings using Sentence Transformer models (quickstart) 
-or to calculate similarity scores using Cross-Encoder (a.k.a. reranker) models (quickstart). 
-This unlocks a wide range of applications, including semantic search, semantic textual similarity, 
-and paraphrase mining.
-https://www.sbert.net/
-"""
 
 # def sentence_pair_dict_to_sentence_pair_txt(sentence_pair_dict: dict) -> str:
 
@@ -70,6 +52,64 @@ def compute_embeddings_and_FAISS_index(
     id_to_meta = {i: {'sentence': sentences[i]} | (metadata[i] if metadata else {}) for i in range(len(sentences))}
 
     return embeddings, index, id_to_meta
+
+def vectorize_sources(indi_language):
+    if "sources" not in os.listdir(os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vector_ready_pairs")):
+        print("no source to vectorize")
+        return False
+    else:
+        source_vaps_path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vector_ready_pairs", "sources")
+        vapsf = [f for f in os.listdir(source_vaps_path) if f[-4:] == ".txt"]
+        vaps = []
+        id_to_meta = []
+        for vapf in vapsf:
+            with open(os.path.join(source_vaps_path, vapf), "r", encoding='utf-8') as f:
+                content = f.read()
+                vaps.append(content)
+                id_to_meta.append({
+                    "filename": vapf
+                })
+
+        embeddings, index, id_to_meta = compute_embeddings_and_FAISS_index(vaps, id_to_meta)
+
+        path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors", "source_vectors")
+        os.makedirs(path, exist_ok=True)
+        index_path = os.path.join(path, "index.faiss")
+        id_to_meta_path = os.path.join(path, "id_to_meta.json")
+        faiss.write_index(index, index_path)
+        with open(id_to_meta_path, 'w', encoding='utf-8') as f:
+            utils.save_json_normalized(id_to_meta, f)
+        return True
+
+
+def vectorize_descriptions(indi_language):
+    if "descriptions" not in os.listdir(os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vector_ready_pairs")):
+        print("no descriptions to vectorize")
+        return False
+    else:
+        description_vaps_path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vector_ready_pairs", "descriptions")
+        vapsf = [f for f in os.listdir(description_vaps_path) if f[-4:] == ".txt"]
+        vaps = []
+        id_to_meta = []
+        for vapf in vapsf:
+            with open(os.path.join(description_vaps_path, vapf), "r", encoding='utf-8') as f:
+                content = f.read()
+                vaps.append(content)
+                id_to_meta.append({
+                    "filename": vapf
+                })
+
+        embeddings, index, id_to_meta = compute_embeddings_and_FAISS_index(vaps, id_to_meta)
+
+        path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors", "description_vectors")
+        os.makedirs(path, exist_ok=True)
+        index_path = os.path.join(path, "index.faiss")
+        id_to_meta_path = os.path.join(path, "id_to_meta.json")
+        faiss.write_index(index, index_path)
+        with open(id_to_meta_path, 'w', encoding='utf-8') as f:
+            utils.save_json_normalized(id_to_meta, f)
+        return True
+
 
 def vectorize_vaps(indi_language):
     vaps_path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vector_ready_pairs")
@@ -120,6 +160,51 @@ def load_index_and_id_to_meta(indi_language):
         print("No id_to_meta.json available, returning None")
         id_to_meta = None
     return index, id_to_meta
+
+
+def load_sources_index_and_id_to_meta(indi_language):
+    if "source_vectors" not in os.listdir(os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors")):
+        print("no source vectors")
+        return None
+    else:
+        path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors", "source_vectors")
+        index_path = os.path.join(path, "index.faiss")
+        id_to_meta_path = os.path.join(path, "id_to_meta.json")
+        if "index.faiss" in os.listdir(path):
+            index = faiss.read_index(index_path)
+        else:
+            print("No index.faiss available, returning None")
+            index = None
+        if "id_to_meta.json" in os.listdir(path):
+            with open(id_to_meta_path, 'r', encoding='utf-8') as f:
+                id_to_meta = json.load(f)
+        else:
+            print("No id_to_meta.json available, returning None")
+            id_to_meta = None
+        return index, id_to_meta
+
+
+def load_descriptions_index_and_id_to_meta(indi_language):
+    if "description_vectors" not in os.listdir(os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors")):
+        print("no source vectors")
+        return None
+    else:
+        path = os.path.join(BASE_LD_PATH, indi_language, "sentence_pairs", "vectors", "description_vectors")
+        index_path = os.path.join(path, "index.faiss")
+        id_to_meta_path = os.path.join(path, "id_to_meta.json")
+        if "index.faiss" in os.listdir(path):
+            index = faiss.read_index(index_path)
+        else:
+            print("No index.faiss available, returning None")
+            index = None
+        if "id_to_meta.json" in os.listdir(path):
+            with open(id_to_meta_path, 'r', encoding='utf-8') as f:
+                id_to_meta = json.load(f)
+        else:
+            print("No id_to_meta.json available, returning None")
+            id_to_meta = None
+        return index, id_to_meta
+
 
 def retrieve_similar(query: str, index, id_to_meta,
                      model_name='all-MiniLM-L6-v2', k=10, normalize=True,
@@ -186,7 +271,6 @@ def hard_retrieve_from_query(query: str, indi_language: str) -> list[str]:
         if ks != []:
             results += [kwi[k] for k in ks][0]
     print("Hard retrieve from query {}: {}".format(query, results))
-    print(results)
     results = list(set(results))
     return results
 
@@ -206,4 +290,5 @@ def cq_to_sentence_pairs(cq_transcription_dict: dict) -> list[dict]:
 # sp = cq_to_sentence_pairs(spd)
 # with open("./going_fishing_sentence_pairs.json", "w", encoding='utf-8') as f:
 #     json.dump(sp, f)
+
 
