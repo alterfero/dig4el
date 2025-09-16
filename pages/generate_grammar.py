@@ -313,12 +313,13 @@ if info["outputs"] != {}:
 if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_knowledge")):
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_knowledge", "cq_knowledge.json"), "r", encoding='utf-8') as f:
         st.session_state.cq_knowledge = json.load(f)
-    st.session_state.cq_files = [fn
-                                for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_translations"))
-                                if fn[-5:] ==".json"]
+        st.session_state.cq_files = [fn
+                                     for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "cq", "cq_translations"))
+                                     if fn[-5:] == ".json"]
     st.session_state.is_cq = True
 else:
     st.session_state.cq_knowledge = False
+    st.session_state.cq_files = []
 
 # documents
 st.session_state.vs_name = st.session_state.info_dict["documents"]["oa_vector_store_name"]

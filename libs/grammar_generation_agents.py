@@ -177,7 +177,7 @@ lesson_agent = Agent(
     as needed to describe the grammatical topic. Translate the source of example in the reader's language if needed.
     - A conclusion, which is what the students should absolutely remember. 
     - Drills: sentence pairs that illustrate the topic and that will be used to create exercises. Translate the source
-    language in the reader's language if needed. 
+    language in the reader's language if needed. Add ALL relevant examples retrieved from the input. 
     
     """,
     output_type=Lesson

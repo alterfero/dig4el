@@ -384,11 +384,15 @@ with tab2:
     if vsid_from_info_dict is not None and vsid_from_info_dict in [vs.id for vs in st.session_state.available_vector_stores]:
         st.session_state.vsid = vsid_from_info_dict
         st.write("An existing vector store has been found.")
-        print("VSID found and matches ({})".format(st.session_state.vsid))
+        print("{} VSID found and matches ({})".format(st.session_state.indi_language, st.session_state.vsid))
         st.session_state.has_vector_store = True
     else:
-        print("No VSID found in info_dict matching an existing VSID: Creating a vector store")
-        st.write("No vector store found with ID {}".format(st.session_state.vsid))
+        print("No {} VSID found in info_dict matching an existing VSID: Creating a vector store")
+        print("Info doc")
+        print(st.session_state.info_doc)
+        print("st.session_state.available_vector_stores")
+        print(st.session_state.available_vector_stores)
+        st.write("No vector store found with ID {}".format(st.session_state.indi_language, st.session_state.vsid))
         with st.spinner("Creating new vector store"):
             st.session_state.vsid = ovsu.create_vector_store_sync(st.session_state.indi_language + "_documents")
             st.session_state.info_doc["documents"]["oa_vector_store_id"] = st.session_state.vsid
