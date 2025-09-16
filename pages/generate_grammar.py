@@ -362,27 +362,27 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
     colq1.markdown("Choose standard grammar lesson topics")
     grammatical_topics_progression = [
         "Basic sentence structure",
+        "Expressing who does what to whom",
+        "Politeness and social formulas",
         "Binary questions",
         "Questions asking for information",
         "Negation",
         "Referring to participants (speaker, addressee, others)",
-        "Referring to things: quantity and number",
-        "Referring to things: specificity and proximity",
-        "Referring to things: possession",
+        "Referring to things",
+        "Possession",
         "Describing things",
         "Saying what something or someone is (identification)",
         "Stating existence and location",
         "Talking about actions and states in the present/general time",
         "Talking about past events",
-        "Talking about future plans or predictions",
-        "How actions unfold: ongoing, completed, habitual (if used)",
-        "Marking who does what to whom",
-        "Giving instructions and requests",
+        "Talking about the future",
+        "How actions unfold: ongoing, completed, habitual...",
+        "Giving orders",
         "Expressing place and direction",
-        "Linking ideas: addition, contrast, cause",
-        "Ability, necessity, and permission",
-        "Politeness and social formulas",
-        "Classifiers or measure words (if used)"
+        "Expressing wishes",
+        "Expressing doubts",
+        "Expressing beliefs",
+        "Classifiers or measure words"
     ]
     query_standard = colq1.selectbox("Select a standard grammar lesson", ["no selection"] + grammatical_topics_progression)
     colq2.markdown("Or enter your custom query")
@@ -544,11 +544,17 @@ if (st.session_state.alterlingua_contribution
             )
 
             # adding sources
-            st.session_state.output_dict["sources"] = {
-                "cqs": st.session_state.cq_files,
-                "documents": st.session_state.documents_contribution["sources"],
-                "pairs": st.session_state.pairs_files
-            }
+            tmp_sources = {}
+            if st.session_state.is_cq and st.session_state.use_cq:
+                tmp_sources["cqs"] = st.session_state.cq_files
+            if st.session_state.is_doc and st.session_state.use_doc:
+                tmp_sources["documents"] = st.session_state.documents_contribution["sources"]
+            if st.session_state.is_pairs and st.session_state.use_pairs:
+                pair_file_list = []
+                for pair in st.session_state.info_dict["pairs"]:
+                    pair_file_list.append(f'{pair["name"]} ({pair["author"]})')
+                tmp_sources["pairs"] = pair_file_list
+            st.session_state.output_dict["sources"] = tmp_sources
 
             # adding identifiers, date etc.
             from datetime import datetime

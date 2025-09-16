@@ -102,7 +102,7 @@ async def check_vector_store_status(vsid):
     vs_list_response = await client.vector_stores.list()
     active_vs = [vs for vs in vs_list_response.data if vs.id == vsid]
     if active_vs == []:
-        print("No vector store with that id")
+        print("No vector store id {}".format(vsid))
         print(vs_list_response)
         return None
     else:

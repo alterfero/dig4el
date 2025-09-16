@@ -15,7 +15,7 @@ components.html("""
   background:#252729; box-shadow:0 2px 8px rgba(0,0,0,.15);
 ">
   <span style="color:#EAEAE4; font-size:18px; font-weight:700;">
-    New release 1.0.2 rolling out this week! Some UX turbulence expected.
+    New release 1.0.3 rolling out this week! Some UX turbulence expected.
   </span>
 </div>
 """, height=90)
