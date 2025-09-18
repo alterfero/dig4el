@@ -474,6 +474,7 @@ with tab2:
 with tab3:
     with st.popover("How to create, upload and prepare sentence pairs"):
         st.write(f"""
+        **Note**: If you have sentence pairs in a software (as Flex) or a database, do an export and share with us, we'll take care of the conversion.
         1. **Prepare sentence pairs** in a CSV (Comma-Separated Value) file with "source" and "target" columns. 
         The easiest way to create a suitable CSV file is to create a spreadsheet (Excel, Pages, Open Office...) 
         with a "source" column and a "target" column. On each line, write the sentence in the mainstream language 
