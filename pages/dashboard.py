@@ -381,21 +381,23 @@ with tab2:
     # checking if vector store exists from api call and info, create one if needed
 
     vsid_from_info_dict = st.session_state.info_doc["documents"].get("oa_vector_store_id", None)
+    print("vsid_from_info_dict: {}".format(vsid_from_info_dict))
+    print("existing vsids in st.session_state.available_vector_stores: {}".format([vs.id for vs in st.session_state.available_vector_stores]))
     if vsid_from_info_dict is not None and vsid_from_info_dict in [vs.id for vs in st.session_state.available_vector_stores]:
         st.session_state.vsid = vsid_from_info_dict
         st.write("An existing vector store has been found.")
         print("{} VSID found and matches ({})".format(st.session_state.indi_language, st.session_state.vsid))
         st.session_state.has_vector_store = True
     else:
-        print("No {} VSID found in info_dict matching an existing VSID: Creating a vector store")
+        print("No VSID found in info_dict matching an existing VSID: Creating a vector store")
         print("Info doc")
         print(st.session_state.info_doc)
-        print("st.session_state.available_vector_stores")
-        print(st.session_state.available_vector_stores)
         st.write("No vector store found with ID {}".format(st.session_state.indi_language, st.session_state.vsid))
         with st.spinner("Creating new vector store"):
             st.session_state.vsid = ovsu.create_vector_store_sync(st.session_state.indi_language + "_documents")
             st.session_state.info_doc["documents"]["oa_vector_store_id"] = st.session_state.vsid
+            with st.spinner("Updating..."):
+                st.session_state.available_vector_stores = ovsu.list_vector_stores_sync()
             save_info_dict()
         print("New vector store created with VSID {}".format(st.session_state.vsid))
         st.session_state.has_vector_store = True
@@ -428,8 +430,8 @@ with tab2:
     # Staging unstaged files
     to_stage = [f for f in st.session_state.file_status_list if not f["staged"]]
     if to_stage:
-        colw1.markdown("{} files to stage".format(len(to_stage)))
-        if st.button("2) Stage"):
+        with st.spinner("Staging files..."):
+            colw1.markdown("{} files to stage".format(len(to_stage)))
             for f in to_stage:
                 with colw1:
                     with st.spinner("staging {}".format(f["filename"])):
@@ -447,26 +449,29 @@ with tab2:
             st.write([vs for vs in ovsu.list_vector_stores_sync() if vs.id == st.session_state.vsid])
             st.write("Files to vectorize: ")
             st.write(to_vectorize)
-        if colw2.button("3) Vectorize all {} unvectorized staged files".format(len([f["id"] for f in to_vectorize]))):
+        with st.spinner("Vectorizing {} unvectorized staged files".format(len([f["id"] for f in to_vectorize]))):
             to_vec_fids = [f["id"] for f in to_vectorize]
             with colw2:
-                with st.spinner("Launching vectorization of staged files"):
-                    ovsu.add_files_to_vector_store_sync(vsid=st.session_state.vsid,
-                                                        file_ids=to_vec_fids)
+                ovsu.add_files_to_vector_store_sync(vsid=st.session_state.vsid,
+                                                    file_ids=to_vec_fids)
+        st.write("Vectorization is in progress. It can take a few minutes. You can close the page in the meantime, "
+                 "or refresh it later to verify that the vectorization has been completed.")
 
     elif not to_stage and not to_vectorize:
         colw2.success("All files staged and vectorized")
 
-    if st.session_state.vectorized_docs and st.button("Check vectorization status"):
-        with st.spinner("Checking"):
+    if role == "admin":
+        if st.session_state.vectorized_docs and st.button("Check vectorization status"):
             st.session_state.vector_store_status = ovsu.check_vector_store_status_sync(st.session_state.vsid)
-        if st.session_state.vector_store_status is not None:
-            if st.session_state.vector_store_status == "completed":
-                st.success("Vectorization done.")
-                st.session_state.has_docs = True
+            if st.session_state.vector_store_status is not None:
+                if st.session_state.vector_store_status == "completed":
+                    st.success("Vectorization done.")
+                    st.session_state.has_docs = True
+                else:
+                    st.warning("Documents are still being vectorized, check again in a few minutes")
+                    st.write("Current status: {}".format(st.session_state.vector_store_status))
             else:
-                st.warning("Documents are still being vectorized, check again in a few minutes")
-                st.write("Current status: {}".format(st.session_state.vector_store_status))
+                st.write("No status for vector store {}".format(st.session_state.vsid))
 
     st.divider()
 
