@@ -14,7 +14,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import streamlit as st
-import math
 import os
 import re
 import pandas as pd
@@ -40,7 +39,6 @@ st.set_page_config(
 
 if "tl_name" not in st.session_state:
     st.session_state["tl_name"] = ""
-
 if "tl_wals_pk" not in st.session_state:
     st.session_state["tl_wals_pk"] = ""
 if "tl_grambank_id" not in st.session_state:
@@ -54,7 +52,7 @@ if "loaded_existing" not in st.session_state:
 if "cq_transcriptions" not in st.session_state:
     st.session_state["cq_transcriptions"] = []
 if "kg" not in st.session_state:
-    st.session_state["kg"] = {}
+    st.session_state["kg"] = None
 if "tl_knowledge" not in st.session_state:
     st.session_state["tl_knowledge"] = {
         "known_wals": {},
@@ -258,28 +256,30 @@ def create_probability_df(cross_consensus_stat):
     return pd.DataFrame(data_points)
 
 st.sidebar.subheader("DIG4EL")
-st.sidebar.write("Process")
-side_info = st.sidebar.empty()
 
 with st.sidebar:
-    st.markdown("---")
+    st.divider()
     st.page_link("home.py", label="Home", icon=":material/home:")
     st.page_link("pages/dashboard.py", label="Back to dashboard", icon=":material/contract_edit:")
 
-st.title("Generate knowledge from CQs")
+st.title("Generate knowledge from grammar databases and CQs")
 with st.popover("How to use this page"):
     st.markdown("""
     ### Generating knowledge from CQ
-    This page allows using CQ translations in DIG4EL format to 'guess' how the grammar of the language works.\\
-    You just have to upload CQ translations using the **Input** section and press on the **Launch CQ processing** button. 
-    Once DIG4EL has guessed as many grammatical parameters are possible, you will see a table with these parameters 
+    This page allows using knowledge from Grambank and WALS, combined with optional CQ translations in DIG4EL format to 'guess' how the grammar of the language works.\\
+    If you have CQ translations, upload them using the **Input CQs** section. 
+    Click on the  **Learn from grammar databases and CQs** button to learn from grammar databases and optional CQs. 
     """)
 
-show_details = st.toggle("Show computation details")
+st.sidebar.divider()
+show_details = st.sidebar.toggle("Show computation details")
+st.write("Current target language: {}".format(st.session_state.indi_language))
+if st.session_state.indi_language in ["English", "Abkhaz-Adyge"]:
+    st.warning("Select the target language name in the dashboard first!")
+
 # INPUTS ========================================================================
-if not st.session_state["loaded_existing"]:
-    side_info.write("Waiting for transcription files")
-with st.expander("Inputs"):
+
+with st.expander("Input CQs"):
     if st.button("reset"):
         st.session_state["tl_name"] = ""
         st.session_state["tl_wals_pk"] = ""
@@ -327,9 +327,7 @@ with st.expander("Inputs"):
         st.rerun()
 
     # MANAGING CQ TRANSCRIPTIONS
-    st.write("Current target language: {}".format(st.session_state.indi_language))
-    if st.session_state.indi_language in ["English", "Abkhaz-Adyge"]:
-        st.warning("Select the target language name in the dashboard first!")
+
     cq_source = st.radio("Use CQ translations...", ["available online", "from your computer"])
     if cq_source == "available online":
         if st.session_state.indi_language not in os.listdir(BASE_LD_PATH):
@@ -415,50 +413,49 @@ with st.expander("Inputs"):
             st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
 
     # load transcriptions, create knowledge graph
-    if st.session_state["loaded_existing"] and st.button("Launch CQ processing"):
-        if st.session_state["cq_transcriptions"] != []:
-            # Consolidating transcriptions - Knowledge Graph
-            st.session_state[
-                "kg"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
-                st.session_state["cq_transcriptions"],
-                st.session_state["tl_name"],
-                st.session_state["delimiters"])
-            with open("./data/knowledge/current_kg.json", "w", encoding='utf-8') as f:
-                u.save_json_normalized(st.session_state["kg"], f, indent=4)
-            st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
-                len(st.session_state["cq_transcriptions"]), len(st.session_state["kg"]),
-                total_target_word_count, len(unique_words)))
-            # managing language input
-            st.session_state["tl_name"] = st.session_state["cq_transcriptions"][0]["target language"]
-            # check data in wals
-            st.session_state["tl_wals_pk"] = wu.language_pk_id_by_name.get(st.session_state["tl_name"], {}).get("pk",
-                                                                                                                None)
-            # check data in grambank
-            if st.session_state["tl_name"] in [gu.grambank_language_by_lid[lid]["name"] for lid in
-                                               gu.grambank_language_by_lid.keys()]:
-                st.session_state["tl_grambank_id"] = next(lid for lid, value in gu.grambank_language_by_lid.items() if
-                                                          value["name"] == st.session_state["tl_name"])
-            else:
-                st.session_state["tl_grambank_id"] = None
-            # managing delimiters
-            if "delimiters" in st.session_state["cq_transcriptions"][0].keys():
-                st.session_state["delimiters"] = st.session_state["cq_transcriptions"][0]["delimiters"]
-                print("Word separators have been explicitly entered in the transcription.")
-            elif st.session_state["tl_name"] in wu.language_pk_id_by_name.keys():
-                with open("./data/delimiters.json", "r", encoding='utf-8') as f:
-                    delimiters_dict = json.load(f)
-                    st.session_state["delimiters"] = delimiters_dict[st.session_state["tl_name"]]
-                    print("Word separators are retrieved from a file.")
-            else:
-                st.session_state["delimiters"] = st.multiselect("Edit word separators if needed", delimiters_bank,
-                                                                default=default_delimiters)
-            side_info.write("Input files mapped")
+if st.button("Learn from grammar databases and CQs"):
+    # managing language input
+    st.session_state["tl_name"] = st.session_state.indi_language
+    # check data in wals
+    st.session_state["tl_wals_pk"] = wu.language_pk_id_by_name.get(st.session_state["tl_name"], {}).get("pk",                                                                            None)
+    # check data in grambank
+    if st.session_state["tl_name"] in [gu.grambank_language_by_lid[lid]["name"] for lid in
+                                       gu.grambank_language_by_lid.keys()]:
+        st.session_state["tl_grambank_id"] = next(lid for lid, value in gu.grambank_language_by_lid.items() if
+                                                  value["name"] == st.session_state["tl_name"])
+    else:
+        st.session_state["tl_grambank_id"] = None
+
+    # If transcription, Knowledge graph etc.
+    if st.session_state["cq_transcriptions"] != []:
+        # Consolidating transcriptions - Knowledge Graph
+        st.session_state[
+            "kg"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
+            st.session_state["cq_transcriptions"],
+            st.session_state["tl_name"],
+            st.session_state["delimiters"])
+        with open("./data/knowledge/current_kg.json", "w", encoding='utf-8') as f:
+            u.save_json_normalized(st.session_state["kg"], f, indent=4)
+        st.write("{} Conversational Questionnaires: {} sentences, {} words with {} unique words".format(
+            len(st.session_state["cq_transcriptions"]), len(st.session_state["kg"]),
+            total_target_word_count, len(unique_words)))
+        # managing delimiters
+        if "delimiters" in st.session_state["cq_transcriptions"][0].keys():
+            st.session_state["delimiters"] = st.session_state["cq_transcriptions"][0]["delimiters"]
+            print("Word separators have been explicitly entered in the transcription.")
+        elif st.session_state["tl_name"] in wu.language_pk_id_by_name.keys():
+            with open("./data/delimiters.json", "r", encoding='utf-8') as f:
+                delimiters_dict = json.load(f)
+                st.session_state["delimiters"] = delimiters_dict[st.session_state["tl_name"]]
+                print("Word separators are retrieved from a file.")
+        else:
+            st.session_state["delimiters"] = st.multiselect("Edit word separators if needed", delimiters_bank,
+                                                            default=default_delimiters)
 
 # PREPROCESSING: KNOWLEDGE, OBSERVATIONS, PARAMETER DISCOVERY ==============================
 
-if st.session_state["kg"] and not st.session_state["preprocessing_done"]:
+if not st.session_state["preprocessing_done"]:
     with st.spinner("Retrieving existing knowledge"):
-        side_info.write("Retrieving specific knowledge")
         col8, col9 = st.columns(2)
         # RETRIEVING KNOWLEDGE ==============================================================
         if st.session_state["tl_name"] != "":
@@ -500,30 +497,27 @@ if st.session_state["kg"] and not st.session_state["preprocessing_done"]:
     # PROCESSING TRANSCRIPTIONS
 
     # OBSERVATIONS: RUN ALL AVAILABLE OBSERVERS =================================================================
-    side_info.write("Making observations")
-    if st.session_state["kg"] != {}:
-        with st.spinner("Making observations..."):
-            # run all available observers
-            for param_name, param_info in observed_params.items():
-                if param_info["observer"] is not None:
-                    (func, canonical) = param_info["observer"]
-                    st.session_state["obs"][param_name] = func(
-                        st.session_state["kg"],
-                        st.session_state["tl_name"],
-                        st.session_state["delimiters"],
-                        canonical=canonical
-                    )
-                    st.session_state["tl_knowledge"]["observed"][param_name] = st.session_state["obs"][param_name][
-                        "agent-ready observation"]
+    if st.session_state["kg"]:
+        if st.session_state["kg"] != {}:
+            with st.spinner("Making observations..."):
+                # run all available observers
+                for param_name, param_info in observed_params.items():
+                    if param_info["observer"] is not None:
+                        (func, canonical) = param_info["observer"]
+                        st.session_state["obs"][param_name] = func(
+                            st.session_state["kg"],
+                            st.session_state["tl_name"],
+                            st.session_state["delimiters"],
+                            canonical=canonical
+                        )
+                        st.session_state["tl_knowledge"]["observed"][param_name] = st.session_state["obs"][param_name][
+                            "agent-ready observation"]
 
-            st.session_state["observations_processed"] = True
-            # st.write("st.session_state['tl_knowledge']")
-            # st.write(st.session_state["tl_knowledge"])
-            # st.write("st.session_state['obs']")
-            # st.write(st.session_state["obs"])
+                st.session_state["observations_processed"] = True
+    else:
+        st.session_state["observations_processed"] = True
 
     # STATISTICAL PRIORS =====================================================================
-    side_info.write("Computing statistical priors")
     if st.session_state["known_processed"] and st.session_state["observations_processed"]:
         with st.spinner("Computing statistical priors"):
             prior_family_list = []
@@ -586,7 +580,6 @@ if st.session_state["kg"] and not st.session_state["preprocessing_done"]:
                 parameter_selection_belief.set_known(v)  # hard evidence
 
             # select parameters ----------------------------------------------
-            side_info.write("Discovering parameters")
             st.subheader("Parameter discovery")
             st.markdown("{} parameters observed, {} known from WALS, {} known from Grambank.".format(
                 len(st.session_state["tl_knowledge"]["observed"]),
@@ -635,7 +628,6 @@ if st.session_state["kg"] and not st.session_state["preprocessing_done"]:
                     [p for p in st.session_state["params_by_topic"][selected_topic] if p in available_parameter_names]
 
             st.session_state["preprocessing_done"] = True
-            side_info.write("Preprocessing done")
 
 # END PREPROCESSING
 
@@ -739,7 +731,6 @@ if (st.session_state["preprocessing_done"]
         and st.session_state["run_ga"]
         and not st.session_state["ga_output_available"]):
     with st.spinner("Running Bayesian Agent..."):
-        side_info.write("Creating agent")
         st.session_state["belief_history"] = {}
         st.session_state["consensus_store"] = {}
         st.session_state["ga_output_available"] = False
@@ -761,7 +752,6 @@ if (st.session_state["preprocessing_done"]
         st.session_state["run_ga"] = True
 
         if st.session_state["run_ga"]:
-            side_info.write("Running inferences")
             st.session_state["ga"] = general_agents.GeneralAgent("ga",
                                                                  parameter_names=st.session_state["ga_param_names"],
                                                                  language_stat_filter=st.session_state["l_filter"])
@@ -798,7 +788,6 @@ if (st.session_state["preprocessing_done"]
                     st.session_state["ga"].language_parameters[known_p_name].inject_peak_belief(vid, 1, locked=True)
 
             # BELIEF PROPAGATION
-            side_info.write("Belief propagation")
             beliefs_snapshot = st.session_state["ga"].get_beliefs()
             for k in range(NUMBER_OF_MESSAGING_CYCLES):
                 st.session_state["belief_history"] = {param_name: [] for param_name in
@@ -826,7 +815,6 @@ if (st.session_state["preprocessing_done"]
 
             st.session_state["run_ga"] = False
             st.session_state["ga_output_available"] = True
-            side_info.write("Inferences computed")
 
 # Details
 if show_details and st.session_state["ga_output_available"]:
@@ -967,7 +955,6 @@ if show_details and st.session_state["ga_output_available"]:
 # EDITABLE RESULTS ================================================================
 
 if st.session_state["ga_output_available"]:
-    side_info.write("Results edition")
     st.markdown("#### Beliefs")
     edit_beliefs = st.toggle("Let me edit beliefs")
     if not edit_beliefs:
@@ -1092,8 +1079,11 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                                 "Confidence": round(100 * (1 - P.entropy)),
                                 "Examples by value": examples_by_value})
     # build sentence_data_list
-    sentence_data_list = kgu.build_alterlingua_list_from_kg(st.session_state["kg"],
-                                                            st.session_state["delimiters"])
+    if st.session_state["kg"]:
+        sentence_data_list = kgu.build_alterlingua_list_from_kg(st.session_state["kg"],
+                                                                st.session_state["delimiters"])
+    else:
+        sentence_data_list = []
     json_blob = {
         "sentences": sentence_data_list,  # lower-case, no spaces
         "grammar_priors": result_list
@@ -1108,9 +1098,3 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
     st.session_state.has_bayesian = True
     st.session_state.bayesian_data = json_blob
     st.page_link("pages/dashboard.py", label="Back to dashboard", icon=":material/contract_edit:")
-
-    # st.download_button(label=" 📥You can download CQ Knowledge results for future use.📥",
-    #                    data=u.save_json_normalizeds(json_blob),
-    #                    file_name="dig4el_cq_knowledge.json"
-    #                    )
-

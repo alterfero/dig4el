@@ -293,14 +293,15 @@ st.divider()
 tab1, tab2, tab3 = st.tabs(["CQ", "Documents", "Sentence Pairs"])
 with tab1:
     st.markdown("""
-   To create new Conversational Questionnaires translations, head to "Enter CQ Translations".
+   - **To create new Conversational Questionnaires translations**, click on "Enter CQ Translations".
+   - With or without CQ translations, click on **Process information from databases and CQs** to make dig4el build 
+   upon existing knowlede and process CQs if available. 
     
-    If you already entered CQ translations with DIG4EL, you can go to "Use existing translations". 
-    You will be directed back here once the CQ knowledge is built. 
+   
     """)
     st.page_link("pages/record_cq_transcriptions.py", label="👉🏽 Create new DIG4EL CQ translations")
     if role in ["admin", "caretaker"]:
-        st.page_link("pages/infer_from_knowledge_and_cqs.py", label="👉🏽 Prepare DIG4EL CQ translations for content generation")
+        st.page_link("pages/infer_from_knowledge_and_cqs.py", label="👉🏽 Process information from databases and CQs")
 
     if st.session_state.indi_language in os.listdir(BASE_LD_PATH):
         if "cq" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language)):
