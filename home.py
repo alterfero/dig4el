@@ -1,3 +1,6 @@
+import json
+import os
+
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -8,17 +11,17 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-components.html("""
-<div style="
-  width:100%; height:90px;
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  background:#252729; box-shadow:0 2px 8px rgba(0,0,0,.15);
-">
-  <span style="color:#EAEAE4; font-size:18px; font-weight:700;">
-    New release 1.0.3 rolling out this week! Some UX turbulence expected.
-  </span>
-</div>
-""", height=90)
+# components.html("""
+# <div style="
+#   width:100%; height:90px;
+#   display:flex; align-items:center; justify-content:center; gap:12px;
+#   background:#252729; box-shadow:0 2px 8px rgba(0,0,0,.15);
+# ">
+#   <span style="color:#EAEAE4; font-size:18px; font-weight:700;">
+#     New release 1.0.3 rolling out this week! Some UX turbulence expected.
+#   </span>
+# </div>
+# """, height=90)
 
 st.markdown("## Assisted grammatical description of endangered languages")
 
@@ -161,3 +164,12 @@ with st.sidebar:
 
 
 
+## One-off
+BASE_LD_PATH = os.path.join(
+    os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
+    "storage"
+)
+if "feedback.json" not in os.listdir(BASE_LD_PATH):
+    empty_feedback = []
+    with open(os.path.join(BASE_LD_PATH, "feedback.json"), "w") as f:
+        json.dump(empty_feedback, f)

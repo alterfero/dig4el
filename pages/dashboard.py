@@ -46,10 +46,8 @@ BASE_LD_PATH = os.path.join(
 
 if "aa_path_check" not in st.session_state:
     fmu.create_ld(BASE_LD_PATH, "Abkhaz-Adyge")
-
 if "indi_path_check" not in st.session_state:
     st.session_state.indi_path_check = False
-
 if "indi_language" not in st.session_state:
     st.session_state["indi_language"] = "Abkhaz-Adyge"
 if "indi_glottocode" not in st.session_state:
@@ -264,6 +262,11 @@ else:
 selected_language = colq.selectbox("What language are we working on?", llist)
 
 if st.button("Select {}".format(selected_language)):
+    print("")
+    print("*******************")
+    print(selected_language)
+    print("*******************")
+    print("")
     st.session_state.indi_language = selected_language
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language,
                                                                    "glottocode not found")
@@ -383,7 +386,11 @@ with tab2:
 
     vsid_from_info_dict = st.session_state.info_doc["documents"].get("oa_vector_store_id", None)
     print("vsid_from_info_dict: {}".format(vsid_from_info_dict))
-    print("existing vsids in st.session_state.available_vector_stores: {}".format([vs.id for vs in st.session_state.available_vector_stores]))
+    with st.spinner("Updating store list"):
+        st.session_state.available_vector_stores = ovsu.list_vector_stores_sync()  # ADDED FOR TESTING
+    print("Updated VS list: {}".format(st.session_state.available_vector_stores))
+    print("VSIDs: {}".format([vs.id for vs in st.session_state.available_vector_stores]))
+
     if vsid_from_info_dict is not None and vsid_from_info_dict in [vs.id for vs in st.session_state.available_vector_stores]:
         st.session_state.vsid = vsid_from_info_dict
         st.write("An existing vector store has been found.")
@@ -391,14 +398,16 @@ with tab2:
         st.session_state.has_vector_store = True
     else:
         print("No VSID found in info_dict matching an existing VSID: Creating a vector store")
-        print("Info doc")
-        print(st.session_state.info_doc)
         st.write("No vector store found with ID {}".format(st.session_state.indi_language, st.session_state.vsid))
         with st.spinner("Creating new vector store"):
             st.session_state.vsid = ovsu.create_vector_store_sync(st.session_state.indi_language + "_documents")
+            print("New VSID: {}".format(st.session_state.vsid))
             st.session_state.info_doc["documents"]["oa_vector_store_id"] = st.session_state.vsid
             with st.spinner("Updating..."):
+                print("{} stores in st.session_state.available_vector_stores BEFORE update".format(len(st.session_state.available_vector_stores)))
                 st.session_state.available_vector_stores = ovsu.list_vector_stores_sync()
+                print("{} stores in st.session_state.available_vector_stores AFTER update".format(len(st.session_state.available_vector_stores)))
+
             save_info_dict()
         print("New vector store created with VSID {}".format(st.session_state.vsid))
         st.session_state.has_vector_store = True

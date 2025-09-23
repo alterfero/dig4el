@@ -47,7 +47,7 @@ async def delete_files_containing(fn_part):
 
 async def create_vector_store(name):
     vector_store = await client.vector_stores.create(name=name)
-    print(f"Created vector_store {vector_store.id}")
+    print(f"async create_vector_store: Created vector_store {vector_store.id}")
     return vector_store.id
 
 

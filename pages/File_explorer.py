@@ -275,16 +275,16 @@ if st.session_state.has_access:
             st.rerun()
 
         if st.button("Erase all vector stores"):
-            to_erase = st.session_state.vss
-            if st.button("Delete {} VS".format(len(to_erase))):
-                c = len(to_erase)
-                with st.spinner("Deleting {} {} vector stores but {}".format(len(to_erase), to_delete_name, but)):
-                    for vs in to_erase:
-                        with st.spinner("Deleting {}, {} to go".format(vs.id, c)):
-                            vsu.delete_vector_store_sync(vs.id)
-                            c = c - 1
-                st.success("vector stores deleted")
-                st.rerun()
+            to_erase = vsu.list_vector_stores_sync()
+            st.write(len(to_erase))
+            c = len(to_erase)
+            with st.spinner("Deleting {} vector stores".format(len(to_erase))):
+                for vs in to_erase:
+                    with st.spinner("Deleting {}, {} to go".format(vs.id, c)):
+                        vsu.delete_vector_store_sync(vs.id)
+                        c = c - 1
+            st.success("All vector stores deleted")
+            st.rerun()
 
 
     with st.expander("User management"):

@@ -14,6 +14,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import pickle
+
+from datetime import datetime
 import streamlit as st
 import json
 from libs import utils as u
@@ -306,6 +308,56 @@ if info["outputs"] != {}:
                       "rb") as jsonf:
                 display_output(json.load(jsonf))
 
+            if role in ["user", "admin"]:
+                st.subheader("Give feedback on this output!")
+
+                errors = st.slider("Are there errors in the output? (0 = no error, 9 = everything is wrong)",
+                                     min_value=0, max_value=9, value=0)
+
+                completeness = st.slider(
+                    "Does the description cover the topic fully? (1 = very incomplete, 9 = fully complete)",
+                    min_value=1, max_value=9, value=5)
+
+                clarity = st.slider("Is the output clear and understandable? (1 = very unclear, 9 = very clear)",
+                                      min_value=1, max_value=9, value=5)
+
+                usefulness = st.slider("How useful is this output for teaching/learning? (1 = useless, 9 = very useful)",
+                                         min_value=1, max_value=9, value=5)
+
+                confidence = st.slider(
+                    "How confident are you in using this output? (1 = not at all, 9 = completely confident)",
+                    min_value=1, max_value=9, value=5)
+
+                comments = st.text_area("What should be improved or added? (optional)")
+
+                if st.button("Submit feedback"):
+                    with open(os.path.join(BASE_LD_PATH, "feedback.json"), "r") as f:
+                        feedback = json.load(f)
+                    with open(os.path.join("./", "version.json"), "r") as g:
+                        v = json.load(g)
+                        version = v["version"]
+                    now = datetime.now()
+                    readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
+
+                    feedback.append(
+                        {
+                            "version": version,
+                            "date": readable_date_time,
+                            "user": name,
+                            "language": st.session_state.indi,
+                            "prompt": slq,
+                            "errors": errors,
+                            "completeness": completeness,
+                            "clarity": clarity,
+                            "usefulness": usefulness,
+                            "confidence": confidence,
+                            "comments": comments
+                        }
+                    )
+                    with open(os.path.join(BASE_LD_PATH, "feedback.json"), "w") as h:
+                        json.dump(feedback, h)
+                    st.success("Thank you for your feedback!")
+
 
 # GATHERING MATERIAL
 
@@ -421,10 +473,17 @@ if st.session_state.run_sources:
                                                            vsids,
                                                            query)
             raw_response = full_response.output[1].content
-            st.session_state.documents_contribution = {
-                "text": raw_response[0].text,
-                "sources": list(set([a.filename for a in raw_response[0].annotations]))
-            }
+            if raw_response is not None:
+                st.session_state.documents_contribution = {
+                    "text": raw_response[0].text,
+                    "sources": list(set([a.filename for a in raw_response[0].annotations]))
+                }
+            else:
+                st.session_state.documents_contribution = {
+                    "text": "",
+                    "sources": []
+                }
+                print("Response from document retrieval is None")
 
     # sentence pairs selection
     if st.session_state.is_pairs and st.session_state.use_pairs:
@@ -591,14 +650,71 @@ if st.session_state.output_dict:
     except:
         st.write("Generation of docx failed")
 
-    # Save outputs
-    if st.button("Store output (and share it with others)"):
+
+
+
+    colz, colx = st.columns(2)
+    # Feedback survey
+    if role in ["user", "admin"]:
+        colx.subheader("Give feedback on this output!")
+
+        errors = colx.slider("Are there errors in the output? (0 = no error, 9 = everything is wrong)",
+                           min_value=0, max_value=9, value=0, key="final_feedback_errors")
+
+        completeness = colx.slider(
+            "Does the description cover the topic fully? (1 = very incomplete, 9 = fully complete)",
+            min_value=1, max_value=9, value=5, key="final_feedback_completeness")
+
+        clarity = colx.slider("Is the output clear and understandable? (1 = very unclear, 9 = very clear)",
+                            min_value=1, max_value=9, value=5, key="final_feedback_clarity")
+
+        usefulness = colx.slider("How useful is this output for teaching/learning? (1 = useless, 9 = very useful)",
+                               min_value=1, max_value=9, value=5, key="final_feedback_usefulness")
+
+        confidence = colx.slider(
+            "How confident are you in using this output? (1 = not at all, 9 = completely confident)",
+            min_value=1, max_value=9, value=5, key="final_feedback_confidence")
+
+        comments = colx.text_area("What should be improved or added? (optional)", key="final_feedback_comments")
+
+        if colx.button("Submit feedback", key="final_feedback_button"):
+            with open(os.path.join(BASE_LD_PATH, "feedback.json"), "r") as f:
+                feedback = json.load(f)
+            with open(os.path.join("./", "version.json"), "r") as g:
+                v = json.load(g)
+                version = v["version"]
+            now = datetime.now()
+            readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
+
+            feedback.append(
+                {
+                    "version": version,
+                    "date": readable_date_time,
+                    "user": name,
+                    "language": st.session_state.indi,
+                    "prompt": st.session_state.query,
+                    "errors": errors,
+                    "completeness": completeness,
+                    "clarity": clarity,
+                    "usefulness": usefulness,
+                    "confidence": confidence,
+                    "comments": comments
+                }
+            )
+            with open(os.path.join(BASE_LD_PATH, "feedback.json"), "w") as h:
+                json.dump(feedback, h)
+            colx.success("Thank you for your feedback!")
+
+
+
+    # Store/Download outputs
+    if colz.button("Store output (and share it with others)"):
 
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w", encoding='utf-8') as f:
             json.dump(st.session_state.output_dict, f, ensure_ascii=False)
 
         if docx:
-            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn[:-5]+".docx"), "wb") as f:
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn[:-5] + ".docx"), "wb") as f:
                 f.write(docx.getvalue())
         with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
             info = json.load(f)
@@ -609,14 +725,11 @@ if st.session_state.output_dict:
             json.dump(info, f, ensure_ascii=False)
 
         st.success("Output stored and available")
-
-    # Download outputs
-    colz, colx = st.columns(2)
     colz.download_button(label="Download JSON output",
                          data=json.dumps(st.session_state.output_dict, ensure_ascii=False),
                          file_name=fn)
     if docx:
-        colx.download_button(label="Download DOCX output",
+        colz.download_button(label="Download DOCX output",
                              data=docx,
                              file_name=fn[:-5]+".docx",
                              mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
