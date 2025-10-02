@@ -317,7 +317,7 @@ elif st.session_state.use == "edit" and role != "guest":
                           encoding='utf-8') as f:
                     u.save_json_normalized(conveqs_index, f)
                 st.success("{} successfully indexed.".format(new_cq.name))
-                st.session_state.new_cq_counter += 1
+                st.rerun()
     if role == "admin":
         with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
             st.write(json.load(f))
