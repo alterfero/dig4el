@@ -184,8 +184,6 @@ if colb1.button("Browse Conversational Questionnaires files", width="stretch"):
     st.session_state.use = "consult"
 
 if st.session_state.use == "consult":
-    st.write("Active Index: {}".format(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json")))
-    st.write("List: {}".format(os.listdir(os.path.join(CONVEQS_BASE_PATH))))
     with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
         conveqs_index = json.load(f)
     conveqs_index_df = pd.DataFrame(conveqs_index)
