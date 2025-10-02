@@ -187,7 +187,7 @@ if st.session_state.use == "consult":
     with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
         conveqs_index = json.load(f)
     conveqs_index_df = pd.DataFrame(conveqs_index)
-    selected = st.dataframe(conveqs_index_df, column_order=["language", "name", "author", "uploaded by", "is_downloadable"],
+    selected = st.dataframe(conveqs_index_df, column_order=["language", "name", "author", "format", "uploaded by", "is_downloadable"],
                  selection_mode="single-row", on_select="rerun")
     if selected["selection"]["rows"] != []:
         selected_item = conveqs_index[selected["selection"]["rows"][0]]
@@ -279,11 +279,27 @@ elif st.session_state.use == "edit" and role != "guest":
                 st.success(f"Saved `{new_cq.name}` on the server.")
 
                 # UPDATE CONVEQS_INDEX
+                if "json" in new_cq.name:
+                    format = "JSON"
+                elif "xls" in new_cq.name:
+                    format = "Spreadhseet"
+                elif "xml" in new_cq.name:
+                    format = "XML"
+                elif "doc" in new_cq.name:
+                    format = "Word processor"
+                elif "txt" in new_cq.name:
+                    format = "Text",
+                elif "csv" in new_cq.name:
+                    format = "CSV"
+                else:
+                    format = "other"
+
                 now = datetime.now()
                 readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
                 conveqs_index.append(
                     {
                         "filename": new_cq.name,
+                        "format": format,
                         "visibility": visibility,
                         "is_downloadable": is_downloadable,
                         "name": name,
