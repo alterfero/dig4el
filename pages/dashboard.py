@@ -22,7 +22,6 @@ from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
 from libs import openai_vector_store_utils as ovsu
 from libs import sentence_queue_utils as squ
-from libs import semantic_description_utils as sdu
 from libs import retrieval_augmented_generation_utils as ragu
 from libs import utils
 import streamlit.components.v1 as components
@@ -40,6 +39,13 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 1rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"), "storage")
@@ -599,7 +605,7 @@ with tab3:
 
     st.subheader("2. Augment sentence pairs with automatic grammatical descriptions")
     st.markdown("""Sentence pairs are augmented with grammatical descriptions, so they can be used efficiently.
-    This is a long process (up to 2 minutes per sentence) that will run in the background once started (you can
+    This is a long process that will run in the background once started (you can
     leave this page or turn off your computer and come back later.)
     """)
 
@@ -622,6 +628,7 @@ with tab3:
         - **Pivot**: {sas["source"]}
         - **Description**: {sas["description"]}
         - **Grammatical keywords**: {sas["keywords"]}
+        - **Comments**: {sas.get("comments", "")}
         - **Key translation concepts**: {sas["key_translation_concepts"]}
         - **{st.session_state.indi_language} word(s) - concept(s) connections**: 
         """)
@@ -738,12 +745,13 @@ with tab3:
                         c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))) - 1,
                         st.session_state.indi_language))
 
-    # ADD WORD-CONCEPT CONNECTIONS
+    # ADD COMMENTS AND WORD-CONCEPT CONNECTIONS
     if role in ["admin", "caretaker"]:
-        st.subheader("3. Connect word(s) and concept(s) in augmented sentences")
-        st.markdown("""This step is manual and adds a lot of information to the corpus.\\
+        st.subheader("3. Add/edit comments and connect word(s) and concept(s) in augmented sentences")
+        st.markdown(f"""This step is manual and adds a lot of information to the corpus.\\
         Open a sentence by clicking in the colored border on the left of the sentence, then associate one or 
-        multiple target words with each proposed meaning. """)
+        multiple target words with each proposed meaning and add any comment that helps understanding the structure 
+         of the sentence in {st.session_state.indi_language}""")
 
         #build aug_sent_df
         aps = []
@@ -756,17 +764,19 @@ with tab3:
                 {
                     "source": ap["source"],
                     "target": ap["target"],
+                    "comments": ap.get("comments", ""),
                     "connections": ap.get("connections", {}),
                     "filename": os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file)
                 }
             )
-        aps_df = pd.DataFrame(aps, columns=["source", "target", "connections"])
+        aps_df = pd.DataFrame(aps, columns=["source", "target", "comments", "connections"])
         selected = st.dataframe(aps_df, selection_mode="single-row", on_select="rerun", key="aps_df")
 
         if selected["selection"]["rows"] != []:
             selected_ap = aps[selected["selection"]["rows"][0]]
             with open(selected_ap["filename"], "r", encoding='utf-8') as f:
                 slap = json.load(f)
+            comments = st.text_input("Add/edit comments", value=slap.get("comments", ""))
             if not slap.get("connections", None):
                 slap["connections"] = {}
             st.markdown(f"**{st.session_state.indi_language}**: {slap['target']}")
@@ -780,32 +790,19 @@ with tab3:
                                                  default=slap["connections"].get(ktc, []),
                                                  key="cw"+ktc)
                 slap["connections"][ktc] = connected_words
-            if st.button("Submit connections"):
+                slap["comments"] = comments
+            if st.button("Submit comments and connections"):
                 with open(selected_ap["filename"], "w", encoding='utf-8') as f:
                     utils.save_json_normalized(slap, f)
-                    st.success("Connections saved")
+                    st.success("Comments and connections saved")
 
-        st.subheader("4. Index augmented pairs to make them ready for use")
-        if st.button("Index!"):
-            with st.spinner("Indexing..."):
-                if sdu.get_vector_ready_pairs(st.session_state.indi_language):
-                    st.success("Augmented pairs prepared for vectorization")
-                if ragu.vectorize_vaps(st.session_state.indi_language):
-                    st.success("Augmented pairs blobs vectorized and indexed")
-                if ragu.vectorize_sources(st.session_state.indi_language):
-                    st.success("Augmented pairs sources vectorized and indexed")
-                if ragu.vectorize_descriptions(st.session_state.indi_language):
-                    st.success("Augmented pairs descriptions vectorized and indexed")
-                ragu.create_hard_kw_index(st.session_state.indi_language)
-                st.session_state.has_pairs = True
-                st.rerun()
     else:
         st.divider()
         st.markdown("*Contact us to make word(s)-concepts connections*")
 
     if role == "admin":
         st.divider()
-        st.subheader("Test sentence pairs retrieval")
+        st.subheader("ADMIN: Test sentence pairs retrieval")
         with st.spinner("Refreshing keyword index"):
             ragu.create_hard_kw_index(st.session_state.indi_language)
 

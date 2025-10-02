@@ -27,7 +27,13 @@ class Description(BaseModel):
 class Info_Chunk(BaseModel):
     focus: str
     example: Example
-    description: Description
+    description: str
+
+
+class Sketch_Chunk(BaseModel):
+    focus: str
+    description: str
+    examples: List[Example]
 
 
 class Translation_Drill(BaseModel):
@@ -41,6 +47,13 @@ class Lesson(BaseModel):
     sections: List[Info_Chunk]
     conclusion: str
     translation_drills: List[Translation_Drill]
+
+
+class Sketch(BaseModel):
+    """Grammar sketch"""
+    title: str
+    introduction: str
+    sections: List[Sketch_Chunk]
 
 
 class Grammar_Parameter(BaseModel):
@@ -183,6 +196,46 @@ lesson_agent = Agent(
     output_type=Lesson
 )
 
+sketch_agent = Agent(
+    name="grammar_sketcher",
+    model="o4-mini-2025-04-16",
+    instructions=""" 
+    You are an agent specialized in creating detailed grammar descriptions to document endangered languages.  
+    You are provided with materials from different sources. 
+    Your job is to compile these sources to create a grammar sketch that will be used by linguists. 
+
+    COMPLY WITH THE FOLLOWING:
+    - Do not add information from any other source or from your own knowledge, but use all the reasoning you can to 
+    perform deductions and inferences based on the sources. 
+    - Add ALL relevant information from all the available sources. Be as detailed as possible. 
+    - The output must be in the language of the readers. 
+    - In all examples, translate the source sentence from English to the reader's language. 
+
+    INPUT:
+    - Name of the endangered language.
+    - List of grammatical parameters and their values in the endangered language, some with examples. 
+    - Description coming from sentence analysis.
+    - Description coming from a compilation of documents.
+    - List of examples, each with its description.
+    - List of sentence pairs, some with explicit connections between the concepts in the sentence and words in 
+        the endangered language sentence, and explanatory comments. 
+
+    NOTE ON INPUTS: If there are contradictions between inputs, be explicit about it and cite the diverging sources.
+
+    OUTPUT: Grammar sketch in the reader's language. The grammar sketch is structured as follows:
+    - A title, derived from the user query
+    - An introduction paragraph that introduces the grammatical topic provides a robust and detailed overview of
+     the behavior of the target language with regard to the grammatical topic at hand. 
+    - A list of sktech chunks: Each chunk is a focus on an aspect of the grammar topic provided. For example, if the grammar topic is 
+    "expressing tense", the chunks may focus on "past", "present", "future" and "general" for example. Each chunk is a 
+    section with information and examples. The list can be as long or as short as needed to describe the grammatical topic. 
+    Each sketch chunk can include up to 5 examples to illustrate how the target language expresses the grammar topic. 
+    Each example displays with the sentence in the target language, in the the source language, and an explanation of how this example illustrate the focus. 
+    - A conclusion, which is what the students should absolutely remember. 
+    """,
+    output_type=Sketch
+)
+
 # ==================================== ASYNC CALLS ================================================
 
 
@@ -255,6 +308,33 @@ async def create_lesson(indi_language, source_language, readers_type,
     return result.final_output.dict()
 
 
+async def create_sketch(indi_language, source_language, readers_type,
+                        grammatical_params,
+                        alterlingua_explanation, alterlingua_examples,
+                        doc_contribution, sentence_pairs):
+    data = f"""
+    ENDANGERED LANGUAGE: {indi_language},
+
+
+    READERS: Linguists speaking {source_language} language,
+
+
+    GRAMMATICAL PARAMETERS: {grammatical_params},
+
+
+    DESCRIPTION FROM SENTENCE ANALYSIS: {alterlingua_explanation}
+
+
+    EXAMPLES FROM SENTENCE ANALYSIS: {alterlingua_examples},
+
+
+    DESCRIPTION FROM DOCUMENTS: {doc_contribution},
+
+
+    AUGMENTED SENTENCE PAIRS: {sentence_pairs}
+    """
+    result = await Runner.run(sketch_agent, data)
+    return result.final_output.dict()
 # ===================================== SYNC CALLS ==============================================
 
 def select_parameters_sync(query: str, parameters: list[str]) -> dict:
@@ -277,3 +357,11 @@ def create_lesson_sync(indi_language, source_language, readers_type,
                                      alterlingua_explanation, alterlingua_examples,
                                      doc_contribution, sentence_pairs))
 
+def create_sketch_sync(indi_language, source_language, readers_type,
+                       grammatical_params,
+                        alterlingua_explanation, alterlingua_examples,
+                        doc_contribution, sentence_pairs):
+    return asyncio.run(create_sketch(indi_language, source_language, readers_type,
+                                     grammatical_params,
+                                     alterlingua_explanation, alterlingua_examples,
+                                     doc_contribution, sentence_pairs))

@@ -1,5 +1,5 @@
-﻿source,target
-sentence 1 in the source language ,sentence 1 in the target language
-sentence 2 in the source language ,sentence 2 in the target language
-sentence 3 in the source language ,sentence 3 in the target language
-sentence 4 in the source language ,sentence 4 in the target language
+﻿source,target, comments
+sentence 1 in the source language ,sentence 1 in the target language, comments about sentence 1
+sentence 2 in the source language ,sentence 2 in the target language, comments about sentence 2
+sentence 3 in the source language ,sentence 3 in the target language, comments about sentence 3
+sentence 4 in the source language ,sentence 4 in the target language, comments about sentence 4

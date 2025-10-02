@@ -1,15 +1,17 @@
 [
   {
     "source": "Sentence 1 in source language",
-    "target": "Sentence 1 in target language"
+    "target": "Sentence 1 in target language",
+    "comments": "Comments about sentence 1"
   },
   {
     "source": "Sentence 2 in source language",
-    "target": "Sentence 2 in target language"
+    "target": "Sentence 2 in target language",
+    "comments": "Comments about sentence 2"
   },
   {
     "source": "Sentence 2 in source language",
-    "target": "Sentence 2 in target language"
+    "target": "Sentence 2 in target language",
+    "comments": "Comments about sentence 3"
   }
-
 ]

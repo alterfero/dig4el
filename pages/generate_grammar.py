@@ -26,6 +26,7 @@ from libs import grammar_generation_utils as ggu
 from libs import output_generation_utils as ogu
 from libs import retrieval_augmented_generation_utils as ragu
 from libs import semantic_description_agents as sda
+from libs import semantic_description_utils as sdu
 from libs import semantic_description_utils
 import streamlit_authenticator as stauth
 import yaml
@@ -43,6 +44,13 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 1rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 if "aa_path_check" not in st.session_state:
     st.session_state.aa_path_check = False
@@ -93,9 +101,13 @@ if "is_guest" not in st.session_state:
     st.session_state.is_guest = None
 if "caretaker_trigger" not in st.session_state:
     st.session_state.caretaker_trigger = False
+if "readers_type" not in st.session_state:
+    st.session_state.readers_type = "Adult learners"
+if "document_format" not in st.session_state:
+    st.session_state.document_format = "Grammar lesson"
 
 # ----- HELPERS -----------------------------------------------------------------------------------
-def display_output(output_dict):
+def display_lesson_output(output_dict):
     o = output_dict
     st.write(f"Generated {o.get('date', 'date unknown')}, DIG4EL version {o.get('version', 'version unknown')}")
     st.title(o["title"])
@@ -103,7 +115,7 @@ def display_output(output_dict):
     st.divider()
     for section in o["sections"]:
         st.subheader(section["focus"])
-        st.write(section["description"]["description"])
+        st.write(section["description"])
         st.markdown(f"**{section['example']['target_sentence']}**")
         st.markdown(f"*{section['example']['source_sentence']}*")
         st.write(section["example"]["description"])
@@ -115,6 +127,35 @@ def display_output(output_dict):
         st.write("{}".format(i + 1))
         st.markdown(f"**{s['target']}**")
         st.markdown(f"*{s['source']}*")
+    st.divider()
+    st.subheader("Sources")
+    sources = o.get("sources", {})
+    if "documents" in sources.keys() and sources["documents"] is not None and sources["documents"] != []:
+        st.markdown("### Documents")
+        for d in sources["documents"]:
+            st.markdown(f"- {d}")
+    if "cqs" in sources.keys() and sources["cqs"] is not None and sources["cqs"] != []:
+        st.markdown("### Conversational Questionnaires")
+        for d in sources["cqs"]:
+            st.markdown(f"- {d}")
+    if "pairs" in sources.keys() and sources["pairs"] is not None and sources["pairs"] != []:
+        st.markdown("### Sentence Pairs")
+        for d in sources["pairs"]:
+            st.markdown(f"- {d}")
+
+def display_sketch_output(output_dict):
+    o = output_dict
+    st.write(f"Generated {o.get('date', 'date unknown')}, DIG4EL version {o.get('version', 'version unknown')}")
+    st.title(o["title"])
+    st.write(o["introduction"])
+    st.divider()
+    for section in o["sections"]:
+        st.subheader(section["focus"])
+        st.write(section["description"])
+        for example in section.get("examples"):
+            st.markdown(f"**{example['target_sentence']}**")
+            st.markdown(f"*{example['source_sentence']}*")
+            st.write(example["description"])
     st.divider()
     st.subheader("Sources")
     sources = o.get("sources", {})
@@ -306,7 +347,11 @@ if info["outputs"] != {}:
         with st.expander("Click here to see the output"):
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", info["outputs"][slq]),
                       "rb") as jsonf:
-                display_output(json.load(jsonf))
+                outd = json.load(jsonf)
+                if "conclusion" in outd.keys():
+                    display_lesson_output(outd)
+                else:
+                    display_sketch_output(outd)
 
             if role in ["user", "admin"]:
                 st.subheader("Give feedback on this output!")
@@ -407,44 +452,93 @@ st.sidebar.write("✅ Pairs Ready" if st.session_state.is_pairs else "No pairs")
 if st.session_state.is_pairs:
     st.session_state.use_pairs = st.sidebar.toggle("Use Pairs", value=st.session_state.use_pairs)
 
+# ======== SELECTION OF OUTPUT PARAMETERS ==================
+
 if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is_doc and st.session_state.use_doc)
     or (st.session_state.is_pairs and st.session_state.use_pairs)):
+
     st.subheader("Generate a new grammatical description")
-    colq1, colq2 = st.columns(2)
-    colq1.markdown("Choose standard grammar lesson topics")
-    grammatical_topics_progression = [
-        "Basic sentence structure",
-        "Expressing who does what to whom",
-        "Politeness and social formulas",
-        "Binary questions",
-        "Questions asking for information",
-        "Negation",
-        "Referring to participants (speaker, addressee, others)",
-        "Referring to things",
-        "Possession",
-        "Describing things",
-        "Saying what something or someone is (identification)",
-        "Stating existence and location",
-        "Talking about actions and states in the present/general time",
-        "Talking about past events",
-        "Talking about the future",
-        "How actions unfold: ongoing, completed, habitual...",
-        "Giving orders",
-        "Expressing place and direction",
-        "Expressing wishes",
-        "Expressing doubts",
-        "Expressing beliefs",
-        "Classifiers or measure words"
-    ]
-    query_standard = colq1.selectbox("Select a standard grammar lesson", ["no selection"] + grammatical_topics_progression)
-    colq2.markdown("Or enter your custom query")
-    query_custom = colq2.text_input("query")
-    if query_standard != "no selection":
-        query = query_standard
-    elif query_custom is not None:
-        query = query_custom
+    colq1a, colq2a = st.columns(2)
+    st.session_state.document_format = colq1a.selectbox("Format", ["Grammar lesson", "Grammar sketch"])
+    st.session_state.readers_language = colq2a.selectbox("What is the language of readers?",
+                                                     ["Bislama", "Chinese", "English", "French", "Japanese", "Russian",
+                                                      "Spanish", "Swedish", "Tahitian"])
+    if st.session_state.document_format == "Grammar lesson":
+        st.session_state.readers_type = colq1a.selectbox("The grammar is generated for...",
+                                    ["Teenage learners", "Adult learners", "Linguists"])
     else:
-        query = None
+        st.session_state.readers_type = "Linguists"
+
+    if st.session_state.document_format == "Grammar lesson":
+        grammatical_topics_progression = [
+            "Basic sentence structure",
+            "Expressing who does what to whom",
+            "Politeness and social formulas",
+            "Binary questions",
+            "Questions asking for information",
+            "Negation",
+            "Referring to participants (speaker, addressee, others)",
+            "Referring to things",
+            "Possession",
+            "Describing things",
+            "Saying what something or someone is (identification)",
+            "Stating existence and location",
+            "Talking about actions and states in the present/general time",
+            "Talking about past events",
+            "Talking about the future",
+            "How actions unfold: ongoing, completed, habitual...",
+            "Giving orders",
+            "Expressing place and direction",
+            "Expressing wishes",
+            "Expressing doubts",
+            "Expressing beliefs",
+            "Classifiers or measure words"
+        ]
+        colq1, colq2 = st.columns(2)
+        colq1.markdown("Choose a typical lesson topic")
+        query_standard = colq1.selectbox("Select a standard grammar lesson", ["no selection"] + grammatical_topics_progression)
+        colq2.markdown("Or enter your custom query")
+        query_custom = colq2.text_input("query")
+        if query_standard != "no selection":
+            query = query_standard
+        elif query_custom is not None:
+            query = query_custom
+        else:
+            query = None
+    else:
+        sketch_topics = [
+            "Simple verbal sentences",
+            "Simple non-verbal sentences",
+            "Noun Phrase structures",
+            "Verbal Phrase structures",
+            "Negation",
+            "Causality",
+            "Coordination",
+            "Subordination",
+            "Parts of speech",
+            "Nouns",
+            "Personal Pronouns",
+            "References to things",
+            "Adjective",
+            "Numerals",
+            "Copulas",
+            "Verbs",
+            "Adverbs",
+            "Locative nouns",
+            "Expressing the position in time",
+            "Expressing the position in space"]
+        colq1b, colq2b = st.columns(2)
+        colq1b.markdown("Choose a standard grammar sketch topic")
+        query_standard = colq1b.selectbox("Select a standard grammar sketch topic", ["no selection"] + sketch_topics)
+        colq2b.markdown("Or enter your custom query")
+        query_custom = colq2b.text_input("query")
+        if query_standard != "no selection":
+            query = query_standard
+        elif query_custom is not None:
+            query = query_custom
+        else:
+            query = None
+
     if (query_custom is not None or query_standard != "no selection") and query is not None and query != st.session_state.query:
         if st.button("submit"):
             st.session_state.query = query
@@ -472,13 +566,20 @@ if st.session_state.run_sources:
             full_response = gga.file_search_request_sync(st.session_state.indi,
                                                            vsids,
                                                            query)
-            raw_response = full_response.output[1].content
-            if raw_response is not None:
-                st.session_state.documents_contribution = {
-                    "text": raw_response[0].text,
-                    "sources": list(set([a.filename for a in raw_response[0].annotations]))
-                }
-            else:
+            try:
+                raw_response = full_response.output[1].content
+                if raw_response is not None:
+                    st.session_state.documents_contribution = {
+                        "text": raw_response[0].text,
+                        "sources": list(set([a.filename for a in raw_response[0].annotations]))
+                    }
+                else:
+                    st.session_state.documents_contribution = {
+                        "text": "",
+                        "sources": []
+                    }
+                    print("Response from document retrieval is None")
+            except:
                 st.session_state.documents_contribution = {
                     "text": "",
                     "sources": []
@@ -487,7 +588,17 @@ if st.session_state.run_sources:
 
     # sentence pairs selection
     if st.session_state.is_pairs and st.session_state.use_pairs:
-        with st.spinner("Retrieving a helpful selection of sentence pairs"):
+        with st.spinner("Brewing coffee..."):
+            if sdu.get_vector_ready_pairs(st.session_state.indi_language):
+                st.success("Augmented pairs prepared for vectorization")
+            if ragu.vectorize_vaps(st.session_state.indi_language):
+                st.success("Augmented pairs blobs vectorized and indexed")
+            if ragu.vectorize_sources(st.session_state.indi_language):
+                st.success("Augmented pairs sources vectorized and indexed")
+            if ragu.vectorize_descriptions(st.session_state.indi_language):
+                st.success("Augmented pairs descriptions vectorized and indexed")
+            ragu.create_hard_kw_index(st.session_state.indi_language)
+        with st.spinner("Retrieving a helpful selection of sentence pairs..."):
             # retrieve N sentences using embeddings XXX RULED OUT, NOT RELEVANT ENOUGH
             # index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "description_vectors", "index.faiss")
             # index, id_to_meta = ragu.load_descriptions_index_and_id_to_meta(st.session_state.indi)
@@ -538,13 +649,10 @@ if (st.session_state.alterlingua_contribution
     st.write("You can now aggregate all sources into a grammatical description.")
     st.divider()
     st.header("Aggregation")
-    st.session_state.readers_language = st.selectbox("What is the language of readers?",
-                                    ["Bislama", "Chinese", "English", "French", "Japanese", "Russian",
-                                     "Spanish", "Swedish"])
-    readers_type = st.selectbox("The grammar is generated for...",
-                                ["Teenage beginners", "Adult beginners", "Linguists"])
-    document_format = st.selectbox("Format", ["Grammar lesson"])
-    if st.button("Aggregate all sources into a lesson"):
+
+# ============= AGGREGATION ============================
+
+    if st.button("Aggregate all sources"):
         st.session_state.run_aggregation = True
 
     if st.session_state.run_aggregation:
@@ -591,16 +699,28 @@ if (st.session_state.alterlingua_contribution
             sentence_pairs_blob = "No available sentence pairs."
 
         with st.spinner("Aggregating sources..."):
-            st.session_state.output_dict = gga.create_lesson_sync(
-                indi_language=st.session_state.indi,
-                source_language=st.session_state.readers_language,
-                readers_type=readers_type,
-                grammatical_params=selected_params_blob,
-                alterlingua_explanation=alterlingua_explanation,
-                alterlingua_examples=alterlingua_examples,
-                doc_contribution=doc_contribution,
-                sentence_pairs=sentence_pairs_blob
-            )
+            if st.session_state.document_format == "Grammar lesson":
+                st.session_state.output_dict = gga.create_lesson_sync(
+                    indi_language=st.session_state.indi,
+                    source_language=st.session_state.readers_language,
+                    readers_type=st.session_state.readers_type,
+                    grammatical_params=selected_params_blob,
+                    alterlingua_explanation=alterlingua_explanation,
+                    alterlingua_examples=alterlingua_examples,
+                    doc_contribution=doc_contribution,
+                    sentence_pairs=sentence_pairs_blob
+                )
+            else:
+                st.session_state.output_dict = gga.create_sketch_sync(
+                    indi_language=st.session_state.indi,
+                    source_language=st.session_state.readers_language,
+                    readers_type=st.session_state.readers_type,
+                    grammatical_params=selected_params_blob,
+                    alterlingua_explanation=alterlingua_explanation,
+                    alterlingua_examples=alterlingua_examples,
+                    doc_contribution=doc_contribution,
+                    sentence_pairs=sentence_pairs_blob
+                )
 
             # adding sources
             tmp_sources = {}
@@ -627,118 +747,141 @@ if (st.session_state.alterlingua_contribution
         st.session_state.run_aggregation = False
         st.success("Done! Output available.")
 
+# =========== DISPLAY, STORAGE, CONVERSION =========================================
+
 if st.session_state.output_dict:
-    st.markdown(f"""Remember: This raw output, available here or stored by other users, is a 
-                raw output from DIG4EL: It most probably contains inaccuracies and errors. 
-                It is meant to be edited and used by an expert of the 
-                {st.session_state.indi} language. 
-                """)
-    st.subheader("Store and/or download the output")
-    if st.sidebar.checkbox("Show JSON output"):
-        st.write(st.session_state.output_dict)
-    fn = "dig4el_aggregated_output_"
-    fn += st.session_state.indi + "_"
-    fn += u.clean_sentence(query, filename=True, filename_length=50)
-    fn += f"_({st.session_state.readers_language})"
-    fn += ".json"
-
-    docx = None
-    try:
-        docx = ogu.generate_lesson_docx_from_aggregated_output(st.session_state.output_dict,
-                                                               st.session_state.indi,
-                                                               st.session_state.readers_language)
-    except:
-        st.write("Generation of docx failed")
-
+    if st.session_state.document_format == "Grammar sketch":
+        st.markdown(f"""Remember: This raw output, available here or stored by other users, is a 
+                            raw output from DIG4EL: It most probably contains inaccuracies and errors. 
+                            It is meant to be edited and used by an expert of the 
+                            {st.session_state.indi} language. 
+                            """)
+        if st.sidebar.checkbox("Show JSON output"):
+            st.write(st.session_state.output_dict)
+        fn = "dig4el_aggregated_output_sketch_"
+        fn += st.session_state.indi + "_"
+        fn += u.clean_sentence(query, filename=True, filename_length=50)
+        fn += f"_({st.session_state.readers_language})"
+        fn += ".json"
+        colsk1, colsk2 = st.columns(2)
+        colsk1.download_button(label="Download JSON output",
+                                 data=json.dumps(st.session_state.output_dict, ensure_ascii=False),
+                                 file_name=fn)
+        st.divider()
+        st.subheader("Output")
+        display_sketch_output(st.session_state.output_dict)
 
 
+    elif st.session_state.document_format == "Grammar lesson":
+        st.markdown(f"""Remember: This raw output, available here or stored by other users, is a 
+                    raw output from DIG4EL: It most probably contains inaccuracies and errors. 
+                    It is meant to be edited and used by an expert of the 
+                    {st.session_state.indi} language. 
+                    """)
+        st.subheader("Store and/or download the output")
+        if st.sidebar.checkbox("Show JSON output"):
+            st.write(st.session_state.output_dict)
+        fn = "dig4el_aggregated_output_lesson_"
+        fn += st.session_state.indi + "_"
+        fn += u.clean_sentence(query, filename=True, filename_length=50)
+        fn += f"_({st.session_state.readers_language})"
+        fn += ".json"
 
-    colz, colx = st.columns(2)
-    # Feedback survey
-    if role in ["user", "admin"]:
-        colx.subheader("Give feedback on this output!")
+        docx = None
+        try:
+            docx = ogu.generate_lesson_docx_from_aggregated_output(st.session_state.output_dict,
+                                                                   st.session_state.indi,
+                                                                   st.session_state.readers_language)
+        except:
+            st.write("Generation of docx failed")
 
-        errors = colx.slider("Are there errors in the output? (0 = no error, 9 = everything is wrong)",
-                           min_value=0, max_value=9, value=0, key="final_feedback_errors")
+        colz, colx = st.columns(2)
+        # Feedback survey
+        if role in ["user", "admin"]:
+            colx.subheader("Give feedback on this output!")
 
-        completeness = colx.slider(
-            "Does the description cover the topic fully? (1 = very incomplete, 9 = fully complete)",
-            min_value=1, max_value=9, value=5, key="final_feedback_completeness")
+            errors = colx.slider("Are there errors in the output? (0 = no error, 9 = everything is wrong)",
+                               min_value=0, max_value=9, value=0, key="final_feedback_errors")
 
-        clarity = colx.slider("Is the output clear and understandable? (1 = very unclear, 9 = very clear)",
-                            min_value=1, max_value=9, value=5, key="final_feedback_clarity")
+            completeness = colx.slider(
+                "Does the description cover the topic fully? (1 = very incomplete, 9 = fully complete)",
+                min_value=1, max_value=9, value=5, key="final_feedback_completeness")
 
-        usefulness = colx.slider("How useful is this output for teaching/learning? (1 = useless, 9 = very useful)",
-                               min_value=1, max_value=9, value=5, key="final_feedback_usefulness")
+            clarity = colx.slider("Is the output clear and understandable? (1 = very unclear, 9 = very clear)",
+                                min_value=1, max_value=9, value=5, key="final_feedback_clarity")
 
-        confidence = colx.slider(
-            "How confident are you in using this output? (1 = not at all, 9 = completely confident)",
-            min_value=1, max_value=9, value=5, key="final_feedback_confidence")
+            usefulness = colx.slider("How useful is this output for teaching/learning? (1 = useless, 9 = very useful)",
+                                   min_value=1, max_value=9, value=5, key="final_feedback_usefulness")
 
-        comments = colx.text_area("What should be improved or added? (optional)", key="final_feedback_comments")
+            confidence = colx.slider(
+                "How confident are you in using this output? (1 = not at all, 9 = completely confident)",
+                min_value=1, max_value=9, value=5, key="final_feedback_confidence")
 
-        if colx.button("Submit feedback", key="final_feedback_button"):
-            with open(os.path.join(BASE_LD_PATH, "feedback.json"), "r") as f:
-                feedback = json.load(f)
-            with open(os.path.join("./", "version.json"), "r") as g:
-                v = json.load(g)
-                version = v["version"]
-            now = datetime.now()
-            readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
+            comments = colx.text_area("What should be improved or added? (optional)", key="final_feedback_comments")
 
-            feedback.append(
-                {
-                    "version": version,
-                    "date": readable_date_time,
-                    "user": name,
-                    "language": st.session_state.indi,
-                    "prompt": st.session_state.query,
-                    "errors": errors,
-                    "completeness": completeness,
-                    "clarity": clarity,
-                    "usefulness": usefulness,
-                    "confidence": confidence,
-                    "comments": comments
-                }
-            )
-            with open(os.path.join(BASE_LD_PATH, "feedback.json"), "w") as h:
-                json.dump(feedback, h)
-            colx.success("Thank you for your feedback!")
+            if colx.button("Submit feedback", key="final_feedback_button"):
+                with open(os.path.join(BASE_LD_PATH, "feedback.json"), "r") as f:
+                    feedback = json.load(f)
+                with open(os.path.join("./", "version.json"), "r") as g:
+                    v = json.load(g)
+                    version = v["version"]
+                now = datetime.now()
+                readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
+
+                feedback.append(
+                    {
+                        "version": version,
+                        "format": "grammar lesson",
+                        "date": readable_date_time,
+                        "user": name,
+                        "language": st.session_state.indi,
+                        "prompt": st.session_state.query,
+                        "errors": errors,
+                        "completeness": completeness,
+                        "clarity": clarity,
+                        "usefulness": usefulness,
+                        "confidence": confidence,
+                        "comments": comments
+                    }
+                )
+                with open(os.path.join(BASE_LD_PATH, "feedback.json"), "w") as h:
+                    json.dump(feedback, h)
+                colx.success("Thank you for your feedback!")
 
 
 
-    # Store/Download outputs
-    if colz.button("Store output (and share it with others)"):
+        # Store/Download outputs
+        if colz.button("Store output (and share it with others)"):
 
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w", encoding='utf-8') as f:
-            json.dump(st.session_state.output_dict, f, ensure_ascii=False)
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w", encoding='utf-8') as f:
+                json.dump(st.session_state.output_dict, f, ensure_ascii=False)
 
+            if docx:
+                with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn[:-5] + ".docx"), "wb") as f:
+                    f.write(docx.getvalue())
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
+                info = json.load(f)
+                qk = f"{query}_({st.session_state.readers_language})"
+            info["outputs"][qk] = fn
+
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w", encoding='utf-8') as f:
+                json.dump(info, f, ensure_ascii=False)
+
+            st.success("Output stored and available")
+        colz.download_button(label="Download JSON output",
+                             data=json.dumps(st.session_state.output_dict, ensure_ascii=False),
+                             file_name=fn)
         if docx:
-            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn[:-5] + ".docx"), "wb") as f:
-                f.write(docx.getvalue())
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
-            info = json.load(f)
-            qk = f"{query}_({st.session_state.readers_language})"
-        info["outputs"][qk] = fn
+            colz.download_button(label="Download DOCX output",
+                                 data=docx,
+                                 file_name=fn[:-5]+".docx",
+                                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                 key="final_docx")
 
-        with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w", encoding='utf-8') as f:
-            json.dump(info, f, ensure_ascii=False)
-
-        st.success("Output stored and available")
-    colz.download_button(label="Download JSON output",
-                         data=json.dumps(st.session_state.output_dict, ensure_ascii=False),
-                         file_name=fn)
-    if docx:
-        colz.download_button(label="Download DOCX output",
-                             data=docx,
-                             file_name=fn[:-5]+".docx",
-                             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                             key="final_docx")
-
-    st.divider()
-    st.subheader("Output")
-    st.divider()
-    display_output(st.session_state.output_dict)
+        st.divider()
+        st.subheader("Output")
+        st.divider()
+        display_lesson_output(st.session_state.output_dict)
 
 
 

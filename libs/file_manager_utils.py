@@ -12,6 +12,7 @@ doc_info = {
     "oa_vector_store_id": ""
   },
   "pairs": [],
+  "original_cqs": [],
   "outputs": {}
 }
 default_delimiters = [" ",
@@ -62,6 +63,8 @@ def create_ld(BASE_LD_PATH, lname):
         bids = {"batch_id": "no_id_set"}
         with open(os.path.join(BASE_LD_PATH, lname, "batch_id_store.json"), "w", encoding='utf-8') as f:
             u.save_json_normalized(bids, f)
+    if "conveqs" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
+        os.mkdir(os.path.join(BASE_LD_PATH, lname, "conveqs"))
 
 def display_file_manager(folder_path: str, file_extensions: list[str] = None):
     """

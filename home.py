@@ -169,7 +169,5 @@ BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
     "storage"
 )
-if "feedback.json" not in os.listdir(BASE_LD_PATH):
-    empty_feedback = []
-    with open(os.path.join(BASE_LD_PATH, "feedback.json"), "w") as f:
-        json.dump(empty_feedback, f)
+if "conveqs" not in os.listdir(BASE_LD_PATH):
+    os.mkdir(os.path.join(BASE_LD_PATH, "conveqs"))
