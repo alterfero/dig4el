@@ -104,8 +104,7 @@ authenticator = stauth.Authenticate(
 st.image("./pics/conveqs_banner.png")
 with st.sidebar:
     st.divider()
-    st.page_link("home.py", label="Home", icon=":material/home:")
-    st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")
+    st.page_link("pages/conveqs_home.py", label="ConveQs Home", icon=":material/home:")
     st.divider()
 
 # AUTH UI AND FLOW -----------------------------------------------------------------------
@@ -182,19 +181,23 @@ colb1, colb3 = st.columns(2, vertical_alignment="center")
 # ========== CONSULT ==========================
 if colb1.button("Browse Conversational Questionnaires files", width="stretch"):
     st.session_state.use = "consult"
+    st.rerun()
 
 if st.session_state.use == "consult":
+    st.markdown("Click on the left of any file to display what you can do with it.")
     with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
         conveqs_index = json.load(f)
     conveqs_index_df = pd.DataFrame(conveqs_index)
-    selected = st.dataframe(conveqs_index_df, column_order=["language", "name", "author", "format", "uploaded by", "is_downloadable"],
+    selected = st.dataframe(conveqs_index_df.style.hide(axis="index"), column_order=["language", "name", "author", "format", "uploaded by", "is_downloadable"],
                  selection_mode="single-row", on_select="rerun")
     if selected["selection"]["rows"] != []:
         selected_item = conveqs_index[selected["selection"]["rows"][0]]
-        if selected_item["is_downloadable"]:
+        if selected_item["is_downloadable"] and role != "guest":
             with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "rb") as f:
                 data = f.read()
             st.download_button("Download the file", data, file_name=selected_item["filename"])
+        else:
+            st.markdown("*This file can be downloaded by registered users, contact us to become one!*")
         if selected_item["uploaded by"] == username or role == "admin":
             if st.button("Delete this file"):
                 del conveqs_index[selected["selection"]["rows"][0]]
@@ -217,10 +220,11 @@ if st.session_state.use == "consult":
 # ========== UPLOAD ============================
 if colb3.button("Upload Conversational Questionnaires", width="stretch"):
     st.session_state.use = "edit"
+    st.rerun()
 
 if st.session_state.use == "edit" and role == "guest":
     st.markdown("*Guests cannot upload or manage Conversational Questionnaires.*")
-    st.markdown("*If you have Conversational Questionnaires to upload, contact us to become a member!*")
+    st.markdown("*If you have Conversational Questionnaires to upload, contact us to become a registered user!*")
 
 elif st.session_state.use == "edit" and role != "guest":
 
@@ -269,7 +273,7 @@ elif st.session_state.use == "edit" and role != "guest":
             name = st.text_input("Name this document (The name that will be displayed)")
             author = st.text_input("Author/owner of the corpus")
             visibility = st.selectbox("Visibility", ["Everyone", "Members only"], index=0)
-            is_downloadable = st.checkbox("Can be downloaded by members", value=True)
+            is_downloadable = st.checkbox("Can be downloaded by registered users", value=True)
 
             submitted = st.form_submit_button("Submit", disabled=not replace_ok)
 
