@@ -104,7 +104,7 @@ authenticator = stauth.Authenticate(
 st.image("./pics/conveqs_banner.png")
 with st.sidebar:
     st.divider()
-    st.page_link("pages/conveqs_home.py", label="ConveQs Home", icon=":material/home:")
+    st.page_link("pages/Conveqs_home.py", label="ConveQs Home", icon=":material/home:")
     st.divider()
 
 # AUTH UI AND FLOW -----------------------------------------------------------------------
