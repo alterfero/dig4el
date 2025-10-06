@@ -207,6 +207,8 @@ def clean_sentence(sentence, filename=False, filename_length=50):
             out = out.replace(item, "")
         for item in space_list:
             out = out.replace(item, "_")
+        for item in or_list:
+            out = out.replace(item, "_OR_")
         out = out[:length]
     return out
 
