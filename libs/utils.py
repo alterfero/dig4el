@@ -190,12 +190,15 @@ def clean_sentence(sentence, filename=False, filename_length=50):
     """Clean a sentence."""
     nil_list = [",", ";"]
     space_list = ["'", "’", "(", ")", ":", ".", "!", "?", "…", "—", "-", "–", "—", "«"]
+    or_list = ["/", "|"]
     out = sentence.lower()
     if not filename:
         for item in nil_list:
             out = out.replace(item, "")
         for item in space_list:
             out = out.replace(item, " ")
+        for item in or_list:
+            out = out.replace(item, " [OR] ")
     else:
         length = min(len(sentence), filename_length)
         nil_list += ["."]
