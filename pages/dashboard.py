@@ -690,6 +690,8 @@ with tab3:
                                       st.session_state.indi_language))
 
         progress = squ.get_batch_progress(st.session_state.batch_id)
+        if role == "admin":
+            st.markdown("**ADMIN**: batch ID {}, progress: {}".format(st.session_state.batch_id, progress))
         if progress["queued"] != progress["finished"] + progress["failed"]:
             st.markdown("""The sentence augmentation is in progress. It is a long process (up to 2 minutes per sentence)
             that will continue even if you close this page or turn off your computer. You can come back anytime 
@@ -745,7 +747,7 @@ with tab3:
                         c, len(os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))) - 1,
                         st.session_state.indi_language))
 
-    # ADD COMMENTS AND WORD-CONCEPT CONNECTIONS
+    # EDIT CONTENT, ADD COMMENTS AND WORD-CONCEPT CONNECTIONS
     if role in ["admin", "caretaker"]:
         st.subheader("3. Add/edit comments and connect word(s) and concept(s) in augmented sentences")
         st.markdown(f"""This step is manual and adds a lot of information to the corpus.\\
@@ -776,14 +778,23 @@ with tab3:
             selected_ap = aps[selected["selection"]["rows"][0]]
             with open(selected_ap["filename"], "r", encoding='utf-8') as f:
                 slap = json.load(f)
+            if role == "admin":
+                with st.popover("ADMIN: slap"):
+                    st.write(slap)
+            source = st.text_input("Edit Source", value=slap.get("source", ""))
+            target = st.text_input("Edit {}".format(st.session_state.indi_language), value=slap.get("target", ""))
             comments = st.text_input("Add/edit comments", value=slap.get("comments", ""))
-            if not slap.get("connections", None):
-                slap["connections"] = {}
-            st.markdown(f"**{st.session_state.indi_language}**: {slap['target']}")
-            st.markdown(f"**English**: {slap['source']}")
-            key_translation_concepts = slap["key_translation_concepts"]
-            words = stats.custom_split(slap["target"], st.session_state.delimiters)
-
+            with st.expander("Edit content"):
+                description = st.text_input("Edit description", value=slap.get("description", ""))
+                keywords_string = st.text_input("Edit keywords (respect format)", value=", ".join(slap.get("keywords", [])))
+                keywords = keywords_string.split(", ")
+                if not slap.get("connections", None):
+                    slap["connections"] = {}
+                st.markdown(f"**{st.session_state.indi_language}**: {slap['target']}")
+                st.markdown(f"**English**: {slap['source']}")
+                key_translation_concepts = slap["key_translation_concepts"]
+                words = stats.custom_split(slap["target"], st.session_state.delimiters)
+            st.markdown("**Add connections**")
             for ktc in key_translation_concepts:
                 connected_words = st.multiselect(f"**{ktc}** Is expressed by",
                                                  words,
@@ -791,11 +802,14 @@ with tab3:
                                                  key="cw"+ktc)
                 slap["connections"][ktc] = connected_words
                 slap["comments"] = comments
-            if st.button("Submit comments and connections"):
+                slap["source"] = source
+                slap["target"] = target
+                slap["description"] = description
+                slap["keywords"] = keywords
+            if st.button("Submit", key="submitting_changes_to_augmented_pair"):
                 with open(selected_ap["filename"], "w", encoding='utf-8') as f:
                     utils.save_json_normalized(slap, f)
-                    st.success("Comments and connections saved")
-
+                    st.success("Submitted additions and changes saved")
     else:
         st.divider()
         st.markdown("*Contact us to make word(s)-concepts connections*")
@@ -813,7 +827,7 @@ with tab3:
         if "hard_kw_retrieval_results" not in st.session_state:
             st.session_state.hard_kw_retrieval_results = []
 
-        if st.button("Submit"):
+        if st.button("Submit", key="retrieval_test"):
             with st.spinner("Retrieving sentences from vectors"):
                 try:
                     sources_index, sources_id_to_meta = ragu.load_sources_index_and_id_to_meta(

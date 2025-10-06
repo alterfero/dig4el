@@ -69,23 +69,26 @@ def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath):
     # Extract sentences
     data = []
     for sentence in root.findall('.//S'):
-        source = sentence.find('.//TRANSL').text
-        target = sentence.find('.//FORM').text.strip()
-        word_connections = []
+        try:
+            source = sentence.find('.//TRANSL').text
+            target = sentence.find('.//FORM').text.strip()
+            word_connections = []
 
-        for word in sentence.findall('.//W'):
-            iaai_word = word.find('.//FORM').text.strip()
-            french_word = word.find('.//TRANSL').text.strip()
-            word_connections.append((iaai_word, french_word))
+            for word in sentence.findall('.//W'):
+                iaai_word = word.find('.//FORM').text.strip()
+                french_word = word.find('.//TRANSL').text.strip()
+                word_connections.append((iaai_word, french_word))
 
-        data.append({
-            'source': source,
-            'target': target,
-            'word connections': word_connections
-        })
+            data.append({
+                'source': source,
+                'target': target,
+                'word connections': word_connections
+            })
+        except:
+            print("issue with sentence {}".format(sentence))
 
     # Output JSON
-    with open("sentence_pairs.json", "w", encoding='utf-8') as f:
+    with open("/Users/sebastienchristian/Desktop/ngen_pangloss_Ng_Sheep_theft.json", "w", encoding='utf-8') as f:
         utils.save_json_normalized(data, f)
 
-pangloss_xml_to_sentence_pairs_json("/Users/sebastienchristian/Desktop/iaai_docs/pangloss.xml")
+pangloss_xml_to_sentence_pairs_json("/Users/sebastienchristian/Desktop/d/01-These/language_lib/ngen/Ng_Sheep_theft.xml")
