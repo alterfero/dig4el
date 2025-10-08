@@ -809,11 +809,6 @@ with tab3:
                         ktc_pop.append(ktc)
                         slap["connections"][source_concept] = connected_words
                         slap["key_translation_concepts"].append(source_concept)
-                    slap["comments"] = comments
-                    slap["source"] = source
-                    slap["target"] = target
-                    slap["description"] = description
-                    slap["keywords"] = keywords
                 connections_form_submitted = st.form_submit_button("Submit connections", width="stretch", key="connections_form_submit")
 
             for item in ktc_pop:
@@ -822,6 +817,13 @@ with tab3:
                 if item in slap["key_translation_concepts"]:
                     slap["key_translation_concepts"].remove(item)
             ktc_pop = []
+
+            slap["comments"] = comments
+            slap["source"] = source
+            slap["target"] = target
+            slap["description"] = description
+            slap["keywords"] = keywords
+
             if st.button("Submit all changes", width="stretch", key="submitting_changes_to_augmented_pair"):
                 with open(selected_ap["filename"], "w", encoding='utf-8') as f:
                     utils.save_json_normalized(slap, f)

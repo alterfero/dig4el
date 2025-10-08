@@ -10,6 +10,13 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 1.5rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # components.html("""
 # <div style="
