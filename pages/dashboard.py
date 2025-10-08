@@ -767,7 +767,9 @@ with tab3:
                     "source": ap["source"],
                     "target": ap["target"],
                     "comments": ap.get("comments", ""),
+                    "key_translation_concepts": ap.get("key_translation_concepts", []),
                     "connections": ap.get("connections", {}),
+                    "keywords": ap.get("keywords", []),
                     "filename": os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file)
                 }
             )
@@ -788,28 +790,44 @@ with tab3:
                 description = st.text_input("Edit description", value=slap.get("description", ""))
                 keywords_string = st.text_input("Edit keywords (respect format)", value=", ".join(slap.get("keywords", [])))
                 keywords = keywords_string.split(", ")
-                if not slap.get("connections", None):
-                    slap["connections"] = {}
-                st.markdown(f"**{st.session_state.indi_language}**: {slap['target']}")
-                st.markdown(f"**English**: {slap['source']}")
                 key_translation_concepts = slap.get("key_translation_concepts", [])
                 words = stats.custom_split(slap["target"], st.session_state.delimiters)
             st.markdown("**Add connections**")
-            for ktc in key_translation_concepts:
-                connected_words = st.multiselect(f"**{ktc}** Is expressed by",
-                                                 words,
-                                                 default=slap["connections"].get(ktc, []),
-                                                 key="cw"+ktc)
-                slap["connections"][ktc] = connected_words
-                slap["comments"] = comments
-                slap["source"] = source
-                slap["target"] = target
-                slap["description"] = description
-                slap["keywords"] = keywords
-            if st.button("Submit", key="submitting_changes_to_augmented_pair"):
+            ktc_pop = []
+            with st.form(key="connections_form", clear_on_submit=True, enter_to_submit=False, border=True, width="stretch"):
+                colc1, colc2 = st.columns(2)
+                for ktc in key_translation_concepts:
+                    source_concept = colc1.text_input("Concept (edit if needed)", value=ktc, key="ktc_"+ktc)
+                    connected_words = colc2.multiselect(f"is expressed by",
+                                                     words,
+                                                     default=slap["connections"].get(ktc, []),
+                                                     key="cw"+ktc)
+                    colc1.divider()
+                    colc2.divider()
+                    if source_concept != ktc:
+                        st.warning(f"Concept {source_concept} replaces {ktc}.")
+                        ktc_pop.append(ktc)
+                        slap["connections"][source_concept] = connected_words
+                        slap["key_translation_concepts"].append(source_concept)
+                    slap["comments"] = comments
+                    slap["source"] = source
+                    slap["target"] = target
+                    slap["description"] = description
+                    slap["keywords"] = keywords
+                connections_form_submitted = st.form_submit_button("Submit connections", width="stretch", key="connections_form_submit")
+
+            for item in ktc_pop:
+                if item in slap["connections"]:
+                    del slap["connections"][item]
+                if item in slap["key_translation_concepts"]:
+                    slap["key_translation_concepts"].remove(item)
+            ktc_pop = []
+            if st.button("Submit all changes", width="stretch", key="submitting_changes_to_augmented_pair"):
                 with open(selected_ap["filename"], "w", encoding='utf-8') as f:
                     utils.save_json_normalized(slap, f)
-                    st.success("Submitted additions and changes saved")
+                st.success("Submitted additions and changes saved")
+                time.sleep(0.5)
+                st.rerun()
     else:
         st.divider()
         st.markdown("*Contact us to make word(s)-concepts connections*")
