@@ -792,7 +792,7 @@ with tab3:
                     slap["connections"] = {}
                 st.markdown(f"**{st.session_state.indi_language}**: {slap['target']}")
                 st.markdown(f"**English**: {slap['source']}")
-                key_translation_concepts = slap["key_translation_concepts"]
+                key_translation_concepts = slap.get("key_translation_concepts", [])
                 words = stats.custom_split(slap["target"], st.session_state.delimiters)
             st.markdown("**Add connections**")
             for ktc in key_translation_concepts:

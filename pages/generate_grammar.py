@@ -109,13 +109,16 @@ if "document_format" not in st.session_state:
 # ----- HELPERS -----------------------------------------------------------------------------------
 def display_lesson_output(output_dict):
     o = output_dict
-    st.write(f"Generated {o.get('date', 'date unknown')}, DIG4EL version {o.get('version', 'version unknown')}")
+    st.markdown(f"**Grammar Lesson** generated {o.get('date', 'date unknown')}, DIG4EL version {o.get('version', 'version unknown')}")
     st.title(o["title"])
     st.write(o["introduction"])
     st.divider()
     for section in o["sections"]:
         st.subheader(section["focus"])
-        st.write(section["description"])
+        if isinstance(section["description"], str):
+            st.write(section["description"])
+        elif isinstance(section["description"], dict):
+            st.write(section["description"].get("description", "..."))
         st.markdown(f"**{section['example']['target_sentence']}**")
         st.markdown(f"*{section['example']['source_sentence']}*")
         st.write(section["example"]["description"])
@@ -145,13 +148,16 @@ def display_lesson_output(output_dict):
 
 def display_sketch_output(output_dict):
     o = output_dict
-    st.write(f"Generated {o.get('date', 'date unknown')}, DIG4EL version {o.get('version', 'version unknown')}")
+    st.markdown(f"**Grammar sketch** Generated {o.get('date', 'date unknown')}, DIG4EL version {o.get('version', 'version unknown')}")
     st.title(o["title"])
     st.write(o["introduction"])
     st.divider()
     for section in o["sections"]:
         st.subheader(section["focus"])
-        st.write(section["description"])
+        if isinstance(section["description"], str):
+            st.write(section["description"])
+        elif isinstance(section["description"], dict):
+            st.write(section["description"].get("description", "..."))
         for example in section.get("examples"):
             st.markdown(f"**{example['target_sentence']}**")
             st.markdown(f"*{example['source_sentence']}*")
@@ -589,15 +595,15 @@ if st.session_state.run_sources:
     # sentence pairs selection
     if st.session_state.is_pairs and st.session_state.use_pairs:
         with st.spinner("Brewing coffee..."):
-            if sdu.get_vector_ready_pairs(st.session_state.indi_language):
-                st.success("Augmented pairs prepared for vectorization")
-            if ragu.vectorize_vaps(st.session_state.indi_language):
-                st.success("Augmented pairs blobs vectorized and indexed")
-            if ragu.vectorize_sources(st.session_state.indi_language):
-                st.success("Augmented pairs sources vectorized and indexed")
-            if ragu.vectorize_descriptions(st.session_state.indi_language):
-                st.success("Augmented pairs descriptions vectorized and indexed")
-            ragu.create_hard_kw_index(st.session_state.indi_language)
+            if sdu.get_vector_ready_pairs(st.session_state.indi):
+                print("Augmented pairs prepared for vectorization")
+            if ragu.vectorize_vaps(st.session_state.indi):
+                print("Augmented pairs blobs vectorized and indexed")
+            if ragu.vectorize_sources(st.session_state.indi):
+                print("Augmented pairs sources vectorized and indexed")
+            if ragu.vectorize_descriptions(st.session_state.indi):
+                print("Augmented pairs descriptions vectorized and indexed")
+            ragu.create_hard_kw_index(st.session_state.indi)
         with st.spinner("Retrieving a helpful selection of sentence pairs..."):
             # retrieve N sentences using embeddings XXX RULED OUT, NOT RELEVANT ENOUGH
             # index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "description_vectors", "index.faiss")
