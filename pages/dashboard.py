@@ -762,6 +762,10 @@ with tab3:
                         if fn[-5:] == ".json"]:
             with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file), "r", encoding='utf-8') as f:
                 ap = json.load(f)
+                if "connection" not in ap.keys():
+                    ap["connections"] = {}
+                if "key_translation_concepts" not in ap.keys():
+                    ap["key_translation_concepts"] = []
             aps.append(
                 {
                     "source": ap["source"],
@@ -805,7 +809,6 @@ with tab3:
                     colc1.divider()
                     colc2.divider()
                     if source_concept != ktc:
-                        st.warning(f"Concept {source_concept} replaces {ktc}.")
                         ktc_pop.append(ktc)
                         slap["connections"][source_concept] = connected_words
                         slap["key_translation_concepts"].append(source_concept)
