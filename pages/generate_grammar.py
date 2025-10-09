@@ -178,6 +178,60 @@ def display_sketch_output(output_dict):
         for d in sources["pairs"]:
             st.markdown(f"- {d}")
 
+
+def feedback_form():
+    # Feedback survey
+    st.subheader("Give feedback on this output!")
+    with st.form(key="feedback_form", clear_on_submit=False, enter_to_submit=False, border=True):
+        errors_form = st.slider("Are there errors in the output? (0 = no error, 9 = everything is wrong)",
+                             min_value=0, max_value=9, value=0, key="final_feedback_errors")
+
+        completeness_form = st.slider(
+            "Does the description cover the topic fully? (1 = very incomplete, 9 = fully complete)",
+            min_value=1, max_value=9, value=0, key="final_feedback_completeness")
+
+        clarity_form = st.slider("Is the output clear and understandable? (1 = very unclear, 9 = very clear)",
+                              min_value=1, max_value=9, value=0, key="final_feedback_clarity")
+
+        usefulness_form = st.slider("How useful is this output for teaching/learning? (1 = useless, 9 = very useful)",
+                                 min_value=1, max_value=9, value=0, key="final_feedback_usefulness")
+
+        confidence_form = st.slider(
+            "How confident are you in using this output? (1 = not at all, 9 = completely confident)",
+            min_value=1, max_value=9, value=0, key="final_feedback_confidence")
+
+        comments_form = st.text_area("What should be improved or added? (optional)", key="final_feedback_comments")
+        submitted = st.form_submit_button("Submit feedback", key="feedback_submit_button")
+
+        if submitted:
+            with open(os.path.join(BASE_LD_PATH, "feedback.json"), "r") as f:
+                feedback = json.load(f)
+            with open(os.path.join("./", "version.json"), "r") as g:
+                v = json.load(g)
+                version = v["version"]
+            now = datetime.now()
+            readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
+
+            feedback.append(
+                {
+                    "version": version,
+                    "format": "grammar lesson",
+                    "date": readable_date_time,
+                    "user": name,
+                    "language": st.session_state.indi,
+                    "prompt": st.session_state.query,
+                    "errors": errors_form,
+                    "completeness": completeness_form,
+                    "clarity": clarity_form,
+                    "usefulness": usefulness_form,
+                    "confidence": confidence_form,
+                    "comments": comments_form
+                }
+            )
+            with open(os.path.join(BASE_LD_PATH, "feedback.json"), "w") as h:
+                json.dump(feedback, h)
+            st.success("Thank you for your feedback!")
+
 # ------ AUTH SETUP --------------------------------------------------------------------------------
 CFG_PATH = Path(
     os.getenv("AUTH_CONFIG_PATH") or
@@ -762,8 +816,6 @@ if st.session_state.output_dict:
                             It is meant to be edited and used by an expert of the 
                             {st.session_state.indi} language. 
                             """)
-        if st.sidebar.checkbox("Show JSON output"):
-            st.write(st.session_state.output_dict)
         fn = "dig4el_aggregated_output_sketch_"
         fn += st.session_state.indi + "_"
         fn += u.clean_sentence(query, filename=True, filename_length=50)
@@ -774,8 +826,10 @@ if st.session_state.output_dict:
                                  data=json.dumps(st.session_state.output_dict, ensure_ascii=False),
                                  file_name=fn)
         st.divider()
-        st.subheader("Output")
-        display_sketch_output(st.session_state.output_dict)
+        with st.expander("Output"):
+            display_sketch_output(st.session_state.output_dict)
+        if role in ["user", "admin"]:
+            feedback_form()
 
 
     elif st.session_state.document_format == "Grammar lesson":
@@ -785,8 +839,6 @@ if st.session_state.output_dict:
                     {st.session_state.indi} language. 
                     """)
         st.subheader("Store and/or download the output")
-        if st.sidebar.checkbox("Show JSON output"):
-            st.write(st.session_state.output_dict)
         fn = "dig4el_aggregated_output_lesson_"
         fn += st.session_state.indi + "_"
         fn += u.clean_sentence(query, filename=True, filename_length=50)
@@ -801,63 +853,8 @@ if st.session_state.output_dict:
         except:
             st.write("Generation of docx failed")
 
-        colz, colx = st.columns(2)
-        # Feedback survey
-        if role in ["user", "admin"]:
-            colx.subheader("Give feedback on this output!")
-
-            errors = colx.slider("Are there errors in the output? (0 = no error, 9 = everything is wrong)",
-                               min_value=0, max_value=9, value=0, key="final_feedback_errors")
-
-            completeness = colx.slider(
-                "Does the description cover the topic fully? (1 = very incomplete, 9 = fully complete)",
-                min_value=1, max_value=9, value=5, key="final_feedback_completeness")
-
-            clarity = colx.slider("Is the output clear and understandable? (1 = very unclear, 9 = very clear)",
-                                min_value=1, max_value=9, value=5, key="final_feedback_clarity")
-
-            usefulness = colx.slider("How useful is this output for teaching/learning? (1 = useless, 9 = very useful)",
-                                   min_value=1, max_value=9, value=5, key="final_feedback_usefulness")
-
-            confidence = colx.slider(
-                "How confident are you in using this output? (1 = not at all, 9 = completely confident)",
-                min_value=1, max_value=9, value=5, key="final_feedback_confidence")
-
-            comments = colx.text_area("What should be improved or added? (optional)", key="final_feedback_comments")
-
-            if colx.button("Submit feedback", key="final_feedback_button"):
-                with open(os.path.join(BASE_LD_PATH, "feedback.json"), "r") as f:
-                    feedback = json.load(f)
-                with open(os.path.join("./", "version.json"), "r") as g:
-                    v = json.load(g)
-                    version = v["version"]
-                now = datetime.now()
-                readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
-
-                feedback.append(
-                    {
-                        "version": version,
-                        "format": "grammar lesson",
-                        "date": readable_date_time,
-                        "user": name,
-                        "language": st.session_state.indi,
-                        "prompt": st.session_state.query,
-                        "errors": errors,
-                        "completeness": completeness,
-                        "clarity": clarity,
-                        "usefulness": usefulness,
-                        "confidence": confidence,
-                        "comments": comments
-                    }
-                )
-                with open(os.path.join(BASE_LD_PATH, "feedback.json"), "w") as h:
-                    json.dump(feedback, h)
-                colx.success("Thank you for your feedback!")
-
-
-
         # Store/Download outputs
-        if colz.button("Store output (and share it with others)"):
+        if st.button("Store output (and share it with others)"):
 
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w", encoding='utf-8') as f:
                 json.dump(st.session_state.output_dict, f, ensure_ascii=False)
@@ -874,20 +871,20 @@ if st.session_state.output_dict:
                 json.dump(info, f, ensure_ascii=False)
 
             st.success("Output stored and available")
-        colz.download_button(label="Download JSON output",
+        st.download_button(label="Download JSON output",
                              data=json.dumps(st.session_state.output_dict, ensure_ascii=False),
                              file_name=fn)
         if docx:
-            colz.download_button(label="Download DOCX output",
+            st.download_button(label="Download DOCX output",
                                  data=docx,
                                  file_name=fn[:-5]+".docx",
                                  mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                                  key="final_docx")
 
-        st.divider()
-        st.subheader("Output")
-        st.divider()
-        display_lesson_output(st.session_state.output_dict)
+        with st.expander("Output"):
+            display_lesson_output(st.session_state.output_dict)
+        if role in ["user", "admin"]:
+            feedback_form()
 
 
 
