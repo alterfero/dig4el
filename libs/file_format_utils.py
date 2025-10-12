@@ -72,12 +72,12 @@ def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath):
         try:
             source = sentence.find('.//TRANSL').text
             target = sentence.find('.//FORM').text.strip()
-            word_connections = []
+            word_connections = {}
 
             for word in sentence.findall('.//W'):
-                iaai_word = word.find('.//FORM').text.strip()
-                french_word = word.find('.//TRANSL').text.strip()
-                word_connections.append((iaai_word, french_word))
+                target_word = word.find('.//FORM').text.strip()
+                source_word = word.find('.//TRANSL').text.strip()
+                word_connections[source_word] = [target_word]
 
             data.append({
                 'source': source,
@@ -88,7 +88,7 @@ def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath):
             print("issue with sentence {}".format(sentence))
 
     # Output JSON
-    with open("/Users/sebastienchristian/Desktop/ngen_pangloss_Ng_Sheep_theft.json", "w", encoding='utf-8') as f:
+    with open("/Users/sebastienchristian/Desktop/ngen_pangloss_NG_Guinea_fowl.json", "w", encoding='utf-8') as f:
         utils.save_json_normalized(data, f)
 
-pangloss_xml_to_sentence_pairs_json("/Users/sebastienchristian/Desktop/d/01-These/language_lib/ngen/Ng_Sheep_theft.xml")
+pangloss_xml_to_sentence_pairs_json("/Users/sebastienchristian/Desktop/d/01-These/language_lib/ngen/NG_Guinea_fowl.xml")

@@ -12,6 +12,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+import copy
 
 import streamlit as st
 import time
@@ -117,6 +118,10 @@ if "caretaker_of" not in st.session_state:
     st.session_state.caretaker_of = []
 if "caretaker_trigger" not in st.session_state:
     st.session_state.caretaker_trigger = False
+if "llm_augmentation" not in st.session_state:
+    st.session_state.llm_augmentation = True
+if "force_augmentation" not in st.session_state:
+    st.session_state.force_augmentation = False
 
 # ------ AUTH SETUP --------------------------------------------------------------------------------
 CFG_PATH = Path(
@@ -394,8 +399,8 @@ with tab2:
     print("vsid_from_info_dict: {}".format(vsid_from_info_dict))
     with st.spinner("Updating store list"):
         st.session_state.available_vector_stores = ovsu.list_vector_stores_sync()  # ADDED FOR TESTING
-    print("Updated VS list: {}".format(st.session_state.available_vector_stores))
-    print("VSIDs: {}".format([vs.id for vs in st.session_state.available_vector_stores]))
+    # print("Updated VS list: {}".format(st.session_state.available_vector_stores))
+    # print("VSIDs: {}".format([vs.id for vs in st.session_state.available_vector_stores]))
 
     if vsid_from_info_dict is not None and vsid_from_info_dict in [vs.id for vs in st.session_state.available_vector_stores]:
         st.session_state.vsid = vsid_from_info_dict
@@ -508,6 +513,8 @@ with tab3:
         The **augmented pair** file is then used to provide relevant augmented pairs to grammatical descriptions 
         (Retrieval-Augmented Generation, or RAG). 
         """)
+        ufwc = 0
+        upload_file_widget_key = "ufwk_" + str(ufwc)
         v1, v2, v3 = st.columns(3)
         with v1:
             st.download_button("Download an Excel template", "./templates/sentence_pairs_template.xls",
@@ -537,28 +544,21 @@ with tab3:
         st.markdown("**Available sentence pairs files**")
         st.dataframe(df_display)
 
-    if role in ["admin", "caretaker"]:
+    # ====== NEW PAIRS FILE UPLOAD FORM ==================================
+
+    if role in ["guest", "user"]:
+        st.markdown("*Caretakers only can upload sentence pairs. Contact us if you want to be a caretaker of {}*".format(st.session_state.indi_language))
+    elif role in ["admin", "caretaker"]:
         new_pair_file = st.file_uploader(
             "Add a new sentence pair file to the server (.csv or .json)",
-            accept_multiple_files=False
+            accept_multiple_files=False,
+            key=upload_file_widget_key
         )
-
-        # Upload sentence pairs file
-        if new_pair_file and new_pair_file.name[-4:] in ["json", ".csv"]:
-            if new_pair_file.name in available_pairs_filenames:
-                replace_ok = st.checkbox("This file is already on the server, replace it?", value=False)
-            else:
-                replace_ok = True
-            if replace_ok:
-                info_entered = False
-                name = st.text_input("Name this corpus")
-                origin = st.text_input("Origin of the corpus")
-                author = st.text_input("Author/owner of the corpus")
-                if name and origin and author:
-                    info_entered = True
+        if new_pair_file:
+            with st.form("Add a new sentence pair file to the server", clear_on_submit=False, enter_to_submit=False):
                 valid_file = False
                 server_filename = None
-                if info_entered and st.button("Add this file to sentence pairs on the server"):
+                if new_pair_file.name[-4:] in ["json", ".csv"]:
                     try:
                         if new_pair_file.name[-4:] == ".csv":
                             sentence_pairs = u.csv_to_dict(new_pair_file)
@@ -573,35 +573,52 @@ with tab3:
                                 "This is a JSON file, but not a sentence pair file formatted as a list of 'source' and 'target' keys()")
                     except:
                         st.write("Not a correctly formatted JSON file.")
-                if valid_file:
 
-                    st.success("Adding {} to the server".format(server_filename))
-                    with open(os.path.join(PAIRS_BASE_PATH, "pairs", server_filename), "w", encoding='utf-8') as f:
-                        utils.save_json_normalized(sentence_pairs, f)
-                    st.success(f"Saved `{server_filename}` on the server.")
+                    name = st.text_input("Name this corpus")
+                    origin = st.text_input("Origin of the corpus")
+                    author = st.text_input("Author/owner of the corpus")
 
-                    # UPDATE INFO_DOC
-                    if server_filename in available_pairs_filenames:
-                        i = [i for i in st.session_state.info_doc["pairs"].index if
-                             st.session_state.info_doc["pairs"]["filename"] == server_filename][0]
-                        del (st.session_state.info_doc["pairs"][i])
+                    upload_new_sentence_pairs_file_disabled = valid_file is None or server_filename is None
 
-                    st.session_state.info_doc["pairs"].append(
-                        {
-                            "filename": server_filename,
-                            "name": name,
-                            "origin": origin,
-                            "author": author,
-                            "augmented": False
-                        }
-                    )
-                    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w", encoding='utf-8') as f:
-                        utils.save_json_normalized(st.session_state.info_doc, f)
-                    st.rerun()
-    else:
-        st.markdown("*Contact us to propose new sentence pairs files.*")
+                new_sentence_pairs_file_submitted = st.form_submit_button("Submit",
+                                                            disabled=upload_new_sentence_pairs_file_disabled)
 
-    # AUGMENT SENTENCE PAIRS
+                if new_sentence_pairs_file_submitted:
+                    if author and origin and name:
+                        st.success("Adding {} to the server".format(server_filename))
+                        with open(os.path.join(PAIRS_BASE_PATH, "pairs", server_filename), "w", encoding='utf-8') as f:
+                            utils.save_json_normalized(sentence_pairs, f)
+                        st.success(f"Saved `{server_filename}` on the server.")
+
+                        # UPDATE INFO_DOC
+                        if server_filename in available_pairs_filenames:
+                            i = [i for i in st.session_state.info_doc["pairs"] if
+                                 i["filename"] == server_filename]
+                            if i != []:
+                                st.session_state.info_doc["pairs"].remove(i[0])
+                                print("Remove {} from st.session_state.info_doc".format(i[0]))
+                            else:
+                                print("server_filename {} not found in st.session_state.info_doc {}".format(
+                                    server_filename, st.session_state.info_doc
+                                ))
+
+                        st.session_state.info_doc["pairs"].append(
+                            {
+                                "filename": server_filename,
+                                "name": name,
+                                "origin": origin,
+                                "author": author,
+                                "augmented": False
+                            }
+                        )
+                        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w", encoding='utf-8') as f:
+                            utils.save_json_normalized(st.session_state.info_doc, f)
+                        ufwc += 1 #changing upload widget key to reset it.
+                        st.rerun()
+                    else:
+                        st.warning("You must provide a name, an origin and an author for this corpus")
+
+    # DISPLAY AUGMENTED SENTENCE PAIRS
 
     st.subheader("2. Augment sentence pairs with automatic grammatical descriptions")
     st.markdown("""Sentence pairs are augmented with grammatical descriptions, so they can be used efficiently.
@@ -610,38 +627,45 @@ with tab3:
     """)
 
     # Display available augmented pairs
-    available_augmented_sentences = [fn
-                                     for fn in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
-                                     if fn[-5:] == ".json"
-                                     ]
-    coln, colm = st.columns(2)
-    coln.markdown("**{} Available augmented sentences**".format(len(available_augmented_sentences)))
-    if len(available_augmented_sentences) > 0 and colm.checkbox("Explore augmented sentences"):
-        selected_augmented_sentence = st.selectbox("Select a sentence",
-                                                   [s[:-5] for s in available_augmented_sentences])
-        selected_augmented_sentence_file = selected_augmented_sentence + ".json"
-        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", selected_augmented_sentence_file), "r", encoding='utf-8') as f:
-            sas = json.load(f)
+    # available_augmented_sentences = [fn
+    #                                  for fn in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))
+    #                                  if fn[-5:] == ".json"
+    #                                  ]
+    # coln, colm = st.columns(2)
+    # coln.markdown("**{} Available augmented sentences**".format(len(available_augmented_sentences)))
+    # if len(available_augmented_sentences) > 0 and colm.checkbox("Explore augmented sentences"):
+    #     selected_augmented_sentence = st.selectbox("Select a sentence",
+    #                                                [s[:-5] for s in available_augmented_sentences])
+    #     selected_augmented_sentence_file = selected_augmented_sentence + ".json"
+    #     with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", selected_augmented_sentence_file), "r", encoding='utf-8') as f:
+    #         sas = json.load(f)
+    #
+    #     st.markdown(f"""
+    #     - **{st.session_state.indi_language}**: **{sas["target"]}**
+    #     - **Pivot**: {sas["source"]}
+    #     - **Description**: {sas["description"]}
+    #     - **Grammatical keywords**: {sas["keywords"]}
+    #     - **Comments**: {sas.get("comments", "")}
+    #     - **Key translation concepts**: {sas["key_translation_concepts"]}
+    #     - **{st.session_state.indi_language} word(s) - concept(s) connections**:
+    #     """)
+    #     if sas.get("connections", {}) != {}:
+    #         for connection in sas.get("connections", {}):
+    #             st.write("{} --> {}".format(connection, sas["connections"][connection]))
+    #     else:
+    #         st.write("No connection created.")
+    #     if sas.get("gloss", None):
+    #         st.write(sas["gloss"])
 
-        st.markdown(f"""
-        - **{st.session_state.indi_language}**: **{sas["target"]}**
-        - **Pivot**: {sas["source"]}
-        - **Description**: {sas["description"]}
-        - **Grammatical keywords**: {sas["keywords"]}
-        - **Comments**: {sas.get("comments", "")}
-        - **Key translation concepts**: {sas["key_translation_concepts"]}
-        - **{st.session_state.indi_language} word(s) - concept(s) connections**: 
-        """)
-        if sas.get("connections", {}) != {}:
-            for connection in sas.get("connections", {}):
-                st.write("{} --> {}".format(connection, sas["connections"][connection]))
-        else:
-            st.write("No connection created.")
-        if sas.get("gloss", None):
-            st.write(sas["gloss"])
+    if role == "admin":
+        with st.sidebar:
+            st.session_state.llm_augmentation = st.checkbox("ADMIN: Use LLM for augmentation",
+                                                            value=st.session_state.llm_augmentation)
+            st.session_state.force_augmentation = st.checkbox("ADMIN: Force re-augmentation",
+                                                              value=st.session_state.force_augmentation)
 
+    # ========= SENTENCE PAIRS AUGMENTATION ================================================
 
-    # add new pairs
     if role in ["admin", "caretaker"]:
         if len(st.session_state.info_doc["pairs"]) > 0:
             st.session_state.selected_pairs_filename = st.selectbox("Select a sentence pairs file to augment",
@@ -652,26 +676,56 @@ with tab3:
                 st.session_state.sentence_pairs = json.load(f)
 
             # user triggers augmentation
+            if not st.session_state.llm_augmentation:
+                st.warning("llm_augmentation is False. No LLM will be used for sentence augmentation.")
+            if st.session_state.force_augmentation:
+                st.warning("force_augmentation is True. Augmented sentences may be re-augmented")
             progress = squ.get_batch_progress(st.session_state.batch_id)
             create_btn = st.button(
                 "Augment {} (long process, LLM use)".format(st.session_state.selected_pairs_filename))
-            if create_btn and not st.session_state.enriching_pairs:  # augmentation launched only if previous one done
+
+            if create_btn:
                 pairs_signatures = generate_sentence_pairs_signatures(st.session_state.sentence_pairs)
                 with open(CURRENT_JOB_SIG_FILE, "w", encoding='utf-8') as f:
                     utils.save_json_normalized(pairs_signatures, f)
-                # Pass jobs to Redis
-                new_pairs = [pair for pair in st.session_state.sentence_pairs
-                             if u.clean_sentence(pair["source"], filename=True) + ".json"
-                             not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
-                if new_pairs != st.session_state.sentence_pairs:
-                    st.write("{} sentences discarded: they already have been augmented".format(
-                        len(st.session_state.sentence_pairs) - len(new_pairs)
-                    ))
-                st.session_state.batch_id = squ.enqueue_batch(new_pairs)
-                with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "w", encoding='utf-8') as f:
-                    utils.save_json_normalized({"batch_id": st.session_state.batch_id}, f)
+                if not st.session_state.force_augmentation:
+                    new_pairs = [pair for pair in st.session_state.sentence_pairs
+                                 if u.clean_sentence(pair["source"], filename=True) + ".json"
+                                 not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
+                    if new_pairs != st.session_state.sentence_pairs:
+                        st.write("{} sentences discarded: they already have been augmented".format(
+                            len(st.session_state.sentence_pairs) - len(new_pairs)
+                        ))
+                else:
+                    new_pairs = [pair for pair in st.session_state.sentence_pairs]
 
-            if st.button("Save new augmented sentences"):
+                # Pass jobs to Redis and save the batch_id in a file just in case
+                if st.session_state.llm_augmentation:
+                    st.session_state.batch_id = squ.enqueue_batch(new_pairs)
+                    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"),
+                              "w", encoding='utf-8') as f:
+                        utils.save_json_normalized({"batch_id": st.session_state.batch_id}, f)
+                else:
+                    if st.session_state.force_augmentation:
+                        new_pairs = st.session_state.sentence_pairs
+                    else:
+                        new_pairs = [pair for pair in st.session_state.sentence_pairs
+                                     if u.clean_sentence(pair["source"], filename=True) + ".json"
+                                     not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
+                    for new_pair in new_pairs:
+                        a_pair = copy.deepcopy(new_pair)
+                        a_pair["description"] = ""
+                        a_pair["keywords"] = []
+                        a_pair["key_translation_concepts"] = []
+                        if "word connections" not in a_pair.keys():
+                            a_pair["word connections"] = []
+                        a_pair_filename = u.clean_sentence(a_pair["source"], filename=True)
+                        with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs",
+                                               a_pair_filename + ".json"), "w") as f:
+                            json.dump(a_pair, f, indent=2, ensure_ascii=False)
+                    st.success("All augmented sentence files created without LLM augmentation")
+
+            if st.session_state.llm_augmentation and st.button("Save new augmented sentences"):
                 new_pairs = [pair for pair in st.session_state.sentence_pairs
                              if u.clean_sentence(pair["source"], filename=True) + ".json"
                              not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
@@ -762,8 +816,8 @@ with tab3:
                         if fn[-5:] == ".json"]:
             with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file), "r", encoding='utf-8') as f:
                 ap = json.load(f)
-                if "connection" not in ap.keys():
-                    ap["connections"] = {}
+                if "word connections" not in ap.keys():
+                    ap["word connections"] = {}
                 if "key_translation_concepts" not in ap.keys():
                     ap["key_translation_concepts"] = []
             aps.append(
@@ -772,12 +826,12 @@ with tab3:
                     "target": ap["target"],
                     "comments": ap.get("comments", ""),
                     "key_translation_concepts": ap.get("key_translation_concepts", []),
-                    "connections": ap.get("connections", {}),
+                    "word connections": ap.get("word connections", {}),
                     "keywords": ap.get("keywords", []),
                     "filename": os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file)
                 }
             )
-        aps_df = pd.DataFrame(aps, columns=["source", "target", "comments", "connections"])
+        aps_df = pd.DataFrame(aps, columns=["source", "target", "comments", "word connections"])
         selected = st.dataframe(aps_df, selection_mode="single-row", on_select="rerun", key="aps_df")
 
         if selected["selection"]["rows"] != []:
@@ -798,25 +852,45 @@ with tab3:
                 words = stats.custom_split(slap["target"], st.session_state.delimiters)
             st.markdown("**Add connections**")
             ktc_pop = []
-            with st.form(key="connections_form", clear_on_submit=True, enter_to_submit=False, border=True, width="stretch"):
-                colc1, colc2 = st.columns(2)
-                for ktc in key_translation_concepts:
-                    source_concept = colc1.text_input("Concept (edit if needed)", value=ktc, key="ktc_"+ktc)
-                    connected_words = colc2.multiselect(f"is expressed by",
-                                                     words,
-                                                     default=slap["connections"].get(ktc, []),
-                                                     key="cw"+ktc)
-                    colc1.divider()
-                    colc2.divider()
-                    if source_concept != ktc:
-                        ktc_pop.append(ktc)
-                        slap["connections"][source_concept] = connected_words
-                        slap["key_translation_concepts"].append(source_concept)
-                connections_form_submitted = st.form_submit_button("Submit connections", width="stretch", key="connections_form_submit")
+
+            colc1, colc2 = st.columns(2)
+            unconnected_ktc = [ktc
+                               for ktc in key_translation_concepts
+                               if ktc not in slap["word connections"].keys()]
+            for ktc in unconnected_ktc:
+                source_concept = colc1.text_input("Concept (edit if needed)", value=ktc, key="ktc_"+ktc)
+                connected_words = colc2.multiselect(f"is expressed by",
+                                                 words, key="cw"+ktc)
+                colc1.divider()
+                if source_concept != ktc:
+                    ktc_pop.append(ktc)
+                slap["word connections"][source_concept] = connected_words
+                slap["key_translation_concepts"].append(source_concept)
+
+            for source_wc in slap["word connections"].keys():
+                input_source_concept_wc = colc1.text_input("Concept (edit if needed)", value=source_wc,
+                                                           key="connected_word" + source_wc)
+                try:
+                    input_connected_words_wc = colc2.multiselect(f"is expressed by",
+                                                        words,
+                                                        default=[item.lower() for item in slap["word connections"][source_wc]],
+                                                        key="cw" + source_wc)
+                except: # Default is sometimes not a word, TODO: manage it.
+                    print("Discarding default of {} in {}.".format(input_source_concept_wc, source))
+                    input_connected_words_wc = colc2.multiselect(f"is expressed by",
+                                                                 words,
+                                                                 key="cw_bis_" + source_wc)
+
+                colc1.divider()
+                colc2.divider()
+
+                if input_source_concept_wc != source_wc:
+                    ktc_pop.append(ktc)
+                slap["word connections"][source_wc] = input_connected_words_wc
 
             for item in ktc_pop:
-                if item in slap["connections"]:
-                    del slap["connections"][item]
+                if item in slap["word connections"]:
+                    del slap["word connections"][item]
                 if item in slap["key_translation_concepts"]:
                     slap["key_translation_concepts"].remove(item)
             ktc_pop = []

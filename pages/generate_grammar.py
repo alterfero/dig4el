@@ -648,7 +648,7 @@ if st.session_state.run_sources:
 
     # sentence pairs selection
     if st.session_state.is_pairs and st.session_state.use_pairs:
-        with st.spinner("Brewing coffee..."):
+        with st.spinner("Counting whales..."):
             if sdu.get_vector_ready_pairs(st.session_state.indi):
                 print("Augmented pairs prepared for vectorization")
             if ragu.vectorize_vaps(st.session_state.indi):
@@ -706,9 +706,6 @@ if st.session_state.selected_pairs and st.sidebar.checkbox("Show selected senten
 if (st.session_state.alterlingua_contribution
     or st.session_state.documents_contribution
     or st.session_state.selected_pairs):
-    st.write("You can now aggregate all sources into a grammatical description.")
-    st.divider()
-    st.header("Aggregation")
 
 # ============= AGGREGATION ============================
 
