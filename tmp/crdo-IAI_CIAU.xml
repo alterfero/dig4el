@@ -1,0 +1,5361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TEXT SYSTEM "https://cocoon.huma-num.fr/schemas/Archive.dtd">
+<TEXT xml:lang="iai" id="crdo-IAI_CIAU">
+    <HEADER>
+        <TITLE xml:lang="fr">Ciau, la fille du chef Bahitr</TITLE>
+        <TITLE xml:lang="en">Ciau, the headman Bahitr's daughter</TITLE>
+        <SOUNDFILE href="Nouvelle_Caledonie/Iaai/CIAU.mp3"/>
+    </HEADER>
+    <S id="CIAUs1">
+        <AUDIO start="0.0000" end="3.5800"/>
+        <FORM kindOf="phono">Ciau hlu noku Bahitr. </FORM>
+        <TRANSL xml:lang="fr">Ciau, fille de Bahitr.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hlu</FORM>
+            <TRANSL xml:lang="fr">fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">noku</FORM>
+            <TRANSL xml:lang="fr">enfant de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Bahitr</FORM>
+            <TRANSL xml:lang="fr">Bahitr</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs2">
+        <AUDIO start="3.5800" end="5.9399"/>
+        <FORM kindOf="phono">Hlu thaan noku Bahitr. </FORM>
+        <TRANSL xml:lang="fr">La fille du chef Bahitr.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Hlu</FORM>
+            <TRANSL xml:lang="fr">fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thaan</FORM>
+            <TRANSL xml:lang="fr">chef</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">noku</FORM>
+            <TRANSL xml:lang="fr">enfant de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Bahitr</FORM>
+            <TRANSL xml:lang="fr">Bahitr</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs3">
+        <AUDIO start="5.9399" end="13.1200"/>
+        <FORM kindOf="phono">Ciau noku Bahitr, hnyi ke bong, aa tha he me anyin wahlu ka hidröu eiö Hoony. </FORM>
+        <TRANSL xml:lang="fr">Un beau jour, Ciau, fille de Bahitr, se rendit à Hoony avec ses compagnes pour se décolorer les cheveux à la chaux.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">noku</FORM>
+            <TRANSL xml:lang="fr">enfant de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Bahitr</FORM>
+            <TRANSL xml:lang="fr">Bahitr</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">un</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bong</FORM>
+            <TRANSL xml:lang="fr">jour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aa</FORM>
+            <TRANSL xml:lang="fr">elle+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tha</FORM>
+            <TRANSL xml:lang="fr">ensemble</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">anyin</FORM>
+            <TRANSL xml:lang="fr">à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wahlu</FORM>
+            <TRANSL xml:lang="fr">collectif+fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hidröu</FORM>
+            <TRANSL xml:lang="fr">se décolorer les cheveux à la chaux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eiö</FORM>
+            <TRANSL xml:lang="fr">là-bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Hoony</FORM>
+            <TRANSL xml:lang="fr">Hoony</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs4">
+        <AUDIO start="13.1200" end="16.7800"/>
+        <FORM kindOf="phono">Walee huliwa ödrine labwöö anyâ hnyi jee bong. </FORM>
+        <TRANSL xml:lang="fr">Telle était leur occupation quotidienne.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Walee</FORM>
+            <TRANSL xml:lang="fr">voilà</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">huliwa</FORM>
+            <TRANSL xml:lang="fr">travail</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödrine</FORM>
+            <TRANSL xml:lang="fr">elles+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">labwöö</FORM>
+            <TRANSL xml:lang="fr">toujours</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">anyâ</FORM>
+            <TRANSL xml:lang="fr">faire</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jee</FORM>
+            <TRANSL xml:lang="fr">les</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bong</FORM>
+            <TRANSL xml:lang="fr">jours</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs5">
+        <AUDIO start="16.7800" end="20.8000"/>
+        <FORM kindOf="phono">Ame ka hnyoomëkatu jii, ke adreme he Hoonyai. </FORM>
+        <TRANSL xml:lang="fr">Dès le matin, elles se rendaient à Hoony.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyoomëkatu</FORM>
+            <TRANSL xml:lang="fr">matin</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jii</FORM>
+            <TRANSL xml:lang="fr">en bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">adreme</FORM>
+            <TRANSL xml:lang="fr">elles+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Hoonyai</FORM>
+            <TRANSL xml:lang="fr">Hoony+vers</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs6">
+        <AUDIO start="20.8000" end="30.3201"/>
+        <FORM kindOf="phono">Kene haba hnyi ke bong me ödra he hminya thibut, me adree umdö hiip dröu me ödra ölö dhö hootai ka dei hnyi seûnö. </FORM>
+        <TRANSL xml:lang="fr">Un jour où elles s'y étaient encore rendues, une fois leur décoloration terminée, elles remontèrent à terre pour se sécher au soleil.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">un</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bong</FORM>
+            <TRANSL xml:lang="fr">jour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hminya</FORM>
+            <TRANSL xml:lang="fr">aussi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">adree</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">umdö</FORM>
+            <TRANSL xml:lang="fr">accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hiip</FORM>
+            <TRANSL xml:lang="fr">fini</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dröu</FORM>
+            <TRANSL xml:lang="fr">mettre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">chaux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ölö</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">monter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hootai</FORM>
+            <TRANSL xml:lang="fr">à terre+vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dei</FORM>
+            <TRANSL xml:lang="fr">se sécher</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">seûnö</FORM>
+            <TRANSL xml:lang="fr">soleil</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs7">
+        <AUDIO start="30.3201" end="39.9001"/>
+        <FORM kindOf="phono">Kene ödra mokutr hnyiing thibut; ke e mwi thiju hlu thaan, jia Ciau, me e laba dhö ke haba wahlu me ödra mokutr hnyiing. </FORM>
+        <TRANSL xml:lang="fr">Elles finirent par s'endormir. Au bout d'un moment, Ciau s'assit alors que ses compagnes dormaient profondément.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mokutr</FORM>
+            <TRANSL xml:lang="fr">dormir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyiing</FORM>
+            <TRANSL xml:lang="fr">oublier</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mwi</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hlu</FORM>
+            <TRANSL xml:lang="fr">fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thaan</FORM>
+            <TRANSL xml:lang="fr">chef</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jia</FORM>
+            <TRANSL xml:lang="fr">c'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">s'asseoir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">ponctuel</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wahlu</FORM>
+            <TRANSL xml:lang="fr">collectif+fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mokutr</FORM>
+            <TRANSL xml:lang="fr">dormir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyiing</FORM>
+            <TRANSL xml:lang="fr">oublier</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs8">
+        <AUDIO start="39.9001" end="47.3600"/>
+        <FORM kindOf="phono">Haba Ciau me tootr thidhö, kene e kölu thibut deiö hnyiköiöai; </FORM>
+        <TRANSL xml:lang="fr">Elle se leva et se dirigea vers la mer.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tootr</FORM>
+            <TRANSL xml:lang="fr">debout</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">ponctuel</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">descendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">deiö</FORM>
+            <TRANSL xml:lang="fr">vers l'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyiköiöai</FORM>
+            <TRANSL xml:lang="fr">en mer+vers</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs9">
+        <AUDIO start="47.3600" end="56.1800"/>
+        <FORM kindOf="phono">me thang thibut weiken drila me ip thiju edhöö hon öny, ke kölu thibut hnyiköiöai. </FORM>
+        <TRANSL xml:lang="fr">Elle dénoua sa ceinture en poils de roussette, la déposa sur le sable et entra dans la mer.</TRANSL>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thang</FORM>
+            <TRANSL xml:lang="fr">défaire</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">weiken</FORM>
+            <TRANSL xml:lang="fr">ceinture+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">drila</FORM>
+            <TRANSL xml:lang="fr">poil de roussette</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ip</FORM>
+            <TRANSL xml:lang="fr">poser</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">edhöö</FORM>
+            <TRANSL xml:lang="fr">en haut</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hon</FORM>
+            <TRANSL xml:lang="fr">dessus</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">öny</FORM>
+            <TRANSL xml:lang="fr">sable</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">descendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyiköiöai</FORM>
+            <TRANSL xml:lang="fr">en mer+vers</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs10">
+        <AUDIO start="56.1800" end="60.3000"/>
+        <FORM kindOf="phono">Kene ka he deiö kene ka bongon dut köiö hnyi nyiin. </FORM>
+        <TRANSL xml:lang="fr">Elle s'avança jusqu'à ce que l'eau lui arrivât au cou.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">deiö</FORM>
+            <TRANSL xml:lang="fr">vers l'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bongon</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">köiö</FORM>
+            <TRANSL xml:lang="fr">eau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nyiin</FORM>
+            <TRANSL xml:lang="fr">cou+à elle</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs11">
+        <AUDIO start="60.3000" end="64.1800"/>
+        <FORM kindOf="phono">Kene ka he, kene ka he, kene ka hiaa but. </FORM>
+        <TRANSL xml:lang="fr">Elle s'avança, s'avança et disparut complètement.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hiaa</FORM>
+            <TRANSL xml:lang="fr">disparu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs12">
+        <AUDIO start="64.1800" end="68.0200"/>
+        <FORM kindOf="phono">E oo thibut li wââ a ûnya li watoo. </FORM>
+        <TRANSL xml:lang="fr">Deux poissons, nommés "watoo", arrivèrent alors.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">li</FORM>
+            <TRANSL xml:lang="fr">les deux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wââ</FORM>
+            <TRANSL xml:lang="fr">poisson</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">a</FORM>
+            <TRANSL xml:lang="fr">qui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnya</FORM>
+            <TRANSL xml:lang="fr">c'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">li</FORM>
+            <TRANSL xml:lang="fr">les deux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">watoo</FORM>
+            <TRANSL xml:lang="fr">poisson sp.</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs13">
+        <AUDIO start="68.0200" end="72.6800"/>
+        <FORM kindOf="phono">Xaca hnyi ke hnyaabenyin, ke xaca hnyi ke hnyaabenyin. </FORM>
+        <TRANSL xml:lang="fr">L'un se mit sous l'une de ses aisselles, l'autre, sous l'autre aisselle.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Xaca</FORM>
+            <TRANSL xml:lang="fr">un</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">une</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyaabenyin</FORM>
+            <TRANSL xml:lang="fr">aisselle+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">xaca</FORM>
+            <TRANSL xml:lang="fr">un</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">une</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyaabenyin</FORM>
+            <TRANSL xml:lang="fr">aisselle+à elle</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs14">
+        <AUDIO start="72.6800" end="77.0201"/>
+        <FORM kindOf="phono">Ödrumwe dââ tilâ hlu kene ka oo dhö hnyi ke bomene. </FORM>
+        <TRANSL xml:lang="fr">Et ils l'entraînèrent ainsi jusqu'à un îlot</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ödrumwe</FORM>
+            <TRANSL xml:lang="fr">ils2+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dââ</FORM>
+            <TRANSL xml:lang="fr">piquer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tilâ</FORM>
+            <TRANSL xml:lang="fr">emporter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hlu</FORM>
+            <TRANSL xml:lang="fr">fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">ponctuel</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">un</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bomene</FORM>
+            <TRANSL xml:lang="fr">îlot</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs15">
+        <AUDIO start="77.0201" end="80.4400"/>
+        <FORM kindOf="phono">Haba ien bomene me Seûnö-oûdeetr. </FORM>
+        <TRANSL xml:lang="fr">que l'on appelle "Seûnö-oüdetr" [litt. "soleil-liane d'Ipomoea pes-caprae, Convolvulacée"].</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ien</FORM>
+            <TRANSL xml:lang="fr">nom+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bomene</FORM>
+            <TRANSL xml:lang="fr">îlot</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö-oûdeetr</FORM>
+            <TRANSL xml:lang="fr">Seûnö-oûdeetr</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs16">
+        <AUDIO start="80.4400" end="87.2200"/>
+        <FORM kindOf="phono">E mwi thiju li wââ me ödrumwe dââ tilâ hlu kene ka oo dhö eiö hon öny. </FORM>
+        <TRANSL xml:lang="fr">Ils l'entraînèrent jusqu'au rivage, sur la plage.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mwi</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">li</FORM>
+            <TRANSL xml:lang="fr">les deux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wââ</FORM>
+            <TRANSL xml:lang="fr">poissons</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödrumwe</FORM>
+            <TRANSL xml:lang="fr">ils2+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dââ</FORM>
+            <TRANSL xml:lang="fr">piquer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tilâ</FORM>
+            <TRANSL xml:lang="fr">emporter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hlu</FORM>
+            <TRANSL xml:lang="fr">fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">et puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">ponctuel</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eiö</FORM>
+            <TRANSL xml:lang="fr">là(à terre)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hon</FORM>
+            <TRANSL xml:lang="fr">dessus</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">öny</FORM>
+            <TRANSL xml:lang="fr">sable</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs17">
+        <AUDIO start="87.2200" end="91.5599"/>
+        <FORM kindOf="phono">Haba Ciau me ölö dhö ka mokutr eiö hon öny. </FORM>
+        <TRANSL xml:lang="fr">Ciau monta à terre et se coucha sur le sable.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ölö</FORM>
+            <TRANSL xml:lang="fr">monter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">ponctuel</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mokutr</FORM>
+            <TRANSL xml:lang="fr">se coucher</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eiö</FORM>
+            <TRANSL xml:lang="fr">là(à terre)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hon</FORM>
+            <TRANSL xml:lang="fr">dessus</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">öny</FORM>
+            <TRANSL xml:lang="fr">sable</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs18">
+        <AUDIO start="91.5599" end="96.4000"/>
+        <FORM kindOf="phono">Ke e hu ke sohmwecaa ee hnyi bomene, ke e hu ööbwiiny. </FORM>
+        <TRANSL xml:lang="fr">Or, dans cet îlot, demeurait une vieille femme avec son petit-fils.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hu</FORM>
+            <TRANSL xml:lang="fr">y avoir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">une</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sohmwecaa</FORM>
+            <TRANSL xml:lang="fr">vieille femme</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ee</FORM>
+            <TRANSL xml:lang="fr">là</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bomene</FORM>
+            <TRANSL xml:lang="fr">îlot</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hu</FORM>
+            <TRANSL xml:lang="fr">y avoir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ööbwiiny</FORM>
+            <TRANSL xml:lang="fr">petit-fils+à elle</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs19">
+        <AUDIO start="96.4000" end="99.0800"/>
+        <FORM kindOf="phono">Haba ien ööbwiiny me Seûnö. </FORM>
+        <TRANSL xml:lang="fr">Le nom de ce petit-fils était "Soleil".</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ien</FORM>
+            <TRANSL xml:lang="fr">nom+àlui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ööbwiiny</FORM>
+            <TRANSL xml:lang="fr">petit-fils+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs20">
+        <AUDIO start="99.0800" end="106.3599"/>
+        <FORM kindOf="phono">Haingen dö sohmwecaa ka ööbwiiny: "Kedhaa Seûnö! ame hölök hnyeûcaak; ieû ang? </FORM>
+        <TRANSL xml:lang="fr">La vieille dit à son petit-fils : "Dis donc, Soleil ! ma plante de pied me démange [signe prémonitoire]. Que se passe-t-il ?</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haingen</FORM>
+            <TRANSL xml:lang="fr">dire</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dö</FORM>
+            <TRANSL xml:lang="fr">ponctuel</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sohmwecaa</FORM>
+            <TRANSL xml:lang="fr">vieille femme</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ööbwiiny</FORM>
+            <TRANSL xml:lang="fr">petit-fils+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Kedhaa</FORM>
+            <TRANSL xml:lang="fr">dis-donc</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hölök</FORM>
+            <TRANSL xml:lang="fr">démanger</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyeûcaak</FORM>
+            <TRANSL xml:lang="fr">plante de pied+à moi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ieû</FORM>
+            <TRANSL xml:lang="fr">quoi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ang</FORM>
+            <TRANSL xml:lang="fr">ici</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs21">
+        <AUDIO start="106.3599" end="109.0999"/>
+        <FORM kindOf="phono">Helâkee me e hu ke ûnyi eheeû gööny. </FORM>
+        <TRANSL xml:lang="fr">J'ai l'impression qu'il y a quelque chose au bord de mer.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Helâkee</FORM>
+            <TRANSL xml:lang="fr">on dirait(hypothétique)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">que</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hu</FORM>
+            <TRANSL xml:lang="fr">y avoir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">une</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnyi</FORM>
+            <TRANSL xml:lang="fr">chose</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eheeû</FORM>
+            <TRANSL xml:lang="fr">quelque part en bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gööny</FORM>
+            <TRANSL xml:lang="fr">bord de mer</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs22">
+        <AUDIO start="109.0999" end="114.7400"/>
+        <FORM kindOf="phono">Bee nââ kölu ka wâ ieû anyitu ae soo aa xöp la ehejii hon öny" </FORM>
+        <TRANSL xml:lang="fr">Va donc voir quelle merveille a pu débarquer sur la plage."</TRANSL>
+        <W>
+            <FORM kindOf="phono">Bee</FORM>
+            <TRANSL xml:lang="fr">optatif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nââ</FORM>
+            <TRANSL xml:lang="fr">essayer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">descendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wâ</FORM>
+            <TRANSL xml:lang="fr">voir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ieû</FORM>
+            <TRANSL xml:lang="fr">quoi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">anyitu</FORM>
+            <TRANSL xml:lang="fr">à nous2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ae</FORM>
+            <TRANSL xml:lang="fr">qui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">soo</FORM>
+            <TRANSL xml:lang="fr">bon</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aa</FORM>
+            <TRANSL xml:lang="fr">il+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">xöp</FORM>
+            <TRANSL xml:lang="fr">aborder</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">la</FORM>
+            <TRANSL xml:lang="fr">peut-être</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ehejii</FORM>
+            <TRANSL xml:lang="fr">en bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hon</FORM>
+            <TRANSL xml:lang="fr">dessus</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">öny</FORM>
+            <TRANSL xml:lang="fr">sable</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs23">
+        <AUDIO start="114.7400" end="117.8800"/>
+        <FORM kindOf="phono">E kölu thibut Seûnö göönyai. </FORM>
+        <TRANSL xml:lang="fr">Soleil descendit vers Gööny [côte orientée vers le lagon].</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">descend</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">göönyai</FORM>
+            <TRANSL xml:lang="fr">bord de mer+vers</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs24">
+        <AUDIO start="117.8800" end="126.8199"/>
+        <FORM kindOf="phono">E bwele ju jiio me e bë ûnyi ame wâ, ke maan ka bwele deiö me wâ dhö ûnya hlu ame laba eû hon öny. </FORM>
+        <TRANSL xml:lang="fr">Il regarda vers l'ouest mais ne vit rien, il regarda vers l'est et aperçut une fille sur le sable.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bwele</FORM>
+            <TRANSL xml:lang="fr">regarder</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ju</FORM>
+            <TRANSL xml:lang="fr">ingressif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jiio</FORM>
+            <TRANSL xml:lang="fr">vers ouest</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bë</FORM>
+            <TRANSL xml:lang="fr">ne pas y avoir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnyi</FORM>
+            <TRANSL xml:lang="fr">chose</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wâ</FORM>
+            <TRANSL xml:lang="fr">voir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">maan</FORM>
+            <TRANSL xml:lang="fr">manière+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bwele</FORM>
+            <TRANSL xml:lang="fr">regarder</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">deiö</FORM>
+            <TRANSL xml:lang="fr">vers est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wâ</FORM>
+            <TRANSL xml:lang="fr">voir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">ponctuel</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnya</FORM>
+            <TRANSL xml:lang="fr">c'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hlu</FORM>
+            <TRANSL xml:lang="fr">fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">elle+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">assise</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eû</FORM>
+            <TRANSL xml:lang="fr">là-bas(vers la mer)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hon</FORM>
+            <TRANSL xml:lang="fr">dessus</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">öny</FORM>
+            <TRANSL xml:lang="fr">sable</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs25">
+        <AUDIO start="126.9200" end="133.5400"/>
+        <FORM kindOf="phono">Me wadring thibut ka haa ka kiben ka habe: "Buba! e hu ke ûnyi ejo hon öny". </FORM>
+        <TRANSL xml:lang="fr">Il courut dire à sa grand-mère : "Grand-mère ! il y a quelque chose sur la plage."</TRANSL>
+        <W>
+            <FORM kindOf="phono">Me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wadring</FORM>
+            <TRANSL xml:lang="fr">courir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haa</FORM>
+            <TRANSL xml:lang="fr">dire</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kiben</FORM>
+            <TRANSL xml:lang="fr">grand-mère+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">-</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">habe</FORM>
+            <TRANSL xml:lang="fr">discours direct</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Buba</FORM>
+            <TRANSL xml:lang="fr">grand-mère</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hu</FORM>
+            <TRANSL xml:lang="fr">y avoir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">une</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnyi</FORM>
+            <TRANSL xml:lang="fr">chose</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ejo</FORM>
+            <TRANSL xml:lang="fr">en bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hon</FORM>
+            <TRANSL xml:lang="fr">dessus</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">öny</FORM>
+            <TRANSL xml:lang="fr">sable</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs26">
+        <AUDIO start="133.5400" end="136.3800"/>
+        <FORM kindOf="phono">Me ödru tha kölu thibut deiö ka wâ. </FORM>
+        <TRANSL xml:lang="fr">Ils descendirent tous deux vers l'est pour voir.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödru</FORM>
+            <TRANSL xml:lang="fr">ils2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tha</FORM>
+            <TRANSL xml:lang="fr">ensemble</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">descendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">deiö</FORM>
+            <TRANSL xml:lang="fr">vers est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wâ</FORM>
+            <TRANSL xml:lang="fr">voir</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs27">
+        <AUDIO start="136.3800" end="144.9999"/>
+        <FORM kindOf="phono">Ke maan ang sohmwecaa ka hngele me hlu eiö ame laba, me he thidhö deiö kâu me kââtr thidhö benyin. </FORM>
+        <TRANSL xml:lang="fr">La vieille femme comprit tout de suite que c'était une fille qui se trouvait là-bas. Elle alla vers elle et lui prit la main.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">maan</FORM>
+            <TRANSL xml:lang="fr">manière-à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ang</FORM>
+            <TRANSL xml:lang="fr">immédiatement</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sohmwecaa</FORM>
+            <TRANSL xml:lang="fr">vieille femme</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hngele</FORM>
+            <TRANSL xml:lang="fr">regarder</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hlu</FORM>
+            <TRANSL xml:lang="fr">fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eiö</FORM>
+            <TRANSL xml:lang="fr">là-bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">elle+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">deiö</FORM>
+            <TRANSL xml:lang="fr">vers est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kâu</FORM>
+            <TRANSL xml:lang="fr">vers elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kââtr</FORM>
+            <TRANSL xml:lang="fr">attraper</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">benyin</FORM>
+            <TRANSL xml:lang="fr">main+à elle</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs28">
+        <AUDIO start="144.9999" end="148.2799"/>
+        <FORM kindOf="phono">E maan thidhö: "Tootrö ötumwe he hnyaabaai." </FORM>
+        <TRANSL xml:lang="fr">"Viens, lui dit-elle, allons à la maison."</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">maan</FORM>
+            <TRANSL xml:lang="fr">dire+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Tootrö</FORM>
+            <TRANSL xml:lang="fr">debout+impératif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ötumwe</FORM>
+            <TRANSL xml:lang="fr">nous2+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyaabaai</FORM>
+            <TRANSL xml:lang="fr">à la maison+vers</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs29">
+        <AUDIO start="148.2799" end="152.4599"/>
+        <FORM kindOf="phono">E tootr thidhö Ciau me ödru waahe hnyaabaai. </FORM>
+        <TRANSL xml:lang="fr">Ciau se leva et elles allèrent ensemble à la maison.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tootr</FORM>
+            <TRANSL xml:lang="fr">debout</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödru</FORM>
+            <TRANSL xml:lang="fr">elles2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">waahe</FORM>
+            <TRANSL xml:lang="fr">s'en aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyaabaai</FORM>
+            <TRANSL xml:lang="fr">à la maison+vers</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs30">
+        <AUDIO start="152.4599" end="160.4599"/>
+        <FORM kindOf="phono">Haba wahlu ejii adree tha he me Ciau ka hidröu eiö Hoony me adree hmëk ke e hiöö Ciau but. </FORM>
+        <TRANSL xml:lang="fr">Pendant ce temps, les filles qui avaient accompagné Ciau à Hoony pour se décolorer les cheveux, s'étaient réveillées et avaient découvert la disparition de Ciau.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wahlu</FORM>
+            <TRANSL xml:lang="fr">collectif+fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ejii</FORM>
+            <TRANSL xml:lang="fr">en bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">adree</FORM>
+            <TRANSL xml:lang="fr">elles+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tha</FORM>
+            <TRANSL xml:lang="fr">ensemble</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hidröu</FORM>
+            <TRANSL xml:lang="fr">décolorer les cheveux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eiö</FORM>
+            <TRANSL xml:lang="fr">là-bas(est)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Hoony</FORM>
+            <TRANSL xml:lang="fr">Hoony</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">adree</FORM>
+            <TRANSL xml:lang="fr">elles+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmëk</FORM>
+            <TRANSL xml:lang="fr">s'éveiller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hiöö</FORM>
+            <TRANSL xml:lang="fr">disparu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs31">
+        <AUDIO start="160.4599" end="166.8600"/>
+        <FORM kindOf="phono">Me ödra laba thiju ka helââm me ödra wâ thiju hnyeûcaan ame kölu Cöuai. </FORM>
+        <TRANSL xml:lang="fr">Elles se mirent donc à sa recherche et aperçurent les traces de pas qui descendaient vers Cöu [nom de la côte soulevée (côte est) d'Ouvéa].</TRANSL>
+        <W>
+            <FORM kindOf="phono">Me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">helââm</FORM>
+            <TRANSL xml:lang="fr">chercher</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wâ</FORM>
+            <TRANSL xml:lang="fr">voir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyeûcaan</FORM>
+            <TRANSL xml:lang="fr">trace de pas+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">elle+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">descendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Cöuai</FORM>
+            <TRANSL xml:lang="fr">Cöu+vers</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs32">
+        <AUDIO start="166.8600" end="171.4401"/>
+        <FORM kindOf="phono">Adree he deiö, me ödra oo thiju ka weiken drila. </FORM>
+        <TRANSL xml:lang="fr">Elles allèrent dans cette direction et découvrirent la ceinture en poils de roussette.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Adree</FORM>
+            <TRANSL xml:lang="fr">elles+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">deiö</FORM>
+            <TRANSL xml:lang="fr">vers est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">weiken</FORM>
+            <TRANSL xml:lang="fr">ceinture+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">drila</FORM>
+            <TRANSL xml:lang="fr">poil de roussette</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs33">
+        <AUDIO start="171.4401" end="180.7800"/>
+        <FORM kindOf="phono">Ke e hiaa but, me maadrin thidhö: "Ötine he ang ka höö, ke e hiöö Ciau but, ke ötin outen thaan Bahitr?" </FORM>
+        <TRANSL xml:lang="fr">Mais, pas la moindre trace de Ciau ! "Qu'allons-nous devenir, s'exclamèrent-elles, Ciau a disparu et nous avons très peur du chef Bahitr."</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hiaa</FORM>
+            <TRANSL xml:lang="fr">disparu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">maadrin</FORM>
+            <TRANSL xml:lang="fr">dire+à elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ötine</FORM>
+            <TRANSL xml:lang="fr">nous</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ang</FORM>
+            <TRANSL xml:lang="fr">maintenant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">höö</FORM>
+            <TRANSL xml:lang="fr">quoi faire</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hiöö</FORM>
+            <TRANSL xml:lang="fr">disparue</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ötin</FORM>
+            <TRANSL xml:lang="fr">nous</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">outen</FORM>
+            <TRANSL xml:lang="fr">craindre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thaan</FORM>
+            <TRANSL xml:lang="fr">chef</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Bahitr</FORM>
+            <TRANSL xml:lang="fr">Bahitr</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs34">
+        <AUDIO start="180.7800" end="187.8000"/>
+        <FORM kindOf="phono">Ödrin waahe V̄ekinyai, tha ödra me hlu athnyaaba me ödrin oo thibut V̄ekiny. </FORM>
+        <TRANSL xml:lang="fr">Elles rentrèrent à Vekiny avec les servantes.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ödrin</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">waahe</FORM>
+            <TRANSL xml:lang="fr">s'en aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">V̄ekinyai</FORM>
+            <TRANSL xml:lang="fr">Vekiny+vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tha</FORM>
+            <TRANSL xml:lang="fr">ensemble</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hlu</FORM>
+            <TRANSL xml:lang="fr">fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">athnyaaba</FORM>
+            <TRANSL xml:lang="fr">serviteur</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödrin</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">V̄ekiny</FORM>
+            <TRANSL xml:lang="fr">Vekiny</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs35">
+        <AUDIO start="187.8000" end="193.1800"/>
+        <FORM kindOf="phono">Ödrin oo thibut köö Wanyome athnyaabai Bahitr. </FORM>
+        <TRANSL xml:lang="fr">Elles allèrent trouver Wanyome, le serviteur de Bahitr.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ödrin</FORM>
+            <TRANSL xml:lang="fr">elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">köö</FORM>
+            <TRANSL xml:lang="fr">vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Wanyome</FORM>
+            <TRANSL xml:lang="fr">Wanyome</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">athnyaabai</FORM>
+            <TRANSL xml:lang="fr">serviteur de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Bahitr</FORM>
+            <TRANSL xml:lang="fr">Bahitr</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs36">
+        <AUDIO start="193.1800" end="201.0800"/>
+        <FORM kindOf="phono">Haingödrin thidhö köö Wanyome: "Öhmune oo dhö ang, ke e hiöö Ciau biju hlu thaan." </FORM>
+        <TRANSL xml:lang="fr">"Nous voici de retour, lui dirent-elles, mais sans Ciau, la fille du chef qui a disparu."</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haingödrin</FORM>
+            <TRANSL xml:lang="fr">dire+à elles</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">köö</FORM>
+            <TRANSL xml:lang="fr">à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Wanyome</FORM>
+            <TRANSL xml:lang="fr">Wanyome</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Öhmune</FORM>
+            <TRANSL xml:lang="fr">nous(exclusif)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">ponctuel</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ang</FORM>
+            <TRANSL xml:lang="fr">maintenant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hiöö</FORM>
+            <TRANSL xml:lang="fr">disparu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">biju</FORM>
+            <TRANSL xml:lang="fr">seule</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hlu</FORM>
+            <TRANSL xml:lang="fr">fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thaan</FORM>
+            <TRANSL xml:lang="fr">chef</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs37">
+        <AUDIO start="201.0800" end="211.1600"/>
+        <FORM kindOf="phono">E mënen thibut bongon ee hnyi hnyei V̄ekiny, me haba aten hnyei, me ödra outen thaan me ödra v̄ee keec thidhö ka laba hnyoot. </FORM>
+        <TRANSL xml:lang="fr">La nouvelle se répandit dans le pays de Vekiny et les habitants, redoutant la colère du chef, se sauvèrent en brousse.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mënen</FORM>
+            <TRANSL xml:lang="fr">se révéler</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bongon</FORM>
+            <TRANSL xml:lang="fr">histoire</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ee</FORM>
+            <TRANSL xml:lang="fr">là</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyei</FORM>
+            <TRANSL xml:lang="fr">pays</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">V̄ekiny</FORM>
+            <TRANSL xml:lang="fr">Vekiny</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aten</FORM>
+            <TRANSL xml:lang="fr">habitant du</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyei</FORM>
+            <TRANSL xml:lang="fr">pays</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">eux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">outen</FORM>
+            <TRANSL xml:lang="fr">craindre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thaan</FORM>
+            <TRANSL xml:lang="fr">chef</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">eux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">v̄ee</FORM>
+            <TRANSL xml:lang="fr">séparement</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">keec</FORM>
+            <TRANSL xml:lang="fr">fuir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyoot</FORM>
+            <TRANSL xml:lang="fr">en brousse</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs38">
+        <AUDIO start="211.1600" end="215.5800"/>
+        <FORM kindOf="phono">Ke bë hmetu at ame laba hnyi hnyei, ke v̄ee ödra dhöö hnyoot. </FORM>
+        <TRANSL xml:lang="fr">Le pays devint désert car tout le monde s'était dispersé à travers la brousse.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bë</FORM>
+            <TRANSL xml:lang="fr">pas de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetu</FORM>
+            <TRANSL xml:lang="fr">encore</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">at</FORM>
+            <TRANSL xml:lang="fr">homme</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyei</FORM>
+            <TRANSL xml:lang="fr">pays</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">̄vee</FORM>
+            <TRANSL xml:lang="fr">séparément</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">eux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhöö</FORM>
+            <TRANSL xml:lang="fr">en haut</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyoot</FORM>
+            <TRANSL xml:lang="fr">en brousse</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs39">
+        <AUDIO start="215.5800" end="223.2400"/>
+        <FORM kindOf="phono">Laba thiju sohmwecaa eû hnyi bomene, ke haba Seûnö me aa he but ka hv̄enoo deeny gedhen. </FORM>
+        <TRANSL xml:lang="fr">Pendant ce temps, la vieille femme était restée sur l'îlot et Soleil était parti effectuer son parcours.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sohmwecaa</FORM>
+            <TRANSL xml:lang="fr">vieille femme</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eû</FORM>
+            <TRANSL xml:lang="fr">là-bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bomene</FORM>
+            <TRANSL xml:lang="fr">ilôt</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aa</FORM>
+            <TRANSL xml:lang="fr">il+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hv̄enoo</FORM>
+            <TRANSL xml:lang="fr">suivre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">deeny</FORM>
+            <TRANSL xml:lang="fr">chemin+àlui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gedhen</FORM>
+            <TRANSL xml:lang="fr">route</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs40">
+        <AUDIO start="223.2400" end="230.3200"/>
+        <FORM kindOf="phono">He Seûnö, kene ditr thibut eû, me waahe ka kiben sohmwecaa eiö hnyi bomene. </FORM>
+        <TRANSL xml:lang="fr">Une fois son voyage terminé, il se coucha à l'ouest et vint retrouver sa grand-mère dans l'îlot.</TRANSL>
+        <W>
+            <FORM kindOf="phono">He</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">et puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ditr</FORM>
+            <TRANSL xml:lang="fr">pénétrer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eû</FORM>
+            <TRANSL xml:lang="fr">à l'ouest</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">waahe</FORM>
+            <TRANSL xml:lang="fr">s'en aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kiben</FORM>
+            <TRANSL xml:lang="fr">grand-mère+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sohmwecaa</FORM>
+            <TRANSL xml:lang="fr">vieille femme</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eiö</FORM>
+            <TRANSL xml:lang="fr">là-bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bomene</FORM>
+            <TRANSL xml:lang="fr">îlot</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs41">
+        <AUDIO start="230.3200" end="237.0200"/>
+        <FORM kindOf="phono">Haingen thidhö sohmwecaa: "Kedhaa! Seûnö walaang aeââm, öbwaa tha laba." </FORM>
+        <TRANSL xml:lang="fr">"Soleil ! lui dit-elle, voilà ton épouse. Maintenant, vous allez vivre ensemble."</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haingen</FORM>
+            <TRANSL xml:lang="fr">dire</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sohmwecaa</FORM>
+            <TRANSL xml:lang="fr">vieille femme</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Kedhaa</FORM>
+            <TRANSL xml:lang="fr">dis-donc!</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">walaang</FORM>
+            <TRANSL xml:lang="fr">voici</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aeââm</FORM>
+            <TRANSL xml:lang="fr">épouse+à toi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">öbwaa</FORM>
+            <TRANSL xml:lang="fr">vous2+futur</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tha</FORM>
+            <TRANSL xml:lang="fr">ensemble</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs42">
+        <AUDIO start="237.0200" end="240.3600"/>
+        <FORM kindOf="phono">E ka tha laba ju Seûnö me Ciau. </FORM>
+        <TRANSL xml:lang="fr">La vie commune commença alors pour Soleil et Ciau.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tha</FORM>
+            <TRANSL xml:lang="fr">ensemble</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs43">
+        <AUDIO start="240.3600" end="244.7400"/>
+        <FORM kindOf="phono">Hnyomëkatu kong ke ame he hminya Seûnö ka hv̄enoo deeny gedhen. </FORM>
+        <TRANSL xml:lang="fr">Au petit matin, Soleil repartit effectuer son parcours,</TRANSL>
+        <W>
+            <FORM kindOf="phono">Hnyomëkatu</FORM>
+            <TRANSL xml:lang="fr">matin</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kong</FORM>
+            <TRANSL xml:lang="fr">très tôt</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hminya</FORM>
+            <TRANSL xml:lang="fr">aussi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hv̄enoo</FORM>
+            <TRANSL xml:lang="fr">suivre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">deeny</FORM>
+            <TRANSL xml:lang="fr">chemin+àlui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gedhen</FORM>
+            <TRANSL xml:lang="fr">route</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs44">
+        <AUDIO start="244.7400" end="247.0599"/>
+        <FORM kindOf="phono">Kene ditr hminya but eû. </FORM>
+        <TRANSL xml:lang="fr">puis il alla se coucher à l'ouest.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Kene</FORM>
+            <TRANSL xml:lang="fr">et puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ditr</FORM>
+            <TRANSL xml:lang="fr">se coucher</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hminya</FORM>
+            <TRANSL xml:lang="fr">aussi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eû</FORM>
+            <TRANSL xml:lang="fr">à l'ouest</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs45">
+        <AUDIO start="247.0599" end="252.3200"/>
+        <FORM kindOf="phono">E waahe hminya ka hnyi bomene ka wâ aeâân me kiben sohmwecaa. </FORM>
+        <TRANSL xml:lang="fr">Il retourna ensuite à l'îlot pour retrouver son épouse et sa grand-mère.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">waahe</FORM>
+            <TRANSL xml:lang="fr">s'en aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hminya</FORM>
+            <TRANSL xml:lang="fr">aussi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bomene</FORM>
+            <TRANSL xml:lang="fr">îlot</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wâ</FORM>
+            <TRANSL xml:lang="fr">voir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aeâân</FORM>
+            <TRANSL xml:lang="fr">épouse+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kiben</FORM>
+            <TRANSL xml:lang="fr">grand-mère+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sohmwecaa</FORM>
+            <TRANSL xml:lang="fr">vieille femme</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs46">
+        <AUDIO start="252.3200" end="255.2400"/>
+        <FORM kindOf="phono">Ka helâ thibut e hnyi jee bong. </FORM>
+        <TRANSL xml:lang="fr">Et c'était ainsi tous les jours.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">helâ</FORM>
+            <TRANSL xml:lang="fr">pareil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">là</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jee</FORM>
+            <TRANSL xml:lang="fr">les</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bong</FORM>
+            <TRANSL xml:lang="fr">jour</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs47">
+        <AUDIO start="255.2400" end="260.6200"/>
+        <FORM kindOf="phono">E eekin thibut Ciau kene kölu thibut nokon me ûnya daa. </FORM>
+        <TRANSL xml:lang="fr">Ciau devint enceinte et un enfant naquit. C'était un garçon.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eekin</FORM>
+            <TRANSL xml:lang="fr">enceinte</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">et puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">tomber</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokon</FORM>
+            <TRANSL xml:lang="fr">enfant+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnya</FORM>
+            <TRANSL xml:lang="fr">c'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">daa</FORM>
+            <TRANSL xml:lang="fr">garçon</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs48">
+        <AUDIO start="260.6200" end="262.8000"/>
+        <FORM kindOf="phono">Haba ien me Seûnö. </FORM>
+        <TRANSL xml:lang="fr">Il se nommait "Soleil".</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ien</FORM>
+            <TRANSL xml:lang="fr">nom+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs49">
+        <AUDIO start="262.8000" end="264.8000"/>
+        <FORM kindOf="phono">Ame gaan tootr wanakat. </FORM>
+        <TRANSL xml:lang="fr">L'enfant grandit.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gaan</FORM>
+            <TRANSL xml:lang="fr">grand</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tootr</FORM>
+            <TRANSL xml:lang="fr">de plus en plus</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs50">
+        <AUDIO start="264.8000" end="279.3000"/>
+        <FORM kindOf="phono">Hnyi ke bong, ame haa Seûnö: "Buba, ogeme he but ka ut jimeiö ke öbwaa tuöö, tuöö wiaa wanakat wâ ene he ka walakâ tabök iv̄eto me hmetru but". </FORM>
+        <TRANSL xml:lang="fr">Un jour, Soleil déclara : "Grand-mère ! je pars me lever à l'est mais, vous deux, surveillez bien l'enfant. Surtout, ne le laissez pas jouer avec mon socle en pierre de peur qu'il ne le casse."</TRANSL>
+        <W>
+            <FORM kindOf="phono">Hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">un</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bong</FORM>
+            <TRANSL xml:lang="fr">jour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haa</FORM>
+            <TRANSL xml:lang="fr">dire</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Buba</FORM>
+            <TRANSL xml:lang="fr">grand-mère</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ogeme</FORM>
+            <TRANSL xml:lang="fr">je+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ut</FORM>
+            <TRANSL xml:lang="fr">sauter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jimeiö</FORM>
+            <TRANSL xml:lang="fr">de l'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">öbwaa</FORM>
+            <TRANSL xml:lang="fr">vous2+futur</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tuöö</FORM>
+            <TRANSL xml:lang="fr">surveiller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tuöö</FORM>
+            <TRANSL xml:lang="fr">surveiller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wiaa</FORM>
+            <TRANSL xml:lang="fr">bien</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wâ</FORM>
+            <TRANSL xml:lang="fr">voir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ene</FORM>
+            <TRANSL xml:lang="fr">si</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">walakâ</FORM>
+            <TRANSL xml:lang="fr">jouer+avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tabök</FORM>
+            <TRANSL xml:lang="fr">socle+àmoi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">iv̄eto</FORM>
+            <TRANSL xml:lang="fr">pierre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetru</FORM>
+            <TRANSL xml:lang="fr">casser</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs51">
+        <AUDIO start="279.3000" end="281.3000"/>
+        <FORM kindOf="phono">Aa gaan dut wanakat. </FORM>
+        <TRANSL xml:lang="fr">L'enfant était déjà grand.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Aa</FORM>
+            <TRANSL xml:lang="fr">il+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gaan</FORM>
+            <TRANSL xml:lang="fr">grand</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs52">
+        <AUDIO start="281.3000" end="283.2200"/>
+        <FORM kindOf="phono">Ame wadring mo...nu but. </FORM>
+        <TRANSL xml:lang="fr">Il courait partout.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wadring</FORM>
+            <TRANSL xml:lang="fr">courir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">monu</FORM>
+            <TRANSL xml:lang="fr">n'importe où</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs53">
+        <AUDIO start="283.2200" end="287.8399"/>
+        <FORM kindOf="phono">Haba hnyi ke bong me laba thiju wanakat ka walakâ iv̄eto. </FORM>
+        <TRANSL xml:lang="fr">Un jour, il se mit à jouer avec la pierre.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">un</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bong</FORM>
+            <TRANSL xml:lang="fr">jour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">walakâ</FORM>
+            <TRANSL xml:lang="fr">jouer avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">iv̄eto</FORM>
+            <TRANSL xml:lang="fr">pierre</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs54">
+        <AUDIO start="287.8399" end="293.3800"/>
+        <FORM kindOf="phono">Ame ölö hnyin ke haba e ge v̄eto ee me tabö Seûnö ka gâ. </FORM>
+        <TRANSL xml:lang="fr">Il l'escalada, mais cette pierre, c'était justement le tremplin d'où Soleil sautait.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ölö</FORM>
+            <TRANSL xml:lang="fr">monter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyin</FORM>
+            <TRANSL xml:lang="fr">dedans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">là</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ge</FORM>
+            <TRANSL xml:lang="fr">à propos de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">v̄eto</FORM>
+            <TRANSL xml:lang="fr">pierre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ee</FORM>
+            <TRANSL xml:lang="fr">cette</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tabö</FORM>
+            <TRANSL xml:lang="fr">socle de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gâ</FORM>
+            <TRANSL xml:lang="fr">sauter</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs55">
+        <AUDIO start="293.3800" end="296.9200"/>
+        <FORM kindOf="phono">E mwi thiju wanakat me thu thibut iv̄eto. </FORM>
+        <TRANSL xml:lang="fr">Au bout d'un moment, l'enfant cassa la pierre.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mwi</FORM>
+            <TRANSL xml:lang="fr">demeurer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thu</FORM>
+            <TRANSL xml:lang="fr">casser</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">iv̄eto</FORM>
+            <TRANSL xml:lang="fr">pierre</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs56">
+        <AUDIO start="296.9200" end="304.1200"/>
+        <FORM kindOf="phono">E kaa he ka oo hmetu Seûnö ûheeny hnyi hna he me haba v̄eto me aa hmetru but. </FORM>
+        <TRANSL xml:lang="fr">Quand Soleil revint de son périple, la pierre était brisée.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kaa</FORM>
+            <TRANSL xml:lang="fr">quand</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetu</FORM>
+            <TRANSL xml:lang="fr">encore</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûheeny</FORM>
+            <TRANSL xml:lang="fr">venant de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hna</FORM>
+            <TRANSL xml:lang="fr">place</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">v̄eto</FORM>
+            <TRANSL xml:lang="fr">pierre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aa</FORM>
+            <TRANSL xml:lang="fr">elle+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetru</FORM>
+            <TRANSL xml:lang="fr">cassé</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs57">
+        <AUDIO start="304.1200" end="308.6401"/>
+        <FORM kindOf="phono">E hmwööhnyi Seûnö thibut ka kiben sohmwecaa me aeâân Ciau. </FORM>
+        <TRANSL xml:lang="fr">Soleil fut très en colère envers sa grand-mère et Ciau, son épouse.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmwööhnyi</FORM>
+            <TRANSL xml:lang="fr">en colère</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">envers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kiben</FORM>
+            <TRANSL xml:lang="fr">grand-mère+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sohmwecaa</FORM>
+            <TRANSL xml:lang="fr">vieille femme</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aeâân</FORM>
+            <TRANSL xml:lang="fr">épouse+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs58">
+        <AUDIO start="308.6401" end="317.9200"/>
+        <FORM kindOf="phono">Laba thiju ka ûû ödru: "Ogee ka hûnaa thibi ehaac kööbu ûnya tabök v̄eto wâ enye thu dhö wanakat. </FORM>
+        <TRANSL xml:lang="fr">Il leur cria après : "Je vous avais pourtant bien recommandé de veiller à ce que l'enfant ne casse pas mon socle en pierre."</TRANSL>
+        <W>
+            <FORM kindOf="phono">Laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûû</FORM>
+            <TRANSL xml:lang="fr">gronder</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödru</FORM>
+            <TRANSL xml:lang="fr">elles2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ogee</FORM>
+            <TRANSL xml:lang="fr">je+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hûnaa</FORM>
+            <TRANSL xml:lang="fr">recommander</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibi</FORM>
+            <TRANSL xml:lang="fr">seulement</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ehaac</FORM>
+            <TRANSL xml:lang="fr">autrefois</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kööbu</FORM>
+            <TRANSL xml:lang="fr">à+vous2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnya</FORM>
+            <TRANSL xml:lang="fr">c'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tabök</FORM>
+            <TRANSL xml:lang="fr">socle+à moi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">v̄eto</FORM>
+            <TRANSL xml:lang="fr">pierre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wâ</FORM>
+            <TRANSL xml:lang="fr">voir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">enye</FORM>
+            <TRANSL xml:lang="fr">si+il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thu</FORM>
+            <TRANSL xml:lang="fr">casser</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs59">
+        <AUDIO start="317.9200" end="322.9800"/>
+        <FORM kindOf="phono">E kong thibut köö Ciau ifuuci Seûnö. </FORM>
+        <TRANSL xml:lang="fr">Ciau fut blessée par les paroles de Soleil.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kong</FORM>
+            <TRANSL xml:lang="fr">mauvais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">köö</FORM>
+            <TRANSL xml:lang="fr">envers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ifuuci</FORM>
+            <TRANSL xml:lang="fr">façon de parler de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs60">
+        <AUDIO start="322.9800" end="325.9400"/>
+        <FORM kindOf="phono">Ödrin mokutr thiju hnyingeetr. </FORM>
+        <TRANSL xml:lang="fr">La nuit, ils se couchèrent.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ödrin</FORM>
+            <TRANSL xml:lang="fr">ils</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mokutr</FORM>
+            <TRANSL xml:lang="fr">se coucher</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyingeetr</FORM>
+            <TRANSL xml:lang="fr">pendant la nuit</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs61">
+        <AUDIO start="325.9400" end="332.8999"/>
+        <FORM kindOf="phono">Hnyi haoolaany, ke ame he hminya Seûnö ka ut jimeiö, helâ me hwakecin hnyi jee bong, </FORM>
+        <TRANSL xml:lang="fr">A l'aube, Soleil repartit pour se lever à l'est comme à son habitude.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haoolaany</FORM>
+            <TRANSL xml:lang="fr">aube</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hminya</FORM>
+            <TRANSL xml:lang="fr">aussi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ut</FORM>
+            <TRANSL xml:lang="fr">se lever</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jimeiö</FORM>
+            <TRANSL xml:lang="fr">de l'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">helâ</FORM>
+            <TRANSL xml:lang="fr">pareil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">que</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hwakecin</FORM>
+            <TRANSL xml:lang="fr">habitude+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jee</FORM>
+            <TRANSL xml:lang="fr">les</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bong</FORM>
+            <TRANSL xml:lang="fr">jour</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs62">
+        <AUDIO start="332.8999" end="336.4600"/>
+        <FORM kindOf="phono">ke haba Ciau me he thibut me nokon daa. </FORM>
+        <TRANSL xml:lang="fr">Ciau, elle, partit de son côté avec son fils.</TRANSL>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokon</FORM>
+            <TRANSL xml:lang="fr">enfant+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">daa</FORM>
+            <TRANSL xml:lang="fr">garçon</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs63">
+        <AUDIO start="336.4600" end="340.0000"/>
+        <FORM kindOf="phono">Hom thidhö daa ke ödree he thibut. </FORM>
+        <TRANSL xml:lang="fr">Elle prit le petit garçon et les voilà partis.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Hom</FORM>
+            <TRANSL xml:lang="fr">prendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">daa</FORM>
+            <TRANSL xml:lang="fr">garçon</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödree</FORM>
+            <TRANSL xml:lang="fr">ils2+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs64">
+        <AUDIO start="340.0000" end="349.3200"/>
+        <FORM kindOf="phono">Ödru oo thibut eû Gööny hnyi dok aa xöp hnyin ehaac, ke ödree kölu thibut hnyiköiöai, </FORM>
+        <TRANSL xml:lang="fr">, Ils arrivèrent à Gööny, à l'endroit même où elle avait abordé autrefois, et ils entrèrent tous deux dans la mer.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ödru</FORM>
+            <TRANSL xml:lang="fr">ils2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eû</FORM>
+            <TRANSL xml:lang="fr">en bas(vers la mer)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Gööny</FORM>
+            <TRANSL xml:lang="fr">Gööny</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dok</FORM>
+            <TRANSL xml:lang="fr">endroit</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aa</FORM>
+            <TRANSL xml:lang="fr">elle+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">xöp</FORM>
+            <TRANSL xml:lang="fr">aborder</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyin</FORM>
+            <TRANSL xml:lang="fr">dedans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ehaac</FORM>
+            <TRANSL xml:lang="fr">autrefois</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödree</FORM>
+            <TRANSL xml:lang="fr">ils2+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">descendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyiköiöai</FORM>
+            <TRANSL xml:lang="fr">en mer+vers</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs65">
+        <AUDIO start="349.3200" end="354.8799"/>
+        <FORM kindOf="phono">he deiö, kene ka he, kene ka bongon dut köiö hnyi nyiin. </FORM>
+        <TRANSL xml:lang="fr">Elle s'avanca jusqu'à ce que l'eau lui arrive au cou.</TRANSL>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">deiö</FORM>
+            <TRANSL xml:lang="fr">vers est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">et puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">et puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bongon</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">köiö</FORM>
+            <TRANSL xml:lang="fr">eau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nyiin</FORM>
+            <TRANSL xml:lang="fr">cou+à elle</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs66">
+        <AUDIO start="354.8799" end="362.4800"/>
+        <FORM kindOf="phono">Haba sohmwecaa me ka eiö hon öny, ame tenge ke ame ka thaoo Ciau. </FORM>
+        <TRANSL xml:lang="fr">La vieille, restée à terre sur le sable, pleurait et faisait tout pour retenir Ciau.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sohmwecaa</FORM>
+            <TRANSL xml:lang="fr">vieille femme</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eiö</FORM>
+            <TRANSL xml:lang="fr">là(à terre)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hon</FORM>
+            <TRANSL xml:lang="fr">sur</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">öny</FORM>
+            <TRANSL xml:lang="fr">sable</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">elle+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tenge</FORM>
+            <TRANSL xml:lang="fr">pleurer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">elle+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thaoo</FORM>
+            <TRANSL xml:lang="fr">retenir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs67">
+        <AUDIO start="362.4800" end="365.5600"/>
+        <FORM kindOf="phono">Haba Ciau me ame caa löng hwan. </FORM>
+        <TRANSL xml:lang="fr">Mais Ciau ne l'écoutait pas.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">caa</FORM>
+            <TRANSL xml:lang="fr">ne pas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">löng</FORM>
+            <TRANSL xml:lang="fr">écouter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hwan</FORM>
+            <TRANSL xml:lang="fr">voix+àelle</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs68">
+        <AUDIO start="365.5600" end="372.2800"/>
+        <FORM kindOf="phono">Ame he thibut bi e me nokon daa kene ka hiöödru but eû hnyiköiö. </FORM>
+        <TRANSL xml:lang="fr">Elle continuait résolument à avancer avec son fils jusqu'à ce que la mer les engloutisse.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ame</FORM>
+            <TRANSL xml:lang="fr">elle+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bi</FORM>
+            <TRANSL xml:lang="fr">seulement</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokon</FORM>
+            <TRANSL xml:lang="fr">enfant-son</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">daa</FORM>
+            <TRANSL xml:lang="fr">garçon</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">et puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hiöödru</FORM>
+            <TRANSL xml:lang="fr">disparu+eux2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eû</FORM>
+            <TRANSL xml:lang="fr">en bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyiköiö</FORM>
+            <TRANSL xml:lang="fr">en mer</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs69">
+        <AUDIO start="372.2800" end="380.8399"/>
+        <FORM kindOf="phono">E mwi thiju ûnya li wââ li watoo ehaac ödree hom jimeiö jiio ka hnyi bomene, me ödru oo hmetu thibut. </FORM>
+        <TRANSL xml:lang="fr">C'est alors que les deux poissons "watoo", qui l'avaient autrefois transportée d'est en ouest jusqu'à l'îlot, réapparurent.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mwi</FORM>
+            <TRANSL xml:lang="fr">demeurer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnya</FORM>
+            <TRANSL xml:lang="fr">c'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">li</FORM>
+            <TRANSL xml:lang="fr">les2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wââ</FORM>
+            <TRANSL xml:lang="fr">poisson</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">li</FORM>
+            <TRANSL xml:lang="fr">les2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">watoo</FORM>
+            <TRANSL xml:lang="fr">poisson sp.</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ehaac</FORM>
+            <TRANSL xml:lang="fr">autrefois</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödree</FORM>
+            <TRANSL xml:lang="fr">ils2+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hom</FORM>
+            <TRANSL xml:lang="fr">emporter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jimeiö</FORM>
+            <TRANSL xml:lang="fr">d'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jiio</FORM>
+            <TRANSL xml:lang="fr">vers ouest</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bomene</FORM>
+            <TRANSL xml:lang="fr">îlot</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödru</FORM>
+            <TRANSL xml:lang="fr">ils2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetu</FORM>
+            <TRANSL xml:lang="fr">encore</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs70">
+        <AUDIO start="380.8399" end="385.9000"/>
+        <FORM kindOf="phono">Ke ödree hum Ciau thidhö me nokon daa hootai. </FORM>
+        <TRANSL xml:lang="fr">Et ils emportèrent Ciau et son petit garçon vers la terre ferme.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödree</FORM>
+            <TRANSL xml:lang="fr">ils2+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hum</FORM>
+            <TRANSL xml:lang="fr">emporter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokon</FORM>
+            <TRANSL xml:lang="fr">enfant+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">daa</FORM>
+            <TRANSL xml:lang="fr">garçon</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hootai</FORM>
+            <TRANSL xml:lang="fr">à terre+vers</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs71">
+        <AUDIO start="385.9000" end="403.5199"/>
+        <FORM kindOf="phono">Ke wââ hnyi ke hnyaabenyin, ke ke wââ hnyi ke hnyaabenyin, ödrumwe dââ tilâ kene ödru ka oo dhö Hoony hnyi ka dok ehaac ame laba hnyin me anyin wahlu ka ta hidröu. </FORM>
+        <TRANSL xml:lang="fr">Un poisson sous une aisselle, un autre poisson sous l'autre aisselle, ils l'entraînèrent jusqu'à Hoony, à l'endroit même où, autrefois, elle se tenait avec ses compagnes pour se décolorer les cheveux.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ke</FORM>
+            <TRANSL xml:lang="fr">un</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wââ</FORM>
+            <TRANSL xml:lang="fr">poisson</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">une</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyaabenyin</FORM>
+            <TRANSL xml:lang="fr">aisselle+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">un</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wââ</FORM>
+            <TRANSL xml:lang="fr">poisson</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">une</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyaabenyin</FORM>
+            <TRANSL xml:lang="fr">aisselle+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödrumwe</FORM>
+            <TRANSL xml:lang="fr">ils2+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dââ</FORM>
+            <TRANSL xml:lang="fr">piquer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tilâ</FORM>
+            <TRANSL xml:lang="fr">entraîner</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">et puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödru</FORM>
+            <TRANSL xml:lang="fr">ils2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Hoony</FORM>
+            <TRANSL xml:lang="fr">Hoony</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">même</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dok</FORM>
+            <TRANSL xml:lang="fr">endroit</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ehaac</FORM>
+            <TRANSL xml:lang="fr">autrefois</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">elle+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyin</FORM>
+            <TRANSL xml:lang="fr">dedans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">anyin</FORM>
+            <TRANSL xml:lang="fr">à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wahlu</FORM>
+            <TRANSL xml:lang="fr">collectif+fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ta</FORM>
+            <TRANSL xml:lang="fr">un peu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hidröu</FORM>
+            <TRANSL xml:lang="fr">se décolorer les cheveux</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs72">
+        <AUDIO start="403.5199" end="410.4599"/>
+        <FORM kindOf="phono">Haingö Ciau dhö: "Ieû ang ogeme labaa me nokuk daa? Kee öhmwaa kölu V̄ekinyai. </FORM>
+        <TRANSL xml:lang="fr">Ciau se dit alors : "A quoi bon rester ici avec mon fils ! Il faudrait mieux que nous allions à Vekiny."</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haingö</FORM>
+            <TRANSL xml:lang="fr">dire</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ieû</FORM>
+            <TRANSL xml:lang="fr">quoi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ang</FORM>
+            <TRANSL xml:lang="fr">ici</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ogeme</FORM>
+            <TRANSL xml:lang="fr">je+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">labaa</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokuk</FORM>
+            <TRANSL xml:lang="fr">enfant+à moi</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">daa</FORM>
+            <TRANSL xml:lang="fr">garçon</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Kee</FORM>
+            <TRANSL xml:lang="fr">peut-être</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">öhmwaa</FORM>
+            <TRANSL xml:lang="fr">nous2+futur</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">descendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">V̄ekinyai</FORM>
+            <TRANSL xml:lang="fr">Vekiny+vers</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs73">
+        <AUDIO start="410.4599" end="412.2999"/>
+        <FORM kindOf="phono">Ödru he thibut. </FORM>
+        <TRANSL xml:lang="fr">Ils partirent donc.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ödru</FORM>
+            <TRANSL xml:lang="fr">ils2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs74">
+        <AUDIO start="412.2999" end="414.9200"/>
+        <FORM kindOf="phono">Ame ka hijeen nokon wanakat. </FORM>
+        <TRANSL xml:lang="fr">Elle portait l'enfant sur son dos.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ame</FORM>
+            <TRANSL xml:lang="fr">elle+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hijeen</FORM>
+            <TRANSL xml:lang="fr">porter dans le dos</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokon</FORM>
+            <TRANSL xml:lang="fr">enfant+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs75">
+        <AUDIO start="414.9200" end="421.0400"/>
+        <FORM kindOf="phono">He thibut ödru ke ödree oo thibut eû V̄ekiny me e bë xaca at. </FORM>
+        <TRANSL xml:lang="fr">Ils cheminèrent jusqu'à Vekiny mais, là, il n'y avait plus personne.</TRANSL>
+        <W>
+            <FORM kindOf="phono">He</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödru</FORM>
+            <TRANSL xml:lang="fr">eux2</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödree</FORM>
+            <TRANSL xml:lang="fr">ils2+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eû</FORM>
+            <TRANSL xml:lang="fr">là-bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">V̄ekiny</FORM>
+            <TRANSL xml:lang="fr">Vekiny</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bë</FORM>
+            <TRANSL xml:lang="fr">ne pas y avoir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">xaca</FORM>
+            <TRANSL xml:lang="fr">une</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">at</FORM>
+            <TRANSL xml:lang="fr">personne</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs76">
+        <AUDIO start="421.0400" end="429.8000"/>
+        <FORM kindOf="phono">Ke aa hnyoot tö ta hnyaaba a ödra dhöö hnyoot caan ehaac hlu thaan aa hiaa but. </FORM>
+        <TRANSL xml:lang="fr">Les habitations étaient envahies de végétation parce que tout le monde était dans la brousse depuis la disparition de la fille du chef, autrefois.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aa</FORM>
+            <TRANSL xml:lang="fr">accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyoot</FORM>
+            <TRANSL xml:lang="fr">brousse</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ta</FORM>
+            <TRANSL xml:lang="fr">pluriel</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyaaba</FORM>
+            <TRANSL xml:lang="fr">habitation</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">a</FORM>
+            <TRANSL xml:lang="fr">parce que</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">eux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhöö</FORM>
+            <TRANSL xml:lang="fr">là-haut</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyoot</FORM>
+            <TRANSL xml:lang="fr">en brousse</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">caan</FORM>
+            <TRANSL xml:lang="fr">sa cause</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ehaac</FORM>
+            <TRANSL xml:lang="fr">autrefois</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hlu</FORM>
+            <TRANSL xml:lang="fr">fille</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thaan</FORM>
+            <TRANSL xml:lang="fr">chef</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aa</FORM>
+            <TRANSL xml:lang="fr">elle+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hiaa</FORM>
+            <TRANSL xml:lang="fr">disparu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs77">
+        <AUDIO start="429.8000" end="435.1600"/>
+        <FORM kindOf="phono">E fuuc thidhö trutru anyi Wanyome hnyi hnyei V̄ekiny. </FORM>
+        <TRANSL xml:lang="fr">La conque de Wanyome retentit alors dans le pays de Vekiny.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">fuuc</FORM>
+            <TRANSL xml:lang="fr">parler</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">trutru</FORM>
+            <TRANSL xml:lang="fr">conque</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">anyi</FORM>
+            <TRANSL xml:lang="fr">de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Wanyome</FORM>
+            <TRANSL xml:lang="fr">Wanyome</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyei</FORM>
+            <TRANSL xml:lang="fr">pays</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">V̄ekiny</FORM>
+            <TRANSL xml:lang="fr">Vekiny</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs78">
+        <AUDIO start="435.1600" end="443.6400"/>
+        <FORM kindOf="phono">E iooköu thibut tav̄ëët ûheedra hnyoot agaa kûû dhö hnyoot dröhmun hnyi jee bwödra me unyidra. </FORM>
+        <TRANSL xml:lang="fr">Tous les gens se rassemblèrent, sortant de la brousse, la tête et le corps recouverts de fougère "dröhmun" [Microsorium punctatum (L.) Copel., Polypodiacée].</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">ils</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">iooköu</FORM>
+            <TRANSL xml:lang="fr">se rassembler</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tav̄ëët</FORM>
+            <TRANSL xml:lang="fr">les hommes</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûheedra</FORM>
+            <TRANSL xml:lang="fr">venant de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyoot</FORM>
+            <TRANSL xml:lang="fr">brousse</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">agaa</FORM>
+            <TRANSL xml:lang="fr">car+il+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kûû</FORM>
+            <TRANSL xml:lang="fr">pousser</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyoot</FORM>
+            <TRANSL xml:lang="fr">en brousse</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dröhmun</FORM>
+            <TRANSL xml:lang="fr">fougère sp.</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jee</FORM>
+            <TRANSL xml:lang="fr">les</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bwödra</FORM>
+            <TRANSL xml:lang="fr">tête+à eux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">unyidra</FORM>
+            <TRANSL xml:lang="fr">corps+à eux</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs79">
+        <AUDIO start="443.6400" end="447.9800"/>
+        <FORM kindOf="phono">Hnyiban bongon gaa Ciau. </FORM>
+        <TRANSL xml:lang="fr">Ici s'achève l'aventure de Ciau.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Hnyiban</FORM>
+            <TRANSL xml:lang="fr">fin de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bongon</FORM>
+            <TRANSL xml:lang="fr">histoire</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gaa</FORM>
+            <TRANSL xml:lang="fr">au sujet de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs80">
+        <AUDIO start="447.9800" end="451.2800"/>
+        <FORM kindOf="phono">E laba thibut Ciau me nokon wanakat V̄ekiny. </FORM>
+        <TRANSL xml:lang="fr">Elle resta désormais à Vekiny avec son fils.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokon</FORM>
+            <TRANSL xml:lang="fr">enfant+à elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">V̄ekiny</FORM>
+            <TRANSL xml:lang="fr">Vekiny</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs81">
+        <AUDIO start="451.2800" end="456.2399"/>
+        <FORM kindOf="phono">Aa oo Seûnö eû hnyi bomene ke e hiöö Ciau but me nokon wanakat. </FORM>
+        <TRANSL xml:lang="fr">Quand Soleil regagna l'îlot, Ciau et son enfant avaient disparu.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Aa</FORM>
+            <TRANSL xml:lang="fr">il+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eû</FORM>
+            <TRANSL xml:lang="fr">là-bas(ouest)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bomene</FORM>
+            <TRANSL xml:lang="fr">îlot</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hiöö</FORM>
+            <TRANSL xml:lang="fr">absente</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Ciau</FORM>
+            <TRANSL xml:lang="fr">Ciau</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">but</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokon</FORM>
+            <TRANSL xml:lang="fr">enfant+son</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs82">
+        <AUDIO start="456.2399" end="463.7600"/>
+        <FORM kindOf="phono">Ekaa he hmetu Sêunö ka ut jimeiö me oo thiju ka nokon wanakat eiö V̄ekiny. </FORM>
+        <TRANSL xml:lang="fr">Soleil repartit pour se lever à l'est et se dirigea vers son enfant à Vekiny.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Ekaa</FORM>
+            <TRANSL xml:lang="fr">il+quand</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetu</FORM>
+            <TRANSL xml:lang="fr">encore</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Sêunö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ut</FORM>
+            <TRANSL xml:lang="fr">se lever</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jimeiö</FORM>
+            <TRANSL xml:lang="fr">de l'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">oo</FORM>
+            <TRANSL xml:lang="fr">arriver</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokon</FORM>
+            <TRANSL xml:lang="fr">enfant+son</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eiö</FORM>
+            <TRANSL xml:lang="fr">là (intérieur du pays)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">̄Vekiny</FORM>
+            <TRANSL xml:lang="fr">Vekiny</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs83">
+        <AUDIO start="463.7600" end="477.5199"/>
+        <FORM kindOf="phono">Haba Seûnö me aa caa he hmetu edhöö hnyi hnen, ke kölu thibut ka he eheejii hon wanu, kene e gaan hmwââ kahwainy Seûnö hnyi jee bong. </FORM>
+        <TRANSL xml:lang="fr">Mais au lieu de rester à sa place dans le ciel, il descendit sur les cocotiers et la chaleur du soleil devint insupportable</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">aa</FORM>
+            <TRANSL xml:lang="fr">il+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">caa</FORM>
+            <TRANSL xml:lang="fr">ne pas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetu</FORM>
+            <TRANSL xml:lang="fr">encore</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">edhöö</FORM>
+            <TRANSL xml:lang="fr">là-haut</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnen</FORM>
+            <TRANSL xml:lang="fr">place+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">descendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eheejii</FORM>
+            <TRANSL xml:lang="fr">quelque part en bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hon</FORM>
+            <TRANSL xml:lang="fr">dessus</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanu</FORM>
+            <TRANSL xml:lang="fr">collectif+cocotier</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">elle</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gaan</FORM>
+            <TRANSL xml:lang="fr">grande</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmwââ</FORM>
+            <TRANSL xml:lang="fr">beaucoup</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kahwainy</FORM>
+            <TRANSL xml:lang="fr">chaleur+de lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jee</FORM>
+            <TRANSL xml:lang="fr">les</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bong</FORM>
+            <TRANSL xml:lang="fr">jour</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs84">
+        <AUDIO start="477.5199" end="484.9799"/>
+        <FORM kindOf="phono">Agame he hakekenyâ nokon wanakat a e V̄ekiny. </FORM>
+        <TRANSL xml:lang="fr">tant il cherchait à se rapprocher de son fils qui était à Vekiny.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Agame</FORM>
+            <TRANSL xml:lang="fr">car+il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hakekenyâ</FORM>
+            <TRANSL xml:lang="fr">approcher</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokon</FORM>
+            <TRANSL xml:lang="fr">fils+àlui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">a</FORM>
+            <TRANSL xml:lang="fr">qui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">il (est)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">V̄ekiny</FORM>
+            <TRANSL xml:lang="fr">Vekiny</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs85">
+        <AUDIO start="484.9799" end="490.6400"/>
+        <FORM kindOf="phono">Haba hnyei V̄ekiny me ame xexe kânâ ke e bë hmetu hnyei. </FORM>
+        <TRANSL xml:lang="fr">Au pays de Vekiny, la terre se crevassa et il n'y eut plus de champs.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyei</FORM>
+            <TRANSL xml:lang="fr">pays</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">V̄ekiny</FORM>
+            <TRANSL xml:lang="fr">Vekiny</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">elle+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">xexe</FORM>
+            <TRANSL xml:lang="fr">se craqueler</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kânâ</FORM>
+            <TRANSL xml:lang="fr">terre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bë</FORM>
+            <TRANSL xml:lang="fr">ne pas y avoir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetu</FORM>
+            <TRANSL xml:lang="fr">encore</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyei</FORM>
+            <TRANSL xml:lang="fr">champ</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs86">
+        <AUDIO start="490.6400" end="493.5599"/>
+        <FORM kindOf="phono">E kong gut ka belök. </FORM>
+        <TRANSL xml:lang="fr">Ils étaient devenus incultivables.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kong</FORM>
+            <TRANSL xml:lang="fr">mauvais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">belök</FORM>
+            <TRANSL xml:lang="fr">cultiver</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs87">
+        <AUDIO start="493.5599" end="496.9601"/>
+        <FORM kindOf="phono">E bë hmetu ûnyi ae soo ka taa hnyi kânâ. </FORM>
+        <TRANSL xml:lang="fr">Il n'y avait plus rien de bon à planter.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bë</FORM>
+            <TRANSL xml:lang="fr">ne pas y avoir</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetu</FORM>
+            <TRANSL xml:lang="fr">encore</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnyi</FORM>
+            <TRANSL xml:lang="fr">chose</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ae</FORM>
+            <TRANSL xml:lang="fr">qui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">soo</FORM>
+            <TRANSL xml:lang="fr">bonne</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">taa</FORM>
+            <TRANSL xml:lang="fr">planter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kânâ</FORM>
+            <TRANSL xml:lang="fr">terre</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs88">
+        <AUDIO start="496.9601" end="503.5001"/>
+        <FORM kindOf="phono">E ûhnehnamwö thiju tav̄ëët hnyi hnyei me Wanyome me Bahitr: </FORM>
+        <TRANSL xml:lang="fr">Les hommes du pays tinrent conseil avec Wanyome et Bahitr.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûhnehnamwö</FORM>
+            <TRANSL xml:lang="fr">discuter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tav̄ëët</FORM>
+            <TRANSL xml:lang="fr">les hommes</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyei</FORM>
+            <TRANSL xml:lang="fr">pays</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">avec</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Wanyome</FORM>
+            <TRANSL xml:lang="fr">Wanyome</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Bahitr</FORM>
+            <TRANSL xml:lang="fr">Bahitr</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs89">
+        <AUDIO start="503.5001" end="513.7800"/>
+        <FORM kindOf="phono">"E kong gut hnyei ge Seûnö ke haba ûnyi ae soo me ötinaa kunâ hmetu wanakat noku Seûnö kâu. </FORM>
+        <TRANSL xml:lang="fr">"Le pays est devenu invivable à cause du soleil. La seule chose qui nous reste à faire, c'est de lui rendre son fils."</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kong</FORM>
+            <TRANSL xml:lang="fr">mauvais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyei</FORM>
+            <TRANSL xml:lang="fr">pays</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ge</FORM>
+            <TRANSL xml:lang="fr">à cause de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">mais</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haba</FORM>
+            <TRANSL xml:lang="fr">quant à</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnyi</FORM>
+            <TRANSL xml:lang="fr">chose</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ae</FORM>
+            <TRANSL xml:lang="fr">qui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">soo</FORM>
+            <TRANSL xml:lang="fr">bonne</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ötinaa</FORM>
+            <TRANSL xml:lang="fr">nous+futur</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kunâ</FORM>
+            <TRANSL xml:lang="fr">envoyer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetu</FORM>
+            <TRANSL xml:lang="fr">encore</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">noku</FORM>
+            <TRANSL xml:lang="fr">enfant de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kâu</FORM>
+            <TRANSL xml:lang="fr">vers lui</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs90">
+        <AUDIO start="513.7800" end="522.6600"/>
+        <FORM kindOf="phono">Adree laba thiju ka sixöûnâ watakû, jee hna hwii kû hnen tav̄ëët. </FORM>
+        <TRANSL xml:lang="fr">Ils se mirent alors à entasser les mâchures de canne à sucre que les gens avaient recrachées.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Adree</FORM>
+            <TRANSL xml:lang="fr">ils+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sixöûnâ</FORM>
+            <TRANSL xml:lang="fr">entasser</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">watakû</FORM>
+            <TRANSL xml:lang="fr">mâchures de canne à sucre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jee</FORM>
+            <TRANSL xml:lang="fr">les</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hna</FORM>
+            <TRANSL xml:lang="fr">action(passée)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hwii</FORM>
+            <TRANSL xml:lang="fr">mâcher</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kû</FORM>
+            <TRANSL xml:lang="fr">canne à sucre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnen</FORM>
+            <TRANSL xml:lang="fr">par</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tav̄ëët</FORM>
+            <TRANSL xml:lang="fr">les gens</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs91">
+        <AUDIO start="522.6600" end="527.2399"/>
+        <FORM kindOf="phono">Adree xoon thidhö me wale dhöö hon. </FORM>
+        <TRANSL xml:lang="fr">Ils les entassèrent le plus haut qu'ils purent.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Adree</FORM>
+            <TRANSL xml:lang="fr">ils+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">xoon</FORM>
+            <TRANSL xml:lang="fr">mettre en tas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wale</FORM>
+            <TRANSL xml:lang="fr">voilà</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">dhöö</FORM>
+            <TRANSL xml:lang="fr">en haut</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hon</FORM>
+            <TRANSL xml:lang="fr">dessus</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs92">
+        <AUDIO start="527.2399" end="532.8200"/>
+        <FORM kindOf="phono">Adree laba thiju ka tuöö ûen amaa he Seûnö ka ut jimeiö. </FORM>
+        <TRANSL xml:lang="fr">Ils restèrent alors à guetter le moment où Soleil allait se lever.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Adree</FORM>
+            <TRANSL xml:lang="fr">ils+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">laba</FORM>
+            <TRANSL xml:lang="fr">rester</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tuöö</FORM>
+            <TRANSL xml:lang="fr">surveiller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûen</FORM>
+            <TRANSL xml:lang="fr">moment</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">amaa</FORM>
+            <TRANSL xml:lang="fr">il+futur</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ut</FORM>
+            <TRANSL xml:lang="fr">se lever</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jimeiö</FORM>
+            <TRANSL xml:lang="fr">de l'est</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs93">
+        <AUDIO start="532.8200" end="538.5999"/>
+        <FORM kindOf="phono">Mwi thiju Seûnö me he hminya thibut ka hv̄enoo deeny gedhen. </FORM>
+        <TRANSL xml:lang="fr">Au bout d'un moment, Soleil repartit effectuer son périple.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Mwi</FORM>
+            <TRANSL xml:lang="fr">demeurer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hminya</FORM>
+            <TRANSL xml:lang="fr">encore</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hv̄enoo</FORM>
+            <TRANSL xml:lang="fr">suivre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">deeny</FORM>
+            <TRANSL xml:lang="fr">chemin+àlui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">gedhen</FORM>
+            <TRANSL xml:lang="fr">route</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs94">
+        <AUDIO start="538.5999" end="548.7400"/>
+        <FORM kindOf="phono">He thibut Seûnö, kene ame ka he cicöö hminya hnyei V̄ekiny me kölu thibut ka he hakekeny eheejii hon kânâ. </FORM>
+        <TRANSL xml:lang="fr">Il revint encore au-dessus de Vekiny et descendit pour se rapprocher de la terre.</TRANSL>
+        <W>
+            <FORM kindOf="phono">He</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">et puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">cicöö</FORM>
+            <TRANSL xml:lang="fr">en face</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hminya</FORM>
+            <TRANSL xml:lang="fr">encore</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyei</FORM>
+            <TRANSL xml:lang="fr">pays</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">V̄ekiny</FORM>
+            <TRANSL xml:lang="fr">Vekiny</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kölu</FORM>
+            <TRANSL xml:lang="fr">descendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibut</FORM>
+            <TRANSL xml:lang="fr">révolu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hakekeny</FORM>
+            <TRANSL xml:lang="fr">s'approcher</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">eheejii</FORM>
+            <TRANSL xml:lang="fr">quelque part en bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hon</FORM>
+            <TRANSL xml:lang="fr">dessus</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kânâ</FORM>
+            <TRANSL xml:lang="fr">terre</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs95">
+        <AUDIO start="548.7400" end="557.4800"/>
+        <FORM kindOf="phono">E mwi thiju vëët ejii, me adree v̄ââc thidhö meic hnyi v̄etaûnyi adree xoon a ûnya watakû. </FORM>
+        <TRANSL xml:lang="fr">Les hommes mirent alors le feu au tas de détritus de mâchures de canne à sucre.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mwi</FORM>
+            <TRANSL xml:lang="fr">demeurer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">vëët</FORM>
+            <TRANSL xml:lang="fr">les gens</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ejii</FORM>
+            <TRANSL xml:lang="fr">en bas</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">adree</FORM>
+            <TRANSL xml:lang="fr">ils+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">v̄ââc</FORM>
+            <TRANSL xml:lang="fr">allumer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">meic</FORM>
+            <TRANSL xml:lang="fr">feu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">v̄etaûnyi</FORM>
+            <TRANSL xml:lang="fr">tas de détritus</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">adree</FORM>
+            <TRANSL xml:lang="fr">ils+accompli</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">xoon</FORM>
+            <TRANSL xml:lang="fr">entasser</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">a</FORM>
+            <TRANSL xml:lang="fr">qui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ûnya</FORM>
+            <TRANSL xml:lang="fr">c'est</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">watakû</FORM>
+            <TRANSL xml:lang="fr">mâchures de canne à sucre</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs96">
+        <AUDIO start="557.4800" end="559.1199"/>
+        <FORM kindOf="phono">E hlâ thidhö. </FORM>
+        <TRANSL xml:lang="fr">Il prit feu.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hlâ</FORM>
+            <TRANSL xml:lang="fr">brûler</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs97">
+        <AUDIO start="559.1199" end="562.8600"/>
+        <FORM kindOf="phono">E tootr thidhö hai me e pasoon ka haa. </FORM>
+        <TRANSL xml:lang="fr">Une fumée indescriptible s'éleva.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">tootr</FORM>
+            <TRANSL xml:lang="fr">debout</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hai</FORM>
+            <TRANSL xml:lang="fr">fumée</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">e</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">pasoon</FORM>
+            <TRANSL xml:lang="fr">impossible</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haa</FORM>
+            <TRANSL xml:lang="fr">dire</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs98">
+        <AUDIO start="562.8600" end="569.5399"/>
+        <FORM kindOf="phono">Kene ame ka he cicii ödra thibi Seûnö, ke ödra ka hom thidhö wanakat ka xûâ hnyi meic. </FORM>
+        <TRANSL xml:lang="fr">Juste au moment où Soleil arrivait au-dessus d'eux, ils prirent l'enfant et le jetèrent dans le feu.</TRANSL>
+        <W>
+            <FORM kindOf="phono">Kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ame</FORM>
+            <TRANSL xml:lang="fr">il+procès</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">he</FORM>
+            <TRANSL xml:lang="fr">aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">cicii</FORM>
+            <TRANSL xml:lang="fr">en face de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">eux</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thibi</FORM>
+            <TRANSL xml:lang="fr">seulement</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ke</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ödra</FORM>
+            <TRANSL xml:lang="fr">ils</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">assertif</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hom</FORM>
+            <TRANSL xml:lang="fr">prendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">pour</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">xûâ</FORM>
+            <TRANSL xml:lang="fr">jeter</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">meic</FORM>
+            <TRANSL xml:lang="fr">feu</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs99">
+        <AUDIO start="569.5399" end="575.2601"/>
+        <FORM kindOf="phono">E mwi thiju haiiny meic me kap thidhö wanakat göraanyai ka Seûnö. </FORM>
+        <TRANSL xml:lang="fr">La fumée le souleva dans les airs jusqu'au soleil.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mwi</FORM>
+            <TRANSL xml:lang="fr">demeurer</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thiju</FORM>
+            <TRANSL xml:lang="fr">dès lors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">haiiny</FORM>
+            <TRANSL xml:lang="fr">fumée de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">meic</FORM>
+            <TRANSL xml:lang="fr">feu</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">me</FORM>
+            <TRANSL xml:lang="fr">et</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kap</FORM>
+            <TRANSL xml:lang="fr">soulever</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">göraanyai</FORM>
+            <TRANSL xml:lang="fr">en l'air+vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+    </S>
+    <S id="CIAUs100">
+        <AUDIO start="575.2601" end="584.6400"/>
+        <FORM kindOf="phono">E hom thidhö nokon wanakat Seûnö, kene waahe mee hmetu jiio ka hnyi bomene anyin kiben sohmwecaa. </FORM>
+        <TRANSL xml:lang="fr">Soleil prit alors son fils et regagna avec lui l'îlot de sa grand-mère.</TRANSL>
+        <W>
+            <FORM kindOf="phono">E</FORM>
+            <TRANSL xml:lang="fr">il</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hom</FORM>
+            <TRANSL xml:lang="fr">prendre</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">thidhö</FORM>
+            <TRANSL xml:lang="fr">alors</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">nokon</FORM>
+            <TRANSL xml:lang="fr">enfant+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">wanakat</FORM>
+            <TRANSL xml:lang="fr">enfant</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">Seûnö</FORM>
+            <TRANSL xml:lang="fr">Soleil</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kene</FORM>
+            <TRANSL xml:lang="fr">puis</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">waahe</FORM>
+            <TRANSL xml:lang="fr">s'en aller</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">mee</FORM>
+            <TRANSL xml:lang="fr">avec lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hmetu</FORM>
+            <TRANSL xml:lang="fr">retourner</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">jiio</FORM>
+            <TRANSL xml:lang="fr">là-bas (vers l'ouest)</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">ka</FORM>
+            <TRANSL xml:lang="fr">vers</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">hnyi</FORM>
+            <TRANSL xml:lang="fr">dans</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">bomene</FORM>
+            <TRANSL xml:lang="fr">îlot</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">anyin</FORM>
+            <TRANSL xml:lang="fr">de</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">kiben</FORM>
+            <TRANSL xml:lang="fr">grand-mère+à lui</TRANSL>
+        </W>
+        <W>
+            <FORM kindOf="phono">sohmwecaa</FORM>
+            <TRANSL xml:lang="fr">vieille femme</TRANSL>
+        </W>
+    </S>
+</TEXT>

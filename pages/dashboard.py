@@ -25,6 +25,7 @@ from libs import openai_vector_store_utils as ovsu
 from libs import sentence_queue_utils as squ
 from libs import retrieval_augmented_generation_utils as ragu
 from libs import utils
+from libs import file_format_utils as ffu
 import streamlit.components.v1 as components
 from libs import utils as u
 from libs import stats
@@ -544,6 +545,30 @@ with tab3:
         st.markdown("**Available sentence pairs files**")
         st.dataframe(df_display)
 
+    # ===== ADMIN CONVERSION TEST =======================================
+    if role == "admin":
+        file_to_convert = st.file_uploader("Convert file",
+                                           accept_multiple_files=False,
+                                           key="convert_file_upload")
+        source_format = st.selectbox("Format", ["Pangloss XML"])
+        if file_to_convert is not None:
+            tmp_filepath = os.path.join("./", "tmp", file_to_convert.name)
+            with open(tmp_filepath, "wb") as tf:
+                tf.write(file_to_convert.getbuffer())
+            # use pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath)
+            if st.button("Convert"):
+                if source_format == "Pangloss XML":
+                    try:
+                        converted_sentence_pairs = ffu.pangloss_xml_to_sentence_pairs_json(os.path.join("./", "tmp", file_to_convert.name))
+                        st.success("File converted to sentence pairs")
+                        st.download_button("Download converted sentence pairs",
+                                           data=json.dumps(converted_sentence_pairs, ensure_ascii=False, indent=4),
+                                           file_name="converted_sentence_pairs.json",
+                                           mime="application/json")
+                    except Exception as e:
+                        st.error("Error converting file: {}".format(e))
+
+
     # ====== NEW PAIRS FILE UPLOAD FORM ==================================
 
     if role in ["guest", "user"]:
@@ -844,7 +869,7 @@ with tab3:
             source = st.text_input("Edit Source", value=slap.get("source", ""))
             target = st.text_input("Edit {}".format(st.session_state.indi_language), value=slap.get("target", ""))
             comments = st.text_input("Add/edit comments", value=slap.get("comments", ""))
-            with st.expander("Edit content"):
+            with st.expander("Edit LLM content"):
                 description = st.text_input("Edit description", value=slap.get("description", ""))
                 keywords_string = st.text_input("Edit keywords (respect format)", value=", ".join(slap.get("keywords", [])))
                 keywords = keywords_string.split(", ")
@@ -852,7 +877,7 @@ with tab3:
                 words = stats.custom_split(slap["target"], st.session_state.delimiters)
             st.markdown("**Add connections**")
             ktc_pop = []
-
+            wc_add = []
             colc1, colc2 = st.columns(2)
             unconnected_ktc = [ktc
                                for ktc in key_translation_concepts
@@ -883,10 +908,14 @@ with tab3:
 
                 colc1.divider()
                 colc2.divider()
+                if input_source_concept_wc == source_wc:
+                    slap["word connections"][source_wc] = input_connected_words_wc
+                else:
+                    wc_add.append({input_source_concept_wc: input_connected_words_wc})
+                    ktc_pop.append(source_wc)
 
-                if input_source_concept_wc != source_wc:
-                    ktc_pop.append(ktc)
-                slap["word connections"][source_wc] = input_connected_words_wc
+            print("ktc_pop: {}".format(ktc_pop))
+            print("wc_add: {}".format(wc_add))
 
             for item in ktc_pop:
                 if item in slap["word connections"]:
@@ -894,6 +923,9 @@ with tab3:
                 if item in slap["key_translation_concepts"]:
                     slap["key_translation_concepts"].remove(item)
             ktc_pop = []
+            for item in wc_add:
+                for s in item.keys():
+                    slap["word connections"][s] = item[s]
 
             slap["comments"] = comments
             slap["source"] = source
