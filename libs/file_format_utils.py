@@ -33,5 +33,3 @@ def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath):
             print("issue with sentence {}".format(sentence))
 
     return data
-
-pangloss_xml_to_sentence_pairs_json("/Users/sebastienchristian/Desktop/d/01-These/language_lib/ngen/NG_Guinea_fowl.xml")
