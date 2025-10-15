@@ -597,7 +597,7 @@ with tab3:
                             st.warning(
                                 "This is a JSON file, but not a sentence pair file formatted as a list of 'source' and 'target' keys()")
                     except:
-                        st.write("Not a correctly formatted JSON file.")
+                        st.write("Not a correctly formatted JSON or CSV file.")
 
                     name = st.text_input("Name this corpus")
                     origin = st.text_input("Origin of the corpus")

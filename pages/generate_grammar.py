@@ -616,7 +616,7 @@ if st.session_state.run_sources:
             st.session_state.relevant_parameters = gga.select_parameters_sync(query, available_params)
         # alterlingua agent
         alterlingua_sentences = ggu.extract_and_clean_cq_alterlingua(st.session_state.indi)
-        with st.spinner("Generating contribution from CQ alterlingua analysis"):
+        with st.spinner("Generating contribution from CQ pseudo-gloss analysis"):
             st.session_state.alterlingua_contribution = gga.contribute_from_alterlingua_sync(st.session_state.query,
                                                                                              alterlingua_sentences)
     # document agent
@@ -647,17 +647,19 @@ if st.session_state.run_sources:
                 print("Response from document retrieval is None")
 
     # sentence pairs selection
-    if st.session_state.is_pairs and st.session_state.use_pairs:
-        with st.spinner("Counting whales..."):
-            if sdu.get_vector_ready_pairs(st.session_state.indi):
-                print("Augmented pairs prepared for vectorization")
-            if ragu.vectorize_vaps(st.session_state.indi):
-                print("Augmented pairs blobs vectorized and indexed")
-            if ragu.vectorize_sources(st.session_state.indi):
-                print("Augmented pairs sources vectorized and indexed")
-            if ragu.vectorize_descriptions(st.session_state.indi):
-                print("Augmented pairs descriptions vectorized and indexed")
-            ragu.create_hard_kw_index(st.session_state.indi)
+
+    # COMMENTED THE PAIR VECTORIZATION
+    # if st.session_state.is_pairs and st.session_state.use_pairs:
+    #     with st.spinner("Counting whales..."):
+    #         if sdu.get_vector_ready_pairs(st.session_state.indi):
+    #             print("Augmented pairs prepared for vectorization")
+    #         if ragu.vectorize_vaps(st.session_state.indi):
+    #             print("Augmented pairs blobs vectorized and indexed")
+    #         if ragu.vectorize_sources(st.session_state.indi):
+    #             print("Augmented pairs sources vectorized and indexed")
+    #         if ragu.vectorize_descriptions(st.session_state.indi):
+    #             print("Augmented pairs descriptions vectorized and indexed")
+    #         ragu.create_hard_kw_index(st.session_state.indi)
         with st.spinner("Retrieving a helpful selection of sentence pairs..."):
             # retrieve N sentences using embeddings XXX RULED OUT, NOT RELEVANT ENOUGH
             # index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "description_vectors", "index.faiss")
@@ -678,7 +680,7 @@ if st.session_state.run_sources:
                                        "augmented_pairs", sf), encoding="utf-8") as f:
                     tmpd = json.load(f)
                     sentence_pool.append(tmpd["source"])
-            st.write("sentence pool created with {} sentences".format(len(sentence_pool)))
+            print("sentence pool created with {} sentences".format(len(sentence_pool)))
             llm_selection_raw = sda.select_sentences_sync(query, sentence_pool)
             llm_selection = llm_selection_raw.sentence_list
             llm_filenames_retrieved = []
@@ -696,7 +698,7 @@ if st.session_state.run_sources:
 
 if st.session_state.relevant_parameters and st.sidebar.checkbox("Show selected grammatical parameters"):
     st.write(st.session_state.relevant_parameters)
-if st.session_state.alterlingua_contribution and st.sidebar.checkbox("Show isolated alterlingua contribution"):
+if st.session_state.alterlingua_contribution and st.sidebar.checkbox("Show isolated CQ pseudo-gloss contribution"):
     st.write(st.session_state.alterlingua_contribution)
 if st.session_state.documents_contribution and st.sidebar.checkbox("Show isolated documents contribution"):
     st.write(st.session_state.documents_contribution)
@@ -823,8 +825,26 @@ if st.session_state.output_dict:
                                  data=json.dumps(st.session_state.output_dict, ensure_ascii=False),
                                  file_name=fn)
         st.divider()
+        # Store/Download outputs
+        if st.button("Store output (making it visible to all users)"):
+
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w", encoding='utf-8') as f:
+                json.dump(st.session_state.output_dict, f, ensure_ascii=False)
+
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
+                info = json.load(f)
+                qk = f"sketch_{query}_({st.session_state.readers_language})"
+            info["outputs"][qk] = fn
+
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w", encoding='utf-8') as f:
+                json.dump(info, f, ensure_ascii=False)
+
+            st.success("Output stored and available")
+
+        # Display
         with st.expander("Output"):
             display_sketch_output(st.session_state.output_dict)
+        # Feedback
         if role in ["user", "admin"]:
             feedback_form()
 
@@ -836,7 +856,7 @@ if st.session_state.output_dict:
                     {st.session_state.indi} language. 
                     """)
         st.subheader("Store and/or download the output")
-        fn = "dig4el_aggregated_output_lesson_"
+        fn = "dig4el_unverified_lesson_"
         fn += st.session_state.indi + "_"
         fn += u.clean_sentence(query, filename=True, filename_length=50)
         fn += f"_({st.session_state.readers_language})"
@@ -851,7 +871,7 @@ if st.session_state.output_dict:
             st.write("Generation of docx failed")
 
         # Store/Download outputs
-        if st.button("Store output (and share it with others)"):
+        if st.button("Store output (making it visible to all users)"):
 
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w", encoding='utf-8') as f:
                 json.dump(st.session_state.output_dict, f, ensure_ascii=False)
@@ -861,13 +881,14 @@ if st.session_state.output_dict:
                     f.write(docx.getvalue())
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
                 info = json.load(f)
-                qk = f"{query}_({st.session_state.readers_language})"
+                qk = f"lesson_{query}_({st.session_state.readers_language})"
             info["outputs"][qk] = fn
 
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w", encoding='utf-8') as f:
                 json.dump(info, f, ensure_ascii=False)
 
             st.success("Output stored and available")
+
         st.download_button(label="Download JSON output",
                              data=json.dumps(st.session_state.output_dict, ensure_ascii=False),
                              file_name=fn)

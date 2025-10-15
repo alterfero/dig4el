@@ -302,7 +302,7 @@ async def create_lesson(indi_language, source_language, readers_type,
     DESCRIPTION FROM DOCUMENTS: {doc_contribution},
     
     
-    AUGMENTED SENTENCE PAIRS: {sentence_pairs}
+    SENTENCE PAIRS: {sentence_pairs}
     """
     result = await Runner.run(lesson_agent, data)
     return result.final_output.dict()
@@ -331,7 +331,7 @@ async def create_sketch(indi_language, source_language, readers_type,
     DESCRIPTION FROM DOCUMENTS: {doc_contribution},
 
 
-    AUGMENTED SENTENCE PAIRS: {sentence_pairs}
+    SENTENCE PAIRS: {sentence_pairs}
     """
     result = await Runner.run(sketch_agent, data)
     return result.final_output.dict()
