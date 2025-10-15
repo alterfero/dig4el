@@ -737,18 +737,20 @@ with tab3:
                         new_pairs = [pair for pair in st.session_state.sentence_pairs
                                      if u.clean_sentence(pair["source"], filename=True) + ".json"
                                      not in os.listdir(os.path.join(PAIRS_BASE_PATH, "augmented_pairs"))]
+                    c = 0
                     for new_pair in new_pairs:
                         a_pair = copy.deepcopy(new_pair)
                         a_pair["description"] = ""
                         a_pair["keywords"] = []
                         a_pair["key_translation_concepts"] = []
                         if "word connections" not in a_pair.keys():
-                            a_pair["word connections"] = []
+                            a_pair["word connections"] = {}
                         a_pair_filename = u.clean_sentence(a_pair["source"], filename=True)
                         with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs",
                                                a_pair_filename + ".json"), "w") as f:
                             json.dump(a_pair, f, indent=2, ensure_ascii=False)
-                    st.success("All augmented sentence files created without LLM augmentation")
+                        c += 1
+                    st.success("{} augmented sentence files created without LLM augmentation".format(c))
 
             if st.session_state.llm_augmentation and st.button("Save new augmented sentences"):
                 new_pairs = [pair for pair in st.session_state.sentence_pairs
@@ -851,7 +853,7 @@ with tab3:
                     "target": ap["target"],
                     "comments": ap.get("comments", ""),
                     "key_translation_concepts": ap.get("key_translation_concepts", []),
-                    "word connections": ap.get("word connections", {}),
+                    "word connections": ap["word connections"],
                     "keywords": ap.get("keywords", []),
                     "filename": os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file)
                 }

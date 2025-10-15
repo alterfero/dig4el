@@ -372,7 +372,7 @@ you will receive:
 - sentences: a list of candidate sentences (strings). Pick only from this list; do not rewrite or normalize.
 
 YOUR TASK:
-Return up to 20 sentences that best SUPPORT A LESSON on the query, prioritizing:
+Return between 20 and 50 sentences that best SUPPORT A LESSON on the query, prioritizing:
 1) **Coverage**: include varied subtypes for the topic (e.g., for ASPECT: progressive, perfect, habitual, prospective, resultative, perfective, imperfective, stative; for QUESTIONS: yes/no, wh-, tag, alternative; for NEGATION: clausal neg, negative imperatives, negative quantifiers; for PRONOUNS: 1st/2nd/3rd and plural forms; etc.).
 2) **Clarity**: prefer short (≈5–18 tokens), simple clauses with visible cues (e.g., be+V-ing, have+V-en, do not, wh-words, will/going to, was/ were + V-en for passives, this/that/these/those, one/two/some/many/all, have/’s for possession, come/go/back/toward/away/in/out/up/down).
 3) **Diversity**: avoid near duplicates; vary markers/lemmas/structures; prefer different constructions over multiple similar ones.
@@ -380,7 +380,8 @@ Return up to 20 sentences that best SUPPORT A LESSON on the query, prioritizing:
 
 RULES:
 - Output must be a **list of strings** (no prose). Each string must **exactly match** one of the provided sentences (character-for-character).
-- Do not exceed 20 items. If coverage is impossible (few candidates), return fewer.
+- Do not exceed 50 items.
+- Return at least 20 sentences (if the corpus has at least 20 entries...otherwise return all the corpus). 
 - If multiple topics are implied (e.g., “negative questions”), ensure examples jointly show both (interrogatives + negative cues).
 - Tie-breakers: prefer shorter, simpler, clearer cue > better subtype coverage > lexical diversity.
 - Never invent or modify sentences; never include commentary.
@@ -400,7 +401,7 @@ SELECTION CHEATSHEET (use surface cues; do not explain them in the output):
 - Evidentiality: apparently/seems/looks/sounded; “I heard/they say”.
 
 OUTPUT:
-Return ONLY a JSON array (list) of up to 20 selected sentences, each exactly one of the provided inputs.
+Return ONLY a JSON array (list) of 20 to 50 selected sentences, each exactly one of the provided inputs.
     """,
     output_type=SimpleSentenceList
 )

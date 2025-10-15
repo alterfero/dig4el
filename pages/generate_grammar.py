@@ -678,7 +678,7 @@ if st.session_state.run_sources:
                                        "augmented_pairs", sf), encoding="utf-8") as f:
                     tmpd = json.load(f)
                     sentence_pool.append(tmpd["source"])
-            #st.write("sentence pool created with {} sentences".format(len(sentence_pool)))
+            st.write("sentence pool created with {} sentences".format(len(sentence_pool)))
             llm_selection_raw = sda.select_sentences_sync(query, sentence_pool)
             llm_selection = llm_selection_raw.sentence_list
             llm_filenames_retrieved = []
