@@ -102,7 +102,3 @@ def transform_gloss_json(input_path: str, output_path: str) -> None:
         json.dump(transformed, f, ensure_ascii=False, indent=2)
 
     print(f"✅ Transformation complete. Output written to: {output_path}")
-
-transform_gloss_json(
-    "/Users/sebastienchristian/Desktop/d/01-These/language_lib/uruangnirin/5_CQs_Flex_export.json",
-    "/Users/sebastienchristian/Desktop/d/01-These/language_lib/uruangnirin/5_CQs_sentence_pairs.json")
