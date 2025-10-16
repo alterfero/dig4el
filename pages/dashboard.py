@@ -743,8 +743,13 @@ with tab3:
                         a_pair["description"] = ""
                         a_pair["keywords"] = []
                         a_pair["key_translation_concepts"] = []
+                        # Retro-compatibility connections -> word connections. Don't ask me why.
                         if "word connections" not in a_pair.keys():
                             a_pair["word connections"] = {}
+                        if "connections" in a_pair.keys():
+                            a_pair["word connections"] = copy.deepcopy(a_pair["connections"])
+                            del a_pair["connections"]
+                        # ===
                         a_pair_filename = u.clean_sentence(a_pair["source"], filename=True)
                         with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs",
                                                a_pair_filename + ".json"), "w") as f:
@@ -843,8 +848,13 @@ with tab3:
                         if fn[-5:] == ".json"]:
             with open(os.path.join(PAIRS_BASE_PATH, "augmented_pairs", ap_file), "r", encoding='utf-8') as f:
                 ap = json.load(f)
+                # Retro-compatibility connections -> word connections. Don't ask me why.
                 if "word connections" not in ap.keys():
                     ap["word connections"] = {}
+                if "connections" in ap.keys():
+                    ap["word connections"] = copy.deepcopy(ap["connections"])
+                    del ap["connections"]
+                # ===
                 if "key_translation_concepts" not in ap.keys():
                     ap["key_translation_concepts"] = []
             aps.append(
@@ -865,6 +875,13 @@ with tab3:
             selected_ap = aps[selected["selection"]["rows"][0]]
             with open(selected_ap["filename"], "r", encoding='utf-8') as f:
                 slap = json.load(f)
+                # Retro-compatibility connections -> word connections. Don't ask me why.
+                if "word connections" not in slap.keys():
+                    slap["word connections"] = {}
+                if "connections" in slap.keys():
+                    slap["word connections"] = copy.deepcopy(slap["connections"])
+                    del slap["connections"]
+                # ===
             if role == "admin":
                 with st.popover("ADMIN: slap"):
                     st.write(slap)
@@ -889,6 +906,7 @@ with tab3:
                 connected_words = colc2.multiselect(f"is expressed by",
                                                  words, key="cw"+ktc)
                 colc1.divider()
+                colc2.divider()
                 if source_concept != ktc:
                     ktc_pop.append(ktc)
                 slap["word connections"][source_concept] = connected_words
@@ -907,6 +925,7 @@ with tab3:
                     input_connected_words_wc = colc2.multiselect(f"is expressed by",
                                                                  words,
                                                                  key="cw_bis_" + source_wc)
+                    print(slap)
 
                 colc1.divider()
                 colc2.divider()
@@ -947,58 +966,58 @@ with tab3:
 
     if role == "admin":
         st.divider()
-        st.subheader("ADMIN: Test sentence pairs retrieval")
-        with st.spinner("Refreshing keyword index"):
-            ragu.create_hard_kw_index(st.session_state.indi_language)
+        with st.expander("ADMIN: Test sentence pairs retrieval"):
+            with st.spinner("Refreshing keyword index"):
+                ragu.create_hard_kw_index(st.session_state.indi_language)
 
-        if "query_results" not in st.session_state:
-            st.session_state.query_results = []
-        query = st.text_input("Sentence retrieval test, enter a query")
+            if "query_results" not in st.session_state:
+                st.session_state.query_results = []
+            query = st.text_input("Sentence retrieval test, enter a query")
 
-        if "hard_kw_retrieval_results" not in st.session_state:
-            st.session_state.hard_kw_retrieval_results = []
+            if "hard_kw_retrieval_results" not in st.session_state:
+                st.session_state.hard_kw_retrieval_results = []
 
-        if st.button("Submit", key="retrieval_test"):
-            with st.spinner("Retrieving sentences from vectors"):
-                try:
-                    sources_index, sources_id_to_meta = ragu.load_sources_index_and_id_to_meta(
-                        st.session_state.indi_language)
-                    descriptions_index, descriptions_id_to_meta = ragu.load_descriptions_index_and_id_to_meta(
-                        st.session_state.indi_language)
-                    sources_results = ragu.retrieve_similar(query, index=sources_index,
-                                                            id_to_meta=sources_id_to_meta, k=5)
-                    descriptions_results = ragu.retrieve_similar(query, index=descriptions_index,
-                                                            id_to_meta=descriptions_id_to_meta, k=5)
-                    st.write("Vectorized sources results: ")
-                    st.write(sources_results)
-                    st.write("Vectorized descriptions results: ")
-                    st.write(descriptions_results)
-                except:
-                    st.warning("No source or description vector-based results")
+            if st.button("Submit", key="retrieval_test"):
+                # with st.spinner("Retrieving sentences from vectors"):
+                #     try:
+                #         sources_index, sources_id_to_meta = ragu.load_sources_index_and_id_to_meta(
+                #             st.session_state.indi_language)
+                #         descriptions_index, descriptions_id_to_meta = ragu.load_descriptions_index_and_id_to_meta(
+                #             st.session_state.indi_language)
+                #         sources_results = ragu.retrieve_similar(query, index=sources_index,
+                #                                                 id_to_meta=sources_id_to_meta, k=5)
+                #         descriptions_results = ragu.retrieve_similar(query, index=descriptions_index,
+                #                                                 id_to_meta=descriptions_id_to_meta, k=5)
+                #         st.write("Vectorized sources results: ")
+                #         st.write(sources_results)
+                #         st.write("Vectorized descriptions results: ")
+                #         st.write(descriptions_results)
+                #     except:
+                #         st.warning("No source or description vector-based results")
 
-            with st.spinner("Retrieving sentences from keywords"):
-                st.session_state.hard_kw_retrieval_results = ragu.hard_retrieve_from_query(query, st.session_state.indi_language)
+                with st.spinner("Retrieving sentences from keywords"):
+                    st.session_state.hard_kw_retrieval_results = ragu.hard_retrieve_from_query(query, st.session_state.indi_language)
 
-            st.write("Keywords results: ")
-            st.write(st.session_state.hard_kw_retrieval_results)
+                st.write("Keywords results: ")
+                st.write(st.session_state.hard_kw_retrieval_results)
 
-            st.write("Direct LLM results: ")
+                st.write("Direct LLM results: ")
 
-            sentence_pool = []
-            for sf in [fn
-                       for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
-                                                         "sentence_pairs", "augmented_pairs"))
-                       if fn.endswith(".json")]:
-                with open(
-                        os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs", "augmented_pairs",
-                                     sf), encoding="utf-8") as f:
-                    tmpd = json.load(f)
-                    sentence_pool.append(tmpd["source"])
+                sentence_pool = []
+                for sf in [fn
+                           for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
+                                                             "sentence_pairs", "augmented_pairs"))
+                           if fn.endswith(".json")]:
+                    with open(
+                            os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs", "augmented_pairs",
+                                         sf), encoding="utf-8") as f:
+                        tmpd = json.load(f)
+                        sentence_pool.append(tmpd["source"])
 
-            with st.spinner("LLM Selecting sentences"):
-                st.write("sentence pool created with {} sentences".format(len(sentence_pool)))
-                selection = sda.select_sentences_sync(query, sentence_pool)
-                st.write(selection.sentence_list)
+                with st.spinner("LLM Selecting sentences"):
+                    st.write("sentence pool created with {} sentences".format(len(sentence_pool)))
+                    selection = sda.select_sentences_sync(query, sentence_pool)
+                    st.write(selection.sentence_list)
 
 if role == "admin":
     with st.sidebar:
