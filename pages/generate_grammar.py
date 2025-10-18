@@ -106,6 +106,7 @@ if "readers_type" not in st.session_state:
 if "document_format" not in st.session_state:
     st.session_state.document_format = "Grammar lesson"
 
+
 # ----- HELPERS -----------------------------------------------------------------------------------
 def display_lesson_output(output_dict):
     o = output_dict
@@ -116,9 +117,9 @@ def display_lesson_output(output_dict):
     for section in o["sections"]:
         st.subheader(section["focus"])
         if isinstance(section["description"], str):
-            st.write(section["description"])
+            st.markdown(section["description"])
         elif isinstance(section["description"], dict):
-            st.write(section["description"].get("description", "..."))
+            st.markdown(section["description"].get("description", "..."))
         st.markdown(f"**{section['example']['target_sentence']}**")
         st.markdown(f"*{section['example']['source_sentence']}*")
         st.write(section["example"]["description"])
@@ -155,9 +156,9 @@ def display_sketch_output(output_dict):
     for section in o["sections"]:
         st.subheader(section["focus"])
         if isinstance(section["description"], str):
-            st.write(section["description"])
+            st.markdown(section["description"])
         elif isinstance(section["description"], dict):
-            st.write(section["description"].get("description", "..."))
+            st.markdown(section["description"].get("description", "..."))
         for example in section.get("examples"):
             st.markdown(f"**{example['target_sentence']}**")
             st.markdown(f"*{example['source_sentence']}*")
@@ -347,15 +348,18 @@ else:
 # ------------------------------------------------------------------------------------------------
 colq, colw = st.columns(2)
 
+if "l_with_data" not in st.session_state:
+    st.session_state.l_with_data = None
 # languages with existing data
-l_with_data = [l for l in os.listdir(os.path.join(BASE_LD_PATH)) if os.path.isdir(os.path.join(BASE_LD_PATH, l))]
+st.session_state.l_with_data = [l for l in os.listdir(os.path.join(BASE_LD_PATH))
+                 if (os.path.isdir(os.path.join(BASE_LD_PATH, l)) and l in list(gu.GLOTTO_LANGUAGE_LIST.keys()))]
 if role == "guest":
     l_with_data = ["Tahitian"]
     colq.markdown(
         "**Note**: *As a guest, you can perform generation on a restricted collection of language. Contact us to access more languages!*")
 
 selected_language = colq.selectbox("What language are we generating learning content for?",
-                                   l_with_data, index=l_with_data.index(st.session_state.indi))
+                                   sorted(st.session_state.l_with_data), index=st.session_state.l_with_data.index(st.session_state.indi))
 if colq.button("Select {}".format(selected_language)):
     st.session_state.indi = selected_language
     st.session_state.is_cq = False
@@ -556,9 +560,9 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
         ]
         colq1, colq2 = st.columns(2)
         colq1.markdown("Choose a typical lesson topic")
-        query_standard = colq1.selectbox("Select a standard grammar lesson", ["no selection"] + grammatical_topics_progression)
+        query_standard = colq1.selectbox("Select a standard grammar lesson...", ["no selection"] + grammatical_topics_progression)
         colq2.markdown("Or enter your custom query")
-        query_custom = colq2.text_input("query")
+        query_custom = colq2.text_input("... or enter your own topic.")
         if query_standard != "no selection":
             query = query_standard
         elif query_custom is not None:
@@ -598,6 +602,7 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
             query = query_custom
         else:
             query = None
+
 
     if (query_custom is not None or query_standard != "no selection") and query is not None and query != st.session_state.query:
         if st.button("submit"):
@@ -668,8 +673,11 @@ if st.session_state.run_sources:
             #     vec_retrieved = ragu.retrieve_similar(query, index, id_to_meta, k=10, min_score=0.3)
             #     vecf_retrieved = [i["filename"][:-4]+".json" for i in vec_retrieved]
                 # retrieve sentences from keywords
-            kw_retrieved = ragu.hard_retrieve_from_query(query, st.session_state.indi)
-            print("KW-retrieved sentences: {}".format(kw_retrieved))
+
+            # HARD-RETRIEVE COMMENTED
+            # kw_retrieved = ragu.hard_retrieve_from_query(query, st.session_state.indi)
+            # print("KW-retrieved sentences: {}".format(kw_retrieved))
+
             # Direct LLM retrieve
             sentence_pool = []
             for sf in [fn

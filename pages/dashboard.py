@@ -266,12 +266,19 @@ with st.popover("Using the dashboard"):
 Once data is available, the **Generate** button and corresponding menu option will appear.
     """)
 
+if "llist" not in st.session_state:
+    st.session_state.llist = None
 colq, colw = st.columns(2)
 if role == "guest":
-    llist = ["Tahitian"]
+    st.session_state.llist = ["Tahitian"]
 else:
-    llist = gu.GLOTTO_LANGUAGE_LIST.keys()
-selected_language = colq.selectbox("What language are we working on?", llist)
+    if st.checkbox("Show me only languages with existing data in DIG4EL"):
+        st.session_state.llist = [l for l in os.listdir(os.path.join(BASE_LD_PATH))
+                 if (os.path.isdir(os.path.join(BASE_LD_PATH, l)) and l in list(gu.GLOTTO_LANGUAGE_LIST.keys()))]
+    else:
+        st.session_state.llist = gu.GLOTTO_LANGUAGE_LIST.keys()
+
+selected_language = colq.selectbox("What language are we working on?", sorted(st.session_state.llist))
 
 if st.button("Select {}".format(selected_language)):
     print("")
