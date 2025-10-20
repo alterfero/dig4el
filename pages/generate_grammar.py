@@ -700,7 +700,8 @@ if st.session_state.run_sources:
                 else:
                     print("no {} file in augmented sentences".format(expected_filename))
             # aggregate
-            st.session_state.selected_pairs = list(set(llm_filenames_retrieved + kw_retrieved))
+            # st.session_state.selected_pairs = list(set(llm_filenames_retrieved + kw_retrieved))
+            st.session_state.selected_pairs = list(set(llm_filenames_retrieved))
 
     st.session_state.run_sources = False
 
