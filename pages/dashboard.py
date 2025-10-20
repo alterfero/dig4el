@@ -321,9 +321,9 @@ with tab1:
     
    
     """)
-    st.page_link("pages/record_cq_transcriptions.py", label="👉🏽 Create new DIG4EL CQ translations")
+    st.page_link("pages/record_cq_transcriptions.py", label="👉🏽 Create new DIG4EL CQ translations or resume working on one.")
     if role in ["admin", "caretaker"]:
-        st.page_link("pages/infer_from_knowledge_and_cqs.py", label="👉🏽 Process information from databases and CQs")
+        st.page_link("pages/infer_from_knowledge_and_cqs.py", label="👉🏽 Upload your CQs for use by DIG4EL")
 
     if st.session_state.indi_language in os.listdir(BASE_LD_PATH):
         if "cq" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language)):
