@@ -191,7 +191,10 @@ def clean_sentence(sentence, filename=False, filename_length=50):
     nil_list = [",", ";"]
     space_list = ["'", "’", "(", ")", ":", ".", "!", "?", "…", "—", "-", "–", "—", "«"]
     or_list = ["/", "|"]
-    out = sentence.lower()
+    try:
+        out = sentence.lower()
+    except:
+        print("No lower() on {}".format(sentence))
     if not filename:
         for item in nil_list:
             out = out.replace(item, "")
