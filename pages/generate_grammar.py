@@ -354,12 +354,12 @@ if "l_with_data" not in st.session_state:
 st.session_state.l_with_data = [l for l in os.listdir(os.path.join(BASE_LD_PATH))
                  if (os.path.isdir(os.path.join(BASE_LD_PATH, l)) and l in list(gu.GLOTTO_LANGUAGE_LIST.keys()))]
 if role == "guest":
-    l_with_data = ["Tahitian"]
+    l_with_data = ["Tahitian", "Mwotlap"]
     colq.markdown(
         "**Note**: *As a guest, you can perform generation on a restricted collection of language. Contact us to access more languages!*")
 
 selected_language = colq.selectbox("What language are we generating learning content for?",
-                                   sorted(st.session_state.l_with_data), index=st.session_state.l_with_data.index(st.session_state.indi))
+                                   st.session_state.l_with_data, index=st.session_state.l_with_data.index(st.session_state.indi))
 if colq.button("Select {}".format(selected_language)):
     st.session_state.indi = selected_language
     st.session_state.is_cq = False
@@ -536,9 +536,9 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
     if st.session_state.document_format == "Grammar lesson":
         grammatical_topics_progression = [
             "Basic sentence structure",
-            "Expressing who does what to whom",
             "Politeness and social formulas",
-            "Binary questions",
+            "Expressing who does what to whom",
+            "Asking Yes/No questions",
             "Questions asking for information",
             "Negation",
             "Referring to participants (speaker, addressee, others)",
@@ -573,22 +573,20 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
         sketch_topics = [
             "Simple verbal sentences",
             "Simple non-verbal sentences",
-            "Noun Phrase structures",
-            "Verbal Phrase structures",
-            "Negation",
-            "Causality",
-            "Coordination",
-            "Subordination",
-            "Parts of speech",
+            "Agents and patients",
+            "Marking system",
             "Nouns",
             "Personal Pronouns",
-            "References to things",
-            "Adjective",
-            "Numerals",
-            "Copulas",
             "Verbs",
             "Adverbs",
-            "Locative nouns",
+            "Adjective",
+            "Numerals",
+            "Tense system",
+            "Aspect system",
+            "Negation",
+            "Coordination",
+            "Subordination",
+            "References to things",
             "Expressing the position in time",
             "Expressing the position in space"]
         colq1b, colq2b = st.columns(2)
@@ -624,6 +622,11 @@ if st.session_state.run_sources:
         with st.spinner("Generating contribution from CQ pseudo-gloss analysis"):
             st.session_state.alterlingua_contribution = gga.contribute_from_alterlingua_sync(st.session_state.query,
                                                                                              alterlingua_sentences)
+    else:
+        st.warning("Not using CQs.")
+        st.session_state.relevant_parameters = {}
+        st.session_state.alterlingua_contribution = {}
+
     # document agent
     if st.session_state.is_doc and st.session_state.use_doc:
         vsids = [st.session_state.info_dict["documents"]["oa_vector_store_id"]]
@@ -650,7 +653,12 @@ if st.session_state.run_sources:
                     "sources": []
                 }
                 print("Response from document retrieval is None")
-
+    else:
+        st.warning("Not using documents")
+        st.session_state.documents_contribution = {
+            "text": "",
+            "sources": []
+        }
     # sentence pairs selection
 
     # COMMENTED THE PAIR VECTORIZATION
@@ -665,6 +673,7 @@ if st.session_state.run_sources:
     #         if ragu.vectorize_descriptions(st.session_state.indi):
     #             print("Augmented pairs descriptions vectorized and indexed")
     #         ragu.create_hard_kw_index(st.session_state.indi)
+    if st.session_state.is_pairs and st.session_state.use_pairs:
         with st.spinner("Retrieving a helpful selection of sentence pairs..."):
             # retrieve N sentences using embeddings XXX RULED OUT, NOT RELEVANT ENOUGH
             # index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "description_vectors", "index.faiss")
@@ -702,6 +711,9 @@ if st.session_state.run_sources:
             # aggregate
             # st.session_state.selected_pairs = list(set(llm_filenames_retrieved + kw_retrieved))
             st.session_state.selected_pairs = list(set(llm_filenames_retrieved))
+    else:
+        st.warning("Not using sentence pairs")
+        st.session_state.selected_pairs = []
 
     st.session_state.run_sources = False
 
@@ -713,6 +725,7 @@ if st.session_state.documents_contribution and st.sidebar.checkbox("Show isolate
     st.write(st.session_state.documents_contribution)
 if st.session_state.selected_pairs and st.sidebar.checkbox("Show selected sentence pairs"):
     st.write(st.session_state.selected_pairs)
+
 
 if (st.session_state.alterlingua_contribution
     or st.session_state.documents_contribution
@@ -745,24 +758,28 @@ if (st.session_state.alterlingua_contribution
 
         if st.session_state.is_pairs and st.session_state.use_pairs:
             sps = []
-            for spf in st.session_state.selected_pairs:
-                if spf in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
-                                       "sentence_pairs", "augmented_pairs")):
-                    with open(os.path.join(BASE_LD_PATH, st.session_state.indi,
-                                           "sentence_pairs", "augmented_pairs", spf), "r", encoding='utf-8') as f:
-                        sp = json.load(f)
-                        sapd = {
-                            st.session_state.indi: sp["target"],
-                            "source": sp["source"],
-                            "grammatical_description": sp["description"],
-                            "concept-words_connections": sp.get("key_translation_concepts", "no connections"),
-                            "gloss": sp.get("gloss", "no gloss")
-                        }
-                    sps.append(sapd)
-                else:
-                    print("Augmented pair file {} not found in ".format(spf, os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
-                                       "sentence_pairs", "augmented_pairs"))))
-            sentence_pairs_blob = json.dumps(sps, ensure_ascii=False)
+            try:
+                for spf in st.session_state.selected_pairs:
+                    if spf in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
+                                           "sentence_pairs", "augmented_pairs")):
+                        with open(os.path.join(BASE_LD_PATH, st.session_state.indi,
+                                               "sentence_pairs", "augmented_pairs", spf), "r", encoding='utf-8') as f:
+                            sp = json.load(f)
+                            sapd = {
+                                st.session_state.indi: sp["target"],
+                                "source": sp["source"],
+                                "grammatical_description": sp["description"],
+                                "concept-words_connections": sp.get("key_translation_concepts", "no connections"),
+                                "gloss": sp.get("gloss", "no gloss")
+                            }
+                        sps.append(sapd)
+                    else:
+                        print("Augmented pair file {} not found in ".format(spf, os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
+                                           "sentence_pairs", "augmented_pairs"))))
+                sentence_pairs_blob = json.dumps(sps, ensure_ascii=False)
+            except:
+                st.warning("Issue with sentence pair: {}".format(st.session_state.selected_pairs))
+                sentence_pairs_blob = "No available sentence pairs."
         else:
             sentence_pairs_blob = "No available sentence pairs."
 
@@ -814,6 +831,48 @@ if (st.session_state.alterlingua_contribution
 
         st.session_state.run_aggregation = False
         st.success("Done! Output available.")
+
+        # TRACE BUILDING AND STORING FOR ANALYSIS
+        print("Building trace")
+        trace = {"date": now.strftime("%A, %-d %B %Y at %H:%M"),
+                 "language": st.session_state.indi,
+                 "output_type": st.session_state.document_format,
+                 "prompt": query,
+                 "use_cq": st.session_state.use_cq,
+                 "use_documents": st.session_state.use_doc,
+                 "use_pairs": st.session_state.use_pairs}
+        with open("version.json", "r") as f:
+            v = json.load(f)
+            version = v.get("version", "no version")
+        trace["version"] = version
+        if st.session_state.relevant_parameters:
+            trace["parameters"] = st.session_state.relevant_parameters
+        else:
+            trace["parameters"] = {}
+        if st.session_state.alterlingua_contribution:
+            trace["pseudo-gloss"] = st.session_state.alterlingua_contribution
+        else:
+            trace["pseudo-gloss"] = {}
+        if st.session_state.documents_contribution:
+            trace["documents"] = st.session_state.documents_contribution
+        else:
+            trace["documents"] = ""
+        if st.session_state.selected_pairs:
+            trace["pairs"] = st.session_state.selected_pairs
+        else:
+            trace["pairs"] = []
+        trace["output_dict"] = st.session_state.output_dict
+        trace["user"] = username
+
+        tfn = "trace_"
+        tfn += st.session_state.indi + "_"
+        tfn += u.clean_sentence(query, filename=True, filename_length=30)
+        tfn += f"_({st.session_state.readers_language})_"
+        tfn += str(now)
+        tfn += ".json"
+        with open(os.path.join(BASE_LD_PATH, "traces", tfn), "w") as tf:
+            json.dump(trace, tf)
+        print("Trace saved")
 
 # =========== DISPLAY, STORAGE, CONVERSION =========================================
 

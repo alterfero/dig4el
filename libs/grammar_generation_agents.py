@@ -167,6 +167,8 @@ lesson_agent = Agent(
     - All the content of the lesson must come from the provided material. Don't invent anything, don't retrieve
     anything from other sources or general knowledge. 
     - In all examples, translate the source sentence from English to the reader's language. 
+    - Avoid metalinguistic jargon. Use everyday words and expressions and periphrases, 
+    especially if the indicated audience is young. 
     
     INPUT:
     - Name of the endangered language.

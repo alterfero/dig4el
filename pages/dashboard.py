@@ -278,7 +278,7 @@ else:
     else:
         st.session_state.llist = gu.GLOTTO_LANGUAGE_LIST.keys()
 
-selected_language = colq.selectbox("What language are we working on?", sorted(st.session_state.llist))
+selected_language = colq.selectbox("What language are we working on?", st.session_state.llist)
 
 if st.button("Select {}".format(selected_language)):
     print("")
