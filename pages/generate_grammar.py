@@ -870,6 +870,9 @@ if (st.session_state.alterlingua_contribution
         tfn += f"_({st.session_state.readers_language})_"
         tfn += str(now)
         tfn += ".json"
+
+        traces_dir = os.path.join(BASE_LD_PATH, "traces")
+        os.makedirs(traces_dir, exist_ok=True)
         with open(os.path.join(BASE_LD_PATH, "traces", tfn), "w") as tf:
             json.dump(trace, tf)
         print("Trace saved")
