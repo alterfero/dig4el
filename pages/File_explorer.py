@@ -243,6 +243,31 @@ if st.session_state.has_access:
         if st.checkbox("Delete {} data".format(selected_language)):
             if st.button("Delete {} data".format(selected_language)):
                 delete_directory(os.path.join(BASE_LD_PATH, selected_language))
+                st.success("{} deleted".format(selected_language))
+                st.rerun()
+        if st.checkbox("Delete languages with no data"):
+            llist = [l for l in os.listdir(os.path.join(BASE_LD_PATH))
+                     if (os.path.isdir(os.path.join(BASE_LD_PATH, l)) and l in list(gu.GLOTTO_LANGUAGE_LIST.keys()))]
+            empty_l_list = []
+            for lang in llist:
+                cqsb = True
+                pairsb = True
+                docsb = True
+                if "cq_knowledge.json" not in os.listdir(os.path.join(BASE_LD_PATH, lang, "cq", "cq_knowledge")):
+                    cqsb = False
+                pdf_files = [file for file in os.listdir(os.path.join(BASE_LD_PATH, lang, "descriptions", "sources"))
+                             if file.endswith('.pdf')]
+                if pdf_files == []:
+                    docsb = False
+                pairs_files = [file for file in os.listdir(os.path.join(BASE_LD_PATH, lang, "sentence_pairs", "pairs"))
+                               if file.endswith('.json')]
+                if pairs_files == []:
+                    pairsb = False
+                if not cqsb and not pairsb and not docsb:
+                    empty_l_list.append(lang)
+            if st.button("Erase {}?".format(", ".join(empty_l_list))):
+                for l_to_delete in empty_l_list:
+                    delete_directory(os.path.join(BASE_LD_PATH, l_to_delete))
                 st.rerun()
 
     # ---------------------------- VS

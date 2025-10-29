@@ -354,7 +354,7 @@ if "l_with_data" not in st.session_state:
 st.session_state.l_with_data = [l for l in os.listdir(os.path.join(BASE_LD_PATH))
                  if (os.path.isdir(os.path.join(BASE_LD_PATH, l)) and l in list(gu.GLOTTO_LANGUAGE_LIST.keys()))]
 if role == "guest":
-    l_with_data = ["Tahitian", "Mwotlap"]
+    st.session_state.l_with_data = ["Tahitian", "Mwotlap"]
     colq.markdown(
         "**Note**: *As a guest, you can perform generation on a restricted collection of language. Contact us to access more languages!*")
 
