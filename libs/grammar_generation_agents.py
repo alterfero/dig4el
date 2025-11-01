@@ -217,21 +217,18 @@ The lesson includes:
 - A list of examples.
 
 Your task:
-Adapt the content of the lesson for the specified audience by:
+Adapt the content of the lesson EXCEPT EXAMPLES for the specified audience by:
 1. Simplifying the language:
    - Replace or rephrase any technical linguistic terms or complex explanations that the audience would not understand.
    - Add explanations and analogies as needed for the audience to understand the lesson.
-2. Clarifying necessary terminology:
-   - If certain technical terms must remain (e.g., 'predicate', 'classifier'), keep them but add a glossary at the end of the relevant section.
-   - Each glossary entry should include a short, clear definition in simple terms of the grammatical technical word.
-   - If you are not certain of the definition, indicate it explicitly in the glossary.
-   - The glossary should not contain words in the target language. It is only meant to explain technical grammar description words.
-3. Preserving accuracy:
+2. Preserving accuracy:
    - Ensure that all grammatical facts remain correct and faithful to the original.
+   - Don't modify examples. 
+   - Don't modify any content in the target, taught, language. 
    - Maintain the original structure and JSON format of the lesson.
    - Keep all examples exactly as they are provided. Do not change anything to examples.
 Output format:
-Return the adapted lesson in the same JSON structure, with simplified text and any added glossaries included under each relevant section.
+Return the adapted lesson in the same JSON structure.
     """,
     output_type=Lesson
 )

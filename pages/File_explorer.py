@@ -28,6 +28,7 @@ import streamlit_authenticator as stauth
 import shutil
 
 
+
 st.set_page_config(
     page_title="DIG4EL",
     page_icon="🧊",
@@ -114,6 +115,58 @@ def list_folders(directory_path):
     return [folder for folder in os.listdir(directory_path) if os.path.isdir(os.path.join(directory_path, folder))]
 
 
+def zip_folder_download(folder_path: str | os.PathLike, archive_name: str | None = None) -> None:
+    """
+    Zip an entire folder (recursively) to a temp file and present a download button.
+
+    Parameters
+    ----------
+    folder_path : str | Path
+        Directory to zip (all files/subfolders included).
+    archive_name : str | None
+        Name of the downloaded file (defaults to "<foldername>.zip").
+    """
+    root = Path(folder_path).expanduser().resolve()
+    if not root.exists() or not root.is_dir():
+        st.error(f"Folder not found or not a directory: {root}")
+        return
+
+    if archive_name is None:
+        archive_name = f"{root.name}.zip"
+
+    # Build zip in a temporary file
+    with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
+        tmp_path = Path(tmp.name)
+
+    try:
+        with zipfile.ZipFile(tmp_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+            for dirpath, _, filenames in os.walk(root):
+                for fn in filenames:
+                    p = Path(dirpath) / fn
+                    arcname = p.relative_to(root)
+                    # If a file disappears mid-walk, skip it
+                    try:
+                        zf.write(p, arcname)
+                    except OSError:
+                        pass
+
+        # Read bytes for the button, then clean up the temp file
+        data = tmp_path.read_bytes()
+    finally:
+        try:
+            tmp_path.unlink(missing_ok=True)
+        except Exception:
+            pass
+
+    st.download_button(
+        label=f"Download {archive_name}",
+        data=data,
+        file_name=archive_name,
+        mime="application/zip",
+    )
+
+
+
 # --------- LOGIC ------------------------------------------------
 if st.session_state.has_access:
 
@@ -123,6 +176,7 @@ if st.session_state.has_access:
         st.page_link("home.py", label="Home", icon=":material/home:")
         st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")
         st.divider()
+
 
     BASE_LD_PATH = os.path.join(
         os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
@@ -137,6 +191,8 @@ if st.session_state.has_access:
     current_path = st.session_state.current_path
 
     with st.expander("File explorer"):
+        if st.checkbox("Zip and download"):
+            zip_folder_download(BASE_LD_PATH, archive_name="dig4el.zip")
         st.write(f"Current directory: {os.path.relpath(current_path, ROOT_PATH)}")
 
         uploaded = st.file_uploader("Upload a file", key="uploader")
@@ -227,6 +283,14 @@ if st.session_state.has_access:
             erase_all_files_in_folder(os.path.join(BASE_LD_PATH, selected_language, "sentence_pairs", "vectors"))
             erase_all_files_in_folder(
                 os.path.join(BASE_LD_PATH, selected_language, "sentence_pairs", "vectors", "description_vectors"))
+        if st.button("Reset {} outputs".format(selected_language)):
+            erase_all_files_in_folder(os.path.join(BASE_LD_PATH, selected_language, "outputs"))
+            with open(os.path.join(BASE_LD_PATH, selected_language, "info.json"), "r") as f:
+                info_tmp = json.load(f)
+            info_tmp["outputs"] = {}
+            with open(os.path.join(BASE_LD_PATH, selected_language, "info.json"), "w") as f:
+                json.dump(info_tmp, f)
+            st.success("outputs deleted")
         if st.button("Reset {} vector store(s)".format(selected_language)):
             with st.spinner("Listing vector stores..."):
                 st.session_state.vss = vsu.list_vector_stores_sync()

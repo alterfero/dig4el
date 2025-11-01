@@ -106,7 +106,7 @@ if "readers_type" not in st.session_state:
 if "document_format" not in st.session_state:
     st.session_state.document_format = "Grammar lesson"
 if "polished_output" not in st.session_state:
-    st.session_state.polished_output = None
+    st.session_state.polished_output = False
 
 
 # ----- HELPERS -----------------------------------------------------------------------------------
@@ -741,7 +741,9 @@ if (st.session_state.alterlingua_contribution
     or st.session_state.selected_pairs):
 
 # ============= AGGREGATION ============================
-
+    if role == "admin":
+        if st.checkbox("Post-process output?"):
+            st.session_state.polished_output = True
     if st.button("Aggregate all sources"):
         st.session_state.run_aggregation = True
 
@@ -804,12 +806,13 @@ if (st.session_state.alterlingua_contribution
                     doc_contribution=doc_contribution,
                     sentence_pairs=sentence_pairs_blob
                 )
-                with st.spinner("Polishing lesson..."):
-                    st.session_state.output_dict = gga.review_lesson_sync(
-                        lesson=first_aggregation,
-                        source_language=st.session_state.readers_language,
-                        readers_type=st.session_state.readers_type
-                    )
+                if st.session_state.polished_output:
+                    with st.spinner("Post-processing lesson..."):
+                        st.session_state.output_dict = gga.review_lesson_sync(
+                            lesson=first_aggregation,
+                            source_language=st.session_state.readers_language,
+                            readers_type=st.session_state.readers_type
+                            )
 
             else:
                 st.session_state.output_dict = gga.create_sketch_sync(
