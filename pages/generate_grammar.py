@@ -105,6 +105,8 @@ if "readers_type" not in st.session_state:
     st.session_state.readers_type = "Adult learners"
 if "document_format" not in st.session_state:
     st.session_state.document_format = "Grammar lesson"
+if "polished_output" not in st.session_state:
+    st.session_state.polished_output = None
 
 
 # ----- HELPERS -----------------------------------------------------------------------------------
@@ -120,9 +122,16 @@ def display_lesson_output(output_dict):
             st.markdown(section["description"])
         elif isinstance(section["description"], dict):
             st.markdown(section["description"].get("description", "..."))
-        st.markdown(f"**{section['example']['target_sentence']}**")
-        st.markdown(f"*{section['example']['source_sentence']}*")
-        st.write(section["example"]["description"])
+        if isinstance(section.get("example"), list):
+            for example in section.get("example"):
+                st.markdown(f"**{example['target_sentence']}**")
+                st.markdown(f"*{example['source_sentence']}*")
+                st.write(example["description"])
+        if isinstance(section.get("example"), dict):
+            example = section["example"]
+            st.markdown(f"**{example['target_sentence']}**")
+            st.markdown(f"*{example['source_sentence']}*")
+            st.write(example["description"])
     st.subheader("Conclusion")
     st.write(o["conclusion"])
     st.divider()
@@ -529,7 +538,7 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
                                                       "Spanish", "Swedish", "Tahitian"])
     if st.session_state.document_format == "Grammar lesson":
         st.session_state.readers_type = colq1a.selectbox("The grammar is generated for...",
-                                    ["Teenage learners", "Adult learners", "Linguists"])
+                                    ["Primary school children", "Teenagers", "Adults", "Linguists"])
     else:
         st.session_state.readers_type = "Linguists"
 
@@ -785,7 +794,7 @@ if (st.session_state.alterlingua_contribution
 
         with st.spinner("Aggregating sources..."):
             if st.session_state.document_format == "Grammar lesson":
-                st.session_state.output_dict = gga.create_lesson_sync(
+                first_aggregation = gga.create_lesson_sync(
                     indi_language=st.session_state.indi,
                     source_language=st.session_state.readers_language,
                     readers_type=st.session_state.readers_type,
@@ -795,6 +804,13 @@ if (st.session_state.alterlingua_contribution
                     doc_contribution=doc_contribution,
                     sentence_pairs=sentence_pairs_blob
                 )
+                with st.spinner("Polishing lesson..."):
+                    st.session_state.output_dict = gga.review_lesson_sync(
+                        lesson=first_aggregation,
+                        source_language=st.session_state.readers_language,
+                        readers_type=st.session_state.readers_type
+                    )
+
             else:
                 st.session_state.output_dict = gga.create_sketch_sync(
                     indi_language=st.session_state.indi,
@@ -970,10 +986,13 @@ if st.session_state.output_dict:
                                  mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                                  key="final_docx")
 
-        with st.expander("Output"):
-            display_lesson_output(st.session_state.output_dict)
+        display_lesson_output(st.session_state.output_dict)
         if role in ["user", "admin"]:
             feedback_form()
+
+        if role == "admin":
+            if st.checkbox("Show JSON"):
+                st.write(st.session_state.output_dict)
 
 
 

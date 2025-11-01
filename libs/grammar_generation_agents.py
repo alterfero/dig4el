@@ -26,7 +26,7 @@ class Description(BaseModel):
 
 class Info_Chunk(BaseModel):
     focus: str
-    example: Example
+    example: List[Example]
     description: str
 
 
@@ -184,12 +184,15 @@ lesson_agent = Agent(
         
     OUTPUT: Grammar lesson in the reader's language. The grammar lesson is structured as follows:
     - A title, derived from the user query
-    - An introduction paragraph that introduce the grammatical topic, with a brief summary of language-independent 
-    general grammar knowledge about this topic, with examples in the source language and a hint about how the endangered
-     language grammar expresses this topic. The objective of the introduction is to help readers understand the 
-     topic, as readers may not me familiar with grammar. 
-    - A list of information chunks, paragraphs with information and examples. The list can be as long or as short 
-    as needed to describe the grammatical topic. Translate the source of example in the reader's language if needed.
+    - An introduction paragraph which includes: A summary of language-independent general grammar knowledge about this topic. 
+    Then a short description of how this grammar topic is expressed in the 
+    language of readers, with examples. Finally, a hint about how the endangered language grammar expresses this topic. 
+    The objective of the introduction is to help readers understand the topic, as readers may not me familiar with grammar. 
+    - A list of information chunks, which are paragraphs focusing on an aspect of the grammatical topic to cover. 
+    Add as many information chunks as needed to cover the topic. Each information chunk includes a title, an explanation 
+    of the focus, and several examples retrieved from the corpus (if possible 5). Each example is a sentence in the target language, 
+    its translation in the reader's language, and a description of the example with the lens of the grammatical 
+    topic studied.
     - A conclusion, which is what the students should absolutely remember. 
     - Drills: sentence pairs that illustrate the topic and that will be used to create exercises. Translate the source
     language in the reader's language if needed. Add ALL relevant examples retrieved from the input. 
@@ -198,42 +201,77 @@ lesson_agent = Agent(
     output_type=Lesson
 )
 
+lesson_improvement_agent = Agent(
+name="lesson_reviewer",
+    model="o4-mini-2025-04-16",
+    instructions="""
+You are given:
+- A grammar lesson about an endangered language, formatted as JSON.
+- The target audience (e.g., children, beginner adult learners, linguists, teachers).
+- The language of the readers, which matches the language used in the provided lesson.
+
+The lesson includes:
+- An introduction.
+- Several sections, each focusing on a specific grammatical feature.
+- A conclusion, which contains the key elements to remember.
+- A list of examples.
+
+Your task:
+Adapt the content of the lesson for the specified audience by:
+1. Simplifying the language:
+   - Replace or rephrase any technical linguistic terms or complex explanations that the audience would not understand.
+   - Add explanations and analogies as needed for the audience to understand the lesson.
+2. Clarifying necessary terminology:
+   - If certain technical terms must remain (e.g., 'predicate', 'classifier'), keep them but add a glossary at the end of the relevant section.
+   - Each glossary entry should include a short, clear definition in simple terms of the grammatical technical word.
+   - If you are not certain of the definition, indicate it explicitly in the glossary.
+   - The glossary should not contain words in the target language. It is only meant to explain technical grammar description words.
+3. Preserving accuracy:
+   - Ensure that all grammatical facts remain correct and faithful to the original.
+   - Maintain the original structure and JSON format of the lesson.
+   - Keep all examples exactly as they are provided. Do not change anything to examples.
+Output format:
+Return the adapted lesson in the same JSON structure, with simplified text and any added glossaries included under each relevant section.
+    """,
+    output_type=Lesson
+)
+
 sketch_agent = Agent(
     name="grammar_sketcher",
     model="o4-mini-2025-04-16",
-    instructions=""" 
-    You are an agent specialized in creating detailed grammar descriptions to document endangered languages.  
-    You are provided with materials from different sources. 
-    Your job is to compile these sources to create a grammar sketch that will be used by linguists. 
+    instructions="""
+    You are an agent specialized in creating detailed grammar descriptions to document endangered languages.
+    You are provided with materials from different sources.
+    Your job is to compile these sources to create a grammar sketch that will be used by linguists.
 
     COMPLY WITH THE FOLLOWING:
-    - Do not add information from any other source or from your own knowledge, but use all the reasoning you can to 
-    perform deductions and inferences based on the sources. 
-    - Add ALL relevant information from all the available sources. Be as detailed as possible. 
-    - The output must be in the language of the readers. 
-    - In all examples, translate the source sentence from English to the reader's language. 
+    - Do not add information from any other source or from your own knowledge, but use all the reasoning you can to
+    perform deductions and inferences based on the sources.
+    - Add ALL relevant information from all the available sources. Be as detailed as possible.
+    - The output must be in the language of the readers.
+    - In all examples, translate the source sentence from English to the reader's language.
 
     INPUT:
     - Name of the endangered language.
-    - List of grammatical parameters and their values in the endangered language, some with examples. 
+    - List of grammatical parameters and their values in the endangered language, some with examples.
     - Description coming from sentence analysis.
     - Description coming from a compilation of documents.
     - List of examples, each with its description.
-    - List of sentence pairs, some with explicit connections between the concepts in the sentence and words in 
-        the endangered language sentence, and explanatory comments. 
+    - List of sentence pairs, some with explicit connections between the concepts in the sentence and words in
+        the endangered language sentence, and explanatory comments.
 
     NOTE ON INPUTS: If there are contradictions between inputs, be explicit about it and cite the diverging sources.
 
     OUTPUT: Grammar sketch in the reader's language. The grammar sketch is structured as follows:
     - A title, derived from the user query
     - An introduction paragraph that introduces the grammatical topic provides a robust and detailed overview of
-     the behavior of the target language with regard to the grammatical topic at hand. 
-    - A list of sktech chunks: Each chunk is a focus on an aspect of the grammar topic provided. For example, if the grammar topic is 
-    "expressing tense", the chunks may focus on "past", "present", "future" and "general" for example. Each chunk is a 
-    section with information and examples. The list can be as long or as short as needed to describe the grammatical topic. 
-    Each sketch chunk can include up to 5 examples to illustrate how the target language expresses the grammar topic. 
-    Each example displays with the sentence in the target language, in the the source language, and an explanation of how this example illustrate the focus. 
-    - A conclusion, which is what the students should absolutely remember. 
+     the behavior of the target language with regard to the grammatical topic at hand.
+    - A list of sktech chunks: Each chunk is a focus on an aspect of the grammar topic provided. For example, if the grammar topic is
+    "expressing tense", the chunks may focus on "past", "present", "future" and "general" for example. Each chunk is a
+    section with information and examples. The list can be as long or as short as needed to describe the grammatical topic.
+    Each sketch chunk can include up to 5 examples to illustrate how the target language expresses the grammar topic.
+    Each example displays with the sentence in the target language, in the the source language, and an explanation of how this example illustrate the focus.
+    - A conclusion, which is what the students should absolutely remember.
     """,
     output_type=Sketch
 )
@@ -309,6 +347,14 @@ async def create_lesson(indi_language, source_language, readers_type,
     result = await Runner.run(lesson_agent, data)
     return result.final_output.dict()
 
+async def review_lesson(lesson, source_language, readers_type):
+    data = f"""
+    LESSON LANGUAGE = {source_language},
+    READERS_TYPE = {readers_type},
+    LESSON: {lesson}
+    """
+    result = await Runner.run(lesson_improvement_agent, data)
+    return result.final_output.dict()
 
 async def create_sketch(indi_language, source_language, readers_type,
                         grammatical_params,
@@ -358,6 +404,9 @@ def create_lesson_sync(indi_language, source_language, readers_type,
                                      grammatical_params,
                                      alterlingua_explanation, alterlingua_examples,
                                      doc_contribution, sentence_pairs))
+
+def review_lesson_sync(lesson, source_language, readers_type):
+    return asyncio.run(review_lesson(lesson, source_language, readers_type))
 
 def create_sketch_sync(indi_language, source_language, readers_type,
                        grammatical_params,
