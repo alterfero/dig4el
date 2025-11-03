@@ -813,6 +813,8 @@ if (st.session_state.alterlingua_contribution
                             source_language=st.session_state.readers_language,
                             readers_type=st.session_state.readers_type
                             )
+                else:
+                    st.session_state.output_dict = first_aggregation
 
             else:
                 st.session_state.output_dict = gga.create_sketch_sync(
