@@ -102,7 +102,7 @@ cq_parameter_selector_agent = Agent(
 
 cq_alterlingua_agent = Agent(
     name="alterlingua_informant",
-    model="o4-mini-2025-04-16",
+    model="gpt-5-2025-08-07",
     instructions="""
     You are an agent answering a user's query about the grammar of a target language 
     based only on the material provided.
@@ -151,7 +151,7 @@ cq_alterlingua_agent = Agent(
 
 lesson_agent = Agent(
     name="lesson_creator",
-    model="o4-mini-2025-04-16",
+    model="gpt-5-2025-08-07",
     instructions=""" 
     You are an agent specialized in creating grammar teaching material for an endangered language.
     Students are speaking the source language.  
@@ -203,7 +203,7 @@ lesson_agent = Agent(
 
 lesson_improvement_agent = Agent(
 name="lesson_reviewer",
-    model="o4-mini-2025-04-16",
+    model="gpt-5-2025-08-07",
     instructions="""
 You are given:
 - A grammar lesson about an endangered language, formatted as JSON.
@@ -235,7 +235,7 @@ Return the adapted lesson in the same JSON structure.
 
 sketch_agent = Agent(
     name="grammar_sketcher",
-    model="o4-mini-2025-04-16",
+    model="gpt-5-2025-08-07",
     instructions="""
     You are an agent specialized in creating detailed grammar descriptions to document endangered languages.
     You are provided with materials from different sources.
