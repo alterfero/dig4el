@@ -907,10 +907,12 @@ if st.session_state.output_dict:
                             It is meant to be edited and used by an expert of the 
                             {st.session_state.indi} language. 
                             """)
+        now = datetime.now()
         fn = "dig4el_aggregated_output_sketch_"
         fn += st.session_state.indi + "_"
         fn += u.clean_sentence(query, filename=True, filename_length=50)
-        fn += f"_({st.session_state.readers_language})"
+        fn += f"_({st.session_state.readers_language})_"
+        fn += now.strftime("_%-d_%B_%Y_at_%H_%M")
         fn += ".json"
         colsk1, colsk2 = st.columns(2)
         colsk1.download_button(label="Download JSON output",
@@ -919,13 +921,14 @@ if st.session_state.output_dict:
         st.divider()
         # Store/Download outputs
         if st.button("Store output (making it visible to all users)"):
-
+            now = datetime.now()
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "outputs", fn), "w", encoding='utf-8') as f:
                 json.dump(st.session_state.output_dict, f, ensure_ascii=False)
 
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
                 info = json.load(f)
-                qk = f"sketch_{query}_({st.session_state.readers_language})"
+                qk = f"sketch_{query} ({st.session_state.readers_language}) "
+                qk += now.strftime(" %-d %B %Y at %H:%M")
             info["outputs"][qk] = fn
 
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w", encoding='utf-8') as f:
