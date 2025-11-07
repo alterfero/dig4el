@@ -947,7 +947,7 @@ if st.session_state.output_dict:
     elif st.session_state.document_format == "Grammar lesson":
         now = datetime.now()
         st.markdown(f"""Remember: This raw output, available here or stored by other users, is a 
-                    raw output from DIG4EL: It most probably contains inaccuracies and errors. 
+                    raw output from DIG4EL: **It most probably contains inaccuracies and errors**. 
                     It is meant to be edited and used by an expert of the 
                     {st.session_state.indi} language. 
                     """)
