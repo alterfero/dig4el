@@ -945,6 +945,7 @@ if st.session_state.output_dict:
 
 
     elif st.session_state.document_format == "Grammar lesson":
+        now = datetime.now()
         st.markdown(f"""Remember: This raw output, available here or stored by other users, is a 
                     raw output from DIG4EL: It most probably contains inaccuracies and errors. 
                     It is meant to be edited and used by an expert of the 
@@ -954,7 +955,8 @@ if st.session_state.output_dict:
         fn = "dig4el_unverified_lesson_"
         fn += st.session_state.indi + "_"
         fn += u.clean_sentence(query, filename=True, filename_length=50)
-        fn += f"_({st.session_state.readers_language})"
+        fn += f"_({st.session_state.readers_language})_"
+        fn += now.strftime("_%-d_%B_%Y_at_%H_%M")
         fn += ".json"
 
         docx = None
