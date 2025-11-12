@@ -86,7 +86,7 @@ if "query" not in st.session_state:
 if "run" not in st.session_state:
     st.session_state.run_sources = False
 if "run_aggregation" not in st.session_state:
-    st.session_state.run_aggregation = False
+    st.session_state.run_aggregation = True
 if "relevant_parameters" not in st.session_state:
     st.session_state.relevant_parameters = None
 if "alterlingua_contribution" not in st.session_state:
@@ -188,6 +188,20 @@ def display_sketch_output(output_dict):
         for d in sources["pairs"]:
             st.markdown(f"- {d}")
 
+def reset():
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
+            st.session_state.info_dict = json.load(f)
+    st.session_state.query = None
+    st.session_state.run_sources = False
+    st.session_state.run_aggregation = True
+    st.session_state.relevant_parameters = None
+    st.session_state.alterlingua_contribution = None
+    st.session_state.documents_contribution = None
+    st.session_state.selected_pairs = None
+    st.session_state.output_dict = None
+    st.session_state.readers_type = "Adult learners"
+    st.session_state.document_format = "Grammar lesson"
+    st.session_state.polished_output = False
 
 def feedback_form():
     # Feedback survey
@@ -534,11 +548,11 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
     colq1a, colq2a = st.columns(2)
     st.session_state.document_format = colq1a.selectbox("Format", ["Grammar lesson", "Grammar sketch"])
     st.session_state.readers_language = colq2a.selectbox("What is the language of readers?",
-                                                     ["Bislama", "Chinese", "English", "French", "Japanese", "Russian",
+                                                     ["English","Bislama", "Chinese", "French", "Japanese", "Russian",
                                                       "Spanish", "Swedish", "Tahitian"])
     if st.session_state.document_format == "Grammar lesson":
         st.session_state.readers_type = colq1a.selectbox("The grammar is generated for...",
-                                    ["Primary school children", "Teenagers", "Adults", "Linguists"])
+                                    ["Teenagers", "Adults", "Linguists"])
     else:
         st.session_state.readers_type = "Linguists"
 
@@ -610,8 +624,18 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
         else:
             query = None
 
+    if role == "admin":
+        if st.checkbox("Post-process output?"):
+            st.session_state.polished_output = True
 
-    if (query_custom is not None or query_standard != "no selection") and query is not None and query != st.session_state.query:
+
+
+    # =================== GENERATION LAUNCH ====================================================
+    if st.button("Reset and make new generation"):
+        reset()
+    if ((query_custom is not None or query_standard != "no selection")
+            and query is not None
+            and query != st.session_state.query):
         if st.button("submit"):
             st.session_state.query = query
             st.session_state.relevant_parameters = None
@@ -741,14 +765,9 @@ if (st.session_state.alterlingua_contribution
     or st.session_state.selected_pairs):
 
 # ============= AGGREGATION ============================
-    if role == "admin":
-        if st.checkbox("Post-process output?"):
-            st.session_state.polished_output = True
-    if st.button("Aggregate all sources"):
-        st.session_state.run_aggregation = True
 
     if st.session_state.run_aggregation:
-
+        st.session_state.run_aggregation = False
         if st.session_state.is_cq and st.session_state.use_cq:
             tmp_p_blob = json.dumps([p for p in st.session_state.cq_knowledge["grammar_priors"]
                                      if p["Parameter"] in st.session_state.relevant_parameters], ensure_ascii=False)
@@ -850,7 +869,6 @@ if (st.session_state.alterlingua_contribution
                 version = v.get("version", "no version")
             st.session_state.output_dict["version"] = version
 
-        st.session_state.run_aggregation = False
         st.success("Done! Output available.")
 
         # TRACE BUILDING AND STORING FOR ANALYSIS
