@@ -256,6 +256,7 @@ def feedback_form():
                 json.dump(feedback, h)
             st.success("Thank you for your feedback!")
 
+
 # ------ AUTH SETUP --------------------------------------------------------------------------------
 CFG_PATH = Path(
     os.getenv("AUTH_CONFIG_PATH") or
@@ -370,6 +371,19 @@ else:
 
 # ------------------------------------------------------------------------------------------------
 colq, colw = st.columns(2)
+
+if role == "admin":
+    with open("test_lesson.json", "r") as f:
+        o = json.load(f)
+    docx = ogu.generate_lesson_docx_from_aggregated_output(o,
+                                                           "Indi",
+                                                           "English")
+    st.download_button(label="Download TEST DOCX output",
+                       data=docx,
+                       file_name="test_lesson_DOCX.docx",
+                       mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                       key="final_docx")
+
 
 if "l_with_data" not in st.session_state:
     st.session_state.l_with_data = None
