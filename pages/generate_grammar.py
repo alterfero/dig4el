@@ -372,17 +372,17 @@ else:
 # ------------------------------------------------------------------------------------------------
 colq, colw = st.columns(2)
 
-if role == "admin":
-    with open("test_lesson.json", "r") as f:
-        o = json.load(f)
-    docx = ogu.generate_lesson_docx_from_aggregated_output(o,
-                                                           "Indi",
-                                                           "English")
-    st.download_button(label="Download TEST DOCX output",
-                       data=docx,
-                       file_name="test_lesson_DOCX.docx",
-                       mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                       key="final_docx")
+# if role == "admin":
+#     with open("/Users/sebastienchristian/Desktop/DIG4EL_test/NEGATION Mwotlap/dig4el_unverified_lesson_Mwotlap_negation_3(English)__11_November_2025_at_01_18.json", "r") as f:
+#         o = json.load(f)
+#     docx = ogu.generate_lesson_docx_from_aggregated_output(o,
+#                                                            "Iaai",
+#                                                            "English")
+#     st.download_button(label="Download TEST DOCX output",
+#                        data=docx,
+#                        file_name="test_lesson_DOCX.docx",
+#                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+#                        key="test_docx")
 
 
 if "l_with_data" not in st.session_state:
@@ -645,7 +645,7 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
 
 
     # =================== GENERATION LAUNCH ====================================================
-    if st.button("Reset and make new generation"):
+    if st.button("Reset to make new generation"):
         reset()
     if ((query_custom is not None or query_standard != "no selection")
             and query is not None

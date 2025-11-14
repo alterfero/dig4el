@@ -13,3 +13,5 @@ developmentMode = false
 
 [server]
 headless = true
+enableXsrfProtection = false
+enableCORS = false
