@@ -1,0 +1,6 @@
+{
+  "Negation": {
+    "guidance":
+    "Negation must be considered with the following structure: For each of Affirmation, Question, Order, organize the description with Negation of existence (Example: There is no dog), then Negation of inclusion in a category (Example: This is not a dog), finally Negation of a quality (Example: This dog is not small)"
+  }
+}

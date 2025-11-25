@@ -108,7 +108,8 @@ cq_alterlingua_agent = Agent(
     based only on the material provided.
     
     INPUT: 
-    - The user's query about the grammar of the language. 
+    - The user's query about the grammar of the language, which can contain instructions about how to 
+        think about the query and structure an answer. If there is such a part to the query: Follow these instructions. 
     - A list of annotated sentences: Each item of the list includes 
         - the source sentence in English, 
         - the target sentence in the target language, 
@@ -117,6 +118,7 @@ cq_alterlingua_agent = Agent(
          adaptation to the expression need. "RP" is Relational Particularization, or how the concept connects 
          with others. 
         - comments.
+        
     Example of input item: 
     {
       "source_english": "Well, we\u2019re walking down to the river, over there.",
@@ -126,16 +128,24 @@ cq_alterlingua_agent = Agent(
     }
     
     OUTPUT: 
-    - A detailed answer to the user's question. 
+    - A detailed answer to the user's question, 
     - A list of examples helping the user understand your answer. Example must come from the provided input. 
     Each example consists in a sentence in the target language, a sentence in the source language, and a brief 
     description of what is interesting in this example. 
+    - When using a target word or sequence of words within an explanation sentence, surround it with "**"; for example "**'uru**" or "**'ia ora na**".
     
-    Example of query: "Does Tahitian use an inclusive/exclusive distinction in pronouns?"
+    Example of query: "Does Tahitian use an inclusive/exclusive distinction in pronouns? 
+                       INSTRUCTIONS: Adhere to the following framework and thought process:
+                       - State if the language uses inclusive vs exclusive forms
+                       - Look for the existence of a dual or trial forms. If they exist, present the 
+                       interaction between inclusive/exclusive and dual/trial."
+
     Example of output:
     {
-    "Explanation": "Yes, Tahitian uses an inclusive/exclusive distinction in all pronouns. This distinction 
-    is associated with the fact that Tahitian also uses dual forms.",
+    "Explanation": "Yes, Tahitian uses an inclusive/exclusive distinction in all pronouns.
+    In addition, Tahitian also uses a dual, which combines with inclusive and exclusive forms
+    to signify, for example, the speaker and the person next to the speaker, but no the person being addressed, 
+    as in the following example.",
     "Examples": [
         {
         "source_sentence": "Well, we\u2019re walking down to the river, over there."
@@ -155,12 +165,15 @@ lesson_agent = Agent(
     instructions=""" 
     You are an agent specialized in creating grammar teaching material for an endangered language.
     Students are speaking the source language.  
-    You are provided with materials from different sources. 
-    Your job is to compile these sources, and add your own input, to create a grammar lesson following the specified schema. 
+    You are provided with the user's query with optional instructions included, and materials from different sources. 
+    Your job is to compile these sources and add your own input to create a grammar lesson about the query.
+    You must follow any instructions included in the query, about how to think about, and formulate an answer.
+    You output the grammar lesson following the specified schema. 
     
     COMPLY WITH THE FOLLOWING:
     - Do not add information from any other source or from your own knowledge. 
     - Add ALL relevant information from all the available sources.
+    - Follow any instructions part of the query.
     - Adapt your output to the type of readers: The output must be in the language and the type readers, adapted to 
     the type of readers, and insist on contrasts between the endangered language and the language of the readers 
     when describing grammar. 
@@ -172,6 +185,7 @@ lesson_agent = Agent(
     
     INPUT:
     - Name of the endangered language.
+    - Query and optional instructions about how to create a lesson about it. 
     - Type of readers and language fo the readers.
     - List of grammatical parameters and their values in the endangered language, some with examples. 
     - Description coming from sentence analysis.
@@ -196,6 +210,8 @@ lesson_agent = Agent(
     - A conclusion, which is what the students should absolutely remember. 
     - Drills: sentence pairs that illustrate the topic and that will be used to create exercises. Translate the source
     language in the reader's language if needed. Add ALL relevant examples retrieved from the input. 
+    
+    NOTE ON OUTPUTS: When using a target word or sequence of words within an explanation sentence, surround it with "**"; for example "**'uru**" or "**'ia ora na**".
     
     """,
     output_type=Lesson
@@ -227,6 +243,7 @@ Adapt the content of the lesson EXCEPT EXAMPLES for the specified audience by:
    - Don't modify any content in the target, taught, language. 
    - Maintain the original structure and JSON format of the lesson.
    - Keep all examples exactly as they are provided. Do not change anything to examples.
+NOTE ON OUTPUTS: When using a target word or sequence of words within an explanation sentence, surround it with "**"; for example "**'uru**" or "**'ia ora na**".
 Output format:
 Return the adapted lesson in the same JSON structure.
     """,
@@ -238,18 +255,20 @@ sketch_agent = Agent(
     model="gpt-5-2025-08-07",
     instructions="""
     You are an agent specialized in creating detailed grammar descriptions to document endangered languages.
-    You are provided with materials from different sources.
+    You are provided with a user query with optional instructions, and materials from different sources.
     Your job is to compile these sources to create a grammar sketch that will be used by linguists.
 
     COMPLY WITH THE FOLLOWING:
     - Do not add information from any other source or from your own knowledge, but use all the reasoning you can to
     perform deductions and inferences based on the sources.
+    - If the query contains instruction about how to think about and formulate an answer, follow these instructions.
     - Add ALL relevant information from all the available sources. Be as detailed as possible.
     - The output must be in the language of the readers.
     - In all examples, translate the source sentence from English to the reader's language.
 
     INPUT:
     - Name of the endangered language.
+    - User's query and optional instructions.
     - List of grammatical parameters and their values in the endangered language, some with examples.
     - Description coming from sentence analysis.
     - Description coming from a compilation of documents.
@@ -269,6 +288,9 @@ sketch_agent = Agent(
     Each sketch chunk can include up to 5 examples to illustrate how the target language expresses the grammar topic.
     Each example displays with the sentence in the target language, in the the source language, and an explanation of how this example illustrate the focus.
     - A conclusion, which is what the students should absolutely remember.
+    
+    NOTE ON OUTPUTS: When using target word(s) within an explanation sentence, surround them with "**"; for example "**'uru**" or "**'ia ora na**".
+    
     """,
     output_type=Sketch
 )
@@ -289,11 +311,12 @@ async def contribute_from_alterlingua(query: str, sentences: list[dict]) -> dict
 
 async def file_search_request(indi_language: str, vsids: list[str], query: str):
     prompt = f"""
-    You are an agent specialized in retrieving grammatical information about {indi_language} in provided documents.
+    You are an agent specialized in retrieving grammatical information about {indi_language} in the provided documents.
     to answer a user's query. Retrieve all relevant information from the documents and compile them into a detailed 
     answer to the user's query, with examples taken from the documents. 
-    Use only information from the documents. Do not invent any additional information or examples. If there are no relevant 
+    - Use only information from the documents. Do not invent any additional information or examples. If there are no relevant 
     information in the documents, just output "no relevant information about the query in the documents". 
+    - If the query comes with instructions about how to formulate an answer, follow these instructions. 
     USER QUERY: {query}
     """
     client = openai.OpenAI(api_key=api_key)
@@ -316,15 +339,24 @@ async def file_search_request(indi_language: str, vsids: list[str], query: str):
         )
         return response
 
-async def create_lesson(indi_language, source_language, readers_type,
+
+async def create_lesson(indi_language,
+                        source_language,
+                        query,
+                        readers_type,
                         grammatical_params,
-                        alterlingua_explanation, alterlingua_examples,
-                        doc_contribution, sentence_pairs):
+                        alterlingua_explanation,
+                        alterlingua_examples,
+                        doc_contribution,
+                        sentence_pairs):
     data = f"""
     ENDANGERED LANGUAGE: {indi_language},
     
     
     READERS: {readers_type} speaking {source_language} language,
+    
+    
+    QUERY: {query}
     
     
     GRAMMATICAL PARAMETERS: {grammatical_params},
@@ -353,7 +385,7 @@ async def review_lesson(lesson, source_language, readers_type):
     result = await Runner.run(lesson_improvement_agent, data)
     return result.final_output.dict()
 
-async def create_sketch(indi_language, source_language, readers_type,
+async def create_sketch(indi_language, source_language, query, readers_type,
                         grammatical_params,
                         alterlingua_explanation, alterlingua_examples,
                         doc_contribution, sentence_pairs):
@@ -362,6 +394,9 @@ async def create_sketch(indi_language, source_language, readers_type,
 
 
     READERS: Linguists speaking {source_language} language,
+    
+    
+    QUERY: {query},
 
 
     GRAMMATICAL PARAMETERS: {grammatical_params},
@@ -393,23 +428,33 @@ def contribute_from_alterlingua_sync(query: str, sentences: list[dict]) -> dict:
 def file_search_request_sync(indi_language: str, vsids: list[str], query: str):
     return asyncio.run(file_search_request(indi_language, vsids, query))
 
-def create_lesson_sync(indi_language, source_language, readers_type,
+def create_lesson_sync(indi_language,
+                       source_language,
+                       query,
+                       readers_type,
                        grammatical_params,
-                        alterlingua_explanation, alterlingua_examples,
-                        doc_contribution, sentence_pairs):
-    return asyncio.run(create_lesson(indi_language, source_language, readers_type,
+                       alterlingua_explanation,
+                       alterlingua_examples,
+                       doc_contribution,
+                       sentence_pairs):
+    return asyncio.run(create_lesson(indi_language,
+                                     source_language,
+                                     query,
+                                     readers_type,
                                      grammatical_params,
-                                     alterlingua_explanation, alterlingua_examples,
-                                     doc_contribution, sentence_pairs))
+                                     alterlingua_explanation,
+                                     alterlingua_examples,
+                                     doc_contribution,
+                                     sentence_pairs))
 
 def review_lesson_sync(lesson, source_language, readers_type):
     return asyncio.run(review_lesson(lesson, source_language, readers_type))
 
-def create_sketch_sync(indi_language, source_language, readers_type,
+def create_sketch_sync(indi_language, source_language, query, readers_type,
                        grammatical_params,
                         alterlingua_explanation, alterlingua_examples,
                         doc_contribution, sentence_pairs):
-    return asyncio.run(create_sketch(indi_language, source_language, readers_type,
+    return asyncio.run(create_sketch(indi_language, source_language, query, readers_type,
                                      grammatical_params,
                                      alterlingua_explanation, alterlingua_examples,
                                      doc_contribution, sentence_pairs))

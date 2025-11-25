@@ -33,6 +33,9 @@ import yaml
 from pathlib import Path
 import tempfile
 
+# TODO: Translations in pivot language between single quotes. Within paragraphs, target language words in bold.
+# TODO: Each pre-proposed topic comes with a grammar description of this topic across languages.
+
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
     "storage"
@@ -107,6 +110,10 @@ if "document_format" not in st.session_state:
     st.session_state.document_format = "Grammar lesson"
 if "polished_output" not in st.session_state:
     st.session_state.polished_output = False
+if "seed" not in st.session_state:
+    st.session_state.seed = None
+if "bare_query" not in st.session_state:
+    st.session_state.bare_query = None
 
 
 # ----- HELPERS -----------------------------------------------------------------------------------
@@ -130,7 +137,7 @@ def display_lesson_output(output_dict):
         if isinstance(section.get("example"), dict):
             example = section["example"]
             st.markdown(f"**{example['target_sentence']}**")
-            st.markdown(f"*{example['source_sentence']}*")
+            st.markdown(f"{example['source_sentence']}")
             st.write(example["description"])
     st.subheader("Conclusion")
     st.write(o["conclusion"])
@@ -202,6 +209,7 @@ def reset():
     st.session_state.readers_type = "Adult learners"
     st.session_state.document_format = "Grammar lesson"
     st.session_state.polished_output = False
+    st.session_state.seed = None
 
 def feedback_form():
     # Feedback survey
@@ -388,8 +396,9 @@ colq, colw = st.columns(2)
 if "l_with_data" not in st.session_state:
     st.session_state.l_with_data = None
 # languages with existing data
-st.session_state.l_with_data = [l for l in os.listdir(os.path.join(BASE_LD_PATH))
-                 if (os.path.isdir(os.path.join(BASE_LD_PATH, l)) and l in list(gu.GLOTTO_LANGUAGE_LIST.keys()))]
+st.session_state.l_with_data = [lu for lu in os.listdir(os.path.join(BASE_LD_PATH))
+                                if (os.path.isdir(os.path.join(BASE_LD_PATH, lu))
+                                and lu in list(gu.GLOTTO_LANGUAGE_LIST.keys()))]
 if role == "guest":
     st.session_state.l_with_data = ["Tahitian", "Mwotlap"]
     colq.markdown(
@@ -415,10 +424,9 @@ if colq.button("Select {}".format(selected_language)):
         print("CARETAKER RERUN")
         st.rerun()
 else:
-    colq.markdown(f"Working on **{st.session_state.indi}**")
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi,
                                                                    "glottocode not found")
-    colq.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
+    colq.markdown(f"Working on **{st.session_state.indi}** (glottocode {st.session_state.indi_glottocode})")
 
 # PROPOSING EXISTING OUTPUTS FROM PREVIOUS QUERIES
 with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
@@ -558,7 +566,7 @@ if st.session_state.is_pairs:
 if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is_doc and st.session_state.use_doc)
     or (st.session_state.is_pairs and st.session_state.use_pairs)):
 
-    st.subheader("Generate a new grammatical description")
+    st.subheader("Generate a new grammatical description in {}".format(st.session_state.indi))
     colq1a, colq2a = st.columns(2)
     st.session_state.document_format = colq1a.selectbox("Format", ["Grammar lesson", "Grammar sketch"])
     st.session_state.readers_language = colq2a.selectbox("What is the language of readers?",
@@ -576,8 +584,8 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
             "Politeness and social formulas",
             "Expressing who does what to whom",
             "Asking Yes/No questions",
-            "Questions asking for information",
             "Negation",
+            "Questions asking for information",
             "Referring to participants (speaker, addressee, others)",
             "Referring to things",
             "Possession",
@@ -642,8 +650,6 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
         if st.checkbox("Post-process output?"):
             st.session_state.polished_output = True
 
-
-
     # =================== GENERATION LAUNCH ====================================================
     if st.button("Reset to make new generation"):
         reset()
@@ -651,19 +657,37 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
             and query is not None
             and query != st.session_state.query):
         if st.button("submit"):
-            st.session_state.query = query
+            st.session_state.bare_query = query
             st.session_state.relevant_parameters = None
             st.session_state.alterlingua_contribution = None
             st.session_state.run_sources = True
 
 if st.session_state.run_sources:
-
+    # check and populate seed if available
+    if st.session_state.seed is None:
+        with open("./grammar_seeds/grammar_seeds.json", "r") as f:
+            seeds = json.load(f)
+            if st.session_state.bare_query in seeds.keys():
+                print("There is a seed entry for {}".format(st.session_state.bare_query))
+                st.session_state.seed = seeds[st.session_state.bare_query]
+                if role=="admin":
+                    st.write("There is a seed for this query: ")
+                    with st.expander("see seed"):
+                        st.write(st.session_state.seed)
+                st.session_state.query = f"""
+                TOPIC: {st.session_state.bare_query}
+                INSTRUCTIONS: 
+                Adhere to the following framework and thought process to explain how {st.session_state.query} is expressed in {st.session_state.indi}:
+                {st.session_state.seed}
+                """
+            else:
+                st.session_state.query = f"TOPIC: {st.session_state.bare_query}"
     # cq agents
     if st.session_state.is_cq and st.session_state.use_cq:
         # grammatical parameters selection
         available_params = ggu.extract_parameter_names_from_cq_knowledge(st.session_state.indi)
         with st.spinner("Selecting relevant grammatical parameters among {} available".format(len(available_params))):
-            st.session_state.relevant_parameters = gga.select_parameters_sync(query, available_params)
+            st.session_state.relevant_parameters = gga.select_parameters_sync(st.session_state.bare_query, available_params)
         # alterlingua agent
         alterlingua_sentences = ggu.extract_and_clean_cq_alterlingua(st.session_state.indi)
         with st.spinner("Generating contribution from CQ pseudo-gloss analysis"):
@@ -679,8 +703,8 @@ if st.session_state.run_sources:
         vsids = [st.session_state.info_dict["documents"]["oa_vector_store_id"]]
         with st.spinner("Generating contribution from documents"):
             full_response = gga.file_search_request_sync(st.session_state.indi,
-                                                           vsids,
-                                                           query)
+                                                         vsids,
+                                                         st.session_state.query)
             try:
                 raw_response = full_response.output[1].content
                 if raw_response is not None:
@@ -745,7 +769,7 @@ if st.session_state.run_sources:
                     tmpd = json.load(f)
                     sentence_pool.append(tmpd["source"])
             print("sentence pool created with {} sentences".format(len(sentence_pool)))
-            llm_selection_raw = sda.select_sentences_sync(query, sentence_pool)
+            llm_selection_raw = sda.select_sentences_sync(st.session_state.bare_query, sentence_pool)
             llm_selection = llm_selection_raw.sentence_list
             llm_filenames_retrieved = []
             for sentence in llm_selection:
@@ -832,6 +856,7 @@ if (st.session_state.alterlingua_contribution
                 first_aggregation = gga.create_lesson_sync(
                     indi_language=st.session_state.indi,
                     source_language=st.session_state.readers_language,
+                    query=st.session_state.query,
                     readers_type=st.session_state.readers_type,
                     grammatical_params=selected_params_blob,
                     alterlingua_explanation=alterlingua_explanation,
@@ -853,6 +878,7 @@ if (st.session_state.alterlingua_contribution
                 st.session_state.output_dict = gga.create_sketch_sync(
                     indi_language=st.session_state.indi,
                     source_language=st.session_state.readers_language,
+                    query=st.session_state.query,
                     readers_type=st.session_state.readers_type,
                     grammatical_params=selected_params_blob,
                     alterlingua_explanation=alterlingua_explanation,
@@ -890,7 +916,7 @@ if (st.session_state.alterlingua_contribution
         trace = {"date": now.strftime("%A, %-d %B %Y at %H:%M"),
                  "language": st.session_state.indi,
                  "output_type": st.session_state.document_format,
-                 "prompt": query,
+                 "prompt": st.session_state.query,
                  "use_cq": st.session_state.use_cq,
                  "use_documents": st.session_state.use_doc,
                  "use_pairs": st.session_state.use_pairs}
@@ -919,7 +945,7 @@ if (st.session_state.alterlingua_contribution
 
         tfn = "trace_"
         tfn += st.session_state.indi + "_"
-        tfn += u.clean_sentence(query, filename=True, filename_length=30)
+        tfn += u.clean_sentence(st.session_state.bare_query, filename=True, filename_length=30)
         tfn += f"_({st.session_state.readers_language})_"
         tfn += str(now)
         tfn += ".json"
@@ -942,7 +968,7 @@ if st.session_state.output_dict:
         now = datetime.now()
         fn = "dig4el_aggregated_output_sketch_"
         fn += st.session_state.indi + "_"
-        fn += u.clean_sentence(query, filename=True, filename_length=50)
+        fn += u.clean_sentence(st.session_state.bare_query, filename=True, filename_length=50)
         fn += f"_({st.session_state.readers_language})_"
         fn += now.strftime("_%-d_%B_%Y_at_%H_%M")
         fn += ".json"
@@ -959,7 +985,7 @@ if st.session_state.output_dict:
 
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
                 info = json.load(f)
-                qk = f"sketch_{query} ({st.session_state.readers_language}) "
+                qk = f"sketch_{st.session_state.bare_query} ({st.session_state.readers_language}) "
                 qk += now.strftime(" %-d %B %Y at %H:%M")
             info["outputs"][qk] = fn
 
@@ -986,7 +1012,7 @@ if st.session_state.output_dict:
         st.subheader("Store and/or download the output")
         fn = "dig4el_unverified_lesson_"
         fn += st.session_state.indi + "_"
-        fn += u.clean_sentence(query, filename=True, filename_length=50)
+        fn += u.clean_sentence(st.session_state.bare_query, filename=True, filename_length=50)
         fn += f"_({st.session_state.readers_language})_"
         fn += now.strftime("_%-d_%B_%Y_at_%H_%M")
         fn += ".json"
@@ -1010,7 +1036,7 @@ if st.session_state.output_dict:
                     f.write(docx.getvalue())
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "r", encoding='utf-8') as f:
                 info = json.load(f)
-                qk = f"lesson_{query}_({st.session_state.readers_language})"
+                qk = f"lesson_{st.session_state.bare_query}_({st.session_state.readers_language})"
             info["outputs"][qk] = fn
 
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "info.json"), "w", encoding='utf-8') as f:

@@ -18,19 +18,19 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-components.html("""
-<div style="
-  width:100%; height:90px;
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  background:#252729; box-shadow:0 2px 8px rgba(0,0,0,.15);
-">
-  <span style="color:#EAEAE4; font-size:18px; font-weight:700;">
-    New release 1.0.5 rolling out this week!
-    - One-click generation (no Aggregation button anymore).
-    - Downloadable Word document after generation is back!
-  </span>
-</div>
-""", height=90)
+# components.html("""
+# <div style="
+#   width:100%; height:90px;
+#   display:flex; align-items:center; justify-content:center; gap:12px;
+#   background:#252729; box-shadow:0 2px 8px rgba(0,0,0,.15);
+# ">
+#   <span style="color:#EAEAE4; font-size:18px; font-weight:700;">
+#     New release 1.0.5 rolling out this week!
+#     - One-click generation (no Aggregation button anymore).
+#     - Downloadable Word document after generation is back!
+#   </span>
+# </div>
+# """, height=90)
 
 st.markdown("## Assisted grammatical description of endangered languages")
 
