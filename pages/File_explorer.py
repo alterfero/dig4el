@@ -421,6 +421,30 @@ if st.session_state.has_access:
                 st.session_state.authdata["credentials"]["usernames"][new_username] = new_entry
                 st.rerun()
 
+    with st.expander("Grammar seeds"):
+        with open("./grammar_seeds/grammar_seeds.json", "r") as f:
+            seeds = json.load(f)
+        selected_seed = st.selectbox("Select a topic to edit its seed", seeds.keys())
+        if selected_seed:
+            new_seed = st.text_area("Seed", value=seeds[selected_seed]["guidance"])
+            if st.button("Save new seed"):
+                seeds[selected_seed]["guidance"] = new_seed
+                st.markdown("**New seed** *{}*... submitted".format(seeds[selected_seed]["guidance"][:50]))
+                with open("./grammar_seeds/grammar_seeds.json", "w") as fu:
+                    seeds = json.dump(seeds, fu)
+                st.success("Edited seed saved")
+                st.rerun()
+        st.markdown("**Or create a new seed**")
+        new_topic = st.text_input("Topic")
+        new_topic_seed = st.text_area("New seed")
+        if st.button("Save new topic and seed"):
+            seeds[new_topic] = {
+                "guidance": new_topic_seed
+            }
+            with open("./grammar_seeds/grammar_seeds.json", "w") as fu:
+                seeds = json.dump(seeds, fu)
+            st.success("New seed saved")
+            st.rerun()
 
 
 

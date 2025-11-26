@@ -579,30 +579,9 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
         st.session_state.readers_type = "Linguists"
 
     if st.session_state.document_format == "Grammar lesson":
-        grammatical_topics_progression = [
-            "Basic sentence structure",
-            "Politeness and social formulas",
-            "Expressing who does what to whom",
-            "Asking Yes/No questions",
-            "Negation",
-            "Questions asking for information",
-            "Referring to participants (speaker, addressee, others)",
-            "Referring to things",
-            "Possession",
-            "Describing things",
-            "Saying what something or someone is (identification)",
-            "Stating existence and location",
-            "Talking about actions and states in the present/general time",
-            "Talking about past events",
-            "Talking about the future",
-            "How actions unfold: ongoing, completed, habitual...",
-            "Giving orders",
-            "Expressing place and direction",
-            "Expressing wishes",
-            "Expressing doubts",
-            "Expressing beliefs",
-            "Classifiers or measure words"
-        ]
+        with open("./grammar_seeds/grammar_seeds.json", "r") as gs:
+            seeds = json.load(gs)
+        grammatical_topics_progression = list(seeds.keys())
         colq1, colq2 = st.columns(2)
         colq1.markdown("Choose a typical lesson topic")
         query_standard = colq1.selectbox("Select a standard grammar lesson...", ["no selection"] + grammatical_topics_progression)

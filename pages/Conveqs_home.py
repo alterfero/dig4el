@@ -25,6 +25,7 @@ import tempfile
 from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
 from libs import utils as u
+from libs import display_utils as du
 from datetime import datetime
 import pandas as pd
 
@@ -176,22 +177,23 @@ else:
 
 # =========================== LOGIC AND UI =============================================
 
-colb1, colb3 = st.columns(2, vertical_alignment="center")
+tab1, tab2, tab3 = st.tabs(["Browse CQ files", "Upload CQ file", "Explore CQs"])
 
-# ========== CONSULT ==========================
-if colb1.button("Browse Conversational Questionnaires files", width="stretch"):
-    st.session_state.use = "consult"
-    st.rerun()
-
-if st.session_state.use == "consult":
-    st.markdown("Click on the left of any file to display what you can do with it.")
+# ========== CONSULT FILES ==========================
+with tab1:
+    st.markdown("""Click on any file in the table to display what you can do with it.
+                   You can Edit, and delete your own files.
+                   To explore all available CQs, go to the Explore CQ tab""")
     with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
         conveqs_index = json.load(f)
     conveqs_index_df = pd.DataFrame(conveqs_index)
-    selected = st.dataframe(conveqs_index_df.style.hide(axis="index"), column_order=["language", "name", "author", "format", "uploaded by", "is_downloadable"],
-                 selection_mode="single-row", on_select="rerun")
-    if selected["selection"]["rows"] != []:
-        selected_item = conveqs_index[selected["selection"]["rows"][0]]
+    selected = st.dataframe(conveqs_index_df.style.hide(axis="index"), column_order=["language", "name", "author",
+                                                                                     "format", "uploaded by",
+                                                                                     "is_downloadable"],
+                 hide_index=True, selection_mode="single-cell", on_select="rerun")
+    if selected["selection"]["cells"] != []:
+        selected_row = selected["selection"]["cells"][0][0]
+        selected_item = conveqs_index[selected_row]
         if selected_item["is_downloadable"] and role != "guest":
             with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "rb") as f:
                 data = f.read()
@@ -200,7 +202,7 @@ if st.session_state.use == "consult":
             st.markdown("*This file can be downloaded by registered users, contact us to become one!*")
         if selected_item["uploaded by"] == username or role == "admin":
             if st.button("Delete this file"):
-                del conveqs_index[selected["selection"]["rows"][0]]
+                del conveqs_index[selected_row]
                 with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w") as f:
                     json.dump(conveqs_index, f)
                 try:
@@ -208,120 +210,99 @@ if st.session_state.use == "consult":
                 except FileNotFoundError:
                     print("{} does not exist".format(selected_item["filename"]))
                 st.rerun()
-
-        if selected_item["filename"][-4:] == "json":
-            with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "r") as f:
-                selected_doc = json.load(f)
-            if "cq_uid" in selected_doc.keys():
-                st.write("Conversational Questionnaire, DIG4EL format")
-                st.write(selected_doc)
-
+            if selected_item.get("format", "other") == "DIG4EL JSON":
+                st.subheader("You can Preview and edit your CQ file here")
+                with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "r") as f:
+                    preview_cq = json.load(f)
+                edited_cq = du.preview_dig4el_cq(preview_cq, selected_item["filename"])
+                if edited_cq is not None:
+                    with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "w") as fw:
+                        json.dump(edited_cq, fw)
+                    st.success("Edited file saved")
 
 # ========== UPLOAD ============================
-if colb3.button("Upload Conversational Questionnaires", width="stretch"):
-    st.session_state.use = "edit"
-    st.rerun()
+with tab2:
+    if role == "guest":
+        st.markdown("*Guests cannot upload or manage Conversational Questionnaires.*")
+        st.markdown("*If you have Conversational Questionnaires to upload, contact us to become a registered user!*")
 
-if st.session_state.use == "edit" and role == "guest":
-    st.markdown("*Guests cannot upload or manage Conversational Questionnaires.*")
-    st.markdown("*If you have Conversational Questionnaires to upload, contact us to become a registered user!*")
+    else:
+        # SELECT LANGUAGE
+        colq, colw = st.columns(2)
+        llist = gu.GLOTTO_LANGUAGE_LIST.keys()
+        selected_language = colq.selectbox("What language are you working on?", llist)
 
-elif st.session_state.use == "edit" and role != "guest":
+        st.write("Active language: {}".format(st.session_state.upload_language))
 
-    # SELECT LANGUAGE
-    colq, colw = st.columns(2)
-    llist = gu.GLOTTO_LANGUAGE_LIST.keys()
-    selected_language = colq.selectbox("What language are you working on?", llist)
-    st.write("Active language: {}".format(st.session_state.upload_language))
-
-    if st.button("Select {}".format(selected_language)):
-        print("")
-        print("*******************")
-        print(selected_language)
-        print("*******************")
-        print("")
-        st.session_state.upload_language = selected_language
-        st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.upload_language,
-                                                                       "glottocode not found")
-        fmu.create_ld(BASE_LD_PATH, st.session_state.upload_language)
-        if st.session_state.upload_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
-            role = "caretaker"
-            if not st.session_state.caretaker_trigger:
-                st.session_state.caretaker_trigger = True
-                print("CARETAKER RERUN")
-                st.rerun()
-        st.rerun()
-    if role in ["admin", "caretaker"]:
+        if st.button("Select {}".format(selected_language)):
+            st.session_state.upload_language = selected_language
+            st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.upload_language,
+                                                                           "glottocode not found")
+            fmu.create_ld(BASE_LD_PATH, st.session_state.upload_language)
+            if st.session_state.upload_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
+                role = "caretaker"
+                if not st.session_state.caretaker_trigger:
+                    st.session_state.caretaker_trigger = True
+                    print("CARETAKER RERUN")
+                    st.rerun()
+            st.rerun()
+        if role in ["admin", "caretaker"]:
 
 
-        # Upload cq file
+            # Upload cq file
 
-        with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json")) as ci:
-            conveqs_index = json.load(ci)
-        existing_filenames = [fn["filename"] for fn in conveqs_index]
-        # FILE UPLOAD FORM
-        with st.form(key="file_upload_form", clear_on_submit=True, enter_to_submit=False,
-                     border=True, width="stretch", height="content"):
-            sub_ready = False
-            replace_ok = True
-            new_cq = st.file_uploader(
-                "Add a new CQ translation to the repository",
-                accept_multiple_files=False,
-                key="new_cq" + str(st.session_state.new_cq_counter)
-            )
-            info_entered = False
-            name = st.text_input("Name this document (The name that will be displayed)")
-            author = st.text_input("Author/owner of the corpus")
-            visibility = st.selectbox("Visibility", ["Everyone", "Members only"], index=0)
-            is_downloadable = st.checkbox("Can be downloaded by registered users", value=True)
-
-            submitted = st.form_submit_button("Submit", disabled=not replace_ok)
-
-            if submitted:
-                with open(os.path.join(CONVEQS_BASE_PATH, new_cq.name), "wb") as f:
-                    f.write(new_cq.read())
-                st.success(f"Saved `{new_cq.name}` on the server.")
-
-                # UPDATE CONVEQS_INDEX
-                if "json" in new_cq.name:
-                    format = "JSON"
-                elif "xls" in new_cq.name:
-                    format = "Spreadhseet"
-                elif "xml" in new_cq.name:
-                    format = "XML"
-                elif "doc" in new_cq.name:
-                    format = "Word processor"
-                elif "txt" in new_cq.name:
-                    format = "Text",
-                elif "csv" in new_cq.name:
-                    format = "CSV"
-                else:
-                    format = "other"
-
-                now = datetime.now()
-                readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
-                conveqs_index.append(
-                    {
-                        "filename": new_cq.name,
-                        "format": format,
-                        "visibility": visibility,
-                        "is_downloadable": is_downloadable,
-                        "name": name,
-                        "language": st.session_state.upload_language,
-                        "author": author,
-                        "uploaded by": username,
-                        "date": readable_date_time
-                    }
+            with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json")) as ci:
+                conveqs_index = json.load(ci)
+            existing_filenames = [fn["filename"] for fn in conveqs_index]
+            # FILE UPLOAD FORM
+            with st.form(key="file_upload_form", clear_on_submit=True, enter_to_submit=False,
+                         border=True, width="stretch", height="content"):
+                sub_ready = False
+                replace_ok = True
+                new_cq = st.file_uploader(
+                    "Add a new CQ translation to the repository",
+                    accept_multiple_files=False,
+                    key="new_cq" + str(st.session_state.new_cq_counter)
                 )
-                if new_cq.name in existing_filenames:
-                    existing_filename_index = existing_filenames.index(new_cq.name)
-                    del conveqs_index[existing_filename_index]
-                    print("Deleted item to replace at index {}".format(existing_filename_index))
-                with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w",
-                          encoding='utf-8') as f:
-                    u.save_json_normalized(conveqs_index, f)
-                st.success("{} successfully indexed.".format(new_cq.name))
-                st.rerun()
-    if role == "admin":
-        with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
-            st.write(json.load(f))
+                info_entered = False
+                name = st.text_input("Name this document (The name that will be displayed)")
+                author = st.text_input("Author/owner of the corpus")
+                visibility = st.selectbox("Visibility", ["Everyone", "Members only"], index=0)
+                data_format = st.selectbox("Format", ["Excel template", "FleX XML", "DIG4EL JSON", "other"])
+                is_downloadable = st.checkbox("Can be downloaded by registered users", value=True)
+
+                submitted = st.form_submit_button("Submit", disabled=not replace_ok)
+
+                if submitted:
+                    with open(os.path.join(CONVEQS_BASE_PATH, new_cq.name), "wb") as f:
+                        f.write(new_cq.read())
+                    st.success(f"Saved `{new_cq.name}` on the server.")
+
+
+                    now = datetime.now()
+                    readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
+                    conveqs_index.append(
+                        {
+                            "filename": new_cq.name,
+                            "format": data_format,
+                            "visibility": visibility,
+                            "is_downloadable": is_downloadable,
+                            "name": name,
+                            "language": st.session_state.upload_language,
+                            "author": author,
+                            "uploaded by": username,
+                            "date": readable_date_time
+                        }
+                    )
+                    if new_cq.name in existing_filenames:
+                        existing_filename_index = existing_filenames.index(new_cq.name)
+                        del conveqs_index[existing_filename_index]
+                        print("Deleted item to replace at index {}".format(existing_filename_index))
+                    with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w",
+                              encoding='utf-8') as f:
+                        u.save_json_normalized(conveqs_index, f)
+                    st.success("{} successfully indexed.".format(new_cq.name))
+                    st.rerun()
+        if role == "admin":
+            with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
+                st.write(json.load(f))
