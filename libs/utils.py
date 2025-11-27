@@ -22,8 +22,12 @@ import pandas as pd
 import hashlib
 import streamlit as st
 import unicodedata
+from libs import glottolog_utils as gu
 
 from collections.abc import Mapping, Sequence
+
+BASE_LD_PATH = os.path.join(
+    os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"), "storage")
 
 
 def normalize_text(text: str) -> str:
@@ -393,4 +397,29 @@ def update_concept_names_in_transcription(transcription):
                 cw[new_name] = cw.pop(old_name)
 
     return new_transcription, found_some
+
+def catalog_all_available_cqs():
+    with open("./uid_dict.json", "r") as uid:
+        uid_dict = json.load(uid)
+    cq_catalog = []
+    languages = [l
+                 for l
+                 in os.listdir(os.path.join(BASE_LD_PATH))
+                 if l in gu.GLOTTO_LANGUAGE_LIST.keys()]
+    for language in languages:
+        cqs = [f
+               for f in os.listdir(os.path.join(BASE_LD_PATH, language, "cq", "cq_translations"))
+               if f.endswith(".json")]
+        for cq in cqs:
+            with open(os.path.join(BASE_LD_PATH, language, "cq", "cq_translations", cq)) as c:
+                cqc = json.load(c)
+            cq_catalog.append({
+                "title": uid_dict.get(cqc["cq_uid"], "unknown"),
+                "language": language,
+                "pivot": cqc["pivot language"],
+                "uid": cqc["cq_uid"],
+                "filename": cq
+            })
+    return cq_catalog
+
 
