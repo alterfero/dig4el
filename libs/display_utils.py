@@ -244,14 +244,22 @@ def display_same_cq_multiple_languages(cqs_content, title, gloss=False):
         st.markdown("#### {} - {}".format(displayed_index, data["cq"]))
         local_table = []
         for cqi in range(len(cqs_content)):
-            c = cqs_content[cqi]["data"][index]
-            local_table.append(
-                {
-                    "language": cqs_content[cqi]["target language"],
-                    "translation": c["translation"],
-                    "pivot": c["alternate_pivot"]
-                }
-            )
+            if index in cqs_content[cqi]["data"]:
+                c = cqs_content[cqi]["data"][index]
+                local_table.append(
+                    {
+                        "language": cqs_content[cqi]["target language"],
+                        "translation": c["translation"],
+                        "pivot": c["alternate_pivot"]
+                    }
+                )
+            else:
+                local_table.append(
+                    {
+                        "language": "No content for this index",
+                        "translation": "",
+                        "pivot": ""
+                    })
         local_df = pd.DataFrame(local_table).T
         local_df.columns = local_df.iloc[0]
         local_df = local_df.iloc[1:].reset_index(drop=True)

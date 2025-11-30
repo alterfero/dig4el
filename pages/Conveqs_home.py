@@ -235,8 +235,7 @@ with tab1:
         selected_cq_title = st.selectbox("Choose a CQ", cq_titles)
         filtered_df = cq_catalog_df[cq_catalog_df["title"] == selected_cq_title]
         available_languages = filtered_df["language"].tolist()
-        selected_languages = st.multiselect("Select languages to compare", available_languages,
-                                            default=available_languages[:2])
+        selected_languages = st.multiselect("Select languages to compare")
         if selected_languages != []:
             cqs_content = []
             for lang in selected_languages:
@@ -244,6 +243,7 @@ with tab1:
                 with open(os.path.join(BASE_LD_PATH, lang_entry["language"], "cq", "cq_translations",
                                        lang_entry["filename"])) as fcl:
                     cqs_content.append(json.load(fcl))
+
             du.display_same_cq_multiple_languages(cqs_content, selected_cq_title)
 
     with st.expander("Explore CQs within a language by words and parameters"):
