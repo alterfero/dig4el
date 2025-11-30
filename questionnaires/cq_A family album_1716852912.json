@@ -1,7 +1,7 @@
 {
     "uid": "1716852912",
     "title": "A family album",
-    "context": "A man [A] is showing a photo album to his girlfriend [B].",
+    "context": "A man [A] is showing a photo album to his male friend [B].",
     "speakers": {
         "A": {
             "name": "The person showing the album",
@@ -10,7 +10,7 @@
         },
         "B": {
             "name": "The friend",
-            "gender": "female",
+            "gender": "male",
             "age": "adult"
         }
     },

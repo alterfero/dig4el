@@ -204,189 +204,54 @@ else:
 
 tab1, tab2, tab3 = st.tabs(["Browse CQ files", "Upload CQ file", "Explore CQs"])
 
-# ========== CONSULT FILES ==========================
-with tab1:
-    with st.popover("Information"):
-        st.markdown("""Click on any file in the table to display what you can do with it.
-                   You can Edit and delete your own files, and download files from other users if they allow it.
-                   To explore all available CQs, go to the Explore CQ tab. 
-                   
-                   When a CQ file is identified as a CQ that can be used and displayed, it is automatically added 
-                   to the CQ database.""")
-    with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
-        conveqs_index = json.load(f)
-    conveqs_index_df = pd.DataFrame(conveqs_index)
-    selected = st.dataframe(conveqs_index_df.style.hide(axis="index"), column_order=["language", "name", "author",
-                                                                                     "format", "uploaded by",
-                                                                                     "is_downloadable"],
-                 hide_index=True, selection_mode="single-cell", on_select="rerun")
-    if selected["selection"]["cells"] != []:
-        selected_row = selected["selection"]["cells"][0][0]
-        selected_item = conveqs_index[selected_row]
-        st.markdown("You selected **{}** by {}, uploaded by {} on {}".format(selected_item["name"],
-                                                                       selected_item["author"],
-                                                                       selected_item["uploaded by"],
-                                                                       selected_item["date"]))
-        if username == selected_item["uploaded by"]:
-            st.markdown("This is **your file**, you can **download** or **delete** it")
-        col1, col2 = st.columns(2)
-        if selected_item["is_downloadable"] and role != "guest":
-            with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "rb") as f:
-                data = f.read()
-            col1.download_button("You can download this file", data, file_name=selected_item["filename"])
-        else:
-            col1.markdown("*This file can only be downloaded by registered users, contact us to become one!*")
-        if selected_item["uploaded by"] == username or role == "admin":
-            if col2.button("Delete this file"):
-                del conveqs_index[selected_row]
-                with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w") as f:
-                    json.dump(conveqs_index, f)
-                try:
-                    os.remove(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]))
-                except FileNotFoundError:
-                    print("{} does not exist".format(selected_item["filename"]))
-                st.rerun()
-            if selected_item.get("format", "other") == "DIG4EL JSON" and username == selected_item["uploaded by"]:
-                with st.expander("You can preview and edit your CQ file here"):
-                    with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "r") as f:
-                        preview_cq = json.load(f)
-                    edited_cq = du.preview_dig4el_cq(preview_cq, selected_item["filename"])
-                    if edited_cq is not None:
-                        with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "w") as fw:
-                            json.dump(edited_cq, fw)
-                        st.success("Edited file saved")
-
-# ========== UPLOAD FILES ============================
-with tab2:
-    if role == "guest":
-        st.markdown("*Guests cannot upload or manage Conversational Questionnaires.*")
-        st.markdown("*If you have Conversational Questionnaires to upload, contact us to become a registered user!*")
-
-    else:
-        # SELECT LANGUAGE
-        colq, colw = st.columns(2)
-        llist = gu.GLOTTO_LANGUAGE_LIST.keys()
-        selected_language = colq.selectbox("What language are you working on?", llist)
-
-        st.write("Active language: {}".format(st.session_state.upload_language))
-
-        if st.button("Select {}".format(selected_language)):
-            st.session_state.upload_language = selected_language
-            st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.upload_language,
-                                                                           "glottocode not found")
-            fmu.create_ld(BASE_LD_PATH, st.session_state.upload_language)
-            if st.session_state.upload_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
-                role = "caretaker"
-                if not st.session_state.caretaker_trigger:
-                    st.session_state.caretaker_trigger = True
-                    print("CARETAKER RERUN")
-                    st.rerun()
-            st.rerun()
-        if role in ["admin", "caretaker"]:
-
-
-            # Upload cq file
-
-            with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json")) as ci:
-                conveqs_index = json.load(ci)
-            existing_filenames = [fn["filename"] for fn in conveqs_index]
-            # FILE UPLOAD FORM
-            with st.form(key="file_upload_form", clear_on_submit=True, enter_to_submit=False,
-                         border=True, width="stretch", height="content"):
-                sub_ready = False
-                replace_ok = True
-                new_cq = st.file_uploader(
-                    "Add a new CQ translation to the repository",
-                    accept_multiple_files=False,
-                    key="new_cq" + str(st.session_state.new_cq_counter)
-                )
-                info_entered = False
-                name = st.text_input("Name this document (The name that will be displayed)")
-                author = st.text_input("Author/owner of the corpus")
-                visibility = st.selectbox("Visibility", ["Everyone", "Members only"], index=0)
-                data_format = st.selectbox("Format", ["Excel template", "FleX XML", "DIG4EL JSON", "other"])
-                is_downloadable = st.checkbox("Can be downloaded by registered users", value=True)
-
-                submitted = st.form_submit_button("Submit", disabled=not replace_ok)
-
-                if submitted:
-                    with open(os.path.join(CONVEQS_BASE_PATH, new_cq.name), "wb") as f:
-                        f.write(new_cq.read())
-                    st.success(f"Saved `{new_cq.name}` on the server.")
-
-
-                    now = datetime.now()
-                    readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
-                    conveqs_index.append(
-                        {
-                            "filename": new_cq.name,
-                            "format": data_format,
-                            "visibility": visibility,
-                            "is_downloadable": is_downloadable,
-                            "name": name,
-                            "language": st.session_state.upload_language,
-                            "author": author,
-                            "uploaded by": username,
-                            "date": readable_date_time
-                        }
-                    )
-                    if new_cq.name in existing_filenames:
-                        existing_filename_index = existing_filenames.index(new_cq.name)
-                        del conveqs_index[existing_filename_index]
-                        print("Deleted item to replace at index {}".format(existing_filename_index))
-                    with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w",
-                              encoding='utf-8') as f:
-                        u.save_json_normalized(conveqs_index, f)
-                    st.success("{} successfully indexed.".format(new_cq.name))
-
-                    # CQ VALIDATION
-                    if data_format == "DIG4EL JSON":
-                        is_valid_cq = True
-                        try:
-                            with open(os.path.join(CONVEQS_BASE_PATH, new_cq.name), "r") as fr:
-                                test_cq = json.load(fr)
-
-                            for key in ["target language", "delimiters", "pivot_language", "cq_uid", "data"]:
-                                if key not in test_cq.keys():
-                                    is_valid_cq = False
-                                    st.warning("{} is not a valid DIG4EL JSON file.".format(selected_item["filename"]))
-                        except:
-                            st.warning("An exception occurred while opening {} for validation".format(selected_item["filename"]))
-                            st.warning("This does not seem to be a valid JSON file.")
-                            is_valid_cq = False
-                        if is_valid_cq:
-                            if st.session_state.upload_language in os.listdir(os.path.join(BASE_LD_PATH)):
-                                with open(os.path.join(BASE_LD_PATH,
-                                                       st.session_state.upload_language,
-                                                       "cq",
-                                                       "cq_translations"), "w") as fw:
-                                    json.dump(test_cq, fw)
-                            else:
-                                st.warning("Valid DIG4EL CQ but invalid data path to store the CQ")
-
-                    st.rerun()
-        if role == "admin":
-            with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
-                st.write(json.load(f))
-
 # ========== EXPLORE CQs =============================
-with tab3:
-    st.subheader("Explore all Conversational Questionnaires")
+with tab1:
+    st.subheader("Explore available Conversational Questionnaires")
     cq_catalog = u.catalog_all_available_cqs()
     n_language = len(set([lu["language"] for lu in cq_catalog]))
     st.markdown("{} CQs available, across {} languages.".format(len(cq_catalog), n_language))
     cq_catalog_df = pd.DataFrame(cq_catalog).sort_values(by="title")
-    selected_rows = st.dataframe(cq_catalog_df, hide_index=True, column_order=["title", "language", "pivot"],
+    selected_rows = st.dataframe(cq_catalog_df, hide_index=True, column_order=["title", "language", "pivot", "index"],
                                  selection_mode="multi-row", on_select="rerun")
-    selected_cqs_index = selected_rows["selection"]["rows"]
-    with st.expander("Compare the same CQ in two languages"):
-        st.write("Upcoming")
+    selected_cqs_indexes_in_displayed_df = selected_rows["selection"]["rows"]
+    selected_cqs_indexes_in_catalog = [cq_catalog_df.iloc[i]["index"] - 1 for i in selected_cqs_indexes_in_displayed_df]
+    # st.write("selected_cqs_indexes_in_catalog  {}".format(selected_cqs_indexes_in_catalog))
+    # for i, item in enumerate(cq_catalog):
+    #     st.write("{}: {}".format(i, cq_catalog[i]))
+
+    with st.expander("Display a single CQ"):
+        if selected_cqs_indexes_in_catalog != []:
+            # retrieving cq_catalog index in the df:
+            catalog_entry = cq_catalog[selected_cqs_indexes_in_catalog[0]]
+            with open(os.path.join(BASE_LD_PATH, catalog_entry["language"], "cq", "cq_translations", catalog_entry["filename"])) as fcqd:
+                cqd = json.load(fcqd)
+            du.display_cq(cqd, st.session_state.delimiters, catalog_entry["title"])
+        else:
+            st.write("Select a CQ in the table")
+
+    with st.expander("Compare the same CQ in multiple languages"):
+        # list available cq titles by creating the set of titles in the df
+        cq_titles = list(set(cq_catalog_df["title"].tolist()))
+        selected_cq_title = st.selectbox("Choose a CQ", cq_titles)
+        filtered_df = cq_catalog_df[cq_catalog_df["title"] == selected_cq_title]
+        available_languages = filtered_df["language"].tolist()
+        selected_languages = st.multiselect("Select languages to compare", available_languages,
+                                            default=available_languages[:2])
+        if selected_languages != []:
+            cqs_content = []
+            for lang in selected_languages:
+                lang_entry = filtered_df[filtered_df["language"] == lang].iloc[0]
+                with open(os.path.join(BASE_LD_PATH, lang_entry["language"], "cq", "cq_translations",
+                                       lang_entry["filename"])) as fcl:
+                    cqs_content.append(json.load(fcl))
+            du.display_same_cq_multiple_languages(cqs_content, selected_cq_title)
+
     with st.expander("Explore CQs within a language by words and parameters"):
         st.markdown("Select all the CQs you want to use for exploration and press the submit button")
         if st.button("Submit", key="explore_consolidation_button"):
             st.session_state["cq_transcriptions"] = []
-            if selected_cqs_index != []:
-                for cqi in selected_cqs_index:
+            if selected_cqs_indexes_in_catalog != []:
+                for cqi in selected_cqs_indexes_in_catalog:
                     cq_catalog_item = cq_catalog[cqi]
                     cq_filename = cq_catalog_item["filename"]
                     with open(os.path.join(BASE_LD_PATH, cq_catalog_item["language"], "cq", "cq_translations", cq_filename), "r") as cqf:
@@ -1185,7 +1050,170 @@ with tab3:
                         #     st.write(st.session_state["knowledge_graph"][pkge]["recording_data"]["comment"])
                         #     st.markdown("---")
 
+# ========== CONSULT FILES ==========================
+with tab2:
+    with st.popover("Information"):
+        st.markdown("""Click on any file in the table to display what you can do with it.
+                   You can Edit and delete your own files, and download files from other users if they allow it.
+                   To explore all available CQs, go to the Explore CQ tab. 
 
+                   When a CQ file is identified as a CQ that can be used and displayed, it is automatically added 
+                   to the CQ database.""")
+    with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
+        conveqs_index = json.load(f)
+    conveqs_index_df = pd.DataFrame(conveqs_index)
+    selected = st.dataframe(conveqs_index_df.style.hide(axis="index"), column_order=["language", "name", "author",
+                                                                                     "format", "uploaded by",
+                                                                                     "is_downloadable"],
+                            hide_index=True, selection_mode="single-cell", on_select="rerun")
+    if selected["selection"]["cells"] != []:
+        selected_row = selected["selection"]["cells"][0][0]
+        selected_item = conveqs_index[selected_row]
+        st.markdown("You selected **{}** by {}, uploaded by {} on {}".format(selected_item["name"],
+                                                                             selected_item["author"],
+                                                                             selected_item["uploaded by"],
+                                                                             selected_item["date"]))
+        if username == selected_item["uploaded by"]:
+            st.markdown("This is **your file**, you can **download** or **delete** it")
+        col1, col2 = st.columns(2)
+        if selected_item["is_downloadable"] and role != "guest":
+            with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "rb") as f:
+                data = f.read()
+            col1.download_button("You can download this file", data, file_name=selected_item["filename"])
+        else:
+            col1.markdown("*This file can only be downloaded by registered users, contact us to become one!*")
+        if selected_item["uploaded by"] == username or role == "admin":
+            if col2.button("Delete this file"):
+                del conveqs_index[selected_row]
+                with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w") as f:
+                    json.dump(conveqs_index, f)
+                try:
+                    os.remove(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]))
+                except FileNotFoundError:
+                    print("{} does not exist".format(selected_item["filename"]))
+                st.rerun()
+            if selected_item.get("format", "other") == "DIG4EL JSON" and username == selected_item["uploaded by"]:
+                with st.expander("You can preview and edit your CQ file here"):
+                    with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "r") as f:
+                        preview_cq = json.load(f)
+                    edited_cq = du.display_and_edit_cq(preview_cq, selected_item["filename"])
+                    if edited_cq is not None:
+                        with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "w") as fw:
+                            json.dump(edited_cq, fw)
+                        st.success("Edited file saved")
+
+# ========== UPLOAD FILES ============================
+with tab3:
+    if role == "guest":
+        st.markdown("*Guests cannot upload or manage Conversational Questionnaires.*")
+        st.markdown("*If you have Conversational Questionnaires to upload, contact us to become a registered user!*")
+
+    else:
+        # SELECT LANGUAGE
+        colq, colw = st.columns(2)
+        llist = gu.GLOTTO_LANGUAGE_LIST.keys()
+        selected_language = colq.selectbox("What language are you working on?", llist)
+
+        st.write("Active language: {}".format(st.session_state.upload_language))
+
+        if st.button("Select {}".format(selected_language)):
+            st.session_state.upload_language = selected_language
+            st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.upload_language,
+                                                                           "glottocode not found")
+            fmu.create_ld(BASE_LD_PATH, st.session_state.upload_language)
+            if st.session_state.upload_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker",
+                                                                                                         []):
+                role = "caretaker"
+                if not st.session_state.caretaker_trigger:
+                    st.session_state.caretaker_trigger = True
+                    print("CARETAKER RERUN")
+                    st.rerun()
+            st.rerun()
+        if role in ["admin", "caretaker"]:
+
+            # Upload cq file
+
+            with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json")) as ci:
+                conveqs_index = json.load(ci)
+            existing_filenames = [fn["filename"] for fn in conveqs_index]
+            # FILE UPLOAD FORM
+            with st.form(key="file_upload_form", clear_on_submit=True, enter_to_submit=False,
+                         border=True, width="stretch", height="content"):
+                sub_ready = False
+                replace_ok = True
+                new_cq = st.file_uploader(
+                    "Add a new CQ translation to the repository",
+                    accept_multiple_files=False,
+                    key="new_cq" + str(st.session_state.new_cq_counter)
+                )
+                info_entered = False
+                name = st.text_input("Name this document (The name that will be displayed)")
+                author = st.text_input("Author/owner of the corpus")
+                visibility = st.selectbox("Visibility", ["Everyone", "Members only"], index=0)
+                data_format = st.selectbox("Format", ["Excel template", "FleX XML", "DIG4EL JSON", "other"])
+                is_downloadable = st.checkbox("Can be downloaded by registered users", value=True)
+
+                submitted = st.form_submit_button("Submit", disabled=not replace_ok)
+
+                if submitted:
+                    with open(os.path.join(CONVEQS_BASE_PATH, new_cq.name), "wb") as f:
+                        f.write(new_cq.read())
+                    st.success(f"Saved `{new_cq.name}` on the server.")
+
+                    now = datetime.now()
+                    readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
+                    conveqs_index.append(
+                        {
+                            "filename": new_cq.name,
+                            "format": data_format,
+                            "visibility": visibility,
+                            "is_downloadable": is_downloadable,
+                            "name": name,
+                            "language": st.session_state.upload_language,
+                            "author": author,
+                            "uploaded by": username,
+                            "date": readable_date_time
+                        }
+                    )
+                    if new_cq.name in existing_filenames:
+                        existing_filename_index = existing_filenames.index(new_cq.name)
+                        del conveqs_index[existing_filename_index]
+                        print("Deleted item to replace at index {}".format(existing_filename_index))
+                    with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w",
+                              encoding='utf-8') as f:
+                        u.save_json_normalized(conveqs_index, f)
+                    st.success("{} successfully indexed.".format(new_cq.name))
+
+                    # CQ VALIDATION
+                    if data_format == "DIG4EL JSON":
+                        is_valid_cq = True
+                        try:
+                            with open(os.path.join(CONVEQS_BASE_PATH, new_cq.name), "r") as fr:
+                                test_cq = json.load(fr)
+
+                            for key in ["target language", "delimiters", "pivot_language", "cq_uid", "data"]:
+                                if key not in test_cq.keys():
+                                    is_valid_cq = False
+                                    st.warning("{} is not a valid DIG4EL JSON file.".format(selected_item["filename"]))
+                        except:
+                            st.warning("An exception occurred while opening {} for validation".format(
+                                selected_item["filename"]))
+                            st.warning("This does not seem to be a valid JSON file.")
+                            is_valid_cq = False
+                        if is_valid_cq:
+                            if st.session_state.upload_language in os.listdir(os.path.join(BASE_LD_PATH)):
+                                with open(os.path.join(BASE_LD_PATH,
+                                                       st.session_state.upload_language,
+                                                       "cq",
+                                                       "cq_translations"), "w") as fw:
+                                    json.dump(test_cq, fw)
+                            else:
+                                st.warning("Valid DIG4EL CQ but invalid data path to store the CQ")
+
+                    st.rerun()
+        if role == "admin":
+            with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
+                st.write(json.load(f))
 
 
 
