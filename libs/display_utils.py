@@ -105,12 +105,22 @@ def display_cq(cqo: dict, delimiters, title):
                         "concept": ""
                     }
                 )
-        pseudo_gloss_df = pd.DataFrame(pseudo_gloss).T
-        # Use first row as column names
-        pseudo_gloss_df.columns = pseudo_gloss_df.iloc[0]
-        pseudo_gloss_df = pseudo_gloss_df.iloc[1:].reset_index(drop=True)
+        try:
+            pseudo_gloss_df = pd.DataFrame(pseudo_gloss).T
+            # Use first row as column names
+            pseudo_gloss_df.columns = pseudo_gloss_df.iloc[0]
+            pseudo_gloss_df = pseudo_gloss_df.iloc[1:].reset_index(drop=True)
+            st.dataframe(pseudo_gloss_df, hide_index=True)
+        except IndexError:
+            try:
+                print("IndexError when creating pseudo-gloss in display_cq. {}, {}, {}".format(indi, title, entry["cq"]))
+                pseudo_gloss_df = pd.DataFrame(pseudo_gloss).T
+                st.dataframe(pseudo_gloss_df, hide_index=True)
+            except:
+                print("Double failure when creating pseudo-gloss in display_cq")
+                st.markdown("*Pseudo-gloss cannot be generated for this sentence*")
 
-        st.dataframe(pseudo_gloss_df, hide_index=True)
+
 
 def concept_words_to_pseudo_gloss_df(entry, delimiters):
     cwd = entry["concept_words"]

@@ -202,7 +202,7 @@ else:
 
 # =========================== LOGIC AND UI =============================================
 
-tab1, tab2, tab3 = st.tabs(["Browse CQ files", "Upload CQ file", "Explore CQs"])
+tab1, tab2, tab3 = st.tabs(["Explore CQs", "Browse files", "Upload"])
 
 # ========== EXPLORE CQs =============================
 with tab1:
@@ -652,12 +652,7 @@ with tab1:
                     docx_file = ogu.generate_docx_from_kg_index_list(st.session_state["knowledge_graph"],
                                                                      st.session_state["delimiters"],
                                                                      entry_list)
-                    st.download_button(
-                        label="📥 Download DOCX",
-                        data=docx_file,
-                        file_name=f'corpus filtered by concept {st.session_state["selected_concept"]}.docx',
-                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    )
+
 
                     if selected["selection"]["rows"] != []:
                         selected_cdict_entry = st.session_state["cdict"][st.session_state["selected_concept"]][
@@ -932,11 +927,6 @@ with tab1:
                         [k + ":" + "+".join(v) for k, v in st.session_state["pfilter"]["ip"].items()])
                 if st.session_state["pfilter"]["rp"] != {}:
                     filter_string += "+" + "_".join(st.session_state["pfilter"]["rp"])
-                st.download_button(
-                    label="📥 Download DOCX",
-                    data=docx_file_p,
-                    file_name=f"corpus_filtered_by_parameters_{filter_string}.docx",
-                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
                 if ocp_selected["selection"]["rows"] != []:
                     selected_cdictp_entry = displayed_oc[(ocp_selected["selection"]["rows"][0])]
