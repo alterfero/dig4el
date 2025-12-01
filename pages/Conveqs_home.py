@@ -235,7 +235,7 @@ with tab1:
         selected_cq_title = st.selectbox("Choose a CQ", cq_titles)
         filtered_df = cq_catalog_df[cq_catalog_df["title"] == selected_cq_title]
         available_languages = filtered_df["language"].tolist()
-        selected_languages = st.multiselect("Select languages to compare")
+        selected_languages = st.multiselect("Select languages to compare", available_languages)
         if selected_languages != []:
             cqs_content = []
             for lang in selected_languages:
