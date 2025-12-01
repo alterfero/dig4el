@@ -408,21 +408,22 @@ def catalog_all_available_cqs():
                  if l in gu.GLOTTO_LANGUAGE_LIST.keys()]
     index = 0
     for language in languages:
-        cqs = [f
-               for f in os.listdir(os.path.join(BASE_LD_PATH, language, "cq", "cq_translations"))
-               if f.endswith(".json")]
-        for cq in cqs:
-            index += 1
-            with open(os.path.join(BASE_LD_PATH, language, "cq", "cq_translations", cq)) as c:
-                cqc = json.load(c)
-            cq_catalog.append({
-                "index": index,
-                "title": uid_dict.get(cqc["cq_uid"], "unknown"),
-                "language": language,
-                "pivot": cqc["pivot language"],
-                "uid": cqc["cq_uid"],
-                "filename": cq
-            })
+        if "cq" in os.listdir(os.path.join(BASE_LD_PATH, language)):
+            cqs = [f
+                   for f in os.listdir(os.path.join(BASE_LD_PATH, language, "cq", "cq_translations"))
+                   if f.endswith(".json")]
+            for cq in cqs:
+                index += 1
+                with open(os.path.join(BASE_LD_PATH, language, "cq", "cq_translations", cq)) as c:
+                    cqc = json.load(c)
+                cq_catalog.append({
+                    "index": index,
+                    "title": uid_dict.get(cqc["cq_uid"], "unknown"),
+                    "language": language,
+                    "pivot": cqc["pivot language"],
+                    "uid": cqc["cq_uid"],
+                    "filename": cq
+                })
     return cq_catalog
 
 

@@ -65,7 +65,6 @@ def normalize_to_list(data_dict):
     return [data_dict[k] for k in sorted_keys]
 
 def display_cq(cqo: dict, delimiters, title):
-    print(cqo)
     indi = cqo.get("target language", "target language unknown")
     pivot = cqo.get("pivot language", "pivot language unknown")
     st.markdown("### {}".format(title))
@@ -139,8 +138,11 @@ def concept_words_to_pseudo_gloss_df(entry, delimiters):
             )
     pseudo_gloss_df = pd.DataFrame(pseudo_gloss).T
     # Use first row as column names
-    pseudo_gloss_df.columns = pseudo_gloss_df.iloc[0]
-    pseudo_gloss_df = pseudo_gloss_df.iloc[1:].reset_index(drop=True)
+    try:
+        pseudo_gloss_df.columns = pseudo_gloss_df.iloc[0]
+        pseudo_gloss_df = pseudo_gloss_df.iloc[1:].reset_index(drop=True)
+    except IndexError:
+        print("ERROR with indexes concept_words_to_pseudo_gloss_df")
     return pseudo_gloss_df
 
 def display_and_edit_cq(cqo: dict, filename: str) -> dict:
@@ -269,6 +271,7 @@ def display_same_cq_multiple_languages(cqs_content, title, gloss=False):
             for cqi in range(len(cqs_content)):
                 pseudo_gloss = concept_words_to_pseudo_gloss_df(cqs_content[cqi]["data"][index],
                                                                 delimiters=cqs_content[cqi]["delimiters"])
+                st.write(cqs_content[cqi]["target language"])
                 st.dataframe(pseudo_gloss, hide_index=True)
 
 
