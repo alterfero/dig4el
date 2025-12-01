@@ -258,7 +258,7 @@ def display_same_cq_multiple_languages(cqs_content, title, gloss=False):
             else:
                 local_table.append(
                     {
-                        "language": "No content for this index",
+                        "language": cqs_content[cqi]["target language"] + ": No content for this index",
                         "translation": "",
                         "pivot": ""
                     })
