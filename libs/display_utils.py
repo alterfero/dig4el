@@ -64,7 +64,7 @@ def normalize_to_list(data_dict):
     sorted_keys = sorted(data_dict.keys(), key=lambda x: int(x))
     return [data_dict[k] for k in sorted_keys]
 
-def display_cq(cqo: dict, delimiters, title):
+def display_cq(cqo: dict, delimiters, title, gloss=False):
     indi = cqo.get("target language", "target language unknown")
     pivot = cqo.get("pivot language", "pivot language unknown")
     st.markdown("### {}".format(title))
@@ -82,45 +82,44 @@ def display_cq(cqo: dict, delimiters, title):
             li = str(entry_list.index(entry) + 1)
         st.markdown("{}: *{}*".format(li, entry["cq"]))
         st.markdown("**{}**".format(entry["translation"]))
-        cwd = entry["concept_words"]
-        reverse_cwd = {}
-        for item in cwd:
-            tws = cwd[item].split("...")
-            for w in tws:
-                reverse_cwd[w] = item
-        words = stats.custom_split(entry["translation"], delimiters=cqo["delimiters"])
-        pseudo_gloss = []
-        for word in words:
-            if word in reverse_cwd.keys():
-                pseudo_gloss.append(
-                    {
-                        "word": word,
-                        "concept": reverse_cwd[word]
-                    }
-                )
-            else:
-                pseudo_gloss.append(
-                    {
-                        "word": word,
-                        "concept": ""
-                    }
-                )
-        try:
-            pseudo_gloss_df = pd.DataFrame(pseudo_gloss).T
-            # Use first row as column names
-            pseudo_gloss_df.columns = pseudo_gloss_df.iloc[0]
-            pseudo_gloss_df = pseudo_gloss_df.iloc[1:].reset_index(drop=True)
-            st.dataframe(pseudo_gloss_df, hide_index=True)
-        except IndexError:
+        if gloss:
+            cwd = entry["concept_words"]
+            reverse_cwd = {}
+            for item in cwd:
+                tws = cwd[item].split("...")
+                for w in tws:
+                    reverse_cwd[w] = item
+            words = stats.custom_split(entry["translation"], delimiters=cqo["delimiters"])
+            pseudo_gloss = []
+            for word in words:
+                if word in reverse_cwd.keys():
+                    pseudo_gloss.append(
+                        {
+                            "word": word,
+                            "concept": reverse_cwd[word]
+                        }
+                    )
+                else:
+                    pseudo_gloss.append(
+                        {
+                            "word": word,
+                            "concept": ""
+                        }
+                    )
             try:
-                print("IndexError when creating pseudo-gloss in display_cq. {}, {}, {}".format(indi, title, entry["cq"]))
                 pseudo_gloss_df = pd.DataFrame(pseudo_gloss).T
+                # Use first row as column names
+                pseudo_gloss_df.columns = pseudo_gloss_df.iloc[0]
+                pseudo_gloss_df = pseudo_gloss_df.iloc[1:].reset_index(drop=True)
                 st.dataframe(pseudo_gloss_df, hide_index=True)
-            except:
-                print("Double failure when creating pseudo-gloss in display_cq")
-                st.markdown("*Pseudo-gloss cannot be generated for this sentence*")
-
-
+            except IndexError:
+                try:
+                    print("IndexError when creating pseudo-gloss in display_cq. {}, {}, {}".format(indi, title, entry["cq"]))
+                    pseudo_gloss_df = pd.DataFrame(pseudo_gloss).T
+                    st.dataframe(pseudo_gloss_df, hide_index=True)
+                except:
+                    print("Double failure when creating pseudo-gloss in display_cq")
+                    st.markdown("*Pseudo-gloss cannot be generated for this sentence*")
 
 def concept_words_to_pseudo_gloss_df(entry, delimiters):
     cwd = entry["concept_words"]
@@ -238,7 +237,7 @@ def display_and_edit_cq(cqo: dict, filename: str) -> dict:
         return cq
 
 
-def display_same_cq_multiple_languages(cqs_content, title, gloss=False):
+def display_same_cq_multiple_languages(cqs_content, title, show_pseudo_glosses=False):
     verify = True
     t1 = cqs_content[0]["data"]["1"]["cq"]
     l1 = len(cqs_content[0])
@@ -250,7 +249,6 @@ def display_same_cq_multiple_languages(cqs_content, title, gloss=False):
     c1 = cqs_content[0]
 
     st.subheader(title)
-    show_pseudo_glosses = st.toggle("Show pseudo-glosses")
     for index, data in c1["data"].items():
         displayed_index = str(index) if data["legacy index"] == "" else data["legacy index"]
         st.markdown("#### {} - {}".format(displayed_index, data["cq"]))
@@ -272,9 +270,21 @@ def display_same_cq_multiple_languages(cqs_content, title, gloss=False):
                         "translation": "",
                         "pivot": ""
                     })
-        local_df = pd.DataFrame(local_table).T
-        local_df.columns = local_df.iloc[0]
-        local_df = local_df.iloc[1:].reset_index(drop=True)
+        is_pivot = False
+        for language_entry in local_table:
+            if language_entry["pivot"] != "":
+                is_pivot = True
+
+        # local_df = pd.DataFrame(local_table).T
+        # if not is_pivot:
+        #     local_df = local_df.drop(labels=["pivot"], axis=0)
+        # local_df.columns = local_df.iloc[0]
+        # local_df = local_df.iloc[1:].reset_index(drop=True)
+        # st.dataframe(local_df, hide_index=True)
+
+        local_df = pd.DataFrame(local_table)
+        if not is_pivot:
+            local_df = local_df.drop(labels=["pivot"], axis=1)
         st.dataframe(local_df, hide_index=True)
 
         if show_pseudo_glosses:
