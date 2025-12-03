@@ -133,6 +133,7 @@ st.image("./pics/conveqs_banner.png")
 with st.sidebar:
     st.divider()
     st.page_link("pages/Conveqs_home.py", label="ConveQs Home", icon=":material/home:")
+    st.page_link("home.py", label="switch to DIG4EL", icon=":material/automation:")
     st.divider()
 
 # AUTH UI AND FLOW -----------------------------------------------------------------------
@@ -396,10 +397,11 @@ with tab2:
 
 with tab3:
 
-    st.subheader("Explore available Conversational Questionnaires")
+    st.markdown("""
+                #### Explore available Conversational Questionnaires across ConveQs and DIG4EL
+                """)
     st.markdown("""
     This page allows to display the content of all CQs that are compatible with our open format. 
-    
     Interfaces to commonly-used software are being developed. 
     """)
     cq_catalog = u.catalog_all_available_cqs()

@@ -78,6 +78,93 @@ def format_translation_for_display(english, translation):
         return translation
 
 
+import re
+from copy import deepcopy
+
+def _concat_str(old: str, new: str, sep: str = " ") -> str:
+    """Concatenate two strings with a separator, skipping empties and avoiding duplicates."""
+    old = old or ""
+    new = new or ""
+    if not old:
+        return new
+    if not new:
+        return old
+    if new in old:
+        return old
+    return f"{old}{sep}{new}"
+
+def _merge_concept_words(base: dict, incoming: dict) -> dict:
+    """
+    Merge two 'concept words' dicts:
+    - Ignore empty strings.
+    - If both sides have non-empty and different values, join with ' | ' (deduped).
+    """
+    base = dict(base or {})
+    incoming = dict(incoming or {})
+    for k, v in incoming.items():
+        v = v or ""
+        if not v:
+            continue
+        if k not in base or not base[k]:
+            base[k] = v
+        else:
+            if v != base[k]:
+                parts = {p.strip() for p in (str(base[k]) + "|" + str(v)).split("|") if p.strip()}
+                base[k] = " | ".join(sorted(parts))
+    return base
+
+def merge_legacy_entries(entries):
+    """
+    entries: list of dicts with keys:
+      - 'legacy index': str
+      - 'cq': str
+      - 'alternate pivot': str
+      - 'translation': str
+      - 'concept words': dict
+      - 'comments': str
+
+    Returns a new list where '2a', '2b', etc. are merged into '2'.
+    """
+    grouped = {}
+    order = []
+
+    for i, entry in enumerate(entries):
+        # 1. Get legacy index or fallback to list position
+        raw_idx = entry.get("legacy index")
+        if raw_idx is None or raw_idx == "":
+            raw_idx = str(i + 1)
+
+        # 2. Normalize to numeric prefix
+        m = re.match(r"(\d+)", raw_idx)
+        base_idx = m.group(1) if m else raw_idx
+
+        if base_idx not in grouped:
+            # Start with a copy of the first entry for this base index
+            merged = deepcopy(entry)
+            merged["legacy index"] = base_idx  # normalize
+            grouped[base_idx] = merged
+            order.append(base_idx)
+        else:
+            merged = grouped[base_idx]
+
+            # Concatenate string fields
+            for field in ["cq", "alternate pivot", "translation", "comments"]:
+                merged[field] = _concat_str(
+                    merged.get(field, ""),
+                    entry.get(field, "")
+                )
+
+            # Merge concept words dict
+            merged["concept words"] = _merge_concept_words(
+                merged.get("concept words", {}),
+                entry.get("concept words", {}),
+            )
+
+    # Return in order of first appearance of each base index
+    return [grouped[i] for i in order]
+
+
+
 def display_cq(cqo: dict, delimiters, title, gloss=False):
     indi = cqo.get("target language", "target language unknown")
     pivot = cqo.get("pivot language", "pivot language unknown")
@@ -90,7 +177,10 @@ def display_cq(cqo: dict, delimiters, title, gloss=False):
     st.markdown("**Access**: {}".format("accessed read-only by anyone via ConveQs and DIG4EL tools"))
     st.divider()
 
-    entry_list = normalize_to_list(cqo["data"])
+    original_entry_list = normalize_to_list(cqo["data"])
+
+    entry_list = merge_legacy_entries(original_entry_list)
+
 
     for entry in entry_list:
         li = entry["legacy index"]
@@ -357,7 +447,7 @@ def display_same_cq_multiple_languages(cqs_content, title, show_pseudo_glosses=F
         if item["data"]["1"]["cq"] != t1:
             return st.error("These CQs are not comparable")
         if len(item) != l1:
-            st.warning("CQs don't have all the same length")
+            print("CQs don't have all the same length")
 
     reformated_cqs_content = []
     for cq in cqs_content:

@@ -170,6 +170,7 @@ with st.sidebar:
     st.page_link("pages/dashboard.py", label="Source dashboard", icon=":material/search:")
     st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")
     st.page_link("pages/DIG4EL_processes_menu.py", label="Processes", icon=":material/manufacturing:")
+    st.page_link("pages/Conveqs_home.py", label="Switch to ConveQs", icon=":material/ballot:")
 
 
 
