@@ -64,6 +64,20 @@ def normalize_to_list(data_dict):
     sorted_keys = sorted(data_dict.keys(), key=lambda x: int(x))
     return [data_dict[k] for k in sorted_keys]
 
+def format_translation_for_display(english, translation):
+    try:
+        if translation[0] == "'":
+            translation = "'" + translation[1:].capitalize()
+        else:
+            translation = translation.capitalize()
+            # add the same punctuation
+        if english[-1] in ["?", "!", "."]:
+            translation += " " + english[-1]
+        return translation
+    except IndexError:
+        return translation
+
+
 def display_cq(cqo: dict, delimiters, title, gloss=False):
     indi = cqo.get("target language", "target language unknown")
     pivot = cqo.get("pivot language", "pivot language unknown")
@@ -75,13 +89,20 @@ def display_cq(cqo: dict, delimiters, title, gloss=False):
     st.markdown("**Recording unique identification number**: {}".format(cqo["recording_uid"]))
     st.markdown("**Access**: {}".format("accessed read-only by anyone via ConveQs and DIG4EL tools"))
     st.divider()
+
     entry_list = normalize_to_list(cqo["data"])
+
     for entry in entry_list:
         li = entry["legacy index"]
         if li == "":
             li = str(entry_list.index(entry) + 1)
-        st.markdown("{}: *{}*".format(li, entry["cq"]))
-        st.markdown("**{}**".format(entry["translation"]))
+        english = entry["cq"]
+        translation = entry["translation"]
+        translation = format_translation_for_display(english, translation)
+
+        st.markdown("{}: *{}*".format(li, english))
+        st.markdown("**{}**".format(translation))
+
         if gloss:
             cwd = entry["concept_words"]
             reverse_cwd = {}
@@ -236,6 +257,97 @@ def display_and_edit_cq(cqo: dict, filename: str) -> dict:
         cq["data"] = edited_dialog
         return cq
 
+def reformat_cq_index(cq):
+    cqo = copy.deepcopy(cq)
+    del cqo["data"]
+    cqo["data"] = {}
+    tmp_data_a = {}
+    tmp_data_b = {}
+    tmp_data_c = {}
+    tmp_data_d = {}
+    base_index = 0
+    last_base_index = 0
+    before_last_base_index = 0
+    for index, data in cq["data"].items():
+        # print("key: {}".format(index))
+        if "legacy index" in data:
+            # print("There is a legacy index field")
+            legacy_index = data["legacy index"] if data["legacy index"] != "" else index
+        else:
+            # print("No legacy index field")
+            legacy_index = index
+        # print("legacy_index: {}".format(legacy_index))
+        # print("content: {}".format(data["cq"]))
+        if legacy_index[-1] == "a":
+            base_index = legacy_index[:-1]
+            # print("base index: {}".format(base_index))
+            tmp_data_a = data
+            # print("part A: {}".format(data["cq"]))
+            before_last_base_index = last_base_index
+            last_base_index = base_index
+            continue
+
+        if legacy_index[-1] == "b":
+            combined = {
+            "legacy index": base_index,
+            "cq": tmp_data_a["cq"] + " " + data["cq"],
+            "alternate_pivot": tmp_data_a["alternate_pivot"] + data["alternate_pivot"],
+            "translation": format_translation_for_display(tmp_data_a["cq"], tmp_data_a["translation"])
+                           + format_translation_for_display(data["cq"], data["translation"]),
+            "concept_words": tmp_data_a["concept_words"] | data["concept_words"]
+            }
+            # print("Combined with A at base index {}".format(base_index))
+            # print(combined)
+            tmp_data_b = combined
+            cqo["data"][base_index] = combined
+            before_last_base_index = last_base_index
+            last_base_index = base_index
+            continue
+
+        if legacy_index[-1] == "c":
+            # print("There's a C, combining with previous")
+            combined = {
+                "legacy index": last_base_index,
+                "cq": tmp_data_b["cq"] + " " + data["cq"],
+                "alternate_pivot": tmp_data_b["alternate_pivot"] + data["alternate_pivot"],
+                "translation": format_translation_for_display(tmp_data_b["cq"], tmp_data_b["translation"]) +
+                               format_translation_for_display(data["cq"], data["translation"]),
+                "concept_words": tmp_data_b["concept_words"] | data["concept_words"]
+            }
+            tmp_data_c = combined
+            # print("Combined with AB at base index {}".format(last_base_index))
+            # print(combined)
+            cqo["data"][last_base_index] = combined
+            before_last_base_index = last_base_index
+            last_base_index = base_index
+            continue
+        if legacy_index[-1] == "d":
+            # print("C'mon, there's a D, combining with previous")
+            combined = {
+                "legacy index": before_last_base_index,
+                "cq": tmp_data_c["cq"] + " " + data["cq"],
+                "alternate_pivot": tmp_data_c["alternate_pivot"] + data["alternate_pivot"],
+                "translation": format_translation_for_display(tmp_data_c["cq"], tmp_data_c["translation"]) +
+                               format_translation_for_display(data["cq"], data["translation"]),
+                "concept_words": tmp_data_c["concept_words"] | data["concept_words"]
+            }
+            tmp_data_d = combined
+            # print("Combined with ABC at base index {}".format(before_last_base_index))
+            # print(combined)
+            cqo["data"][before_last_base_index] = combined
+            before_last_base_index = last_base_index
+            last_base_index = base_index
+            continue
+        else:
+            # print("Direct through: at index {}".format(legacy_index))
+            cqo["data"][legacy_index] = cq["data"][index]
+            cqo["data"][legacy_index]["translation"] = format_translation_for_display(
+                cqo["data"][legacy_index]["cq"],
+                cqo["data"][legacy_index]["translation"]
+            )
+
+            # print(cqo["data"][legacy_index])
+    return cqo
 
 def display_same_cq_multiple_languages(cqs_content, title, show_pseudo_glosses=False):
     verify = True
@@ -246,27 +358,34 @@ def display_same_cq_multiple_languages(cqs_content, title, show_pseudo_glosses=F
             return st.error("These CQs are not comparable")
         if len(item) != l1:
             st.warning("CQs don't have all the same length")
-    c1 = cqs_content[0]
+
+    reformated_cqs_content = []
+    for cq in cqs_content:
+        reformated_cqs_content.append(reformat_cq_index(cq))
+    c1 = reformated_cqs_content[0]
 
     st.subheader(title)
     for index, data in c1["data"].items():
-        displayed_index = str(index) if data["legacy index"] == "" else data["legacy index"]
+        if "legacy index" in data:
+            displayed_index = str(index) if data["legacy index"] == "" else data["legacy index"]
+        else:
+            displayed_index = str(index)
         st.markdown("#### {} - {}".format(displayed_index, data["cq"]))
         local_table = []
-        for cqi in range(len(cqs_content)):
-            if index in cqs_content[cqi]["data"]:
-                c = cqs_content[cqi]["data"][index]
+        for cqi in range(len(reformated_cqs_content)):
+            if index in reformated_cqs_content[cqi]["data"]:
+                c = reformated_cqs_content[cqi]["data"][index]
                 local_table.append(
                     {
-                        "language": cqs_content[cqi]["target language"],
+                        "language": reformated_cqs_content[cqi]["target language"],
                         "translation": c["translation"],
-                        "pivot": c["alternate_pivot"]
+                        "pivot": c["alternate_pivot"] if "alternate pivot" in c.keys() else ""
                     }
                 )
             else:
                 local_table.append(
                     {
-                        "language": cqs_content[cqi]["target language"] + ": No content for this index",
+                        "language": reformated_cqs_content[cqi]["target language"] + ": No content for this index",
                         "translation": "",
                         "pivot": ""
                     })
@@ -288,10 +407,10 @@ def display_same_cq_multiple_languages(cqs_content, title, show_pseudo_glosses=F
         st.dataframe(local_df, hide_index=True)
 
         if show_pseudo_glosses:
-            for cqi in range(len(cqs_content)):
-                pseudo_gloss = concept_words_to_pseudo_gloss_df(cqs_content[cqi]["data"][index],
-                                                                delimiters=cqs_content[cqi]["delimiters"])
-                st.write(cqs_content[cqi]["target language"])
+            for cqi in range(len(reformated_cqs_content)):
+                pseudo_gloss = concept_words_to_pseudo_gloss_df(reformated_cqs_content[cqi]["data"][index],
+                                                                delimiters=reformated_cqs_content[cqi]["delimiters"])
+                st.write(reformated_cqs_content[cqi]["target language"])
                 st.dataframe(pseudo_gloss, hide_index=True)
 
 

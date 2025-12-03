@@ -86,16 +86,9 @@ if "pfilter" not in st.session_state:
     st.session_state["pfilter"] = {"intent": [], "enunciation": [], "predicate": {}, "ip": {}, "rp": []}
 if "cdict" not in st.session_state:
     st.session_state["cdict"] = {}
-if "term" not in st.session_state:
-    with open("./data/terminology_conversion.json", "r", encoding='utf-8') as f:
-        st.session_state.term = json.load(f)
-if "rev_term" not in st.session_state:
-    with open("./data/terminology_conversion.json", "r", encoding='utf-8') as f:
-        tmp_terms = json.load(f)
-    rev_term_dict = {}
-    for k, v in tmp_terms.items():
-        rev_term_dict[v] = k
-    st.session_state.rev_term = rev_term_dict
+if "uid_dict" not in st.session_state:
+    with open("./uid_dict.json", "r") as uid:
+        st.session_state.uid_dict = json.load(uid)
 
 CONVEQS_BASE_PATH = os.path.join(BASE_LD_PATH, "conveqs")
 
@@ -211,17 +204,7 @@ else:
 
 # =========================== LOGIC AND UI =============================================
 
-# HELPERS
-def term(term):
-    if term in st.session_state.term.keys():
-        return st.session_state.term[term]
-    else:
-        return term
-def rev_term(term):
-    if term in st.session_state.rev_term.keys():
-        return st.session_state.rev_term[term]
-    else:
-        return term
+
 
 st.markdown("*Navigate features by selecting one of the tabs below*")
 tab1, tab2, tab3 = st.tabs(["Browse files", "Upload CQ files", "Explore CQs", ])
@@ -244,10 +227,20 @@ with tab1:
     if selected["selection"]["cells"] != []:
         selected_row = selected["selection"]["cells"][0][0]
         selected_item = conveqs_index[selected_row]
-        st.markdown("You selected **{}** by {}, uploaded by {} on {}".format(selected_item["name"],
-                                                                             selected_item["author"],
-                                                                             selected_item["uploaded by"],
-                                                                             selected_item["date"]))
+        st.markdown("{}, collected from **{}** by **{}**".format(
+            selected_item.get("name", "*unknown*"),
+            selected_item.get("informant", "*unknown*"),
+            selected_item.get("field_worker", "*unknown*")
+        ))
+        st.markdown("On the {}, in {}".format(
+            selected_item.get("collection_date", "*unknown*"),
+            selected_item.get("collection_location", "*unknown*")
+        ))
+        st.markdown("Author(s): {}".format(selected_item.get("author", "*unknown*")))
+        st.markdown("Uploaded by {} on {}".format(
+            selected_item["uploaded by"],
+            selected_item["date"]))
+
         if username == selected_item["uploaded by"]:
             st.markdown("This is **your file**, you can **download** or **delete** it")
         col1, col2 = st.columns(2)
@@ -267,15 +260,6 @@ with tab1:
                 except FileNotFoundError:
                     print("{} does not exist".format(selected_item["filename"]))
                 st.rerun()
-            # if selected_item.get("format", "other") == "DIG4EL JSON" and username == selected_item["uploaded by"]:
-            #     with st.expander("You can preview and edit your CQ file here"):
-            #         with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "r") as f:
-            #             preview_cq = json.load(f)
-            #         edited_cq = du.display_and_edit_cq(preview_cq, selected_item["filename"])
-            #         if edited_cq is not None:
-            #             with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "w") as fw:
-            #                 json.dump(edited_cq, fw)
-            #             st.success("Edited file saved")
 
 # ========== UPLOAD FILES ============================
 with tab2:
@@ -314,24 +298,34 @@ with tab2:
             with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json")) as ci:
                 conveqs_index = json.load(ci)
             existing_filenames = [fn["filename"] for fn in conveqs_index]
+
+            cq_list = list(st.session_state.uid_dict.values())
+            cq_list.sort()
+            cq_list.append("multiple")
+
             # FILE UPLOAD FORM
             with st.form(key="file_upload_form", clear_on_submit=True, enter_to_submit=False,
                          border=True, width="stretch", height="content"):
                 sub_ready = False
-                replace_ok = True
+                valid = False
                 new_cq = st.file_uploader(
                     "Add a new CQ translation to the repository",
                     accept_multiple_files=False,
                     key="new_cq" + str(st.session_state.new_cq_counter)
                 )
-                info_entered = False
-                name = st.text_input("Name this document (The name that will be displayed)")
-                author = st.text_input("Author/owner of the corpus")
+                name = st.selectbox("Which CQ does your document contain? Select 'multiple' if multiple",
+                                       cq_list)
+                author = st.text_input("Author(s) of the corpus")
+                collection_date = st.date_input("Collection date")
+                collection_location = st.text_input("Collection location")
+                informant = st.text_input("Collected from (speaker(s) full name(s))")
+                field_worker = st.text_input("Collected by (field worker's full name)")
                 visibility = st.selectbox("Visibility", ["Everyone", "Members only"], index=0)
                 data_format = st.selectbox("Format", ["Excel template", "FleX XML", "DIG4EL JSON", "other"])
+                consent_received = st.checkbox("Written consent from the {} speaker has been received and stored".format(st.session_state.upload_language))
                 is_downloadable = st.checkbox("Can be downloaded by registered users", value=True)
 
-                submitted = st.form_submit_button("Submit", disabled=not replace_ok)
+                submitted = st.form_submit_button("Submit")
 
                 if submitted:
                     with open(os.path.join(CONVEQS_BASE_PATH, new_cq.name), "wb") as f:
@@ -349,6 +343,11 @@ with tab2:
                             "name": name,
                             "language": st.session_state.upload_language,
                             "author": author,
+                            "collection_date": collection_date.strftime("%Y-%m-%d"),
+                            "collection_location": collection_location,
+                            "informant": informant,
+                            "field_worker": field_worker,
+                            "consent": consent_received,
                             "uploaded by": username,
                             "date": readable_date_time
                         }
@@ -368,14 +367,12 @@ with tab2:
                         try:
                             with open(os.path.join(CONVEQS_BASE_PATH, new_cq.name), "r") as fr:
                                 test_cq = json.load(fr)
-
-                            for key in ["target language", "delimiters", "pivot_language", "cq_uid", "data"]:
+                            for key in ["target language", "delimiters", "cq_uid", "data"]:
                                 if key not in test_cq.keys():
                                     is_valid_cq = False
-                                    st.warning("{} is not a valid DIG4EL JSON file.".format(selected_item["filename"]))
+                                    st.warning("{} is not a valid DIG4EL JSON file.".format(new_cq.name))
                         except:
-                            st.warning("An exception occurred while opening {} for validation".format(
-                                selected_item["filename"]))
+                            st.warning("An exception occurred while opening {} for validation".format(new_cq.name))
                             st.warning("This does not seem to be a valid JSON file.")
                             is_valid_cq = False
                         if is_valid_cq:
@@ -383,15 +380,17 @@ with tab2:
                                 with open(os.path.join(BASE_LD_PATH,
                                                        st.session_state.upload_language,
                                                        "cq",
-                                                       "cq_translations"), "w") as fw:
-                                    json.dump(test_cq, fw)
+                                                       "cq_translations",
+                                                       new_cq.name), "w") as fw:
+                                    json.dump(test_cq, fw, ensure_ascii=False)
+                                st.success("CQ also added to DIG4EL!")
                             else:
                                 st.warning("Valid DIG4EL CQ but invalid data path to store the CQ")
 
-                    st.rerun()
         if role == "admin":
-            with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
-                st.write(json.load(f))
+            with st.expander("Check index"):
+                with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
+                    st.write(json.load(f))
 
 # ========== EXPLORE CQs =============================
 
@@ -426,6 +425,7 @@ with tab3:
     with st.expander("Compare the same CQ in multiple languages"):
         # list available cq titles by creating the set of titles in the df
         cq_titles = list(set(cq_catalog_df["title"].tolist()))
+        cq_titles.sort()
         selected_cq_title = st.selectbox("Choose a CQ", cq_titles)
         filtered_df = cq_catalog_df[cq_catalog_df["title"] == selected_cq_title]
         available_languages = filtered_df["language"].tolist()
@@ -439,467 +439,3 @@ with tab3:
                     cqs_content.append(json.load(fcl))
 
             du.display_same_cq_multiple_languages(cqs_content, selected_cq_title, show_pseudo_glosses=False)
-
-    # if role == "admin":
-    #     with st.expander("Explore CQs by concepts and parameters"):
-    #         st.markdown("Select all the CQs you want to use for exploration and press the submit button")
-    #         if st.button("Submit", key="explore_consolidation_button"):
-    #             st.session_state["cq_transcriptions"] = []
-    #             if selected_cqs_indexes_in_catalog != []:
-    #                 for cqi in selected_cqs_indexes_in_catalog:
-    #                     cq_catalog_item = cq_catalog[cqi]
-    #                     cq_filename = cq_catalog_item["filename"]
-    #                     with open(os.path.join(BASE_LD_PATH, cq_catalog_item["language"], "cq", "cq_translations", cq_filename), "r") as cqf:
-    #                         content = json.load(cqf)
-    #                         st.session_state.active_language = content["target language"]
-    #                         st.session_state.delimiters = content["delimiters"]
-    #                         st.session_state["cq_transcriptions"].append(content)
-    #             with st.spinner("Building knowledge graph..."):
-    #                 st.session_state["knowledge_graph"], unique_words, unique_words_frequency, total_target_word_count = kgu.consolidate_cq_transcriptions(
-    #                     st.session_state["cq_transcriptions"],
-    #                     st.session_state.active_language,
-    #                     st.session_state.delimiters)
-    #
-    #         if st.session_state["knowledge_graph"] != {}:
-    #             st.session_state["cdict"] = kgu.build_concept_dict(st.session_state["knowledge_graph"])
-    #             def index_parameters(cdict):
-    #                 param_index = {}
-    #                 for concept, details_list in cdict.items():
-    #                     for oc in details_list:
-    #                         for param_cat in oc["particularization"].keys():
-    #                             if param_cat not in param_index.keys():
-    #                                 param_index[param_cat] = {}
-    #                             for param in oc["particularization"][param_cat].keys():
-    #                                 if param not in param_index[param_cat]:
-    #                                     param_index[param_cat][param] = []
-    #                                 if oc["particularization"][param_cat][param] not in param_index[param_cat][param]:
-    #                                     param_index[param_cat][param].append(oc["particularization"][param_cat][param])
-    #                 return param_index
-    #
-    #
-    #             st.session_state["pdict"] = index_parameters(st.session_state["cdict"])
-    #
-    #             # EXPLORE BY CONCEPT -------------------
-    #             with st.expander("Explore by concept"):
-    #                 displayed_concept_list = [term(t) for t in list(st.session_state["cdict"].keys())]
-    #                 displayed_concept_list.sort()
-    #                 selected_displayed_concept = st.selectbox("Select a concept", displayed_concept_list, index=0)
-    #                 user_concept = rev_term(selected_displayed_concept)
-    #                 if st.button("Explore concept {}".format(user_concept)):
-    #                     st.session_state["selected_concept"] = user_concept
-    #                 if st.session_state["selected_concept"] != "":
-    #                     st.write(
-    #                         "{} occurrences of **{}**. Click on the left of any row to get more details on an entry.".format(
-    #                             len(st.session_state["cdict"][st.session_state["selected_concept"]]),
-    #                             st.session_state["selected_concept"]))
-    #
-    #                     # flatten cdict[selected] to display in a df
-    #                     flat_cdict_oc = []
-    #                     # st.write(st.session_state["cdict"][selected_concept])
-    #                     for oc in st.session_state["cdict"][st.session_state["selected_concept"]]:
-    #                         tmp = {}
-    #                         tmp["pivot_sentence"] = oc["pivot_sentence"]
-    #                         tmp["target_sentence"] = oc["target_sentence"]
-    #                         tmp["target_words"] = oc["target_words"]
-    #                         for param_cat, params in oc["particularization"].items():
-    #                             for p, v in params.items():
-    #                                 tmp[f"{param_cat}_{p}"] = v
-    #                         flat_cdict_oc.append(tmp)
-    #
-    #                     oc_df = pd.DataFrame(flat_cdict_oc)
-    #
-    #                     selected = st.dataframe(oc_df, selection_mode="single-row", on_select="rerun", key="oc_df")
-    #
-    #                     # propose download in docx format
-    #                     # entry_list = [oc["kg_entry"] for oc in
-    #                     #               st.session_state["cdict"][st.session_state["selected_concept"]]]
-    #                     # docx_file = ogu.generate_docx_from_kg_index_list(st.session_state["knowledge_graph"],
-    #                     #                                                  st.session_state["delimiters"],
-    #                     #                                                  entry_list)
-    #
-    #                     if selected["selection"]["rows"] != []:
-    #                         selected_cdict_entry = st.session_state["cdict"][st.session_state["selected_concept"]][
-    #                             (selected["selection"]["rows"][0])]
-    #                         kg_entry = selected_cdict_entry["kg_entry"]
-    #                         # st.write(selected_cdict_entry)
-    #                         # Supergloss
-    #                         st.markdown(f'**{selected_cdict_entry["target_sentence"]}**')
-    #                         st.markdown(f'*{selected_cdict_entry["pivot_sentence"]}*')
-    #                         supergloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kg_entry,
-    #                                                               st.session_state["delimiters"])
-    #                         gloss_selection = st.dataframe(supergloss, use_container_width=True,
-    #                                                        selection_mode="single-column", on_select="rerun",
-    #                                                        key="supergloss_df")
-    #                         st.markdown(f'**Comments**: {selected_cdict_entry["comment"]}')
-    #                         # show sentences with the selected word if any
-    #                         if gloss_selection["selection"]["columns"] != []:
-    #                             tw = gloss_selection["selection"]["columns"][0].split("_")[0].split("(")[0]
-    #                             kg_entries_with_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
-    #                                                                                tw,
-    #                                                                                st.session_state["delimiters"])
-    #                             # stats
-    #                             wstats = {}
-    #                             for e in kg_entries_with_word:
-    #                                 c = [c for c in
-    #                                      st.session_state["knowledge_graph"][e]["recording_data"]["concept_words"].keys() if
-    #                                      tw in st.session_state["knowledge_graph"][e]["recording_data"]["concept_words"][
-    #                                          c].split("...")]
-    #                                 if c == []:
-    #                                     c = "undefined"
-    #                                 else:
-    #                                     c = c[0]
-    #                                 if c in wstats.keys():
-    #                                     wstats[c] += 1
-    #                                 else:
-    #                                     wstats[c] = 1
-    #                             wstats_df = pd.DataFrame(list(wstats.items()), columns=["Concept", "Number of occurrences"])
-    #                             wstats_df = wstats_df.sort_values("Number of occurrences", ascending=False)
-    #
-    #                             st.subheader(
-    #                                 "'**{}**' is, or is part of, the expression of the following concepts:".format(tw))
-    #                             # Create the clickable bar chart
-    #                             fig = px.bar(
-    #                                 wstats_df,
-    #                                 x='Concept',
-    #                                 y='Number of occurrences',
-    #                             )
-    #                             # Enable clicking
-    #                             fig.update_layout(
-    #                                 xaxis_title="Concepts",
-    #                                 yaxis_title="Count",
-    #                                 # Rotate x-axis labels if there are many words
-    #                                 xaxis=dict(tickangle=45)
-    #                             )
-    #                             # Display the chart and store click data in session state
-    #                             sc = st.plotly_chart(
-    #                                 fig,
-    #                                 use_container_width=True,
-    #                                 key='bar_chart',
-    #                                 theme="streamlit",
-    #                                 on_select="rerun"
-    #                             )
-    #                             if sc["selection"]["points"]:
-    #                                 s_concept = sc["selection"]["points"][0]["label"]
-    #                             else:
-    #                                 s_concept = ""
-    #                             if s_concept != "" \
-    #                                     and s_concept != "undefined" \
-    #                                     and s_concept != st.session_state["selected_concept"] \
-    #                                     and s_concept in list(st.session_state["cdict"].keys()):
-    #                                 if st.button("Jump to concept {}".format(s_concept)):
-    #                                     st.session_state["selected_concept"] = s_concept
-    #                                     st.rerun()
-    #
-    #                             if s_concept != "" and s_concept != "undefined":
-    #                                 st.write("#### Sentences with *{}* contributing to the expression of **{}**".format(tw,
-    #                                                                                                                     s_concept))
-    #                             else:
-    #                                 st.write("#### Sentences with *{}*".format(
-    #                                     tw, s_concept))
-    #                             gloss_counter = 0
-    #                             for kge in kg_entries_with_word:
-    #                                 kgc = st.session_state["knowledge_graph"][kge]
-    #                                 if s_concept != "" and s_concept != "undefined":
-    #                                     if s_concept in kgc["recording_data"]["concept_words"].keys() and tw in \
-    #                                             kgc["recording_data"]["concept_words"][s_concept].split("..."):
-    #                                         gloss_counter += 1
-    #                                         gloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kge,
-    #                                                                          st.session_state["delimiters"])
-    #                                         st.markdown(
-    #                                             f'**{st.session_state["knowledge_graph"][kge]["recording_data"]["translation"]}**')
-    #                                         st.write(st.session_state["knowledge_graph"][kge]["sentence_data"]["text"])
-    #                                         st.dataframe(gloss, key="subgloss" + str(gloss_counter),
-    #                                                      use_container_width=True)
-    #                                         st.write(st.session_state["knowledge_graph"][kge]["recording_data"]["comment"])
-    #                                 else:
-    #                                     gloss_counter += 1
-    #                                     gloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kge,
-    #                                                                      st.session_state["delimiters"])
-    #                                     st.write(st.session_state["knowledge_graph"][kge]["sentence_data"]["text"])
-    #                                     st.dataframe(gloss, key="subgloss" + str(gloss_counter), use_container_width=True)
-    #
-    #                         # Showing sentences using the same target word(s)
-    #                         st.write("---")
-    #                         if selected_cdict_entry["target_words"] != "":
-    #                             entries_with_target_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
-    #                                                                                    selected_cdict_entry["target_words"],
-    #                                                                                    st.session_state["delimiters"])
-    #                             current_entries = []
-    #                             for item in st.session_state["cdict"][st.session_state["selected_concept"]]:
-    #                                 current_entries.append(item["kg_entry"])
-    #                             current_entries = list(set(current_entries))
-    #
-    #             # EXPLORE BY PARAMETER
-    #             with st.expander("Explore by parameter"):
-    #                 with st.popover("info"):
-    #                     st.markdown("""
-    #                     You can filter using **Intent**, **Internal Particularization** and **Relational Particularization**.
-    #                     - Multiple choices within a selection field are unions (**OR**): If you select both "ASK" and "ORDER" in Intent, any entry with an "ASK" **OR** "ORDER" intent will be selected.
-    #                     - Selections across selection fields are intersections (**AND**): If you select "ASK" in Intent and "NEGATIVE" polarity in Internal Particularization, only entries with both "ASK" Intent **AND** "NEGATIVE" polarity will be selected.
-    #
-    #                     This behavior allows selecting entries with any given range of grammatical parameters across those proposed.
-    #
-    #                     **If you don't see any output**, it probably means that there are no entries satisfying the filter you entered.
-    #                     """)
-    #                 kcount = 0
-    #                 # FILTER INPUT
-    #                 colq, cola, colw, cole = st.columns(4)
-    #                 # intent
-    #                 s_intent = colq.multiselect("Filter by Intent", ["All"] + st.session_state["pdict"]["intent"]["intent"])
-    #                 if s_intent == ["All"] or s_intent == []:
-    #                     is_intent_filter = False
-    #                     s_intent = []
-    #                 else:
-    #                     is_intent_filter = True
-    #                 st.session_state["pfilter"]["intent"] = s_intent
-    #                 # type of predicate
-    #                 s_pred = cola.multiselect("Filter by type of Predicate",
-    #                                           ["All"] + st.session_state["pdict"]["predicate"]["predicate"])
-    #                 if s_pred == ["All"] or s_pred == []:
-    #                     is_pred_filter = False
-    #                     s_pred = []
-    #                 else:
-    #                     is_pred_filter = True
-    #                 st.session_state["pfilter"]["predicate"] = s_pred
-    #                 # ip
-    #                 s_internal = colw.multiselect("Filter by Internal Particularization", ["All"] + list(
-    #                     st.session_state["pdict"]["internal_particularization"].keys()))
-    #                 if s_internal == ["All"] or s_internal == []:
-    #                     is_ip_filter = False
-    #                     s_internal = []
-    #                 else:
-    #                     is_ip_filter = True
-    #                 if is_ip_filter:
-    #                     for p in s_internal:
-    #                         kcount += 1
-    #                         pp = colw.multiselect(f"Values of {p}",
-    #                                               ["All"] + st.session_state["pdict"]["internal_particularization"][p],
-    #                                               key="pp" + str(kcount))
-    #                         if pp == ["All"]:
-    #                             pp = []
-    #                         st.session_state["pfilter"]["ip"][p] = pp
-    #                 # rp
-    #                 s_relational = cole.multiselect("Filter by Relational Particularization", ["All"] + list(
-    #                     st.session_state["pdict"]["relational_particularization"].keys()))
-    #                 if s_relational == ["All"] or s_relational == []:
-    #                     s_relational = []
-    #                     is_rp_filter = False
-    #                 else:
-    #                     is_rp_filter = True
-    #                 st.session_state["pfilter"]["rp"] = s_relational
-    #
-    #                 # FILTER USAGE
-    #                 selected_oc = []
-    #                 si_count = 0
-    #                 sp_count = 0
-    #                 sip_count = 0
-    #                 srp_count = 0
-    #                 oc_count = 0
-    #                 for concept in st.session_state["cdict"].keys():
-    #                     for oc in st.session_state["cdict"][concept]:
-    #                         oc_count += 1
-    #                         si = False
-    #                         sp = False
-    #                         sip = False
-    #                         srp = False
-    #                         # intent
-    #                         if is_intent_filter:
-    #                             if oc["particularization"]["intent"]["intent"] in st.session_state["pfilter"]["intent"]:
-    #                                 si = True
-    #                                 si_count += 1
-    #                         else:
-    #                             si = True
-    #                             si_count += 1
-    #                         # predicate
-    #                         if is_pred_filter:
-    #                             if oc["particularization"]["predicate"]["predicate"] in st.session_state["pfilter"][
-    #                                 "predicate"]:
-    #                                 sp = True
-    #                                 sp_count += 1
-    #                         else:
-    #                             sp = True
-    #                             sp_count += 1
-    #                         # internal particularization
-    #                         if is_ip_filter:
-    #                             oc_ip_params = list(oc["particularization"]["internal_particularization"].keys())
-    #                             subsip = True
-    #                             if oc_ip_params == []:
-    #                                 subsip = False
-    #                             for pfilter_ip_param in st.session_state["pfilter"]["ip"].keys():
-    #                                 # print("pfilter_ip_param: {}".format(pfilter_ip_param))
-    #                                 # print("oc_ip_params: {}".format(oc_ip_params))
-    #                                 if pfilter_ip_param in oc_ip_params:
-    #                                     # print("MATCH: pfilter_ip_param in oc_ip_params")
-    #                                     # print(oc["particularization"]["internal_particularization"][pfilter_ip_param])
-    #                                     # print("in?")
-    #                                     # print(st.session_state["pfilter"]["ip"][pfilter_ip_param])
-    #                                     if oc["particularization"]["internal_particularization"][pfilter_ip_param] in \
-    #                                             st.session_state["pfilter"]["ip"][pfilter_ip_param]:
-    #                                         continue
-    #                                     else:
-    #                                         subsip = False
-    #                                 else:
-    #                                     subsip = False
-    #                             sip = subsip
-    #                             if sip:
-    #                                 sip_count += 1
-    #                         else:
-    #                             sip = True
-    #                             sip_count += 1
-    #                         # relational particularization
-    #                         if is_rp_filter:
-    #                             oc_rp_params = oc["particularization"]["relational_particularization"].keys()
-    #                             for oc_rp_param in oc_rp_params:
-    #                                 if oc_rp_param in st.session_state["pfilter"]["rp"]:
-    #                                     srp = True
-    #                                     srp_count += 1
-    #                         else:
-    #                             srp = True
-    #                             srp_count += 1
-    #                         if si and sp and sip and srp:
-    #                             selected_oc.append(oc)
-    #
-    #                 # Display results
-    #                 # keep unique pivot sentences
-    #                 displayed_oc = []
-    #                 psl = []
-    #                 for oc in selected_oc:
-    #                     if oc["pivot_sentence"] not in psl:
-    #                         psl.append(oc["pivot_sentence"])
-    #                         displayed_oc.append(oc)
-    #                 st.write("{} entries selected".format(len(displayed_oc)))
-    #
-    #                 ocp_df = pd.DataFrame(displayed_oc, columns=["pivot_sentence", "target_sentence"])
-    #                 ocp_selected = st.dataframe(ocp_df, selection_mode="single-row", on_select="rerun", key="ocp_df",
-    #                                             use_container_width=True)
-    #
-    #                 # propose docx format
-    #                 entry_list_p = [ocp["kg_entry"] for ocp in displayed_oc]
-    #                 docx_file_p = ogu.generate_docx_from_kg_index_list(st.session_state["knowledge_graph"],
-    #                                                                    st.session_state["delimiters"],
-    #                                                                    entry_list_p)
-    #                 filter_string = ""
-    #                 if st.session_state["pfilter"]["intent"] != []:
-    #                     filter_string += "_".join(st.session_state["pfilter"]["intent"])
-    #                 if st.session_state["pfilter"]["enunciation"] != []:
-    #                     filter_string += "+" + "_".join(st.session_state["pfilter"]["enunciation"])
-    #                 if st.session_state["pfilter"]["predicate"] != []:
-    #                     filter_string += "+" + "_".join(st.session_state["pfilter"]["predicate"])
-    #                 if st.session_state["pfilter"]["ip"] != {}:
-    #                     filter_string += "+" + "_".join(
-    #                         [k + ":" + "+".join(v) for k, v in st.session_state["pfilter"]["ip"].items()])
-    #                 if st.session_state["pfilter"]["rp"] != {}:
-    #                     filter_string += "+" + "_".join(st.session_state["pfilter"]["rp"])
-    #
-    #                 if ocp_selected["selection"]["rows"] != []:
-    #                     selected_cdictp_entry = displayed_oc[(ocp_selected["selection"]["rows"][0])]
-    #                     kgp_entry = selected_cdictp_entry["kg_entry"]
-    #
-    #                     # Gloss of selected sentence
-    #                     st.write("---")
-    #                     st.subheader("Information on selected sentence")
-    #                     st.markdown(f'**{selected_cdictp_entry["target_sentence"]}**')
-    #                     st.markdown(f'*{selected_cdictp_entry["pivot_sentence"]}*')
-    #                     pgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], kgp_entry,
-    #                                                       st.session_state["delimiters"])
-    #                     pgloss_selection = st.dataframe(pgloss, selection_mode="single-column", on_select="rerun",
-    #                                                     key="pgloss_df")
-    #                     st.write(selected_cdictp_entry["comment"])
-    #
-    #                     # show sentences with the selected word if any
-    #                     if pgloss_selection["selection"]["columns"] != []:
-    #                         ptw = pgloss_selection["selection"]["columns"][0].split("_")[0].split("(")[0]
-    #                         pkg_entries_with_word = kgu.get_sentences_with_word(st.session_state["knowledge_graph"],
-    #                                                                             ptw,
-    #                                                                             st.session_state["delimiters"])
-    #
-    #                         # stats
-    #                         pwstats = {}
-    #                         for e in pkg_entries_with_word:
-    #                             c = [c for c in
-    #                                  st.session_state["knowledge_graph"][e]["recording_data"]["concept_words"].keys() if
-    #                                  ptw in st.session_state["knowledge_graph"][e]["recording_data"]["concept_words"][
-    #                                      c].split(
-    #                                      "...")]
-    #                             if c == []:
-    #                                 c = "undefined"
-    #                             else:
-    #                                 c = c[0]
-    #                             if c in pwstats.keys():
-    #                                 pwstats[c] += 1
-    #                             else:
-    #                                 pwstats[c] = 1
-    #                         pwstats_df = pd.DataFrame(list(pwstats.items()), columns=["Concept", "Number of occurrences"])
-    #                         pwstats_df = pwstats_df.sort_values("Number of occurrences", ascending=False)
-    #
-    #                         st.subheader(
-    #                             "'**{}**' is, or is part of, the expression of the following concepts:".format(ptw))
-    #                         # Create the clickable bar chart
-    #                         fig = px.bar(
-    #                             pwstats_df,
-    #                             x='Concept',
-    #                             y='Number of occurrences',
-    #                         )
-    #                         # Enable clicking
-    #                         fig.update_layout(
-    #                             xaxis_title="Concepts",
-    #                             yaxis_title="Count",
-    #                             # Rotate x-axis labels if there are many words
-    #                             xaxis=dict(tickangle=45)
-    #                         )
-    #                         # Display the chart and store click data in session state
-    #                         psc = st.plotly_chart(
-    #                             fig,
-    #                             use_container_width=True,
-    #                             key='pbar_chart',
-    #                             theme="streamlit",
-    #                             on_select="rerun"
-    #                         )
-    #                         if psc["selection"]["points"]:
-    #                             ps_concept = psc["selection"]["points"][0]["label"]
-    #                         else:
-    #                             ps_concept = ""
-    #                         if ps_concept != "" \
-    #                                 and ps_concept != "undefined" \
-    #                                 and ps_concept != st.session_state["selected_concept"] \
-    #                                 and ps_concept in list(st.session_state["cdict"].keys()):
-    #                             if st.button("Jump to concept {}".format(ps_concept)):
-    #                                 st.session_state["selected_concept"] = ps_concept
-    #                                 st.rerun()
-    #
-    #                         if ps_concept != "" and ps_concept != "undefined":
-    #                             st.write("#### Sentences with *{}* contributing to the expression of **{}**".format(
-    #                                 ptw, ps_concept))
-    #                         else:
-    #                             st.write("#### Sentences with *{}*".format(
-    #                                 ptw, ps_concept))
-    #                         pgloss_counter = 0
-    #                         for pkge in pkg_entries_with_word:
-    #                             pkgc = st.session_state["knowledge_graph"][pkge]
-    #                             if ps_concept != "" and ps_concept != "undefined":
-    #                                 if ps_concept in pkgc["recording_data"]["concept_words"].keys() and ptw in \
-    #                                         pkgc["recording_data"]["concept_words"][ps_concept].split("..."):
-    #                                     pgloss_counter += 1
-    #                                     pgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], pkge,
-    #                                                                       st.session_state["delimiters"])
-    #                                     st.markdown(
-    #                                         f'**{st.session_state["knowledge_graph"][pkge]["recording_data"]["translation"]}**')
-    #                                     st.write(st.session_state["knowledge_graph"][pkge]["sentence_data"]["text"])
-    #                                     st.dataframe(pgloss, key="subgloss" + str(pgloss_counter), use_container_width=True)
-    #                                     st.write(st.session_state["knowledge_graph"][pkge]["recording_data"]["comment"])
-    #                             else:
-    #                                 pgloss_counter += 1
-    #                                 pgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], pkge,
-    #                                                                   st.session_state["delimiters"])
-    #                                 st.write(st.session_state["knowledge_graph"][pkge]["sentence_data"]["text"])
-    #                                 st.dataframe(pgloss, key="subgloss" + str(pgloss_counter), use_container_width=True)
-    #
-    #                         # st.subheader("Sentences with '*{}*':".format(ptw))
-    #                         # for pkge in pkg_entries_with_word:
-    #                         #     ppgloss = kgu.build_super_gloss_df(st.session_state["knowledge_graph"], pkge, st.session_state["delimiters"])
-    #                         #     st.markdown(f'**{st.session_state["knowledge_graph"][pkge]["recording_data"]["translation"]}**')
-    #                         #     st.write(st.session_state["knowledge_graph"][pkge]["sentence_data"]["text"])
-    #                         #     st.dataframe(ppgloss)
-    #                         #     st.write(st.session_state["knowledge_graph"][pkge]["recording_data"]["comment"])
-    #                         #     st.markdown("---")
-
