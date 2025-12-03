@@ -166,6 +166,16 @@ def zip_folder_download(folder_path: str | os.PathLike, archive_name: str | None
     )
 
 
+def load_pretty_json(path: Path) -> str:
+    """Return the file as pretty-printed JSON, or raw text if invalid."""
+    try:
+        raw = path.read_text(encoding="utf-8")
+        return json.dumps(json.loads(raw), indent=2, ensure_ascii=False)
+    except Exception:
+        # fallback: return raw text unchanged
+        raw = path.read_text(encoding="utf-8")
+        return raw
+
 
 # --------- LOGIC ------------------------------------------------
 if st.session_state.has_access:
@@ -259,11 +269,49 @@ if st.session_state.has_access:
                     os.remove(fpath)
                     st.rerun()
                 if fname.endswith(".json"):
-                    try:
-                        with open(fpath, "r", encoding='utf-8') as jf:
-                            st.json(json.load(jf))
-                    except Exception as e:
-                        st.warning(f"Could not read JSON: {e}")
+                    json_path = Path(fpath)  # <-- set your path here
+                    editor_id = f"json_editor_{json_path}"
+
+                    with st.expander(f"Edit JSON: {json_path.name}", expanded=False):
+
+                        # --- Load file into session state once ---
+                        if editor_id not in st.session_state:
+                            st.session_state[editor_id] = load_pretty_json(json_path)
+
+                        # --- Editable text area ---
+                        edited_text = st.text_area(
+                            "JSON content",
+                            value=st.session_state[editor_id],
+                            key=f"{editor_id}_textarea",
+                            height=300,
+                        )
+
+                        col1, col2 = st.columns([1, 1])
+
+                        with col1:
+                            if st.button("Reload from disk", key=f"{editor_id}_reload"):
+                                try:
+                                    text = json_path.read_text(encoding="utf-8")
+                                    st.session_state[editor_id] = text
+                                    st.rerun()
+                                except FileNotFoundError:
+                                    st.error("File not found on disk.")
+
+                        with col2:
+                            if st.button("Save (overwrite file)", key=f"{editor_id}_save"):
+                                # Validate JSON before writing
+                                try:
+                                    parsed = json.loads(edited_text)
+                                except json.JSONDecodeError as e:
+                                    st.error(f"Invalid JSON, not saved:\n{e}")
+                                else:
+                                    # Overwrite original file
+                                    json_path.write_text(
+                                        json.dumps(parsed, indent=2, ensure_ascii=False),
+                                        encoding="utf-8",
+                                    )
+                                    st.session_state[editor_id] = edited_text
+                                    st.success("File saved (original replaced).")
 
         st.subheader("Bulk actions")
         available_languages = list_folders(BASE_LD_PATH)
