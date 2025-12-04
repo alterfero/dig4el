@@ -89,6 +89,9 @@ if "cdict" not in st.session_state:
 if "uid_dict" not in st.session_state:
     with open("./uid_dict.json", "r") as uid:
         st.session_state.uid_dict = json.load(uid)
+if "ccq" not in st.session_state:
+    with open("./conveqs/canonical_cqs.json", "r") as f:
+        st.session_state.ccq = json.load(f)
 
 CONVEQS_BASE_PATH = os.path.join(BASE_LD_PATH, "conveqs")
 
@@ -314,17 +317,24 @@ with tab2:
                     accept_multiple_files=False,
                     key="new_cq" + str(st.session_state.new_cq_counter)
                 )
-                name = st.selectbox("Which CQ does your document contain? Select 'multiple' if multiple",
+                name = st.selectbox("Which CQ does your document contain? Select 'multiple' if the file contains multiple CQs",
                                        cq_list)
                 author = st.text_input("Author(s) of the corpus")
                 collection_date = st.date_input("Collection date")
                 collection_location = st.text_input("Collection location")
                 informant = st.text_input("Collected from (speaker(s) full name(s))")
                 field_worker = st.text_input("Collected by (field worker's full name)")
-                visibility = st.selectbox("Visibility", ["Everyone", "Members only"], index=0)
+                visibility = "Everyone"
                 data_format = st.selectbox("Format", ["Excel template", "FleX XML", "DIG4EL JSON", "other"])
-                consent_received = st.checkbox("Written consent from the {} speaker has been received and stored".format(st.session_state.upload_language))
-                is_downloadable = st.checkbox("Can be downloaded by registered users", value=True)
+                consent_received = True
+                is_downloadable = True
+
+                st.markdown("""
+                Reminder: Uploading a document engages your responsibility. 
+                Any portion of this document can be made available for display and download to any visitor of the ConveQs or the DIG4EL websites
+                with a [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) licence. 
+                Make sure you have the proper rights to allow it.
+                """)
 
                 submitted = st.form_submit_button("Submit")
 
@@ -389,7 +399,7 @@ with tab2:
                                 st.warning("Valid DIG4EL CQ but invalid data path to store the CQ")
 
         if role == "admin":
-            with st.expander("Check index"):
+            with st.expander("ADMIN: Check index"):
                 with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
                     st.write(json.load(f))
 
@@ -408,8 +418,8 @@ with tab3:
     n_language = len(set([lu["language"] for lu in cq_catalog]))
     st.markdown("{} CQs available, across {} languages.".format(len(cq_catalog), n_language))
     cq_catalog_df = pd.DataFrame(cq_catalog).sort_values(by="title")
-    selected_rows = st.dataframe(cq_catalog_df, hide_index=True, column_order=["title", "language", "pivot", "index"],
-                                 selection_mode="multi-row", on_select="rerun")
+    selected_rows = st.dataframe(cq_catalog_df, hide_index=True, column_order=["title", "language", "pivot", "info"],
+                                 selection_mode="single-row", on_select="rerun")
     selected_cqs_indexes_in_displayed_df = selected_rows["selection"]["rows"]
     selected_cqs_indexes_in_catalog = [cq_catalog_df.iloc[i]["index"] - 1 for i in selected_cqs_indexes_in_displayed_df]
 
@@ -419,7 +429,10 @@ with tab3:
             catalog_entry = cq_catalog[selected_cqs_indexes_in_catalog[0]]
             with open(os.path.join(BASE_LD_PATH, catalog_entry["language"], "cq", "cq_translations", catalog_entry["filename"])) as fcqd:
                 cqd = json.load(fcqd)
-            du.display_cq(cqd, st.session_state.delimiters, catalog_entry["title"], gloss=False)
+            du.display_cq(cqd, st.session_state.delimiters,
+                          title=catalog_entry["title"],
+                          uid=catalog_entry["uid"],
+                          gloss=False)
         else:
             st.write("Select a CQ in the table")
 
@@ -429,6 +442,9 @@ with tab3:
         cq_titles = list(set(cq_catalog_df["title"].tolist()))
         cq_titles.sort()
         selected_cq_title = st.selectbox("Choose a CQ", cq_titles)
+        uid = [k
+               for k, v in st.session_state.uid_dict.items()
+               if v == selected_cq_title][0]
         filtered_df = cq_catalog_df[cq_catalog_df["title"] == selected_cq_title]
         available_languages = filtered_df["language"].tolist()
         selected_languages = st.multiselect("Select languages to compare", available_languages)
@@ -440,4 +456,9 @@ with tab3:
                                        lang_entry["filename"])) as fcl:
                     cqs_content.append(json.load(fcl))
 
-            du.display_same_cq_multiple_languages(cqs_content, selected_cq_title, show_pseudo_glosses=False)
+            du.display_same_cq_multiple_languages(cqs=cqs_content,
+                                                  title=selected_cq_title,
+                                                  uid=uid)
+
+
+

@@ -421,6 +421,7 @@ def catalog_all_available_cqs():
                     "title": uid_dict.get(cqc["cq_uid"], "unknown"),
                     "language": language,
                     "pivot": cqc["pivot language"],
+                    "info": cqc["interviewee"][:3]+" by "+cqc["interviewer"][:3],
                     "uid": cqc["cq_uid"],
                     "filename": cq
                 })

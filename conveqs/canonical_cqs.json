@@ -1,0 +1,295 @@
+{
+  "Q01": {
+    "title": "Q01 We're going fishing",
+    "uid": "1716315461",
+    "context": "Un homme [A] et sa femme croisent une autre femme [B] en chemin.",
+    "dialog":
+            [
+              { "index": "1",
+                "speaker": "A",
+                "english": "Good morning!"
+              },
+              { "index": "2",
+                "speaker": "B",
+                "english": "Hello!"
+              },
+              { "index": "3",
+                "speaker": "A",
+                "english": "How are youSG?"
+              },
+              { "index": "4",
+                "speaker": "B",
+                "english": "I’m fine, and youDU?"
+              },
+              { "index": "5",
+                "speaker": "A",
+                "english": "Oh, weEXC:DU are fine too."
+              },
+              { "index": "6",
+                "speaker": "B",
+                "english": "Where are youDU going?"
+              },
+              { "index": "7",
+                "speaker": "A",
+                "english": "Well, weEXC:DU’re walking down to the river, over there."
+              },
+              { "index": "8",
+                "speaker": "B",
+                "english": "What for? Are youDU going to be bathing?"
+              },
+              { "index": "9",
+                "speaker": "A",
+                "english": "No, no! WeEXC:DU won’t be bathing."
+              },
+              { "index": "10",
+                "speaker": "A",
+                "english": "WeEXC:DU’re going fishing."
+              },
+              {"index": "11",
+                "speaker": "A",
+                "english": "We’ll try to catch some river fish for dinner."
+              },
+              {"index": "12",
+                "speaker": "B",
+                "english": "Oh I see. Is there a celebration in the village, or something?"
+              },
+              {"index": "13",
+                "speaker": "B",
+                "english": "I didn’t know."
+              },
+              {"index": "14",
+                "speaker": "A",
+                "english": "No, there’s no celebration."
+              },
+              {"index": "15",
+                "speaker": "B",
+                "english": "WeEXC:DU just need food for ourEXC:PL family."
+              },
+              {"index": "16",
+                "speaker": "A",
+                "english": "My wife had bought a chicken at the market the other day,"
+              },
+              {"index": "17",
+                "speaker": "A",
+                "english": "but ourEXC:DU childrenDU ate it all already:"
+              },
+              {"index": "18",
+                "speaker": "A",
+                "english": "now weEXC:PL have nothing left at home!"
+              },
+              {"index": "19",
+                "speaker": "A",
+                "english": "Besides, weEXC:PL don’t have enough money any more."
+              },
+              {"index": "20",
+                "speaker": "A",
+                "english": "WeEXC:DU really have to go fishing today."
+              },
+              {"index": "21",
+                "speaker": "B",
+                "english": "I understand."
+              },
+              {"index": "22",
+                "speaker": "B",
+                "english": "I’m sorry that youPL have no food left."
+              },
+              {"index": "23",
+                "speaker": "B",
+                "english": "I can help youPL, my friends."
+              },
+              {"index": "24",
+                "speaker": "B",
+                "english": "My husband and I, weEXC:DU have lots of vegetables from ourEXC:DU garden,"
+              },
+              {"index": "25",
+                "speaker": "B",
+                "english": "which he harvested yesterday, and brought back home."
+              },
+              {"index": "26",
+                "speaker": "B",
+                "english": "If youDU want, weEXC:DU can give youPL some."
+              },
+              {"index": "27",
+                "speaker": "A",
+                "english": "Oh really? Thank youDU very much!"
+              },
+              {"index": "28",
+                "speaker": "B",
+                "english": "YouDU’re welcome."
+              },
+              {"index": "29",
+                "speaker": "A",
+                "english": "YouDU’ll give usEXC:PL some vegetables, and weEXC:DU’ll give youDU some fish."
+              },
+              {"index": "30",
+                "speaker": "A",
+                "english": "Tonight weINC:PL will all eat together."
+              },
+              {"index": "31",
+                "speaker": "B",
+                "english": "Great! Good bye!"
+              },
+              {"index": "32",
+                "speaker": "A",
+                "english": "See youSG later!"
+              }
+            ]
+  },
+  "Q02":{
+    "title": "Q02 Preparing for the New Year",
+    "uid": "1716403492",
+    "context": "Two adults, A and B, are speaking together.",
+    "dialog": [
+  { "index": "1",  "speaker": "A", "english": "Hey, you know what? In two months’ time, we’ll have celebrations for the New Year" },
+  { "index": "2",  "speaker": "B", "english": "Oh, that’s right. This time, the people from village X will all be coming to our community:" },
+  { "index": "3",  "speaker": "B", "english": "men and women, children, old people, entire families…" },
+  { "index": "4",  "speaker": "A", "english": "We should welcome them in a friendly way," },
+  { "index": "5",  "speaker": "A", "english": "just like they did to us last year." },
+  { "index": "6",  "speaker": "B", "english": "Yes of course, like we always do." },
+  { "index": "7",  "speaker": "A", "english": "Our leaders will start with a welcome speech." },
+  { "index": "8",  "speaker": "A", "english": "Then, people will pray in the morning." },
+  { "index": "9",  "speaker": "B", "english": "After that, we’ll all share lunch together." },
+  { "index": "10", "speaker": "B", "english": "In the afternoon, I hope we can have songs and dances." },
+  { "index": "11", "speaker": "B", "english": "The people of X will sing their songs, dance their dances;" },
+  { "index": "12", "speaker": "B", "english": "we too, we shall sing our own songs, and do our own dances…" },
+  { "index": "13", "speaker": "A", "english": "Yes, good idea. Everyone loves music and dance." },
+  { "index": "14", "speaker": "B", "english": "As we find some rest, our elders will be able to tell stories from the olden times, for the young to hear." },
+  { "index": "15", "speaker": "A", "english": "This will be great. They know so many stories." },
+  { "index": "16", "speaker": "B", "english": "And then, in the late afternoon, our two communities will part again." },
+  { "index": "17", "speaker": "B", "english": "That will be the end of the day of celebration." },
+  { "index": "18", "speaker": "A", "english": "Remember that you and I are in charge of the organization this year." },
+  { "index": "19", "speaker": "B", "english": "Perhaps we INC:DU should call a meeting tomorrow morning in the community" },
+  { "index": "20", "speaker": "B", "english": "and tell our people what they should do." },
+  { "index": "21", "speaker": "A", "english": "Some of us can clean the village area," },
+  { "index": "22", "speaker": "A", "english": "set up the place for the celebration." },
+  { "index": "23", "speaker": "B", "english": "Other people can make the costumes for the dances." },
+  { "index": "24", "speaker": "B", "english": "We must choose which dances to showcase;" },
+  { "index": "25", "speaker": "B", "english": "and we must rehearse them!" },
+  { "index": "26", "speaker": "A", "english": "Also, don’t forget: we’ll have to prepare food," },
+  { "index": "27", "speaker": "A", "english": "enough food for two hundred people." },
+  { "index": "28", "speaker": "B", "english": "Oh dear, that will be a lot of work for us all." },
+  { "index": "29", "speaker": "A", "english": "A lot of work indeed. Let us start today!" }
+    ]
+  },
+    "Q03":{
+    "title": "Q03 Seeing the doctor",
+    "uid": "1715973404",
+    "context": "A patient [A] visits the doctor [B]",
+      "dialog": [
+  { "index": "1",  "speaker": "A", "english": "Good morning Doctor, how are you?" },
+  { "index": "2",  "speaker": "B", "english": "I’m fine, and you?" },
+  { "index": "3",  "speaker": "A", "english": "Well… I’m not feeling well these days." },
+  { "index": "4",  "speaker": "A", "english": "That’s why I came to see you." },
+  { "index": "5",  "speaker": "B", "english": "What’s happening to you? You look sick." },
+  { "index": "6",  "speaker": "A", "english": "I can’t sleep well at night." },
+  { "index": "7",  "speaker": "A", "english": "I sweat, I have nightmares, and then I wake up in the middle of the night." },
+  { "index": "8",  "speaker": "A", "english": "Sometimes I feel hot, sometimes I’m cold. I must have fever?" },
+  { "index": "9",  "speaker": "B", "english": "Let me check your forehead… Oh yes, you’re hot!" },
+  { "index": "10", "speaker": "B", "english": "Do you cough?" },
+  { "index": "11", "speaker": "A", "english": "No, I don’t cough." },
+  { "index": "12", "speaker": "A", "english": "But every time I wake up, I’m very thirsty; I feel I need to drink." },
+  { "index": "13", "speaker": "A", "english": "And also, my belly hurts. It’s painful." },
+  { "index": "14", "speaker": "B", "english": "Does it hurt during the day? or only at night?" },
+  { "index": "15", "speaker": "A", "english": "Mostly at night. I don’t know why." },
+  { "index": "16", "speaker": "A", "english": "Doctor, I’m a bit worried: what is going on?" },
+  { "index": "17", "speaker": "B", "english": "Did you eat anything particular lately?" },
+  { "index": "18", "speaker": "A", "english": "Hm, let me remember… No, I don’t think so." },
+  { "index": "19", "speaker": "A", "english": "Oh wait, actually yes I did!" },
+  { "index": "20", "speaker": "A", "english": "Last week, my child came back from the forest with some strange fruit I had never seen." },
+  { "index": "21", "speaker": "A", "english": "He gave them to me, for me to try." },
+  { "index": "22", "speaker": "B", "english": "Did you?" },
+  { "index": "23", "speaker": "A", "english": "Yes I did. Actually I liked it, it was sweet. I ate many of them." },
+  { "index": "24", "speaker": "A", "english": "But then, I became sick after that." },
+  { "index": "25", "speaker": "B", "english": "I see. It must have been that fruit that made you sick." },
+  { "index": "26", "speaker": "B", "english": "If you hadn’t eaten so much, you wouldn’t have gotten sick like this." },
+  { "index": "27", "speaker": "A", "english": "Oh Doctor, you’re right. I shouldn’t have." },
+  { "index": "28", "speaker": "A", "english": "What should I do now?" },
+  { "index": "29", "speaker": "B", "english": "Don’t worry. I’ll give you some medicine for you to drink." },
+  { "index": "30", "speaker": "B", "english": "You will take it twice a day: once in the morning, and once again in the evening, after dinner. Alright?" },
+  { "index": "31", "speaker": "A", "english": "Alright Doctor. And then I’ll be better?" },
+  { "index": "32", "speaker": "B", "english": "Yes, you should get better soon." },
+  { "index": "33", "speaker": "B", "english": "This is efficient medicine against fever and belly-ache." },
+  { "index": "34", "speaker": "B", "english": "Also, you must get some rest." },
+  { "index": "35", "speaker": "B", "english": "Don’t go to work: you need to sleep." },
+  { "index": "36", "speaker": "A", "english": "Alright Doctor, I understand. I’ll get some rest." },
+  { "index": "37", "speaker": "A", "english": "Thank you so much!" }
+      ]
+    },
+  "Q04":{
+    "title": "Q04 Where’s my notebook?",
+    "uid": "1716497507",
+    "context": "A young girl [A] is asking her elder brother [B] for her school notebook.",
+      "dialog":
+        [
+  { "index": "1",  "speaker": "A", "english": "Brother, have you seen my notebook?" },
+  { "index": "2",  "speaker": "A", "english": "I’ve been looking for it everywhere, but I can’t find it!" },
+  { "index": "3",  "speaker": "B", "english": "I don’t know, sister. Which notebook?" },
+  { "index": "4",  "speaker": "A", "english": "It’s my math book. It’s a thick, blue one." },
+  { "index": "5",  "speaker": "A", "english": "You’ve seen it already." },
+  { "index": "6",  "speaker": "A", "english": "I was doing my homework on it last night in the dining room." },
+  { "index": "7",  "speaker": "B", "english": "Well, you probably left it there, then!" },
+  { "index": "8",  "speaker": "A", "english": "No. I put it away in my schoolbag before I went to sleep. I think." },
+  { "index": "9",  "speaker": "B", "english": "Hm, did you look in our room, beside your bed?" },
+  { "index": "10", "speaker": "A", "english": "Yes I did; it’s not there." },
+  { "index": "11", "speaker": "B", "english": "Or perhaps on Dad’s desk, maybe it’s hidden under another book?" },
+  { "index": "12", "speaker": "A", "english": "Wait… No, I can’t find it." },
+  { "index": "13", "speaker": "B", "english": "Let me look in the kitchen… Hm, not here either." },
+  { "index": "14", "speaker": "A", "english": "But I need it for my math class today!" },
+  { "index": "15", "speaker": "A", "english": "The teacher will be quite angry if I don’t have my notebook with me." },
+  { "index": "16", "speaker": "A", "english": "He will think I didn’t do my homework." },
+  { "index": "17", "speaker": "B", "english": "Uh oh… I think I found it!" },
+  { "index": "18", "speaker": "A", "english": "Really?! where?" },
+  { "index": "19", "speaker": "B", "english": "Look at our little brother out there in the garden." },
+  { "index": "20", "speaker": "B", "english": "What’s that he’s holding in his hands?" },
+  { "index": "21", "speaker": "B", "english": "Isn’t it your notebook?" },
+  { "index": "22", "speaker": "A", "english": "Oh my god, yes it is. But he has shredded it into pieces!" },
+  { "index": "23", "speaker": "B", "english": "It looks like he’s been playing with it all morning." },
+  { "index": "24", "speaker": "A", "english": "Oh dear, what happened to my homework?!" },
+  { "index": "25", "speaker": "A", "english": "Now I need to buy a new notebook," },
+  { "index": "26", "speaker": "A", "english": "and start my work all over again." },
+  { "index": "27", "speaker": "A", "english": "Poor me! What a disaster…" }
+]
+        },
+  "Q05": {
+    "title": "Q05 A family album",
+    "uid": "1716852912",
+    "context": " A person [A] is showing a photo album to a friend [B].",
+      "dialog":
+              [
+  { "index": "1",  "speaker": "A", "english": "Have you ever seen pictures of my family?" },
+  { "index": "2",  "speaker": "B", "english": "Well, I’ve met some of your relatives, but I’ve never seen your pictures." },
+  { "index": "3",  "speaker": "A", "english": "Here is an old photo album I just found in my parents’ room." },
+  { "index": "4",  "speaker": "B", "english": "Oh, show it to me please!" },
+  { "index": "5",  "speaker": "B", "english": "Who’s this on that first photo?" },
+  { "index": "6",  "speaker": "B", "english": "It looks like olden times, it’s in black and white." },
+  { "index": "7",  "speaker": "A", "english": "These are my grandparents, on my mother’s side: Grandpa here on the left, and Grandma on the right." },
+  { "index": "8",  "speaker": "A", "english": "The people around them must be their friends, or other relatives." },
+  { "index": "9",  "speaker": "B", "english": "Was that the day of their wedding?" },
+  { "index": "10", "speaker": "A", "english": "No, I don’t think so. On their wedding, they were older than this." },
+  { "index": "11", "speaker": "A", "english": "This must have been the day when they got engaged." },
+  { "index": "12", "speaker": "A", "english": "In those times, the day of engagement used to be a major event for the whole family, and people would wear beautiful clothes, and all." },
+  { "index": "13", "speaker": "B", "english": "Did you know them?" },
+  { "index": "14", "speaker": "B", "english": "Who? My grandparents?" },
+  { "index": "15", "speaker": "B", "english": "Yes, your grandparents on the photo." },
+  { "index": "16", "speaker": "A", "english": "Actually no. I heard they died before I was born. They were born a long time ago." },
+  { "index": "17", "speaker": "B", "english": "Oh I see. And who’s that on the second photo?" },
+  { "index": "18", "speaker": "A", "english": "This is my mother, when she was a child." },
+  { "index": "19", "speaker": "A", "english": "I guess she was coming back from school: look at her schoolbag." },
+  { "index": "20", "speaker": "B", "english": "Oh yeah, nice. And the small boy behind her, who’s that?" },
+  { "index": "21", "speaker": "A", "english": "That’s my uncle Teri. You haven’t met him, he lives far away from here." },
+  { "index": "22", "speaker": "B", "english": "And what school did they attend then?" },
+  { "index": "23", "speaker": "A", "english": "That was an old school that doesn’t exist any more. It was located down the road, to the west, towards the lake." },
+  { "index": "24", "speaker": "B", "english": "Let me see this other photo." },
+  { "index": "25", "speaker": "B", "english": "This woman is surely your mother again, carrying a child on her back." },
+  { "index": "26", "speaker": "B", "english": "Oh, I think I know who this child is. That’s you!" },
+  { "index": "27", "speaker": "A", "english": "That’s me indeed! How did you recognize me?" },
+  { "index": "28", "speaker": "B", "english": "Well, on that photo you’re a small child, but I recognize your eyes and your smile." },
+  { "index": "29", "speaker": "B", "english": "You look mischievous on that picture." },
+  { "index": "30", "speaker": "B", "english": "You haven’t changed much!" },
+  { "index": "31", "speaker": "A", "english": "Ha ha. But I’m not a child any more, I’ve grown up now." },
+  { "index": "32", "speaker": "A", "english": "Today my mother would not be able to carry me on her back like that!" },
+  { "index": "33", "speaker": "A", "english": "I’m taller than her, and heavier too." },
+  { "index": "34", "speaker": "B", "english": "Ha, that’s true. You’ve eaten too much!" }
+]
+  }
+    }
