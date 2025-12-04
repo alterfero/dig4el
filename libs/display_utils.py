@@ -121,7 +121,12 @@ def display_cq(cqo: dict, delimiters, title, uid, gloss=False):
     cqo_ready["data"] = {}
     for index, value in cqo["data"].items():
         if "legacy index" in value and value["legacy index"] != "":
-            cqo_ready["data"][value["legacy index"]] = value
+            if "-" in value["legacy index"]:
+                legacy_indexes = value["legacy index"].split("-")
+                for i in legacy_indexes:
+                    cqo_ready["data"][i] = value
+            else:
+                cqo_ready["data"][value["legacy index"]] = value
         else:
             cqo_ready["data"][index] = value
 
@@ -135,17 +140,14 @@ def display_cq(cqo: dict, delimiters, title, uid, gloss=False):
         index = segment["index"]
         indi_list = []
         if index + "a" in cqo_ready["data"].keys():
-
             indi_list.append(cqo_ready["data"][index+"a"]["translation"])
             if index + "b" in cqo_ready["data"].keys():
-
                 indi_list.append(cqo_ready["data"][index + "b"]["translation"])
                 if index + "c" in cqo_ready["data"].keys():
-
                     indi_list.append(cqo_ready["data"][index + "c"]["translation"])
                     if index + "d" in cqo_ready["data"].keys():
-
                         indi_list.append(cqo_ready["data"][index + "d"]["translation"])
+
         else:
             if index in cqo_ready["data"]:
                 indi_list.append(cqo_ready["data"][index]["translation"])
