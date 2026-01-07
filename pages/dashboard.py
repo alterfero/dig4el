@@ -252,19 +252,17 @@ else:
     st.info("Please log in or click on the 'Use without loging in' button")
 
 # ------------------
-
-st.header("Sources Dashboard")
-with st.popover("Using the dashboard"):
-    st.markdown("""
-1. Select a language, then click the **Select Language** button.  
-2. Explore the three available tabs:  
-
-   - **CQ** (Conversational Questionnaires): Create or upload translations of conversational questionnaires—dialogues designed to capture detailed grammatical information about the language.  
-   - **Documents**: Upload public PDF documents related to the language, such as academic papers, articles, Wikipedia pages, or any other source containing reliable grammatical information.  
-   - **Sentence Pairs**: Provide sentences in a mainstream language along with their translations in the target language.  
-
-Once data is available, the **Generate** button and corresponding menu option will appear.
-    """)
+ch1, ch2 = st.columns([8,2])
+ch1.header("Sources Dashboard")
+with ch2:
+    with st.popover("Using the dashboard"):
+        st.markdown("""
+    1. Select a language, then click the **Select Language** button.  
+    2. Explore the three available tabs:  
+       - **CQ** (Conversational Questionnaires): Create or upload translations of conversational questionnaires—dialogues designed to capture detailed grammatical information about the language.  
+       - **Documents**: Upload public PDF documents related to the language, such as academic papers, articles, Wikipedia pages, or any other source containing reliable grammatical information.  
+       - **Sentence Pairs**: Provide sentences in a mainstream language along with their translations in the target language.
+        """)
 
 if "llist" not in st.session_state:
     st.session_state.llist = None
@@ -272,15 +270,11 @@ colq, colw = st.columns(2)
 if role == "guest":
     st.session_state.llist = ["Tahitian"]
 else:
-    if st.checkbox("Show me only languages with existing data in DIG4EL"):
-        st.session_state.llist = [l for l in os.listdir(os.path.join(BASE_LD_PATH))
-                 if (os.path.isdir(os.path.join(BASE_LD_PATH, l)) and l in list(gu.GLOTTO_LANGUAGE_LIST.keys()))]
-    else:
-        st.session_state.llist = gu.GLOTTO_LANGUAGE_LIST.keys()
+    st.session_state.llist = gu.GLOTTO_LANGUAGE_LIST.keys()
 
-selected_language = colq.selectbox("What language are we working on?", st.session_state.llist)
-
-if st.button("Select {}".format(selected_language)):
+sl1, sl2 = st.columns(2)
+selected_language = sl1.selectbox("What language are we working on?", st.session_state.llist)
+if sl2.button("Select {}".format(selected_language)):
     print("")
     print("*******************")
     print(selected_language)
@@ -307,12 +301,50 @@ if st.button("Select {}".format(selected_language)):
     CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
     JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
 
-st.markdown("*glottocode* {}".format(st.session_state.indi_glottocode))
+st.markdown("#### Using the tabs below, add information about {} (Glottocode {})"
+            .format(st.session_state.indi_language,
+                    st.session_state.indi_glottocode))
 
-st.markdown("#### Using the tabs below, add information about {}".format((st.session_state.indi_language)))
+st.markdown("""
+<style>
+/* TAB BAR CONTAINER */
+div[data-testid="stTabs"] {
+  background: #f3f4f6;
+  padding: 0.35rem 0.5rem;
+  border-radius: 10px;
+}
 
-st.divider()
+/* TAB LIST */
+div[data-testid="stTabs"] [role="tablist"] {
+  gap: 0.35rem;
+}
+
+/* INDIVIDUAL TABS */
+div[data-testid="stTabs"] button[role="tab"] {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* HOVER */
+div[data-testid="stTabs"] button[role="tab"]:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+/* ACTIVE TAB */
+div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
+  background: #111827;
+  color: white;
+  border-color: #111827;
+}
+</style>
+""", unsafe_allow_html=True)
+
 tab1, tab2, tab3 = st.tabs(["CQ", "Documents", "Sentence Pairs"])
+
 with tab1:
     st.markdown("""
    - **To create new Conversational Questionnaires translations**, click on "Enter CQ Translations".
@@ -321,9 +353,19 @@ with tab1:
     
    
     """)
-    st.page_link("pages/record_cq_transcriptions.py", label="👉🏽 Create new DIG4EL CQ translations or resume working on one.")
+    pl1, pl2 = st.columns(2)
+    with pl1:
+        st.markdown("#### 🆕 Create / resume a CQ translation")
+        st.caption("Create new DIG4EL CQ translations or resume working on one.")
+        if st.button("Open CQ Editor", use_container_width=True):
+            st.switch_page("pages/record_cq_transcriptions.py")  # requires multipage + Streamlit that supports switch_page
+
     if role in ["admin", "caretaker"]:
-        st.page_link("pages/infer_from_knowledge_and_cqs.py", label="👉🏽 Upload your CQs for use by DIG4EL")
+        with pl2:
+            st.markdown("#### ⬆️ Upload CQs")
+            st.caption("Upload your CQ set to be used by DIG4EL.")
+            if st.button("Upload CQs", use_container_width=True):
+                st.switch_page("pages/infer_from_knowledge_and_cqs.py")
 
     if st.session_state.indi_language in os.listdir(BASE_LD_PATH):
         if "cq" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language)):
@@ -332,12 +374,15 @@ with tab1:
                 st.success("{} CQ translations available: ".format(len(existing_cqs)))
                 for cqfn in existing_cqs:
                     st.write("- {}".format(cqfn))
-            if "cq_knowledge" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq")):
-                if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
-                                                                  "cq",
-                                                                  "cq_knowledge")):
+            if role == "admin":
+                if "cq_knowledge" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq")):
+                    if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
+                                                                      "cq",
+                                                                      "cq_knowledge")):
 
-                    st.success("Knowledge from CQs has been computed.")
+                        st.success("admin: Knowledge from CQs has been computed.")
+                else:
+                    st.warning("admin: Knowledge from CQs has not been computed.")
 
 with tab2:
     with st.popover("How to upload and prepare documents"):

@@ -427,4 +427,7 @@ def catalog_all_available_cqs():
                 })
     return cq_catalog
 
-
+def usercode(username:str)->str:
+    ucode = username.replace(".","_")
+    ucode = username.split("@")[0]
+    return ucode
