@@ -108,6 +108,194 @@ def generate_transcription_doc(cq, target_language, pivot_language):
 
     return docx_buffer
 
+from io import BytesIO
+from openpyxl import Workbook
+from openpyxl.styles import Font, Alignment, PatternFill
+from openpyxl.utils import get_column_letter
+
+def generate_transcription_xlsx(cq, target_language, pivot_language):
+    """
+    Create an Excel workbook template for CQ transcription/annotation.
+
+    Sheets:
+      - Info: questionnaire metadata + contributor fields
+      - Dialog: the English dialog, one row per turn
+      - Transcription: normalized "long" format, one row per (turn, concept_item)
+          concept_item includes: Intent:..., Type of predicate:..., and each concept in content["concept"].
+    Returns: BytesIO positioned at 0.
+    """
+    cq = utils.normalize_user_strings(cq)
+    target_language = utils.normalize_text(target_language)
+    pivot_language = utils.normalize_text(pivot_language)
+
+    if target_language in ["English", ""]:
+        target_language = "target language"
+
+    wb = Workbook()
+
+    # ---------- helpers ----------
+    header_fill = PatternFill("solid", fgColor="EDEDED")
+    bold = Font(bold=True)
+    wrap = Alignment(wrap_text=True, vertical="top")
+    top = Alignment(vertical="top")
+
+    def set_col_width(ws, widths):
+        for col_idx, width in enumerate(widths, start=1):
+            ws.column_dimensions[get_column_letter(col_idx)].width = width
+
+    def make_header(ws, row_idx, headers):
+        for c, h in enumerate(headers, start=1):
+            cell = ws.cell(row=row_idx, column=c, value=h)
+            cell.font = bold
+            cell.fill = header_fill
+            cell.alignment = Alignment(wrap_text=True, vertical="center")
+        ws.freeze_panes = ws[f"A{row_idx+1}"]
+
+    # ---------- Sheet 1: Info ----------
+    ws_info = wb.active
+    ws_info.title = "Info"
+
+    ws_info["A1"] = "Conversational Questionnaire"
+    ws_info["A1"].font = Font(bold=True, size=14)
+    ws_info["A2"] = f"“{cq.get('title','')}”"
+    ws_info["A2"].font = Font(bold=True, size=12)
+
+    rows = [
+        ("Target language", "" if target_language == "target language" else target_language),
+        ("Pivot language (if any)", "" if pivot_language in ["English", ""] else pivot_language),
+        ("Transcription made by", ""),
+        (f"Content in {target_language} provided by", ""),
+        ("Location", ""),
+        ("Date", ""),
+    ]
+    start = 4
+    ws_info[f"A{start-1}"] = "Information"
+    ws_info[f"A{start-1}"].font = Font(bold=True, size=11)
+
+    for i, (k, v) in enumerate(rows):
+        r = start + i
+        ws_info[f"A{r}"] = k
+        ws_info[f"A{r}"].font = bold
+        ws_info[f"A{r}"].alignment = top
+        ws_info[f"B{r}"] = v
+        ws_info[f"B{r}"].alignment = top
+
+    ws_info["A12"] = "Full dialog context (English)"
+    ws_info["A12"].font = bold
+    ws_info["A13"] = cq.get("context", "")
+    ws_info["A13"].alignment = wrap
+    ws_info.merge_cells("A13:D18")
+
+    set_col_width(ws_info, [34, 50, 18, 18])
+
+    # ---------- Sheet 2: Dialog ----------
+    ws_dialog = wb.create_sheet("Dialog")
+    speaker_a = cq.get("speakers", {}).get("A", {}).get("name", "Speaker A")
+    speaker_b = cq.get("speakers", {}).get("B", {}).get("name", "Speaker B")
+
+    make_header(ws_dialog, 1, [
+        "Index",
+        "Speaker",
+        speaker_a,
+        speaker_b,
+    ])
+
+    dialog = cq.get("dialog", {})
+    dialog_length = len(dialog)
+
+    for idx in range(1, dialog_length + 1):
+        content = dialog.get(str(idx), {})
+        legacy = content.get("legacy index", "")
+        shown_index = legacy if legacy != "" else str(idx)
+
+        speaker = content.get("speaker", "")
+        text = content.get("text", "")
+
+        row = [
+            shown_index,
+            speaker,
+            text if speaker == "A" else "",
+            text if speaker == "B" else "",
+        ]
+        ws_dialog.append(row)
+
+    # formatting
+    set_col_width(ws_dialog, [10, 10, 60, 60])
+    for row in ws_dialog.iter_rows(min_row=2):
+        for cell in row:
+            cell.alignment = wrap
+
+    # ---------- Sheet 3: Transcription (long format) ----------
+    ws_t = wb.create_sheet("Transcription")
+
+    make_header(ws_t, 1, [
+        "Index",
+        "English",
+        "Pivot (if not English)",
+        f"Sentence in {target_language}",
+        "Literal English Back-Translation",
+        "Concept item",
+        "Word(s) contributing to this concept item",
+        "Notes",
+    ])
+
+    for idx in range(1, dialog_length + 1):
+        content = dialog.get(str(idx), {})
+        legacy = content.get("legacy index", "")
+        shown_index = legacy if legacy != "" else str(idx)
+
+        english_turn = content.get("text", "")
+
+        # Each "concept item" becomes its own row => easy to query later.
+        concept_items = []
+
+        if content.get("intent", []) != []:
+            concept_items.append(f'Intent: {"+".join(content["intent"])}')
+
+        for c in content.get("concept", []) or []:
+            concept_items.append(str(c))
+
+        # Always create at least one row per turn, even if no concept items exist.
+        if not concept_items:
+            concept_items = [""]
+        first = True
+        for concept_item in concept_items:
+            if first:
+                ws_t.append([
+                    shown_index,
+                    english_turn,
+                    "",          # pivot
+                    "",          # target sentence
+                    "",          # LEBT
+                    concept_item,
+                    "",          # word(s) mapping
+                    "",          # notes
+                ])
+                first = False
+            else:
+                ws_t.append([
+                    "",  # don't repeat index
+                    "",  # don't repeat English
+                    "",  # pivot
+                    "",  # target sentence
+                    "",  # LEBT
+                    concept_item,
+                    "",  # word(s) mapping
+                    "",  # notes
+                ])
+
+    set_col_width(ws_t, [10, 12, 45, 30, 45, 40, 45, 30])
+    for row in ws_t.iter_rows(min_row=2):
+        for cell in row:
+            cell.alignment = wrap
+
+    # ---------- Save to BytesIO ----------
+    xlsx_buffer = BytesIO()
+    wb.save(xlsx_buffer)
+    xlsx_buffer.seek(0)
+    return xlsx_buffer
+
+
 
 def generate_docx_from_kg_index_list(kg, delimiters, kg_index_list):
     kg = utils.normalize_user_strings(kg)

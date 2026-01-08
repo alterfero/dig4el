@@ -94,7 +94,6 @@ concepts_kson = json.load(open("./data/concepts.json", encoding='utf-8'))
 available_pivot_languages = list(wu.language_pk_id_by_name.keys())
 questionnaires_folder = "./questionnaires"
 
-
 if "indi_language" not in st.session_state:
     st.session_state["indi_language"] = "Abkhaz-Adyge"
 if "indi_glottocode" not in st.session_state:
@@ -110,18 +109,14 @@ if "cq_is_chosen" not in st.session_state:
     st.session_state["cq_is_chosen"] = False
 if "current_sentence_number" not in st.session_state:
     st.session_state["current_sentence_number"] = 1
-if "available_target_languages" not in st.session_state:
-    st.session_state["available_target_languages"] = [l for l in gu.GLOTTO_LANGUAGE_LIST.keys()]
-if "target_language" not in st.session_state:
-    st.session_state["target_language"] = st.session_state["available_target_languages"][0]
 if "delimiters" not in st.session_state:
     st.session_state["delimiters"] = delimiters["English"]
 if "pivot_language" not in st.session_state:
-    st.session_state["pivot_language"] = "English"
+    st.session_state.pivot_language = "English"
 if "counter" not in st.session_state:
     st.session_state["counter"] = 1
 if "recording" not in st.session_state:
-    st.session_state["recording"] = {"target language": st.session_state["target_language"],
+    st.session_state["recording"] = {"target language": st.session_state.indi_language,
                                      "delimiters": st.session_state["delimiters"],
                                      "pivot language": "English", "cq_uid": "xxx", "data": {},
                                      "interviewer": "", "interviewee": ""}
@@ -141,7 +136,10 @@ if "caretaker_of" not in st.session_state:
     st.session_state.caretaker_of = []
 if "caretaker_trigger" not in st.session_state:
     st.session_state.caretaker_trigger = False
-
+if "tmp_save_path" not in st.session_state:
+    if "none" not in os.listdir(os.path.join(BASE_LD_PATH)):
+        mkdir(os.path.join(BASE_LD_PATH, "none"))
+    st.session_state.tmp_save_path = os.path.join(BASE_LD_PATH, "none")
 
 # ------ AUTH SETUP --------------------------------------------------------------------------------
 CFG_PATH = Path(
@@ -150,6 +148,7 @@ CFG_PATH = Path(
 )
 # Cookie secret (override YAML)
 COOKIE_KEY = os.getenv("AUTH_COOKIE_KEY", None)
+
 
 # ---------- Load config ----------
 def load_config(path: Path) -> dict:
@@ -162,13 +161,19 @@ def load_config(path: Path) -> dict:
         cfg.setdefault("cookie", {})["key"] = COOKIE_KEY
     return cfg
 
-# --- helper: atomic YAML write ---
+
+# ------ HELPER FUNCTIONS -------------------------------------------------------------------------
+
 def save_config_atomic(data: dict, path: Path):
     d = os.path.dirname(path) or "."
     with tempfile.NamedTemporaryFile("w", delete=False, dir=d, encoding="utf-8") as tmp:
         yaml.safe_dump(data, tmp, sort_keys=False, allow_unicode=True)
-        tmp_path = tmp.name
-    os.replace(tmp_path, path)  # atomic on POSIX
+        st.session_state.tmp_save_path = tmp.name
+    os.replace(st.session_state.tmp_save_path, path)  # atomic on POSIX
+
+def save_tmp():
+    with open(os.path.join(st.session_state.tmp_save_path, "tmp_cq.json"), "w") as sf:
+        utils.save_json_normalized(st.session_state["recording"], sf)
 
 cfg = load_config(CFG_PATH)
 authenticator = stauth.Authenticate(
@@ -195,24 +200,24 @@ if st.session_state.is_guest:
     st.session_state["name"] = "Guest"
 else:
     authenticator.login(
-        location="main",                 # "main" | "sidebar" | "unrendered"
-        max_concurrent_users=20,         # soft cap; useful for small apps
-        max_login_attempts=5,            # lockout window is managed internally
-        fields={                         # optional label overrides
+        location="main",  # "main" | "sidebar" | "unrendered"
+        max_concurrent_users=20,  # soft cap; useful for small apps
+        max_login_attempts=5,  # lockout window is managed internally
+        fields={  # optional label overrides
             "Form name": "Sign in",
             "Username": "email",
             "Password": "Password",
             "Login": "Sign in",
         },
-        captcha=False,                    # simple built-in captcha
-        single_session=True,             # block multiple sessions per user
+        captcha=False,  # simple built-in captcha
+        single_session=True,  # block multiple sessions per user
         clear_on_submit=True,
-        key="login_form_v1",             # avoid WidgetID collisions
+        key="login_form_v1",  # avoid WidgetID collisions
     )
 
 auth_status = st.session_state.get("authentication_status", None)
-name        = st.session_state.get("name", None)
-username    = st.session_state.get("username", None)
+name = st.session_state.get("name", None)
+username = st.session_state.get("username", None)
 
 if auth_status:
     role = cfg["credentials"]["usernames"].get(username, {}).get("role", "guest")
@@ -227,9 +232,15 @@ if auth_status:
         mkdir(os.path.join(BASE_LD_PATH, "ztmp"))
     if usercode not in os.listdir(os.path.join(BASE_LD_PATH, "ztmp")):
         mkdir(os.path.join(BASE_LD_PATH, "ztmp", usercode))
-    tmp_path = os.path.join(BASE_LD_PATH, "ztmp", usercode)
+    st.session_state.tmp_save_path = os.path.join(BASE_LD_PATH, "ztmp", usercode)
 
     if st.session_state.is_guest:
+        usercode = "guest"
+        if "ztmp" not in os.listdir(os.path.join(BASE_LD_PATH)):
+            mkdir(os.path.join(BASE_LD_PATH, "ztmp"))
+        if usercode not in os.listdir(os.path.join(BASE_LD_PATH, "ztmp")):
+            mkdir(os.path.join(BASE_LD_PATH, "ztmp", usercode))
+        st.session_state.tmp_save_path = os.path.join(BASE_LD_PATH, "ztmp", usercode)
         if st.sidebar.button("Logout", key="guest_logout"):
             for x in ("is_guest", "authentication_status", "username", "name"):
                 st.session_state.pop(x, None)
@@ -238,6 +249,12 @@ if auth_status:
         authenticator.logout(button_name="Logout", location="sidebar", key="auth_logout")
 
 elif auth_status is False:
+    usercode = "none"
+    if "ztmp" not in os.listdir(os.path.join(BASE_LD_PATH)):
+        mkdir(os.path.join(BASE_LD_PATH, "ztmp"))
+    if usercode not in os.listdir(os.path.join(BASE_LD_PATH, "ztmp")):
+        mkdir(os.path.join(BASE_LD_PATH, "ztmp", usercode))
+    st.session_state.tmp_save_path = os.path.join(BASE_LD_PATH, "ztmp", usercode)
     role = None
     st.error("Invalid credentials")
     st.write("Try again. If you have forgotten your password, contact sebastien.christian@upf.pf")
@@ -248,20 +265,8 @@ else:
     st.info("Please log in or click on the 'Use without loging in' button")
 
 with st.popover("information and tutorial"):
-    st.markdown("""This page allows to record the transcription of Conversational Questionnaires. 
-                You can either start a new transcription or continue working on a DIG4EL transcription you have on your computer. 
-                **Your inputs will not be saved on the server!** Make sure you use the 'save' button at the bottom of 
-                the page to save the file on your computer (one per Conversational Questionnaire).\\
-                The interface allows entering each segment in the target language in the 'Equivalent in ...' field.
-                Once entered the equivalent of the segment in the target language, press the return key to enable the concept(s)-word(s) association. 
-                This series of fields allow to match concepts expressed in the segment with word(s) in the target language, a word being a sequence
-                of characters between two spaces/punctuation marks. All the words contributing to a concept can be entered in each field. 
-                - Fields can be left empty.
-                - Multiple words from the drop-down list can be associated with a single concept.
-                - The same word can be associated with several concepts.\\
-                **Watch the tutorial**:
-                """)
-    st.video("https://youtu.be/QTmukcvL3fU")
+    st.markdown("""Major update in progress... a tutorial will be available very soon!""")
+    #st.video("https://youtu.be/QTmukcvL3fU")
 
 with st.sidebar:
     st.divider()
@@ -281,18 +286,28 @@ sl1, sl2 = st.columns(2)
 with sl1:
     if st.session_state.indi_language in st.session_state.llist:
         default_language_index = st.session_state.llist.index(st.session_state.indi_language)
-    selected_language = st.selectbox("What language are you working on?", st.session_state.llist,
+    else:
+        default_language_index = 0
+    coli1, coli2 = st.columns(2)
+    selected_language_from_list = coli1.selectbox("Select the language you are working on in the list below?", st.session_state.llist,
                                      index=default_language_index)
-if sl2.button("Select {}".format(selected_language)):
+    free_language_input = coli2.text_input("If not in the list, enter the language name here and press Enter.")
+    if free_language_input != "":
+        selected_language = free_language_input
+    else:
+        selected_language = selected_language_from_list
+if selected_language != st.session_state.indi_language:
     st.session_state.indi_language = selected_language
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language,
-                                                                   "glottocode not found")
+                                                                   "no glottocode")
     fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r", encoding='utf-8') as f:
         st.session_state.info_doc = json.load(f)
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "delimiters.json"), "r", encoding='utf-8') as f:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "delimiters.json"), "r",
+              encoding='utf-8') as f:
         st.session_state.delimiters = json.load(f)
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r", encoding='utf-8') as f:
+    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r",
+              encoding='utf-8') as f:
         content = json.load(f)
     if st.session_state.indi_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
         role = "caretaker"
@@ -300,32 +315,60 @@ if sl2.button("Select {}".format(selected_language)):
             st.session_state.caretaker_trigger = True
             print("CARETAKER RERUN")
             st.rerun()
-    st.session_state.batch_id = content.get("batch_id", "no batch ID in batch_id_store")
-    PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
-    CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
-    JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
+
+#========================== LOADING CQ ========================================================================
 
 if not st.session_state["loaded_existing_transcription"]:
-    with st.expander("Upload a CQ translation from your computer to work on it"):
-        existing_recording = st.file_uploader("Load an existing DIG4EL CQ translation", type="json")
+    # RECOVER
+    if role != "guest":
+        if st.button("Recover your last auto-save"):
+            if "tmp_cq.json" in os.listdir(st.session_state.tmp_save_path):
+                try:
+                    with open(os.path.join(st.session_state.tmp_save_path, "tmp_cq.json"), "r") as rf:
+                        st.session_state["recording"] = json.load(rf)
+                    st.session_state.indi_language = st.session_state["recording"]["target language"]
+                    st.session_state.pivot_language = st.session_state["recording"]["pivot language"] \
+                        if st.session_state["recording"]["pivot language"] != "" \
+                        else "English"
+                    st.write("Language: {}".format(st.session_state.indi_language))
+                    # update concept labels
+                    st.session_state["recording"], found_old_labels = utils.update_concept_names_in_transcription(
+                        st.session_state["recording"])
+                    if role == "admin" and found_old_labels:
+                        st.success("admin: Some concept labels have been updated to the latest version.")
+                    st.session_state["loaded_existing_transcription"] = True
+
+                except:
+                    st.write("No saved work available.")
+                    if role == "admin":
+                        st.warning("admin: There is a tmp_cq.json file but opening it raised an error")
+            else:
+                st.write("No saved work available.")
+    # UPLOAD
+    with st.expander("Upload a CQ translation in {} from your computer"
+                     .format(st.session_state.indi_language)):
+        existing_recording = st.file_uploader("Load an existing DIG4EL CQ translation in {}"
+                                              .format(st.session_state.indi_language), type="json")
         if existing_recording is not None:
             st.session_state["recording"] = json.load(existing_recording)
-            print("Existing recording loaded: ", existing_recording.name)
+            print("Existing CQ translation loaded: ", existing_recording.name)
             st.session_state["existing_filename"] = existing_recording.name
             # update concept labels
             st.session_state["recording"], found_old_labels = utils.update_concept_names_in_transcription(
                 st.session_state["recording"])
-            if found_old_labels:
-                st.write("Some concept labels have been updated to the latest version.")
+            if role=="admin" and found_old_labels:
+                st.success("admin: Some concept labels have been updated to the latest version.")
             st.session_state["loaded_existing_transcription"] = True
 
+# FILL DEFAULTS ACCORDING TO RECOVERED OR UPLOADED
 if st.session_state["loaded_existing_transcription"]:
     default_interviewer = st.session_state["recording"]["interviewer"]
     default_interviewee = st.session_state["recording"]["interviewee"]
     default_target_language = st.session_state["recording"]["target language"]
-    st.session_state["target_language"] = st.session_state["recording"]["target language"]
-    if st.session_state["target_language"] not in st.session_state["available_target_languages"]:
-        st.session_state["available_target_languages"].append(st.session_state["target_language"])
+    st.session_state.indi_language = st.session_state["recording"]["target language"]
+    st.session_state.pivot_language = st.session_state["recording"]["pivot language"] \
+        if st.session_state["recording"]["pivot language"] \
+        else "English"
     try:
         default_delimiters = st.session_state["recording"]["delimiters"]
     except KeyError:
@@ -363,54 +406,43 @@ else:  ## if not loaded_existing_transcription
     else:
         default_data = st.session_state["recording"]["data"]
 
-with st.expander("Start a new translation"):
+# START A NEW TRANSLATION
+if not st.session_state["cq_is_chosen"]:
+    st.subheader("Or you can start a new translation here.")
+if role == "guest":
     st.markdown(
-        """***Don't forget to save your translation using the 'Save' button at the bottom of the page. 
-    Nothing is saved on the server.***""")
-    interviewer = st.text_input("Interviewer", value=default_interviewer, key="interviewer" + str(key_counter))
-    key_counter += 1
-    st.session_state["recording"]["interviewer"] = interviewer
+        """You are using the system as a guest, 
+        CQ translations will not be saved on the server: 
+        ***Don't forget to save your translation on your computer using the 
+        'Save' button at the bottom of the page!***""")
+st.divider()
+interviewer = st.text_input("Interviewer", value=default_interviewer, key="interviewer" + str(key_counter))
+key_counter += 1
+st.session_state["recording"]["interviewer"] = interviewer
 
-    interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee" + str(key_counter))
-    key_counter += 1
-    st.session_state["recording"]["interviewee"] = interviewee
+interviewee = st.text_input("Interviewee", value=default_interviewee, key="interviewee" + str(key_counter))
+key_counter += 1
+st.session_state["recording"]["interviewee"] = interviewee
 
-    tl = st.selectbox("Choose a target language", ["not in the list"] + st.session_state["available_target_languages"],
-                      index=st.session_state["available_target_languages"].index(
-                          st.session_state["target_language"]) + 1)
-    if tl != st.session_state["target_language"]:
-        if tl == "not in the list":
-            new_tl = st.text_input("Enter the name of the target language")
-            if new_tl != "":
-                st.session_state["target_language"] = new_tl
-                st.session_state["recording"]["target language"] = new_tl
-                st.session_state["available_target_languages"].append(new_tl)
-                print("Target language changed to {}".format(st.session_state["target_language"]))
-        else:
-            st.session_state["target_language"] = tl
-            st.session_state["recording"]["target language"] = tl
-        st.session_state["cq_is_chosen"] = False
+st.session_state["recording"]["target language"] = st.session_state.indi_language
 
-    st.session_state["recording"]["delimiters"] = st.multiselect("verify and edit word separators if needed",
-                                                                 delimiters_bank, default=default_delimiters)
-    st.session_state["delimiters"] = st.session_state["recording"]["delimiters"]
+st.session_state["recording"]["delimiters"] = st.multiselect("verify and edit word separators if needed",
+                                                             delimiters_bank, default=default_delimiters)
+st.session_state["delimiters"] = st.session_state["recording"]["delimiters"]
 
-    pl = st.selectbox("Choose a pivot language", available_pivot_languages,
-                      index=available_pivot_languages.index(default_pivot_language))
-    if st.session_state["pivot_language"] != pl:
-        st.session_state["pivot_language"] = pl
-        #print("pivot language switched to {}".format(pl))
-        st.session_state["recording"]["pivot language"] = pl
-        st.session_state["cq_is_chosen"] = False
+pl = st.text_input("What language did you use with the speaker if not English?")
+if pl != "" and st.session_state.pivot_language != pl:
+    st.session_state.pivot_language = pl
+    st.session_state["recording"]["pivot language"] = pl
 
-    if not st.session_state["loaded_existing_transcription"]:  # if starting fresh, choose a cq
-        select_cq = st.selectbox("Choose a CQ", cq_list, index=cq_list.index(st.session_state["current_cq"]))
-        if st.button("select CQ"):
-            st.session_state["current_cq"] = select_cq
-            st.session_state["cq_is_chosen"] = True
-    else:  # if loaded_existing_transcription
-        st.session_state["current_cq"] = st.session_state["cq_id_dict"][default_cq_uid]["filename"]
+if not st.session_state["loaded_existing_transcription"]:  # if starting fresh, choose a cq
+    select_cq = st.selectbox("Choose a CQ", cq_list, index=cq_list.index(st.session_state["current_cq"]))
+    if st.button("select CQ"):
+        st.session_state["current_cq"] = select_cq
         st.session_state["cq_is_chosen"] = True
+else:  # if loaded_existing_transcription
+    st.session_state["current_cq"] = st.session_state["cq_id_dict"][default_cq_uid]["filename"]
+    st.session_state["cq_is_chosen"] = True
 
 if st.session_state["cq_is_chosen"]:
     # load the json file
@@ -420,17 +452,18 @@ if st.session_state["cq_is_chosen"]:
 
     st.session_state["recording"]["recording_uid"] = str(int(time.time()))
 
-    docx_file = ogu.generate_transcription_doc(cq, st.session_state["target_language"],
-                                               st.session_state["pivot_language"])
+    xlsx_file = ogu.generate_transcription_xlsx(cq, st.session_state.indi_language,
+                                               st.session_state.pivot_language)
     with st.sidebar:
+        st.markdown("You can download an Excel spreadsheet to complete it offline and then import it here.")
         st.download_button(
-            label="📥 Download an EMPTY transcription sheet for this CQ as .docx",
-            data=docx_file,
-            file_name=f'{cq["title"]}_transcription_sheet.docx',
-            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+            label="📥 Download an EMPTY transcription Excel sheet for this CQ",
+            data=xlsx_file,
+            file_name=f'{cq["title"]}_transcription_sheet.xlsx',
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
     colt1, colt2 = st.columns([3, 1])
-    colt1.title("{}".format(cq["title"]))
+    colt1.subheader('"{}" in {}'.format(cq["title"], st.session_state.indi_language))
     colt1.write("Context: {}".format(cq["context"]))
     with colt1.popover("See the full dialog"):
         for i in range(1, len(cq["dialog"]) + 1):
@@ -494,15 +527,15 @@ if st.session_state["cq_is_chosen"]:
         default_comment = ""
 
     # if pivot language is not english, store the pivot form
-    if st.session_state["pivot_language"] != "English":
+    if st.session_state.pivot_language != "English":
         alternate_pivot = colz.text_input(
-            "Enter here the expression you used in {}".format(st.session_state["pivot_language"],
+            "Enter here the expression you used in {}".format(st.session_state.pivot_language,
                                                               value=alternate_pivot_default),
             value=alternate_pivot_default)
     else:
         alternate_pivot = ""
 
-    translation_raw = colz.text_input("Equivalent in {}".format(st.session_state["target_language"]),
+    translation_raw = colz.text_input("Equivalent in {}".format(st.session_state.indi_language),
                                       value=translation_default,
                                       key=str(st.session_state["counter"]) + str(key_counter))
     key_counter += 1
@@ -510,7 +543,7 @@ if st.session_state["cq_is_chosen"]:
     segmented_target_sentence = stats.custom_split(translation, st.session_state["recording"]["delimiters"])
 
     # Early sentence validation
-    if colz.button("Validate sentence", key="early_validation"+str(key_counter)):
+    if colz.button("Validate translation", key="early_validation" + str(key_counter)):
         st.session_state["recording"]["data"][str(st.session_state["counter"])] = {
             "legacy index": cq["dialog"][str(st.session_state["counter"])]["legacy index"],
             "cq": cq["dialog"][str(st.session_state["counter"])]["text"],
@@ -519,6 +552,7 @@ if st.session_state["cq_is_chosen"]:
             "concept_words": {},
             "comment": ""
         }
+        save_tmp()
         key_counter += 1
 
     # for each base concept, display a multiselect tool to select the word(s) that express (part of) this concept in the target language
@@ -538,7 +572,8 @@ if st.session_state["cq_is_chosen"]:
     for concept in concept_list:
         concept_default = []
         if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
-            if concept in st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"].keys():
+            if concept in st.session_state["recording"]["data"][str(st.session_state["counter"])][
+                "concept_words"].keys():
                 target_word_list = utils.listify(
                     st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"][concept])
                 if all(element in segmented_target_sentence for element in target_word_list):
@@ -570,18 +605,18 @@ if st.session_state["cq_is_chosen"]:
                     if "" in predicate_words_list:
                         predicate_words_list.remove("")
 
-    type_of_predicate = colz.selectbox(
-        "If it makes sense, select the type of predicate used in the sentence in {}".format(
-            st.session_state["target_language"]),
-        st.session_state["predicates_list"],
-        index=predicate_index_default)
-
-    predicate_words = colz.multiselect("Which word(s) indicate(s) the type of predicate?",
-                                       segmented_target_sentence, default=predicate_words_default,
-                                       key="predicate_" + str(st.session_state["counter"]) + str(key_counter))
-    concept_words[type_of_predicate] = "...".join(predicate_words)
-    if type_of_predicate != predicate_default and predicate_default in concept_words.keys():
-        del concept_words[predicate_default]
+    # type_of_predicate = colz.selectbox(
+    #     "If it makes sense, select the type of predicate used in the sentence in {}".format(
+    #         st.session_state.indi_language),
+    #     st.session_state["predicates_list"],
+    #     index=predicate_index_default)
+    #
+    # predicate_words = colz.multiselect("Which word(s) indicate(s) the type of predicate?",
+    #                                    segmented_target_sentence, default=predicate_words_default,
+    #                                    key="predicate_" + str(st.session_state["counter"]) + str(key_counter))
+    # concept_words[type_of_predicate] = "...".join(predicate_words)
+    # if type_of_predicate != predicate_default and predicate_default in concept_words.keys():
+    #     del concept_words[predicate_default]
 
     # Comments
     comment = colz.text_input("Comments/Notes", value=default_comment, key="comment" + str(st.session_state["counter"]))
@@ -596,18 +631,19 @@ if st.session_state["cq_is_chosen"]:
             "concept_words": concept_words,
             "comment": comment
         }
+        save_tmp()
         if st.session_state["counter"] < number_of_sentences - 1:
             st.session_state["counter"] = st.session_state["counter"] + 1
             st.rerun()
         else:
-            st.subheader("End of the CQ, congratulations! Click on 'Download your recording' below!")
+            st.subheader("End of the CQ, congratulations!")
             st.balloons()
 
     st.divider()
-    #st.write(st.session_state["recording"])
+    # st.write(st.session_state["recording"])
     filename = ("recording_"
                 + st.session_state["current_cq"].replace(".json", "") + "_"
-                + st.session_state["target_language"] + "_"
+                + st.session_state.indi_language + "_"
                 + st.session_state["recording"]["interviewer"] + "_"
                 + st.session_state["recording"]["interviewee"] + "_"
                 + str(int(time.time())) + ".json")
