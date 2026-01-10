@@ -23,6 +23,7 @@ import streamlit_authenticator as stauth
 import yaml
 from pathlib import Path
 import tempfile
+from datetime import datetime
 from libs import utils as u
 from libs import graphs_utils
 from libs import utils, stats, wals_utils as wu
@@ -183,6 +184,54 @@ authenticator = stauth.Authenticate(
     cfg["cookie"]["expiry_days"],
     auto_hash=True
 )
+
+def language_selection():
+    # default index
+    if st.session_state.indi_language in st.session_state.llist:
+        default_language_index = st.session_state.llist.index(st.session_state.indi_language)
+    else:
+        default_language_index = 0
+    coli1, coli2 = st.columns(2)
+    selected_language_from_list = coli1.selectbox("Select the language you are working on in the list below",
+                                                  st.session_state.llist,
+                                                  index=default_language_index)
+    free_language_input = coli2.text_input("If not in the list, enter the language name here and press Enter.")
+    if free_language_input != "":
+        if free_language_input.capitalize() in st.session_state.llist:
+            st.warning("This language is already in the list! It is now selected.")
+            selected_language = free_language_input.capitalize()
+        else:
+            selected_language = free_language_input.capitalize()
+            fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
+            st.success("Adding {} to the list of languages.".format(free_language_input))
+            st.markdown("Note that a pseudo-glottocode is added: {}".format(free_language_input.lower() + "+"))
+            with open(os.path.join(".", "external_data", "glottolog_derived", "languages.json"), "r") as fg:
+                language_list_json = json.load(fg)
+            language_list_json[free_language_input.capitalize()] = free_language_input.lower() + "+"
+            with open(os.path.join(".", "external_data", "glottolog_derived", "languages.json"), "w") as fgg:
+                json.dump(language_list_json, fgg, indent=4)
+    else:
+        selected_language = selected_language_from_list
+
+    if selected_language != st.session_state.indi_language:
+        st.session_state.indi_language = selected_language
+        st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language,
+                                                                       "no glottocode")
+        fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r", encoding='utf-8') as f:
+            st.session_state.info_doc = json.load(f)
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "delimiters.json"), "r",
+                  encoding='utf-8') as f:
+            st.session_state.delimiters = json.load(f)
+        with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r",
+                  encoding='utf-8') as f:
+            content = json.load(f)
+        if st.session_state.indi_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
+            role = "caretaker"
+            if not st.session_state.caretaker_trigger:
+                st.session_state.caretaker_trigger = True
+                print("CARETAKER RERUN")
+            st.rerun()
 # -------------------------------------------------------------------------------------------
 st.title("Create Conversational Questionnaires translations")
 
@@ -264,9 +313,186 @@ else:
     role = None
     st.info("Please log in or click on the 'Use without loging in' button")
 
-with st.popover("information and tutorial"):
-    st.markdown("""Major update in progress... a tutorial will be available very soon!""")
-    #st.video("https://youtu.be/QTmukcvL3fU")
+# ==================== VISUAL STEPPER ==========================
+
+st.markdown(
+    """
+<style>
+/* container */
+.dig4el-stepper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 0.25rem 0 0.75rem 0;
+}
+
+/* step card */
+.dig4el-step {
+  position: relative;
+  padding: 16px 16px 14px 16px;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 18px;
+  background: #A3998E;
+  min-height: 140px;
+  overflow: hidden;
+}
+
+/* subtle top highlight */
+.dig4el-step:before{
+  content:"";
+  position:absolute;
+  inset:-2px -2px auto -2px;
+  height: 42px;
+  background: radial-gradient(closest-side, rgba(255,255,255,0.16), rgba(255,255,255,0));
+  pointer-events:none;
+}
+
+/* number badge */
+.dig4el-badge{
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.14);
+  margin-right: 10px;
+}
+
+/* header line */
+.dig4el-head{
+  display:flex;
+  align-items:center;
+  margin-bottom: 10px;
+}
+
+/* icon bubble */
+.dig4el-icon{
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+/* title + text */
+.dig4el-title{
+  margin: 10px 0 6px 0;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.15;
+}
+.dig4el-text{
+  margin: 0;
+  opacity: 0.86;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* arrow between steps (desktop only) */
+.dig4el-step:not(:last-child)::after{
+  content: "➜";
+  position: absolute;
+  top: 16px;
+  right: -16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+/* responsive */
+@media (max-width: 1100px){
+  .dig4el-stepper{ grid-template-columns: repeat(2, 1fr); }
+  .dig4el-step:not(:last-child)::after{ display:none; }
+}
+@media (max-width: 650px){
+  .dig4el-stepper{ grid-template-columns: 1fr; }
+  .dig4el-step{ min-height: auto; }
+}
+
+/* optional: progress bar look */
+.dig4el-progress{
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  overflow:hidden;
+  margin: 0.2rem 0 0.8rem 0;
+}
+.dig4el-progress > div{
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
+}
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    """
+<div class="dig4el-progress"><div></div></div>
+
+<div class="dig4el-stepper">
+  <div class="dig4el-step">
+    <div class="dig4el-head">
+      <span class="dig4el-badge">1</span>
+      <span class="dig4el-icon">🌍</span>
+    </div>
+    <div class="dig4el-title">Select a language</div>
+    <p class="dig4el-text">Pick the target language you’re working on.</p>
+  </div>
+
+  <div class="dig4el-step">
+    <div class="dig4el-head">
+      <span class="dig4el-badge">2</span>
+      <span class="dig4el-icon">📂</span>
+    </div>
+    <div class="dig4el-title">Start or resume a CQ</div>
+    <p class="dig4el-text">Recover your last session, upload a CQ from your computer, or start a new one from scratch.</p>
+  </div>
+
+  <div class="dig4el-step">
+    <div class="dig4el-head">
+      <span class="dig4el-badge">3</span>
+      <span class="dig4el-icon">✍️</span>
+    </div>
+    <div class="dig4el-title">Translate & connect</div>
+    <p class="dig4el-text">Enter/edit translations and add the linguistic connections needed for DIG4EL to learn from the data.</p>
+  </div>
+
+  <div class="dig4el-step">
+    <div class="dig4el-head">
+      <span class="dig4el-badge">4</span>
+      <span class="dig4el-icon">🚀</span>
+    </div>
+    <div class="dig4el-title">Publish and download</div>
+    <p class="dig4el-text">File the CQ to share it with others and DIG4EL, or download it as a portable, shareable package.</p>
+  </div>
+</div>
+""",
+    unsafe_allow_html=True,
+)
+# -----------------------------------------------------------------------------
+
+
+
+# ===============================================================
 
 with st.sidebar:
     st.divider()
@@ -282,42 +508,11 @@ else:
     st.session_state.llist = list(gu.GLOTTO_LANGUAGE_LIST.keys())
 
 # Language selection
-sl1, sl2 = st.columns(2)
-with sl1:
-    if st.session_state.indi_language in st.session_state.llist:
-        default_language_index = st.session_state.llist.index(st.session_state.indi_language)
-    else:
-        default_language_index = 0
-    coli1, coli2 = st.columns(2)
-    selected_language_from_list = coli1.selectbox("Select the language you are working on in the list below?", st.session_state.llist,
-                                     index=default_language_index)
-    free_language_input = coli2.text_input("If not in the list, enter the language name here and press Enter.")
-    if free_language_input != "":
-        selected_language = free_language_input
-    else:
-        selected_language = selected_language_from_list
-if selected_language != st.session_state.indi_language:
-    st.session_state.indi_language = selected_language
-    st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language,
-                                                                   "no glottocode")
-    fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "r", encoding='utf-8') as f:
-        st.session_state.info_doc = json.load(f)
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "delimiters.json"), "r",
-              encoding='utf-8') as f:
-        st.session_state.delimiters = json.load(f)
-    with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r",
-              encoding='utf-8') as f:
-        content = json.load(f)
-    if st.session_state.indi_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
-        role = "caretaker"
-        if not st.session_state.caretaker_trigger:
-            st.session_state.caretaker_trigger = True
-            print("CARETAKER RERUN")
-            st.rerun()
+st.markdown("#### 1. Select language")
+language_selection()
 
 #========================== LOADING CQ ========================================================================
-
+st.markdown("#### 2. Start or resume a CQ")
 if not st.session_state["loaded_existing_transcription"]:
     # RECOVER
     if role != "guest":
@@ -330,7 +525,7 @@ if not st.session_state["loaded_existing_transcription"]:
                     st.session_state.pivot_language = st.session_state["recording"]["pivot language"] \
                         if st.session_state["recording"]["pivot language"] != "" \
                         else "English"
-                    st.write("Language: {}".format(st.session_state.indi_language))
+                    st.success("Your last autosave has been recovered, in language: {}. You can directly scroll down and continue working on it!".format(st.session_state.indi_language))
                     # update concept labels
                     st.session_state["recording"], found_old_labels = utils.update_concept_names_in_transcription(
                         st.session_state["recording"])
@@ -408,7 +603,7 @@ else:  ## if not loaded_existing_transcription
 
 # START A NEW TRANSLATION
 if not st.session_state["cq_is_chosen"]:
-    st.subheader("Or you can start a new translation here.")
+    st.markdown("**...or directly start a new CQ translation in {} below.**".format(st.session_state.indi_language))
 if role == "guest":
     st.markdown(
         """You are using the system as a guest, 
@@ -445,6 +640,7 @@ else:  # if loaded_existing_transcription
     st.session_state["cq_is_chosen"] = True
 
 if st.session_state["cq_is_chosen"]:
+    st.markdown("#### 3. Translate & Connect")
     # load the json file
     cq = json.load(open(join(questionnaires_folder, st.session_state["current_cq"]), encoding='utf-8'))
     number_of_sentences = len(cq["dialog"])
@@ -477,17 +673,20 @@ if st.session_state["cq_is_chosen"]:
     #st.write(st.write(f'Current position: {counter_string}.'))
     colq, colw, cole = st.columns([1, 3, 1])
     if colq.button("Previous"):
+        save_tmp()
         if st.session_state["counter"] > 1:
             st.session_state["counter"] = st.session_state["counter"] - 1
             st.rerun()
     if colw.button("Current position {}".format(counter_string)):
         pass
     if cole.button("Next"):
+        save_tmp()
         if st.session_state["counter"] < number_of_sentences:
             st.session_state["counter"] = st.session_state["counter"] + 1
             st.rerun()
     jump_to = colw.slider(f"Jump to segment", 1, number_of_sentences, value=st.session_state["counter"])
     if jump_to != st.session_state["counter"]:
+        save_tmp()
         st.session_state["counter"] = jump_to
         st.rerun()
 
@@ -553,7 +752,6 @@ if st.session_state["cq_is_chosen"]:
             "comment": ""
         }
         save_tmp()
-        key_counter += 1
 
     # for each base concept, display a multiselect tool to select the word(s) that express (part of) this concept in the target language
     # the word(s) are stored as strings in the json, separated by "...", but must be a list for the multiselect tool to work.
@@ -647,6 +845,38 @@ if st.session_state["cq_is_chosen"]:
                 + st.session_state["recording"]["interviewer"] + "_"
                 + st.session_state["recording"]["interviewee"] + "_"
                 + str(int(time.time())) + ".json")
+
+    st.markdown("#### 4. Publish and/or Download")
+    st.markdown("Published CQs will become visible to other ConveQs and DIG4EL users, and be used by DIG4EL to generate grammatical descriptions.")
+    st.markdown("Publishing the same CQ replaces the previous version on the server.")
+    st.markdown("Downloaded CQs are not saved on the server, but can be re-uploaded to continue working on them.")
     colf, colg = st.columns(2)
     colf.download_button(label="**download your transcription**",
                          data=utils.dumps_json_normalized(st.session_state["recording"], indent=4), file_name=filename)
+    if role in ["admin", "caretaker"]:
+        if colg.button("Publish this CQ translation"):
+            now = datetime.now()
+            readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
+            st.session_state["recording"]["published by username"] = username
+            st.session_state["recording"]["published by name"] = name
+            st.session_state["recording"]["published date"] = readable_date_time
+
+            existing_published_cqs = os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq", "cq_translations"))
+            same_cqs = [fn
+                       for fn in existing_published_cqs
+                       if fn[:-15] in filename
+                       ]
+            if same_cqs != []:
+                for same_cq in same_cqs:
+                    os.remove(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq", "cq_translations", same_cq))
+                    if role == "admin":
+                        st.warning("admin: CQ duplicate. erasing {}".format(same_cq))
+
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq", "cq_translations", filename), "w") as fp:
+                u.save_json_normalized(data=st.session_state["recording"], fp=fp)
+            st.success("Your CQ has been added to the CQs of language {}".format(st.session_state.indi_language))
+    else:
+        colg.markdown("Only caretakers of can publish CQs.")
+        colg.markdown("Send us a mail at sebastien.christian@upf.pf to be added as a caretaker of {}"
+                      .format(st.session_state.indi_language))
+

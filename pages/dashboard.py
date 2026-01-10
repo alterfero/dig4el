@@ -19,6 +19,7 @@ import time
 import os
 import pandas as pd
 import json
+from datetime import datetime
 from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
 from libs import openai_vector_store_utils as ovsu
@@ -168,6 +169,8 @@ JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
 if "index.pkl" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs", "vectors")):
     st.session_state.has_pairs = True
 
+# ================== HELPER FUNCTIONS ===========================================
+
 def save_info_dict():
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "info.json"), "w", encoding='utf-8') as fdi:
         utils.save_json_normalized(st.session_state.info_doc, fdi)
@@ -177,6 +180,9 @@ def generate_sentence_pairs_signatures(sentence_pairs: list[dict]) -> list[str]:
     for sentence_pair in sentence_pairs:
         sig_list.append(u.clean_sentence(sentence_pair["source"], filename=True))
     return sig_list
+
+
+# =============================================================================
 
 with st.sidebar:
     st.image("./pics/dig4el_logo_sidebar.png")
@@ -254,32 +260,45 @@ else:
 # ------------------
 ch1, ch2 = st.columns([8,2])
 ch1.header("Sources Dashboard")
-with ch2:
-    with st.popover("Using the dashboard"):
-        st.markdown("""
-    1. Select a language, then click the **Select Language** button.  
-    2. Explore the three available tabs:  
-       - **CQ** (Conversational Questionnaires): Create or upload translations of conversational questionnaires—dialogues designed to capture detailed grammatical information about the language.  
-       - **Documents**: Upload public PDF documents related to the language, such as academic papers, articles, Wikipedia pages, or any other source containing reliable grammatical information.  
-       - **Sentence Pairs**: Provide sentences in a mainstream language along with their translations in the target language.
-        """)
 
 if "llist" not in st.session_state:
     st.session_state.llist = None
+
 colq, colw = st.columns(2)
 if role == "guest":
     st.session_state.llist = ["Tahitian"]
 else:
-    st.session_state.llist = gu.GLOTTO_LANGUAGE_LIST.keys()
+    st.session_state.llist = list(gu.GLOTTO_LANGUAGE_LIST.keys())
 
-sl1, sl2 = st.columns(2)
-selected_language = sl1.selectbox("What language are we working on?", st.session_state.llist)
-if sl2.button("Select {}".format(selected_language)):
-    print("")
-    print("*******************")
-    print(selected_language)
-    print("*******************")
-    print("")
+# LANGUAGE SELECTION
+coli1, coli2 = st.columns(2)
+if st.session_state.indi_language in st.session_state.llist:
+    default_language_index = st.session_state.llist.index(st.session_state.indi_language)
+else:
+    default_language_index = 0
+
+selected_language_from_list = coli1.selectbox("Select the language you are working on in the list below",
+                                                  st.session_state.llist,
+                                                  index=default_language_index)
+free_language_input = coli2.text_input("If not in the list, enter the language name here and press Enter.")
+if free_language_input != "":
+    if free_language_input.capitalize() in st.session_state.llist:
+        st.warning("This language is already in the list! It is now selected.")
+        selected_language = free_language_input.capitalize()
+    else:
+        selected_language = free_language_input.capitalize()
+        fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
+        st.success("Adding {} to the list of languages.".format(free_language_input))
+        st.markdown("Note that a pseudo-glottocode is added: {}".format(free_language_input.lower() + "+"))
+        with open(os.path.join(".", "external_data", "glottolog_derived", "languages.json"), "r") as fg:
+            language_list_json = json.load(fg)
+        language_list_json[free_language_input.capitalize() + "+"] = free_language_input + "+"
+        with open(os.path.join(".", "external_data", "glottolog_derived", "languages.json"), "w") as fgg:
+            json.dump(language_list_json, fgg, indent=4)
+else:
+    selected_language = selected_language_from_list
+
+if selected_language != st.session_state.indi_language:
     st.session_state.indi_language = selected_language
     st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.indi_language,
                                                                    "glottocode not found")
@@ -290,20 +309,24 @@ if sl2.button("Select {}".format(selected_language)):
         st.session_state.delimiters = json.load(f)
     with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "batch_id_store.json"), "r", encoding='utf-8') as f:
         content = json.load(f)
+
+    st.session_state.batch_id = content.get("batch_id", "no batch ID in batch_id_store")
+    PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
+    CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
+    JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
+
     if st.session_state.indi_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker", []):
         role = "caretaker"
         if not st.session_state.caretaker_trigger:
             st.session_state.caretaker_trigger = True
             print("CARETAKER RERUN")
             st.rerun()
-    st.session_state.batch_id = content.get("batch_id", "no batch ID in batch_id_store")
-    PAIRS_BASE_PATH = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "sentence_pairs")
-    CURRENT_JOB_SIG_FILE = os.path.join(PAIRS_BASE_PATH, "current_job_sig.json")
-    JOB_INFO_FILE = os.path.join(PAIRS_BASE_PATH, "job_progress.json")
+
 
 st.markdown("#### Using the tabs below, add information about {} (Glottocode {})"
             .format(st.session_state.indi_language,
                     st.session_state.indi_glottocode))
+st.markdown("You can add 📝Conversational Questionnaires (CQ), 🔗Pairs of sentences and 📁Documents.")
 
 st.markdown("""
 <style>
@@ -343,7 +366,7 @@ div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
 </style>
 """, unsafe_allow_html=True)
 
-tab1, tab2, tab3 = st.tabs(["CQ", "Documents", "Sentence Pairs"])
+tab1, tab3, tab2 = st.tabs(["📝CQ", "🔗Sentence Pairs", "📁Documents", ])
 
 with tab1:
     st.markdown("""
