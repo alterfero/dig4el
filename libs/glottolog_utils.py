@@ -5,6 +5,8 @@ PREFIX = "."
 with open(PREFIX + "/external_data/glottolog_derived/languages.json", "r", encoding='utf-8') as f:
     GLOTTO_LANGUAGE_LIST = json.load(f)
 
+LLIST = sorted(GLOTTO_LANGUAGE_LIST.keys())
+
 def languages_csv_to_json():
     """
     loads ./external_data/glottolog/languages.csv

@@ -268,7 +268,7 @@ colq, colw = st.columns(2)
 if role == "guest":
     st.session_state.llist = ["Tahitian"]
 else:
-    st.session_state.llist = list(gu.GLOTTO_LANGUAGE_LIST.keys())
+    st.session_state.llist = gu.LLIST
 
 # LANGUAGE SELECTION
 coli1, coli2 = st.columns(2)

@@ -99,6 +99,8 @@ if "indi_language" not in st.session_state:
     st.session_state["indi_language"] = "Abkhaz-Adyge"
 if "indi_glottocode" not in st.session_state:
     st.session_state["indi_glottocode"] = "abkh1242"
+if "llist" not in st.session_state:
+    st.session_state.llist = gu.LLIST
 if "concepts" not in st.session_state:
     with open("./data/concepts.json", "r", encoding='utf-8') as f:
         st.session_state["concepts"] = json.load(f)
@@ -185,15 +187,15 @@ authenticator = stauth.Authenticate(
     auto_hash=True
 )
 
-def language_selection():
+def language_selection(role):
     # default index
     if st.session_state.indi_language in st.session_state.llist:
         default_language_index = st.session_state.llist.index(st.session_state.indi_language)
     else:
         default_language_index = 0
     coli1, coli2 = st.columns(2)
-    selected_language_from_list = coli1.selectbox("Select the language you are working on in the list below",
-                                                  st.session_state.llist,
+    selected_language_from_list = coli1.selectbox("Select the language of the translation in the list below",
+                                                  st.session_state.llist if role != "guest" else ["Tahitian"],
                                                   index=default_language_index)
     free_language_input = coli2.text_input("If not in the list, enter the language name here and press Enter.")
     if free_language_input != "":
@@ -499,17 +501,9 @@ with st.sidebar:
     st.page_link("home.py", label="Home", icon=":material/home:")
     st.page_link("pages/dashboard.py", label="Back to Dashboard", icon=":material/home:")
 
-if "llist" not in st.session_state:
-    st.session_state.llist = None
-colq, colw = st.columns(2)
-if role == "guest":
-    st.session_state.llist = ["Tahitian"]
-else:
-    st.session_state.llist = list(gu.GLOTTO_LANGUAGE_LIST.keys())
-
 # Language selection
 st.markdown("#### 1. Select language")
-language_selection()
+language_selection(role=role)
 
 #========================== LOADING CQ ========================================================================
 st.markdown("#### 2. Start or resume a CQ")
@@ -851,10 +845,10 @@ if st.session_state["cq_is_chosen"]:
     st.markdown("Publishing the same CQ replaces the previous version on the server.")
     st.markdown("Downloaded CQs are not saved on the server, but can be re-uploaded to continue working on them.")
     colf, colg = st.columns(2)
-    colf.download_button(label="**download your transcription**",
+    colf.download_button(label="**Download your CQ translation**",
                          data=utils.dumps_json_normalized(st.session_state["recording"], indent=4), file_name=filename)
     if role in ["admin", "caretaker"]:
-        if colg.button("Publish this CQ translation"):
+        if colg.button("**Publish this CQ translation**"):
             now = datetime.now()
             readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
             st.session_state["recording"]["published by username"] = username
@@ -876,7 +870,7 @@ if st.session_state["cq_is_chosen"]:
                 u.save_json_normalized(data=st.session_state["recording"], fp=fp)
             st.success("Your CQ has been added to the CQs of language {}".format(st.session_state.indi_language))
     else:
-        colg.markdown("Only caretakers of can publish CQs.")
+        colg.markdown("Only caretakers can publish CQs.")
         colg.markdown("Send us a mail at sebastien.christian@upf.pf to be added as a caretaker of {}"
                       .format(st.session_state.indi_language))
 

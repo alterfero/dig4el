@@ -416,15 +416,24 @@ def catalog_all_available_cqs():
                 index += 1
                 with open(os.path.join(BASE_LD_PATH, language, "cq", "cq_translations", cq)) as c:
                     cqc = json.load(c)
+                if "location" not in cqc.keys():
+                    cqc["location"] = "unknown"
                 cq_catalog.append({
                     "index": index,
                     "title": uid_dict.get(cqc["cq_uid"], "unknown"),
                     "language": language,
                     "pivot": cqc["pivot language"],
                     "info": cqc["interviewee"][:3]+" by "+cqc["interviewer"][:3],
+                    "interviewer": cqc["interviewer"],
+                    "interviewee": cqc["interviewee"],
+                    "date": cqc.get("published date"),
                     "uid": cqc["cq_uid"],
-                    "filename": cq
+                    "filename": cq,
+                    "is_downloadable": True,
+                    "is_displayable": True
                 })
+                with open(os.path.join(BASE_LD_PATH, language, "cq", "cq_translations", cq), "w") as cr:
+                    json.dump(cr)
     return cq_catalog
 
 def usercode(username:str)->str:

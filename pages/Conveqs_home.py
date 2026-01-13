@@ -57,7 +57,10 @@ BASE_LD_PATH = os.path.join(
 if "indi_path_check" not in st.session_state:
     st.session_state.indi_path_check = False
 if "upload_language" not in st.session_state:
-    st.session_state.upload_language = "Abkhaz-Adyge"
+    if "indi_language" in st.session_state:
+        st.session_state.upload_language = st.session_state.indi_language
+    else:
+        st.session_state.upload_language = "Abkhaz-Adyge"
 if "indi_glottocode" not in st.session_state:
     st.session_state["indi_glottocode"] = "abkh1242"
 if "is_guest" not in st.session_state:
@@ -92,6 +95,8 @@ if "uid_dict" not in st.session_state:
 if "ccq" not in st.session_state:
     with open("./conveqs/canonical_cqs.json", "r") as f:
         st.session_state.ccq = json.load(f)
+if "llist" not in st.session_state:
+    st.session_state.llist = gu.LLIST
 
 CONVEQS_BASE_PATH = os.path.join(BASE_LD_PATH, "conveqs")
 
@@ -210,16 +215,76 @@ else:
 
 
 
-st.markdown("*Navigate features by selecting one of the tabs below*")
-tab1, tab2, tab3 = st.tabs(["Browse files", "Upload CQ files", "Explore CQs", ])
+cole1, cole2 = st.columns(2)
+with cole1:
+    with st.popover("What are Conversational Questionnaires?"):
+        st.markdown("#### An introduction to Conversational Questionnaires")
+        st.markdown("Conversational Questionnaires (CQ) are a linguistic data collection method. The method consists in eliciting speech not at the level of words or of isolated sentences, but in the form of a chunk of dialogue. Ahead of fieldwork, a number of scripted conversations are written in the area’s lingua franca, each anchored in a plausible real-world situation – whether universal or culture-specific. Native speakers are then asked to come up with the most naturalistic utterances that would occur in each context, resulting in a plausible conversation in the target language. Experience shows that conversational questionnaires provide a number of advantages in linguistic fieldwork, compared to traditional elicitation methods. The anchoring in real-life situations lightens the cognitive burden on consultants, making the fieldwork experience easier for all. The method enables efficient coverage of various linguistic structures at once, from phonetic to pragmatic dimensions, from morphosyntax to phraseology. The tight-knit structure of each dialogue makes it an effective tool for cross-linguistic comparison, whether areal, historical or typological. Conversational questionnaires help the linguist make quick progress in language proficiency, which in turn facilitates further stages of data collection. Finally, these stories can serve as learning resources for language teaching and revitalization.")
+        st.markdown("Reference: François, Alexandre. 2019. A proposal for conversa­tional ques­tionnaires. In Lahaussois, Aimée & Vuillermet, Marine (eds.), Methodological Tools for Linguistic Description and Typology, Language Documentation & Conservation Special Publication No. 16. Honolulu: University of Hawai'i Press.")
+        st.markdown("https://scholarspace.manoa.hawaii.edu/items/ef98c1c0-bee6-4ac9-9ea0-0543594ce3b3")
+with cole2:
+    with st.popover("What is ConveQs?"):
+        st.markdown("#### ConveQs")
+        st.markdown("""
+        ConveQs, the system you are accessing through this website, is designed for the storage, consultation, and sharing of Conversational Questionnaires (CQs). ConveQs is a sister website of DIG4EL (see https://dig4el.org). Access to one platform grants access to the other.
+
+        - You may use the system either as a guest, with limited functionality, or as a registered member. Not registered yet? Request access by emailing conveqs.c0rkg@addymail.com.
+
+        - As a registered member, you can, using the tabs below:
+            - **Upload files containing CQs** in languages you are expert in, in any file format. For each upload, you can choose whether the file is viewable only or also downloadable by others.
+            - **Browse all files** uploaded by other users and download those that have been made available for download.
+            - **For supported CQ file formats, extract and display CQ content directly within the platform**. This currently includes CQ translations created via the DIG4EL online interface, as well as Excel files conforming to an upcoming template that will be available for download here. The “Explore CQs” tab allows you to explore and compare all compatible CQ translations.
+        """)
+        st.markdown("""
+        All documents on this platform follow a [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) licence.
+        The software itself is [open source](https://github.com/alterfero/dig4el), under a [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html).
+        """)
+        st.markdown("""ConveQs and DIG4EL are research efforts supported by the [CNRS](https://www.cnrs.fr/en) as part 
+        of the [Heliceo](https://www.cnrs.fr/en/ri2-project/heliceo) project.""")
+
+st.markdown("""
+<style>
+/* TAB BAR CONTAINER */
+div[data-testid="stTabs"] {
+  background: #f3f4f6;
+  padding: 0.35rem 0.5rem;
+  border-radius: 10px;
+}
+
+/* TAB LIST */
+div[data-testid="stTabs"] [role="tablist"] {
+  gap: 0.35rem;
+}
+
+/* INDIVIDUAL TABS */
+div[data-testid="stTabs"] button[role="tab"] {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* HOVER */
+div[data-testid="stTabs"] button[role="tab"]:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+/* ACTIVE TAB */
+div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
+  background: #111827;
+  color: white;
+  border-color: #111827;
+}
+</style>
+""", unsafe_allow_html=True)
+
+tab1, tab2, tab3 = st.tabs(["📂Browse files", "⬆️Upload CQ files", "🔍Explore CQs"])
 
 # ========== CONSULT FILES ==========================
 with tab1:
-    st.markdown("""
-        You can see below a list of all files containing CQs uploaded to ConveQs.
-        - Click on any file in the table to display what you can do with it.
-        - You can Edit and delete your own files, and download files from other users if they allow it.
-        """)
+    st.markdown("""#### CQ files browser""")
 
     with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
         conveqs_index = json.load(f)
@@ -274,13 +339,48 @@ with tab2:
     else:
         # SELECT LANGUAGE
         colq, colw = st.columns(2)
-        llist = gu.GLOTTO_LANGUAGE_LIST.keys()
-        st.session_state.upload_language = colq.selectbox("What is the indigenous language in this file?", llist)
-        st.markdown("*Note: If you don't find the language in this Glottolog list, write to us and indicate the name of the language and a unique identifier (ISO or other) so we can add it.")
 
-        st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.upload_language,
-                                                                       "glottocode not found")
-        fmu.create_ld(BASE_LD_PATH, st.session_state.upload_language)
+        coli1, coli2 = st.columns(2)
+        if st.session_state.upload_language in st.session_state.llist:
+            default_language_index = st.session_state.llist.index(st.session_state.upload_language)
+        else:
+            default_language_index = 0
+
+        selected_language_from_list = coli1.selectbox("Select the language of the CQ translation in the list below",
+                                                      st.session_state.llist,
+                                                      index=default_language_index)
+        free_language_input = coli2.text_input("If it is not in the list, enter the language name here and press Enter.")
+        if free_language_input != "":
+            if free_language_input.capitalize() in st.session_state.llist:
+                st.warning("This language is already in the list! It is now selected.")
+                selected_language = free_language_input.capitalize()
+            else:
+                selected_language = free_language_input.capitalize()
+                fmu.create_ld(BASE_LD_PATH, st.session_state.upload_language)
+                st.success("Adding {} to the list of languages.".format(free_language_input))
+                st.markdown("Note that a pseudo-glottocode is added: {}".format(free_language_input.lower() + "+"))
+                with open(os.path.join(".", "external_data", "glottolog_derived", "languages.json"), "r") as fg:
+                    language_list_json = json.load(fg)
+                language_list_json[free_language_input.capitalize() + "+"] = free_language_input + "+"
+                with open(os.path.join(".", "external_data", "glottolog_derived", "languages.json"), "w") as fgg:
+                    json.dump(language_list_json, fgg, indent=4)
+        else:
+            selected_language = selected_language_from_list
+
+        if selected_language != st.session_state.upload_language:
+            st.session_state.upload_language = selected_language
+            st.session_state.indi_glottocode = gu.GLOTTO_LANGUAGE_LIST.get(st.session_state.upload_language,
+                                                                           "glottocode not found")
+            fmu.create_ld(BASE_LD_PATH, st.session_state.upload_language)
+            with open(os.path.join(BASE_LD_PATH, st.session_state.upload_language, "info.json"), "r",
+                      encoding='utf-8') as f:
+                st.session_state.info_doc = json.load(f)
+            with open(os.path.join(BASE_LD_PATH, st.session_state.upload_language, "delimiters.json"), "r",
+                      encoding='utf-8') as f:
+                st.session_state.delimiters = json.load(f)
+            with open(os.path.join(BASE_LD_PATH, st.session_state.upload_language, "batch_id_store.json"), "r",
+                      encoding='utf-8') as f:
+                content = json.load(f)
 
         if st.session_state.upload_language in cfg["credentials"]["usernames"].get(username, {}).get("caretaker",
                                                                                                      []):
@@ -323,7 +423,7 @@ with tab2:
                 collection_date = st.date_input("Collection date")
                 collection_location = st.text_input("Collection location")
                 informant = st.text_input("Collected from (speaker(s) full name(s))")
-                field_worker = st.text_input("Collected by (field worker's full name)")
+                field_worker = st.text_input("Collected by (language documenter's full name)")
                 visibility = "Everyone"
                 data_format = st.selectbox("Format", ["Excel template", "FleX XML", "DIG4EL JSON", "other"])
                 consent_received = True
