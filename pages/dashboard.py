@@ -385,9 +385,9 @@ with tab1:
 
     if role in ["admin", "caretaker"]:
         with pl2:
-            st.markdown("#### ⬆️ Upload CQs")
-            st.caption("Upload your CQ set to be used by DIG4EL.")
-            if st.button("Upload CQs", use_container_width=True):
+            st.markdown("#### ⬆️ Infer grammar from CQs")
+            st.caption("Choose CQs to use and infer grammar.")
+            if st.button("Select and Infer", use_container_width=True):
                 st.switch_page("pages/infer_from_knowledge_and_cqs.py")
 
     if st.session_state.indi_language in os.listdir(BASE_LD_PATH):
