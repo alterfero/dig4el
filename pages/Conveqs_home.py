@@ -361,7 +361,7 @@ with tab2:
                 st.markdown("Note that a pseudo-glottocode is added: {}".format(free_language_input.lower() + "+"))
                 with open(os.path.join(BASE_LD_PATH, "languages.json"), "r") as fg:
                     language_list_json = json.load(fg)
-                language_list_json[free_language_input.capitalize() + "+"] = free_language_input + "+"
+                language_list_json[free_language_input.capitalize()] = free_language_input.lower() + "+"
                 with open(os.path.join(BASE_LD_PATH, "languages.json"), "w") as fgg:
                     json.dump(language_list_json, fgg, indent=4)
         else:
