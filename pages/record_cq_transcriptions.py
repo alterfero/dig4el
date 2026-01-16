@@ -207,10 +207,10 @@ def language_selection(role):
             fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
             st.success("Adding {} to the list of languages.".format(free_language_input))
             st.markdown("Note that a pseudo-glottocode is added: {}".format(free_language_input.lower() + "+"))
-            with open(os.path.join(".", "external_data", "glottolog_derived", "languages.json"), "r") as fg:
+            with open(os.path.join(".", BASE_LD_PATH,"languages.json"), "r") as fg:
                 language_list_json = json.load(fg)
             language_list_json[free_language_input.capitalize()] = free_language_input.lower() + "+"
-            with open(os.path.join(".", "external_data", "glottolog_derived", "languages.json"), "w") as fgg:
+            with open(os.path.join(BASE_LD_PATH, "languages.json"), "w") as fgg:
                 json.dump(language_list_json, fgg, indent=4)
     else:
         selected_language = selected_language_from_list
