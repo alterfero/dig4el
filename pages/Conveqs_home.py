@@ -208,7 +208,7 @@ elif auth_status is False:
 
 else:
     role = None
-    st.info("Please log in or click on the 'Use without loging in' button")
+    st.info("Please log in or click on the 'Use without logging in' button")
 
 
 # =========================== LOGIC AND UI =============================================

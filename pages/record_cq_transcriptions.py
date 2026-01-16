@@ -242,7 +242,7 @@ with st.sidebar:
 
 # AUTH UI AND FLOW -----------------------------------------------------------------------
 if st.session_state["username"] is None:
-    if st.button("Use without loging in"):
+    if st.button("Use without logging in"):
         st.session_state.is_guest = True
 # ---------- Guest path: skip rendering the login widget entirely ----------
 if st.session_state.is_guest:
@@ -313,7 +313,7 @@ elif auth_status is False:
 
 else:
     role = None
-    st.info("Please log in or click on the 'Use without loging in' button")
+    st.info("Please log in or click on the 'Use without logging in' button")
 
 # ==================== VISUAL STEPPER ==========================
 
