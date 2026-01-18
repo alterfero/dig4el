@@ -9,14 +9,22 @@ api_key = os.getenv("OPEN_AI_KEY")
 client = openai.AsyncOpenAI(api_key=api_key)
 
 
-async def list_files(includes=None):
-    files_response = await client.files.list()
-    files = files_response.data
-    if includes is not None:
-        filtered_files = [f for f in files if includes in f.filename]
-    else:
-        filtered_files = files
-    return filtered_files
+async def list_files(includes: str | None = None, limit: int = 1000):
+    after = None
+    out = []
+
+    while True:
+        resp = await client.files.list(limit=limit, after=after)
+        page = resp.data or []
+        if includes is not None:
+            page = [f for f in page if includes in (f.filename or "")]
+        out.extend(page)
+
+        if len(resp.data) < limit:
+            break
+        after = resp.data[-1].id  # cursor for next page
+
+    return out
 
 
 async def create_file(path, filename):
@@ -72,10 +80,21 @@ async def list_vector_stores():
 
     return all_vss
 
-async def list_files_in_vector_store(vid):
-    vector_stores_response = await client.vector_stores.files.list(vector_store_id=vid)
-    return vector_stores_response.data
-
+async def list_files_in_vector_store(vector_store_id: str, status: str | None = None, limit: int = 100):
+    after = None
+    out = []
+    while True:
+        resp = await client.vector_stores.files.list(
+            vector_store_id=vector_store_id,
+            limit=limit,
+            after=after,
+            filter=status,  # e.g. "completed" / "in_progress"
+        )
+        out.extend(resp.data or [])
+        if len(resp.data) < limit:
+            break
+        after = resp.data[-1].id
+    return out
 
 async def add_files_to_vector_store(vsid, file_ids):
     batch = await client.vector_stores.file_batches.create_and_poll(
@@ -191,3 +210,5 @@ def delete_empty_vector_stores_sync():
 #delete_empty_vector_stores_sync()
 
 # add_files_to_vector_store_sync("vs_689a3a91a7c48191ab56e68301d892a2", ["file-Y86RUhvJq3qVvsfizLG4m6"])
+
+# delete_empty_vector_stores_sync()

@@ -423,6 +423,8 @@ if st.session_state.has_access:
             st.success("All vector stores deleted")
             st.rerun()
 
+        if st.button("Erase all empty vector stores"):
+            vsu.delete_empty_vector_stores_sync()
 
     with st.expander("User management"):
         colu1, colu2 = st.columns(2)

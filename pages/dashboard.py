@@ -124,6 +124,8 @@ if "llm_augmentation" not in st.session_state:
     st.session_state.llm_augmentation = True
 if "force_augmentation" not in st.session_state:
     st.session_state.force_augmentation = False
+if "admin_verbose" not in st.session_state:
+    st.session_state.admin_verbose = True
 
 # ------ AUTH SETUP --------------------------------------------------------------------------------
 CFG_PATH = Path(
@@ -229,6 +231,9 @@ if auth_status:
     if role in ["admin", "caretaker"]:
         title = role
     st.sidebar.success(f"Hello, {title} {name or username}")
+    if role == "admin" and st.session_state.admin_verbose:
+        st.session_state.admin_verbose = st.sidebar.checkbox("Admin verbose: {}".format(st.session_state.admin_verbose),
+                                            value=st.session_state.admin_verbose)
     if st.session_state.is_guest:
         if st.sidebar.button("Logout", key="guest_logout"):
             for x in ("is_guest", "authentication_status", "username", "name"):
@@ -397,7 +402,7 @@ with tab1:
                 st.success("{} CQ translations available: ".format(len(existing_cqs)))
                 for cqfn in existing_cqs:
                     st.write("- {}".format(cqfn))
-            if role == "admin":
+            if role == "admin" and st.session_state.admin_verbose:
                 if "cq_knowledge" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq")):
                     if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
                                                                       "cq",
@@ -472,7 +477,8 @@ with tab2:
     # checking if vector store exists from api call and info, create one if needed
 
     vsid_from_info_dict = st.session_state.info_doc["documents"].get("oa_vector_store_id", None)
-    print("vsid_from_info_dict: {}".format(vsid_from_info_dict))
+    if role == "admin" and st.session_state.admin_verbose:
+        st.write("admin: vsid_from_info_dict: {}".format(vsid_from_info_dict))
     with st.spinner("Updating store list"):
         st.session_state.available_vector_stores = ovsu.list_vector_stores_sync()  # ADDED FOR TESTING
     # print("Updated VS list: {}".format(st.session_state.available_vector_stores))
@@ -480,15 +486,18 @@ with tab2:
 
     if vsid_from_info_dict is not None and vsid_from_info_dict in [vs.id for vs in st.session_state.available_vector_stores]:
         st.session_state.vsid = vsid_from_info_dict
-        st.write("An existing vector store has been found.")
-        print("{} VSID found and matches ({})".format(st.session_state.indi_language, st.session_state.vsid))
+        if role == "admin" and st.session_state.admin_verbose:
+            st.write("An existing vector store has been found.")
+            st.write("{} VSID found and matches ({})".format(st.session_state.indi_language, st.session_state.vsid))
         st.session_state.has_vector_store = True
     else:
-        print("No VSID found in info_dict matching an existing VSID: Creating a vector store")
-        st.write("No vector store found with ID {}".format(st.session_state.indi_language, st.session_state.vsid))
+        if role == "admin" and st.session_state.admin_verbose:
+            st.write("No VSID found in info_dict matching an existing VSID: Creating a vector store")
+            st.write("No vector store found with ID {}".format(st.session_state.indi_language, st.session_state.vsid))
         with st.spinner("Creating new vector store"):
             st.session_state.vsid = ovsu.create_vector_store_sync(st.session_state.indi_language + "_documents")
-            print("New VSID: {}".format(st.session_state.vsid))
+            if role == "admin" and st.session_state.admin_verbose:
+                st.write("admin: New VSID: {}".format(st.session_state.vsid))
             st.session_state.info_doc["documents"]["oa_vector_store_id"] = st.session_state.vsid
             with st.spinner("Updating..."):
                 print("{} stores in st.session_state.available_vector_stores BEFORE update".format(len(st.session_state.available_vector_stores)))
@@ -496,7 +505,8 @@ with tab2:
                 print("{} stores in st.session_state.available_vector_stores AFTER update".format(len(st.session_state.available_vector_stores)))
 
             save_info_dict()
-        print("New vector store created with VSID {}".format(st.session_state.vsid))
+        if role == "admin" and st.session_state.admin_verbose:
+            st.write("admin: New vector store created with VSID {}".format(st.session_state.vsid))
         st.session_state.has_vector_store = True
 
     # list which uploaded files are staged
@@ -541,12 +551,12 @@ with tab2:
     to_vectorize = [f for f in st.session_state.file_status_list if f["staged"] and not f["vectorized"]]
     if to_vectorize:
         colw2.markdown("**{} staged files to vectorize**".format(len(to_vectorize)))
-        if st.checkbox("Check details"):
-            st.write("Vector Store ID: {}".format(st.session_state.vsid))
+        if role == "admin" and adminverbose:
+            st.write("admin: Vector Store ID: {}".format(st.session_state.vsid))
             st.write([vs for vs in ovsu.list_vector_stores_sync() if vs.id == st.session_state.vsid])
-            st.write("Files to vectorize: ")
+            st.write("admin: Files to vectorize: ")
             st.write(to_vectorize)
-        with st.spinner("Vectorizing {} unvectorized staged files".format(len([f["id"] for f in to_vectorize]))):
+        with st.spinner("admin: Vectorizing {} unvectorized staged files".format(len([f["id"] for f in to_vectorize]))):
             to_vec_fids = [f["id"] for f in to_vectorize]
             with colw2:
                 ovsu.add_files_to_vector_store_sync(vsid=st.session_state.vsid,
@@ -557,7 +567,7 @@ with tab2:
     elif not to_stage and not to_vectorize:
         colw2.success("All files staged and vectorized")
 
-    if role == "admin":
+    if role == "admin" and st.session_state.admin_verbose:
         if st.session_state.vectorized_docs and st.button("Check vectorization status"):
             st.session_state.vector_store_status = ovsu.check_vector_store_status_sync(st.session_state.vsid)
             if st.session_state.vector_store_status is not None:
@@ -621,7 +631,7 @@ with tab3:
         st.dataframe(df_display)
 
     # ===== ADMIN CONVERSION TEST =======================================
-    if role == "admin":
+    if role == "admin" and st.session_state.admin_verbose:
         file_to_convert = st.file_uploader("Convert file",
                                            accept_multiple_files=False,
                                            key="convert_file_upload")
@@ -757,7 +767,7 @@ with tab3:
     #     if sas.get("gloss", None):
     #         st.write(sas["gloss"])
 
-    if role == "admin":
+    if role == "admin" and st.session_state.admin_verbose:
         with st.sidebar:
             st.session_state.llm_augmentation = st.checkbox("ADMIN: Use LLM for augmentation",
                                                             value=st.session_state.llm_augmentation)
@@ -851,7 +861,7 @@ with tab3:
                                       st.session_state.indi_language))
 
         progress = squ.get_batch_progress(st.session_state.batch_id)
-        if role == "admin":
+        if role == "admin" and st.session_state.admin_verbose:
             st.markdown("**ADMIN**: batch ID {}, progress: {}".format(st.session_state.batch_id, progress))
         if progress["queued"] != progress["finished"] + progress["failed"]:
             st.markdown("""The sentence augmentation is in progress. It is a long process (up to 2 minutes per sentence)
@@ -872,7 +882,7 @@ with tab3:
         st.divider()
         st.markdown("*Only caretakers can trigger sentence augmentation*")
 
-    if role == "admin":
+    if role == "admin" and st.session_state.admin_verbose:
         with st.sidebar:
             if st.checkbox("Redis info"):
                 progress = squ.get_batch_progress(st.session_state.batch_id)
@@ -957,7 +967,7 @@ with tab3:
                     slap["word connections"] = copy.deepcopy(slap["connections"])
                     del slap["connections"]
                 # ===
-            if role == "admin":
+            if role == "admin" and st.session_state.admin_verbose:
                 with st.popover("ADMIN: slap"):
                     st.write(slap)
             source = st.text_input("Edit Source", value=slap.get("source", ""))
@@ -1039,7 +1049,7 @@ with tab3:
         st.divider()
         st.markdown("*Contact us to make word(s)-concepts connections*")
 
-    if role == "admin":
+    if role == "admin" and st.session_state.admin_verbose:
         st.divider()
         with st.expander("ADMIN: Test sentence pairs retrieval"):
             with st.spinner("Refreshing keyword index"):
@@ -1094,6 +1104,6 @@ with tab3:
                     selection = sda.select_sentences_sync(query, sentence_pool)
                     st.write(selection.sentence_list)
 
-if role == "admin":
+if role == "admin" and st.session_state.admin_verbose:
     with st.sidebar:
         st.page_link("pages/File_explorer.py", label="danger zone")
