@@ -168,8 +168,14 @@ def display_cq(cqo: dict, delimiters, title, uid, gloss=False):
         st.markdown("{}: *{}*".format("english", segment["english"]))
         if "alternate_pivot" in segment:
             if segment["alternate_pivot"] != "":
-                st.markdown("{}: *{}*".format("vehicular", segment["alternate_pivot"]))
+                st.markdown("{}: *{}*".format("Lingua franca", segment["alternate_pivot"]))
         st.markdown("{}: **{}**".format(indi, segment[indi]))
+        lebt = segment.get("lebt", "")
+        if lebt != "":
+            st.markdown("Literal English Back-Translation: {}".format(lebt))
+        comment = segment.get("comment", "")
+        if comment != "":
+            st.markdown("Comments: {}".format(comment))
         st.divider()
 
 

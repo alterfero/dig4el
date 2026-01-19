@@ -19,7 +19,6 @@ import time
 import os
 import pandas as pd
 import json
-from datetime import datetime
 from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
 from libs import openai_vector_store_utils as ovsu
@@ -27,7 +26,7 @@ from libs import sentence_queue_utils as squ
 from libs import retrieval_augmented_generation_utils as ragu
 from libs import utils
 from libs import file_format_utils as ffu
-import streamlit.components.v1 as components
+from libs import display_utils as du
 from libs import utils as u
 from libs import stats
 import streamlit_authenticator as stauth
@@ -399,9 +398,26 @@ with tab1:
         if "cq" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language)):
             existing_cqs = [f for f in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq", "cq_translations")) if f.endswith(".json")]
             if existing_cqs:
-                st.success("{} CQ translations available: ".format(len(existing_cqs)))
-                for cqfn in existing_cqs:
-                    st.write("- {}".format(cqfn))
+                st.success("{} CQ translations available: click in the table to display a CQ".format(len(existing_cqs)))
+                cq_catalog = u.catalog_all_available_cqs(language=st.session_state.indi_language)
+                cq_catalog_df = pd.DataFrame(cq_catalog).sort_values(by="title")
+                selected_cell = st.dataframe(cq_catalog_df, hide_index=True,
+                                             column_order=["title", "language", "pivot", "info"],
+                                             selection_mode="single-cell", on_select="rerun")
+
+                if selected_cell != []:
+                    selected_cq_index_in_displayed_df = selected_cell["selection"]["cells"][0][0]
+                    catalog_entry = cq_catalog_df.iloc[selected_cq_index_in_displayed_df]
+                    with open(os.path.join(BASE_LD_PATH, catalog_entry["language"], "cq", "cq_translations",
+                                           catalog_entry["filename"])) as fcqd:
+                        cqd = json.load(fcqd)
+                    du.display_cq(cqd, st.session_state.delimiters,
+                                  title=catalog_entry["title"],
+                                  uid=catalog_entry["uid"],
+                                  gloss=False)
+                else:
+                    st.write("Select a CQ in the table to see its content.")
+
             if role == "admin" and st.session_state.admin_verbose:
                 if "cq_knowledge" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq")):
                     if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,

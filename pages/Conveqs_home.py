@@ -26,13 +26,8 @@ from libs import glottolog_utils as gu
 from libs import file_manager_utils as fmu
 from libs import utils as u
 from libs import display_utils as du
-from libs import knowledge_graph_utils as kgu
-from libs import stats
-from libs import output_generation_utils as ogu
 from datetime import datetime
 import pandas as pd
-import plotly.express as px
-from pyvis.network import Network
 
 # TODO: Save alert / Autosave
 # TODO: Explain the difference between the original file and the local file.

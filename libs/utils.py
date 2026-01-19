@@ -398,14 +398,20 @@ def update_concept_names_in_transcription(transcription):
 
     return new_transcription, found_some
 
-def catalog_all_available_cqs():
+def catalog_all_available_cqs(language=None):
     with open("./uid_dict.json", "r") as uid:
         uid_dict = json.load(uid)
     cq_catalog = []
-    languages = [l
-                 for l
-                 in os.listdir(os.path.join(BASE_LD_PATH))
-                 if l in gu.GLOTTO_LANGUAGE_LIST.keys()]
+    if language:
+        if language in os.listdir(os.path.join(BASE_LD_PATH)):
+            languages = [language]
+        else:
+            return []
+    else:
+        languages = [l
+                     for l
+                     in os.listdir(os.path.join(BASE_LD_PATH))
+                     if l in gu.GLOTTO_LANGUAGE_LIST.keys()]
     index = 0
     for language in languages:
         if "cq" in os.listdir(os.path.join(BASE_LD_PATH, language)):

@@ -707,6 +707,12 @@ if st.session_state["cq_is_chosen"]:
         else:
             st.session_state["recording"]["data"][str(st.session_state["counter"])]["alternate_pivot"] = ""
             alternate_pivot_default = ""
+        # LEBT
+        if "lebt" in st.session_state["recording"]["data"][str(st.session_state["counter"])].keys():
+            default_lebt = st.session_state["recording"]["data"][str(st.session_state["counter"])]["lebt"]
+        else:
+            st.session_state["recording"]["data"][str(st.session_state["counter"])]["lebt"] = ""
+            default_lebt = ""
         # comment
         if "comment" in st.session_state["recording"]["data"][str(st.session_state["counter"])].keys():
             default_comment = st.session_state["recording"]["data"][str(st.session_state["counter"])]["comment"]
@@ -718,6 +724,7 @@ if st.session_state["cq_is_chosen"]:
         translation_default = ""
         alternate_pivot_default = ""
         default_comment = ""
+        default_lebt = ""
 
     # if pivot language is not english, store the pivot form
     if st.session_state.pivot_language != "English":
@@ -810,6 +817,10 @@ if st.session_state["cq_is_chosen"]:
     # if type_of_predicate != predicate_default and predicate_default in concept_words.keys():
     #     del concept_words[predicate_default]
 
+    # Literal English Back-Translation
+    with colz:
+        lebt = st.text_input("What would be the literal English translation of this {} sentence? (Relevant if you judge that the sentence in {} differs significantly from the English original)".format(st.session_state.indi_language, st.session_state.indi_language),
+                             value=default_lebt, key="lebt" + str(st.session_state["counter"]))
     # Comments
     comment = colz.text_input("Comments/Notes", value=default_comment, key="comment" + str(st.session_state["counter"]))
 
@@ -821,6 +832,7 @@ if st.session_state["cq_is_chosen"]:
             "alternate_pivot": alternate_pivot,
             "translation": translation,
             "concept_words": concept_words,
+            "lebt": lebt,
             "comment": comment
         }
         save_tmp()
