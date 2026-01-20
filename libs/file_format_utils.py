@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import json
-from libs import utils
+import re
+from collections import defaultdict
 
 
 def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath):
@@ -37,10 +38,6 @@ def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath):
 
 # =============
 
-import json
-import re
-from collections import defaultdict
-from typing import Any, Dict, List
 
 TAG_RE = re.compile(r'^[A-Z0-9.\-]+$')
 
@@ -102,3 +99,4 @@ def transform_gloss_json(input_path: str, output_path: str) -> None:
         json.dump(transformed, f, ensure_ascii=False, indent=2)
 
     print(f"✅ Transformation complete. Output written to: {output_path}")
+

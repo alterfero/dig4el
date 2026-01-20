@@ -567,7 +567,7 @@ with tab2:
     to_vectorize = [f for f in st.session_state.file_status_list if f["staged"] and not f["vectorized"]]
     if to_vectorize:
         colw2.markdown("**{} staged files to vectorize**".format(len(to_vectorize)))
-        if role == "admin" and adminverbose:
+        if role == "admin" and st.session_state.admin_verbose:
             st.write("admin: Vector Store ID: {}".format(st.session_state.vsid))
             st.write([vs for vs in ovsu.list_vector_stores_sync() if vs.id == st.session_state.vsid])
             st.write("admin: Files to vectorize: ")
