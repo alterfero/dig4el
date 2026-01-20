@@ -200,3 +200,15 @@ def display_file_manager(folder_path: str, file_extensions: list[str] = None):
                 if st.button("Cancel", key='delete_cancel'):
                     st.session_state.confirm_delete = False
                     st.rerun()
+
+
+def delete_all_files_in_folder(folder_path):
+    """Delete all files in the specified folder."""
+    try:
+        for file_name in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file_name)
+            if os.path.isfile(file_path):  # Check if it's a file
+                os.remove(file_path)  # Delete the file
+                print(f"Deleted: {file_path}")
+    except Exception as e:
+        print(f"Error: {e}")

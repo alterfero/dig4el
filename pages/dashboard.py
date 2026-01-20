@@ -671,7 +671,6 @@ with tab3:
 
 
     # ====== NEW PAIRS FILE UPLOAD FORM ==================================
-
     if role in ["guest", "user"]:
         st.markdown("*Caretakers only can upload sentence pairs. Contact us if you want to be a caretaker of {}*".format(st.session_state.indi_language))
     elif role in ["admin", "caretaker"]:
@@ -789,6 +788,12 @@ with tab3:
                                                             value=st.session_state.llm_augmentation)
             st.session_state.force_augmentation = st.checkbox("ADMIN: Force re-augmentation",
                                                               value=st.session_state.force_augmentation)
+
+            if st.button("Reset augmented pairs"):
+                u.reset_augmented_pairs(st.session_state.indi_language)
+
+            if st.button("Reset sentence pairs"):
+                u.reset_pairs(st.session_state.indi_language)
 
     # ========= SENTENCE PAIRS AUGMENTATION ================================================
 

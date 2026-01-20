@@ -23,6 +23,7 @@ import hashlib
 import streamlit as st
 import unicodedata
 from libs import glottolog_utils as gu
+from libs import file_manager_utils as fmu
 
 from collections.abc import Mapping, Sequence
 
@@ -444,6 +445,61 @@ def catalog_all_available_cqs(language=None):
                 except:
                     print("EXCEPTION: Error opening json CQ {} for language {}".format(cq, language))
     return cq_catalog
+
+
+def reset_augmented_pairs(language):
+    hard_index = {}
+    curren_job_sig = []
+    batch_id_store = {"batch_id": ""}
+    delimiters = [" ", ".", ",", ";", ":", "!", "?", "\u2026"]
+    print(f"Resetting augmented sentence pairs for language {language}")
+    fmu.delete_all_files_in_folder(os.path.join(BASE_LD_PATH, language, "sentence_pairs", "augmented_pairs"))
+    fmu.delete_all_files_in_folder(os.path.join(BASE_LD_PATH, language, "sentence_pairs", "vector_ready_pairs"))
+    fmu.delete_all_files_in_folder(
+        os.path.join(BASE_LD_PATH, language, "sentence_pairs", "vectors", "description_vectors"))
+
+    with open(os.path.join(BASE_LD_PATH, language, "sentence_pairs", "vectors", "hard_index.json"), "w") as f1:
+        json.dump(hard_index, f1)
+    with open(os.path.join(BASE_LD_PATH, language, "batch_id_store.json"), "w") as f2:
+        json.dump(batch_id_store, f2)
+
+    with open(os.path.join(BASE_LD_PATH, language, "info.json"), "r") as f3:
+        info = json.load(f3)
+    info["documents"]["vectorized"] = []
+    with open(os.path.join(BASE_LD_PATH, language, "info.json"), "w") as f4:
+        json.dump(info, f4)
+    return True
+
+
+def reset_pairs(language):
+    hard_index = {}
+    curren_job_sig = []
+    batch_id_store = {"batch_id": ""}
+    delimiters = [" ", ".", ",", ";", ":", "!", "?", "\u2026"]
+    print(f"Resetting sentence pairs for language {language}")
+    fmu.delete_all_files_in_folder(os.path.join(BASE_LD_PATH, language, "sentence_pairs", "augmented_pairs"))
+    fmu.delete_all_files_in_folder(os.path.join(BASE_LD_PATH, language, "sentence_pairs", "pairs"))
+    fmu.delete_all_files_in_folder(os.path.join(BASE_LD_PATH, language, "sentence_pairs", "vector_ready_pairs"))
+    fmu.delete_all_files_in_folder(os.path.join(BASE_LD_PATH, language, "sentence_pairs", "vectors", "description_vectors"))
+    with open(os.path.join(BASE_LD_PATH, language, "sentence_pairs", "vectors", "hard_index.json"), "w") as f1:
+        json.dump(hard_index, f1)
+
+    with open(os.path.join(BASE_LD_PATH, language, "batch_id_store.json"), "w") as f2:
+        json.dump(batch_id_store, f2)
+    with open(os.path.join(BASE_LD_PATH, language, "delimiters.json"), "w") as f3:
+        json.dump(delimiters, f3)
+
+    with open(os.path.join(BASE_LD_PATH, language, "info.json"), "r") as f4:
+        info = json.load(f4)
+    info["language"] = language
+    info["documents"]["vectorized"] = []
+    info["pairs"] = []
+    with open(os.path.join(BASE_LD_PATH, language, "info.json"), "w") as f5:
+        json.dump(info, f5)
+    return True
+
+
+
 
 def usercode(username:str)->str:
     ucode = username.replace(".","_")
