@@ -465,7 +465,7 @@ st.markdown(
       <span class="dig4el-badge">2</span>
       <span class="dig4el-icon">📂</span>
     </div>
-    <div class="dig4el-title">Start or resume a CQ</div>
+    <div class="dig4el-title">Start or load a CQ</div>
     <p class="dig4el-text">Recover your last session, upload a CQ from your computer, or start a new one from scratch.</p>
   </div>
 
@@ -536,18 +536,33 @@ if not st.session_state["loaded_existing_transcription"]:
     # UPLOAD
     with st.expander("Upload a CQ translation in {} from your computer"
                      .format(st.session_state.indi_language)):
+        st.markdown("You can upload a **DIG4EL JSON** file (that you would have saved on your computer from this interface) or a **DIG4EL Excel** file (that you would have downloaded empty from this interface and completed).")
         existing_recording = st.file_uploader("Load an existing DIG4EL CQ translation in {}"
-                                              .format(st.session_state.indi_language), type="json")
+                                              .format(st.session_state.indi_language))
+
         if existing_recording is not None:
-            st.session_state["recording"] = json.load(existing_recording)
-            print("Existing CQ translation loaded: ", existing_recording.name)
-            st.session_state["existing_filename"] = existing_recording.name
-            # update concept labels
-            st.session_state["recording"], found_old_labels = utils.update_concept_names_in_transcription(
-                st.session_state["recording"])
-            if role=="admin" and found_old_labels:
-                st.success("admin: Some concept labels have been updated to the latest version.")
-            st.session_state["loaded_existing_transcription"] = True
+            recname = str(existing_recording.name)
+            if recname[-5:] == ".json":
+                st.session_state["recording"] = json.load(existing_recording)
+                print("Existing CQ translation loaded: ", existing_recording.name)
+                st.session_state["existing_filename"] = existing_recording.name
+                # update concept labels
+                st.session_state["recording"], found_old_labels = utils.update_concept_names_in_transcription(
+                    st.session_state["recording"])
+                if role=="admin" and found_old_labels:
+                    st.success("admin: Some concept labels have been updated to the latest version.")
+                st.session_state["loaded_existing_transcription"] = True
+            elif recname[-5:] == ".xlsx":
+                try:
+                    # uploaded is an UploadedFile; pass its bytes or file-like object
+                    cq_translation = ogu.cq_translation_from_transcription_xlsx(existing_recording.getvalue())
+                    st.session_state["recording"] = cq_translation
+                    st.session_state["loaded_existing_transcription"] = True
+                except Exception as e:
+                    st.error(f"Failed to parse the workbook: {e}")
+                    st.stop()
+            else:
+                st.warning(f"File format not compatible: {existing_recording.name}")
 
 # FILL DEFAULTS ACCORDING TO RECOVERED OR UPLOADED
 if st.session_state["loaded_existing_transcription"]:
@@ -596,7 +611,7 @@ else:  ## if not loaded_existing_transcription
         default_data = st.session_state["recording"]["data"]
 
 # START A NEW TRANSLATION
-if not st.session_state["cq_is_chosen"]:
+if not st.session_state["cq_is_chosen"] and not st.session_state["loaded_existing_transcription"]:
     st.markdown("**...or directly start a new CQ translation in {} below.**".format(st.session_state.indi_language))
 if role == "guest":
     st.markdown(
@@ -771,8 +786,9 @@ if st.session_state["cq_is_chosen"]:
     for concept in concept_list:
         concept_default = []
         if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
-            if concept in st.session_state["recording"]["data"][str(st.session_state["counter"])][
-                "concept_words"].keys():
+            print("YYY concept {} keys {}".format(concept, st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"].keys()))
+            if concept in st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"].keys():
+                print("XXX {}:{}".format(concept, st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"]))
                 target_word_list = utils.listify(
                     st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"][concept])
                 if all(element in segmented_target_sentence for element in target_word_list):

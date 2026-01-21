@@ -405,7 +405,7 @@ with tab1:
                                              column_order=["title", "language", "pivot", "info"],
                                              selection_mode="single-cell", on_select="rerun")
 
-                if selected_cell != []:
+                if selected_cell["selection"]["cells"] != []:
                     selected_cq_index_in_displayed_df = selected_cell["selection"]["cells"][0][0]
                     catalog_entry = cq_catalog_df.iloc[selected_cq_index_in_displayed_df]
                     with open(os.path.join(BASE_LD_PATH, catalog_entry["language"], "cq", "cq_translations",

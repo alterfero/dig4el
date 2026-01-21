@@ -192,7 +192,7 @@ lesson_agent = Agent(
     - Description coming from a compilation of documents.
     - List of examples, each with its description.
     - List of sentence pairs, some with explicit connections between the concepts in the sentence and words in 
-        the endangered language sentence. 
+        the endangered language sentence, some with comments, some with a literal English back-translation.
     
     NOTE ON INPUTS: If there are contradictions between inputs, be explicit about it and cite the diverging sources.
         

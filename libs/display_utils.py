@@ -165,7 +165,7 @@ def display_cq(cqo: dict, delimiters, title, uid, gloss=False):
     for segment in discq["dialog"]:
 
         st.write("{}: {}".format(segment["index"], segment["speaker"]))
-        st.markdown("{}: *{}*".format("english", segment["english"]))
+        st.markdown("{}: *{}*".format("English", segment["english"]))
         if "alternate_pivot" in segment:
             if segment["alternate_pivot"] != "":
                 st.markdown("{}: *{}*".format("Lingua franca", segment["alternate_pivot"]))

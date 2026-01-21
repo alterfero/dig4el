@@ -816,8 +816,10 @@ if (st.session_state.alterlingua_contribution
                                 st.session_state.indi: sp["target"],
                                 "source": sp["source"],
                                 "grammatical_description": sp["description"],
-                                "concept-words_connections": sp.get("key_translation_concepts", "no connections"),
-                                "gloss": sp.get("gloss", "no gloss")
+                                "concept-words_connections": sp.get("word connections", ""),
+                                "comment": sp.get("comment", ""),
+                                "literal English back-translation": sp.get("lebt", ""),
+                                "gloss": sp.get("gloss", "")
                             }
                         sps.append(sapd)
                     else:
