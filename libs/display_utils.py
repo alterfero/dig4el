@@ -60,10 +60,14 @@ DELIMITER_BANK = [
     "—",  # Em dash
 ]
 
-if "ccq" not in st.session_state:
-    with open("./conveqs/canonical_cqs.json", "r") as f:
-        st.session_state.ccq = json.load(f)
 
+@st.cache_data(show_spinner=False)
+def load_ccq(path: str, mtime: float):
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+CCQ_PATH = os.path.join(".","conveqs","canonical_cqs.json")
+ccq = load_ccq(CCQ_PATH, os.path.getmtime(CCQ_PATH))
 
 def normalize_to_list(data_dict):
     # Ensure numeric sorting, even if keys are strings like "1", "24", "03", etc.
@@ -131,8 +135,8 @@ def display_cq(cqo: dict, delimiters, title, uid, gloss=False):
             cqo_ready["data"][index] = value
 
     canonical_cq = [value
-                    for item, value in st.session_state.ccq.items()
-                    if st.session_state.ccq[item]["uid"] == uid][0]
+                    for item, value in ccq.items()
+                    if ccq[item]["uid"] == uid][0]
 
     discq = copy.deepcopy(canonical_cq)
 
@@ -182,8 +186,8 @@ def display_cq(cqo: dict, delimiters, title, uid, gloss=False):
 def display_same_cq_multiple_languages(cqs: list, title: str, uid: str) -> None:
     indis = []
     canonical_cq = [value
-                    for item, value in st.session_state.ccq.items()
-                    if st.session_state.ccq[item]["uid"] == uid][0]
+                    for item, value in ccq.items()
+                    if ccq[item]["uid"] == uid][0]
     discq = copy.deepcopy(canonical_cq)
 
     for cqo in cqs:
