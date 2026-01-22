@@ -4,6 +4,7 @@ import requests
 from io import BytesIO
 import asyncio
 import aiofiles
+import time
 from typing import Optional
 
 api_key = os.getenv("OPEN_AI_KEY")
@@ -127,45 +128,50 @@ async def list_vector_stores():
 #
 #     return out
 
-async def list_files_in_vector_store(
-    vector_store_id: str,
-    status: Optional[str] = None,
-    limit: int = 100,
-    max_pages: int = 1000,   # safety
-):
+async def list_files_in_vector_store(vector_store_id: str, status: str | None = None, limit: int = 100):
     client = openai.AsyncOpenAI(api_key=api_key)
+
     after = None
     out = []
-    last_after = object()
+    seen_cursors = set()
 
-    for _ in range(max_pages):
-        resp = await client.vector_stores.files.list(
-            vector_store_id=vector_store_id,
-            limit=limit,
-            after=after,
-            filter=status,  # in_progress / completed / failed / cancelled
-        )
+    while True:
+        t0 = time.time()
+        print(f"[VS] requesting page after={after} filter={status} limit={limit}")
 
+        try:
+            # HARD timeout so “hangs” become an error you can see
+            resp = await asyncio.wait_for(
+                client.vector_stores.files.list(
+                    vector_store_id=vector_store_id,
+                    limit=limit,
+                    after=after,
+                    filter=status,
+                ),
+                timeout=15,
+            )
+        except asyncio.TimeoutError:
+            raise RuntimeError(f"Timed out calling vector_stores.files.list(after={after})")
+
+        dt = time.time() - t0
         data = resp.data or []
+        print(f"[VS] got {len(data)} in {dt:.2f}s has_more={getattr(resp,'has_more',None)} last_id={getattr(resp,'last_id',None)}")
+
         out.extend(data)
 
-        # Stop condition per API: has_more + last_id :contentReference[oaicite:1]{index=1}
         if not getattr(resp, "has_more", False):
             break
 
-        next_after = getattr(resp, "last_id", None) or (data[-1].id if data else None)
+        next_after = getattr(resp, "last_id", None)
         if not next_after:
             break
 
-        # Infinite-loop / non-advancing cursor guard (prevents “hang forever”)
-        if next_after == after or next_after == last_after:
-            raise RuntimeError(f"Pagination cursor not advancing (after={after}, next={next_after})")
+        # Cursor-advance guard (prevents infinite loops)
+        if next_after in seen_cursors:
+            raise RuntimeError(f"Pagination cursor repeating: {next_after}")
+        seen_cursors.add(next_after)
 
-        last_after = after
         after = next_after
-
-    else:
-        raise RuntimeError(f"Hit max_pages={max_pages}; vector store likely huge or pagination stuck.")
 
     return out
 
@@ -289,3 +295,7 @@ def delete_empty_vector_stores_sync():
 # add_files_to_vector_store_sync("vs_689a3a91a7c48191ab56e68301d892a2", ["file-Y86RUhvJq3qVvsfizLG4m6"])
 
 # delete_empty_vector_stores_sync()
+
+# fs = list_files_in_vector_store_sync("vs_696d47d88e5c8191b447435380815720")
+# for f in fs:
+#     print(f)
