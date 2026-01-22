@@ -4,12 +4,12 @@ import requests
 from io import BytesIO
 import asyncio
 import aiofiles
+from typing import Optional
 
 api_key = os.getenv("OPEN_AI_KEY")
-client = openai.AsyncOpenAI(api_key=api_key)
-
 
 async def list_files(includes: str | None = None, limit: int = 1000):
+    client = openai.AsyncOpenAI(api_key=api_key)
     after = None
     out = []
 
@@ -28,6 +28,7 @@ async def list_files(includes: str | None = None, limit: int = 1000):
 
 
 async def create_file(path, filename):
+    client = openai.AsyncOpenAI(api_key=api_key)
     async with aiofiles.open(os.path.join(path, filename), "rb") as file_content:
         file_bytes = await file_content.read()
         result = await client.files.create(
@@ -39,6 +40,7 @@ async def create_file(path, filename):
 
 
 async def delete_all_files():
+    client = openai.AsyncOpenAI(api_key=api_key)
     files_response = await client.files.list()
     files = files_response.data
     for file in files:
@@ -46,6 +48,7 @@ async def delete_all_files():
 
 
 async def delete_files_containing(fn_part):
+    client = openai.AsyncOpenAI(api_key=api_key)
     files_response = await client.files.list()
     files = files_response.data
     for file in files:
@@ -54,16 +57,19 @@ async def delete_files_containing(fn_part):
 
 
 async def create_vector_store(name):
+    client = openai.AsyncOpenAI(api_key=api_key)
     vector_store = await client.vector_stores.create(name=name)
     print(f"async create_vector_store: Created vector_store {vector_store.id}")
     return vector_store.id
 
 
 async def delete_vector_store(vid):
+    client = openai.AsyncOpenAI(api_key=api_key)
     await client.vector_stores.delete(vid)
 
 
 async def list_vector_stores():
+    client = openai.AsyncOpenAI(api_key=api_key)
     all_vss = []
     after = None
 
@@ -80,23 +86,91 @@ async def list_vector_stores():
 
     return all_vss
 
-async def list_files_in_vector_store(vector_store_id: str, status: str | None = None, limit: int = 100):
+# async def list_files_in_vector_store(
+#     vector_store_id: str,
+#     status: Optional[str] = None,
+#     limit: int = 100,
+#     max_pages: int = 1000,   # safety
+# ):
+#     after = None
+#     out = []
+#     last_after = object()
+#
+#     for _ in range(max_pages):
+#         resp = await client.vector_stores.files.list(
+#             vector_store_id=vector_store_id,
+#             limit=limit,
+#             after=after,
+#             filter=status,  # in_progress / completed / failed / cancelled
+#         )
+#
+#         data = resp.data or []
+#         out.extend(data)
+#
+#         # Stop condition per API: has_more + last_id :contentReference[oaicite:1]{index=1}
+#         if not getattr(resp, "has_more", False):
+#             break
+#
+#         next_after = getattr(resp, "last_id", None) or (data[-1].id if data else None)
+#         if not next_after:
+#             break
+#
+#         # Infinite-loop / non-advancing cursor guard (prevents “hang forever”)
+#         if next_after == after or next_after == last_after:
+#             raise RuntimeError(f"Pagination cursor not advancing (after={after}, next={next_after})")
+#
+#         last_after = after
+#         after = next_after
+#
+#     else:
+#         raise RuntimeError(f"Hit max_pages={max_pages}; vector store likely huge or pagination stuck.")
+#
+#     return out
+
+async def list_files_in_vector_store(
+    vector_store_id: str,
+    status: Optional[str] = None,
+    limit: int = 100,
+    max_pages: int = 1000,   # safety
+):
+    client = openai.AsyncOpenAI(api_key=api_key)
     after = None
     out = []
-    while True:
+    last_after = object()
+
+    for _ in range(max_pages):
         resp = await client.vector_stores.files.list(
             vector_store_id=vector_store_id,
             limit=limit,
             after=after,
-            filter=status,  # e.g. "completed" / "in_progress"
+            filter=status,  # in_progress / completed / failed / cancelled
         )
-        out.extend(resp.data or [])
-        if len(resp.data) < limit:
+
+        data = resp.data or []
+        out.extend(data)
+
+        # Stop condition per API: has_more + last_id :contentReference[oaicite:1]{index=1}
+        if not getattr(resp, "has_more", False):
             break
-        after = resp.data[-1].id
+
+        next_after = getattr(resp, "last_id", None) or (data[-1].id if data else None)
+        if not next_after:
+            break
+
+        # Infinite-loop / non-advancing cursor guard (prevents “hang forever”)
+        if next_after == after or next_after == last_after:
+            raise RuntimeError(f"Pagination cursor not advancing (after={after}, next={next_after})")
+
+        last_after = after
+        after = next_after
+
+    else:
+        raise RuntimeError(f"Hit max_pages={max_pages}; vector store likely huge or pagination stuck.")
+
     return out
 
 async def add_files_to_vector_store(vsid, file_ids):
+    client = openai.AsyncOpenAI(api_key=api_key)
     batch = await client.vector_stores.file_batches.create_and_poll(
         vector_store_id=vsid,
         file_ids=file_ids
@@ -104,6 +178,7 @@ async def add_files_to_vector_store(vsid, file_ids):
     return True
 
 async def get_vector_store_id_from_name(vs_name):
+    client = openai.AsyncOpenAI(api_key=api_key)
     vs_list = await client.vector_stores.list()
     active_vs = [vs for vs in vs_list if vs.name == vs_name]
     if active_vs == []:
@@ -116,6 +191,7 @@ async def get_vector_store_id_from_name(vs_name):
 
 
 async def check_vector_store_status(vsid):
+    client = openai.AsyncOpenAI(api_key=api_key)
     print("check_vector_store_status")
     # get vector store
     vs_list_response = await client.vector_stores.list()
@@ -138,6 +214,7 @@ async def check_vector_store_status(vsid):
         return "No status found"
 
 async def delete_empty_vector_stores():
+    client = openai.AsyncOpenAI(api_key=api_key)
     vss = await list_vector_stores()
     to_delete = [vs for vs in vss if vs.file_counts.total == 0]
     print("Deleting {} vector store among {}".format(len(to_delete), len(vss)))
