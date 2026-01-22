@@ -36,6 +36,13 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 1rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 if "tl_name" not in st.session_state:
     st.session_state["tl_name"] = ""
@@ -133,6 +140,9 @@ if "selected_parameters" not in st.session_state:
     st.session_state["selected_parameters"] = {}
 if "cqs" not in st.session_state:
     st.session_state.cqs = []
+if "uid_dict" not in st.session_state:
+    with open("./uid_dict.json", "r") as udf:
+        st.session_state.uid_dict = json.load(udf)
 
 # ---------- LLM response helpers ----------
 def safe_json(text: str) -> str:
@@ -255,160 +265,66 @@ def create_probability_df(cross_consensus_stat):
 
     return pd.DataFrame(data_points)
 
-st.sidebar.subheader("DIG4EL")
-
 with st.sidebar:
+    st.image("./pics/dig4el_logo_sidebar.png")
+    st.divider()
     st.divider()
     st.page_link("home.py", label="Home", icon=":material/home:")
     st.page_link("pages/dashboard.py", label="Back to dashboard", icon=":material/contract_edit:")
 
-st.title("Select CQs and infer grammatical features")
+st.title("Infer grammar from CQs in {}".format(st.session_state.indi_language))
 
 st.sidebar.divider()
 show_details = st.sidebar.toggle("Show computation details")
-st.write("Current language: {}".format(st.session_state.indi_language))
 if st.session_state.indi_language in ["English", "Abkhaz-Adyge"]:
     st.warning("Select the target language name in the dashboard first!")
 
 # INPUTS ========================================================================
 
-st.markdown("#### 1. Select CQs to use to infer grammatical features.")
-
 # MANAGING CQ TRANSCRIPTIONS
-st.markdown("You can use CQs available online or CQs you have on your computer")
-cq_source = st.radio("Use CQ translations...", ["available online", "from your computer"])
-if cq_source == "available online":
-    if st.session_state.indi_language not in os.listdir(BASE_LD_PATH):
-        st.write("No CQ translation files available online yet for {}".format(st.session_state.indi_language))
-        st.write("You can upload files from your computer below and select 'add them to the public repository' "
-                 "if you want to make them available online.")
-    else:
-        available_transcription_files = [fn
-                                         for fn in os.listdir(os.path.join(BASE_LD_PATH,
-                                                                           st.session_state.indi_language,
-                                                                           "cq",
-                                                                           "cq_translations"
-                                                                           ))
-                                         if fn.endswith(".json")]
-        selected_online_files = st.multiselect("Select available online files to process",
-                                               ["ALL"] + available_transcription_files, default=["ALL"])
-        if selected_online_files:
-            if "ALL" in selected_online_files:
-                selected_online_files = available_transcription_files
-            st.session_state.cqs = selected_online_files
 
-            if st.session_state.cqs is not None:
-                st.session_state["cq_transcriptions"] = []
-                for cq in st.session_state.cqs:
-                    with open(os.path.join(BASE_LD_PATH,
-                                           st.session_state.indi_language,
-                                           "cq",
-                                           "cq_translations",
-                                           cq), "r", encoding='utf-8') as f:
-                        new_cq = json.load(f)
-                    # update concept labels
-                    updated_cq, found_some = u.update_concept_names_in_transcription(new_cq)
-                    if found_some:
-                        st.write("Some concept labels have been aligned with the latest version.")
-                    st.session_state["cq_transcriptions"].append(updated_cq)
-            st.session_state["loaded_existing"] = True
-            st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
+if st.session_state.indi_language not in os.listdir(BASE_LD_PATH):
+    st.write("No CQ translation files available online yet for {}".format(st.session_state.indi_language))
 
+else:
+    available_transcription_files = [fn
+                                     for fn in os.listdir(os.path.join(BASE_LD_PATH,
+                                                                       st.session_state.indi_language,
+                                                                       "cq",
+                                                                       "cq_translations"
+                                                                       ))
+                                     if fn.endswith(".json")]
 
-elif cq_source == "from your computer":
-    add_to_repo = st.checkbox("Add these files to the read-only online DIG4EL repository")
-    if add_to_repo:
-        st.markdown("""Documents uploaded to the repository can be **accessed** through DIG4EL **by anyone**. 
-        It is a public **read-only** access : The documents cannot be modified or downloaded.
-        If you have any rights to these documents, you can ask us to provide you with a copy,
-        and/or to  remove them from the repository using the email address on the home page.""")
-        owner = st.text_input("Owner's full name")
-        orcid = st.text_input("Owner's ORCID number (optional for now)")
-        authorization = st.selectbox("This content can be...",
-                                     ["accessed read-only by anyone via DIG4EL tools"])
-        st.divider()
-
-    st.session_state.cqs = st.file_uploader(
-        "Load Conversational Questionnaires' transcriptions (all at once for multiple transcriptions)", type="json",
-        accept_multiple_files=True)
-
-    if st.session_state.cqs is not None:
+    st.session_state.cqs = available_transcription_files
+    cqs_info = []
+    if st.session_state.cqs != []:
         st.session_state["cq_transcriptions"] = []
         for cq in st.session_state.cqs:
-            new_cq = json.load(cq)
-            if "cq_uid" not in new_cq.keys():
-                st.warning("Discarding file: Not a DIG4EL CQ translation.")
-            else:
-                # update concept labels
-                updated_cq, found_some = u.update_concept_names_in_transcription(new_cq)
-                if found_some:
-                    st.write("Some concept labels have been aligned with the latest version.")
-                if add_to_repo:
-                    updated_cq["owner name"] = owner
-                    updated_cq["owner orcid"] = orcid
-                    updated_cq["authorization"] = authorization
-                    if st.session_state.indi_language not in os.listdir(BASE_LD_PATH):
-                        fmu.create_ld(BASE_LD_PATH, st.session_state.indi_language)
-                    with open(os.path.join(BASE_LD_PATH,
-                                           st.session_state.indi_language,
-                                           "cq",
-                                           "cq_translations",
-                                           cq.name), "w", encoding='utf-8') as f:
-                        u.save_json_normalized(updated_cq, f)
-                    st.success("{} added to the online repository".format(cq.name))
-                st.session_state["cq_transcriptions"].append(updated_cq)
-        st.session_state["loaded_existing"] = True
-        st.write("{} files loaded.".format(len(st.session_state["cq_transcriptions"])))
-if st.button("Reset selection"):
-    st.session_state["tl_name"] = ""
-    st.session_state["tl_wals_pk"] = ""
-    st.session_state["tl_grambank_id"] = ""
-    st.session_state["delimiters"] = []
-    st.session_state["selected_topics"] = None
-    st.session_state["loaded_existing"] = ""
-    st.session_state["cq_transcriptions"] = []
-    st.session_state["kg"] = {}
-    st.session_state["tl_knowledge"] = {
-        "known_wals": {},
-        "known_wals_pk": {},
-        "known_grambank": {},
-        "known_grambank_pid": {},
-        "observed": {},
-        "inferred": {}
-    }
-    st.session_state["ga"] = None
-    st.session_state["run_ga"] = False
-    st.session_state["known_processed"] = False
-    st.session_state["observations_processed"] = False
-    st.session_state["obs"] = {}
-    st.session_state["consensus_store"] = {}
-    st.session_state["belief_history"] = {}
-    st.session_state["ga_output_available"] = False
-    st.session_state["generate_description"] = False
-    st.session_state["results_approved"] = False
-    st.session_state["prompt_content"] = {}
-    st.session_state["output"] = {}
-    st.session_state["docx_file_ready"] = False
-    st.session_state["audience_language"] = "English"
-    st.session_state["audience"] = "adult beginners"
-    st.session_state["content_description"] = "grammar lesson"
-    st.session_state["final_output"] = {}
-    st.session_state["response"] = ""
-    st.session_state["preprocessing_done"] = False
-    st.session_state["computing_done"] = False
-    st.session_state["polishing_done"] = False
-    st.session_state["polished_docx_file_ready"] = False
-    st.session_state["docx_file"] = None
-    st.session_state["docx_file_plain"] = True
-    st.session_state["selected_parameters_by_topic"] = {}
-    st.session_state["selected_parameters"] = []
-    st.session_state["strong_seeds"] = []
-    st.rerun()
+            with open(os.path.join(BASE_LD_PATH,
+                                   st.session_state.indi_language,
+                                   "cq",
+                                   "cq_translations",
+                                   cq), "r", encoding='utf-8') as f:
+                new_cq = json.load(f)
+            # update concept labels
+            updated_cq, found_some = u.update_concept_names_in_transcription(new_cq)
+            cqs_info.append(
+                {
+                    "title": st.session_state.uid_dict.get(updated_cq["cq_uid"], "unknown_uid"),
+                    "from": updated_cq["interviewee"][:3],
+                    "by": updated_cq["interviewer"][:3],
+                    "location": updated_cq.get("location", "unknown"),
+                    "date": updated_cq.get("date", "unknown")
+                }
+                )
+            if found_some:
+                st.write("Some concept labels have been aligned with the latest version.")
+            st.session_state["cq_transcriptions"].append(updated_cq)
+    st.session_state["loaded_existing"] = True
+    st.success("{} CQ translations ready.".format(len(st.session_state["cq_transcriptions"])))
+    cqs_df = pd.DataFrame(cqs_info)
+    st.dataframe(cqs_df)
 
-    # load transcriptions, create knowledge graph
-
-st.markdown("#### 2.Launch inferences")
-st.markdown("Once you have selected the CQs you want to use, click on the button below to launch inferences. Once they are finished, you will be presented a table of grammatical features for your review and approval.")
 if st.button("Click here to launch Inferences"):
     # managing language input
     st.session_state["tl_name"] = st.session_state.indi_language
@@ -1091,7 +1007,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                            "cq_knowledge",
                            "cq_knowledge.json"), "w", encoding='utf-8') as f:
         u.save_json_normalized(json_blob, f)
-    st.success("CQ knowledge completed and added to the knowledge bank!")
+    st.success("Inferences completed and validated!")
     st.session_state.has_bayesian = True
     st.session_state.bayesian_data = json_blob
     st.page_link("pages/dashboard.py", label="Back to dashboard", icon=":material/contract_edit:")

@@ -97,10 +97,11 @@ def cq_translation_from_transcription_xlsx(
     pivot_language = _norm(info_kv.get("Pivot language (if any)", "")) or "English"
 
     transcription_made_by = _norm(info_kv.get("Transcription made by", ""))
-    provided_by_key = f"Content in {target_language} provided by"
+    provided_by_key = f"Content provided by"
     content_provided_by = _norm(info_kv.get(provided_by_key, ""))
+    recording_date = _norm(info_kv.get("Recording date", ""))
 
-    location = _norm(info_kv.get("Location", "")) or "unknown"
+    location = _norm(info_kv.get("Recording location", "")) or "unknown"
 
     cq_uid = _extract_uid_from_info(ws_info)
 
@@ -160,22 +161,22 @@ def cq_translation_from_transcription_xlsx(
         if concept_item:
             # concept_words in the form word1...word2...etc
             if concept_words:
-                print("idx: {}".format(idx))
-                print("entry: {}".format(entry))
-                print("translation: {}".format(entry["translation"]))
-                print("concept_item: {}".format(concept_item))
-                print("concept_words: {}".format(concept_words))
+                # print("idx: {}".format(idx))
+                # print("entry: {}".format(entry))
+                # print("translation: {}".format(entry["translation"]))
+                # print("concept_item: {}".format(concept_item))
+                # print("concept_words: {}".format(concept_words))
                 # cleaning and validation (valid if in the target sentence)
                 words_in_sentence = stats.custom_split(entry["translation"])
-                print("words_in_sentence: {}".format(words_in_sentence))
+                # print("words_in_sentence: {}".format(words_in_sentence))
                 wcl_tmp = concept_words.split("...")
                 wcl = [w.lower().strip() for w in wcl_tmp]
                 validated_wcl = [w for w in wcl if w in words_in_sentence]
-                print("validated_wcl: {}".format(validated_wcl))
+                # print("validated_wcl: {}".format(validated_wcl))
                 validated_concept_words = "...".join(validated_wcl)
                 entry["concept_words"][concept_item] = validated_concept_words
-                print("validated_concept_words: {}".format(validated_concept_words))
-                print("final entry: {}".format(entry))
+                # print("validated_concept_words: {}".format(validated_concept_words))
+                # print("final entry: {}".format(entry))
             else:
                 entry["concept_words"][concept_item] = ""
 
@@ -192,115 +193,18 @@ def cq_translation_from_transcription_xlsx(
         "data": data,
         "interviewer": interviewer,
         "interviewee": interviewee,
+        "location": location,
+        "date": recording_date,
         "recording_uid": str(int(time.time())),
         "owner name": " and ".join([x for x in [interviewee, interviewer] if x]) or "",
         "owner orcid": "",
         "authorization": "accessed read-only by anyone via DIG4EL tools",
-        "location": location,
+
     }
 
     return out
 
 # ======================================================================================
-
-def generate_transcription_doc(cq, target_language, pivot_language):
-    cq = utils.normalize_user_strings(cq)
-    target_language = utils.normalize_text(target_language)
-    pivot_language = utils.normalize_text(pivot_language)
-    if target_language in ["English", ""]:
-        target_language = "target language"
-
-    document = Document()
-    document.add_heading(safe_text('Conversational Questionnaire'), 0)
-    document.add_heading(safe_text(f'"{cq["title"]}"'), 0)
-    document.add_heading(safe_text("Information"), 1)
-    table = document.add_table(rows=5, cols=2, style="Light Grid")  # Fixed column count
-    row_cells0 = table.rows[0].cells
-    row_cells0[0].text = safe_text("Target language")
-    if target_language != "target language":
-        row_cells0[1].text = safe_text(target_language)
-    row_cells1 = table.rows[1].cells
-    row_cells1[0].text = safe_text("Transcription made by")
-    row_cells2 = table.rows[2].cells
-    row_cells2[0].text = safe_text(f"Content in {target_language} provided by")
-    row_cells3 = table.rows[3].cells
-    row_cells3[0].text = safe_text("Location")
-    row_cells4 = table.rows[4].cells
-    row_cells4[0].text = safe_text("Date")
-
-    document.add_page_break()
-
-    document.add_heading(safe_text("Full dialog in English"), 1)
-    document.add_paragraph(safe_text(cq["context"]))
-    dialog_table = document.add_table(rows=1, cols=3, style="Table Grid")  # Fixed column count
-    hdr_cells = dialog_table.rows[0].cells
-    hdr_cells[0].text = safe_text("Index")
-    hdr_cells[1].text = safe_text(cq["speakers"]["A"]["name"])
-    hdr_cells[2].text = safe_text(cq["speakers"]["B"]["name"])
-    dialog_length = len(cq["dialog"])
-    for index in range(1, dialog_length + 1):
-        content = cq["dialog"][str(index)]
-        row_cells = dialog_table.add_row().cells
-        if content.get("legacy index", "") != "":
-            i = content["legacy index"]
-        else:
-            i = str(index)
-        row_cells[0].text = safe_text(i)
-        if content["speaker"] == "A":
-            row_cells[1].text = safe_text(content["text"])
-            row_cells[2].text = safe_text("")
-        elif content["speaker"] == "B":
-            row_cells[1].text = safe_text("")
-            row_cells[2].text = safe_text(content["text"])
-
-    document.add_page_break()
-
-    document.add_heading(safe_text("Transcription"), 1)
-
-    for index in range(1, dialog_length + 1):
-        content = cq["dialog"][str(index)]
-        if content.get("legacy index", "") != "":
-            i = content["legacy index"]
-        else:
-            i = str(index)
-        document.add_paragraph(safe_text(""))
-        document.add_heading(safe_text(f'{i}: {content["text"]}'), 2)
-        transcription_table = document.add_table(rows=0, cols=2, style="Table Grid")
-        row_cells = transcription_table.add_row().cells
-        row_cells[0].text = safe_text("Pivot (if not English)")
-        row_cells[1].text = safe_text("")
-        row_cells = transcription_table.add_row().cells
-        row_cells[0].text = safe_text(f'Sentence in {target_language}')
-        row_cells[1].text = safe_text("")
-        document.add_paragraph(safe_text(" "))
-        p = document.add_paragraph()
-        p.add_run(safe_text("Connections between word(s) and concept(s):")).bold = True
-        document.add_paragraph(safe_text("In this segment, which word(s) contribute to which concept(s) below? One word can appear in multiple concepts, or in none. Multiple words can appear in a single concept."))
-        concept_table = document.add_table(rows=1, cols=2, style="Table Grid")
-        hdr_cells = concept_table.rows[0].cells
-        hdr_cells[0].text = safe_text("Concept")
-        hdr_cells[1].text = safe_text("Word(s) contributing to this concept")
-        if content.get("intent", []) != []:
-            row_cells = concept_table.add_row().cells
-            row_cells[0].text = safe_text(f'Intent: {"+".join(content["intent"])}')
-            row_cells[1].text = safe_text("")
-        if content.get("predicate", []) != []:
-            row_cells = concept_table.add_row().cells
-            row_cells[0].text = safe_text(f'Type of predicate: {"+".join(content["predicate"])}')
-            row_cells[1].text = safe_text("")
-        for c in content["concept"]:
-            row_cells = concept_table.add_row().cells
-            row_cells[0].text = safe_text(c)
-            row_cells[1].text = safe_text("")
-
-    # Save to a BytesIO buffer instead of disk
-    docx_buffer = BytesIO()
-    document.save(docx_buffer)
-    docx_buffer.seek(0)  # Reset buffer position
-
-    return docx_buffer
-
-
 
 def generate_transcription_xlsx(cq, target_language, pivot_language):
     """
@@ -355,9 +259,9 @@ def generate_transcription_xlsx(cq, target_language, pivot_language):
         ("Target language", "" if target_language == "target language" else target_language),
         ("Pivot language (if any)", "" if pivot_language in ["English", ""] else pivot_language),
         ("Transcription made by", ""),
-        (f"Content in {target_language} provided by", ""),
-        ("Location", ""),
-        ("Date", "")
+        (f"Content provided by", ""),
+        ("Recording location", ""),
+        ("Recording date", "")
     ]
     start = 5
     ws_info[f"A{start-1}"] = "Information"
@@ -487,6 +391,102 @@ def generate_transcription_xlsx(cq, target_language, pivot_language):
     return xlsx_buffer
 
 
+def generate_transcription_doc(cq, target_language, pivot_language):
+    cq = utils.normalize_user_strings(cq)
+    target_language = utils.normalize_text(target_language)
+    pivot_language = utils.normalize_text(pivot_language)
+    if target_language in ["English", ""]:
+        target_language = "target language"
+
+    document = Document()
+    document.add_heading(safe_text('Conversational Questionnaire'), 0)
+    document.add_heading(safe_text(f'"{cq["title"]}"'), 0)
+    document.add_heading(safe_text("Information"), 1)
+    table = document.add_table(rows=5, cols=2, style="Light Grid")  # Fixed column count
+    row_cells0 = table.rows[0].cells
+    row_cells0[0].text = safe_text("Target language")
+    if target_language != "target language":
+        row_cells0[1].text = safe_text(target_language)
+    row_cells1 = table.rows[1].cells
+    row_cells1[0].text = safe_text("Transcription made by")
+    row_cells2 = table.rows[2].cells
+    row_cells2[0].text = safe_text(f"Content in {target_language} provided by")
+    row_cells3 = table.rows[3].cells
+    row_cells3[0].text = safe_text("Location")
+    row_cells4 = table.rows[4].cells
+    row_cells4[0].text = safe_text("Date")
+
+    document.add_page_break()
+
+    document.add_heading(safe_text("Full dialog in English"), 1)
+    document.add_paragraph(safe_text(cq["context"]))
+    dialog_table = document.add_table(rows=1, cols=3, style="Table Grid")  # Fixed column count
+    hdr_cells = dialog_table.rows[0].cells
+    hdr_cells[0].text = safe_text("Index")
+    hdr_cells[1].text = safe_text(cq["speakers"]["A"]["name"])
+    hdr_cells[2].text = safe_text(cq["speakers"]["B"]["name"])
+    dialog_length = len(cq["dialog"])
+    for index in range(1, dialog_length + 1):
+        content = cq["dialog"][str(index)]
+        row_cells = dialog_table.add_row().cells
+        if content.get("legacy index", "") != "":
+            i = content["legacy index"]
+        else:
+            i = str(index)
+        row_cells[0].text = safe_text(i)
+        if content["speaker"] == "A":
+            row_cells[1].text = safe_text(content["text"])
+            row_cells[2].text = safe_text("")
+        elif content["speaker"] == "B":
+            row_cells[1].text = safe_text("")
+            row_cells[2].text = safe_text(content["text"])
+
+    document.add_page_break()
+
+    document.add_heading(safe_text("Transcription"), 1)
+
+    for index in range(1, dialog_length + 1):
+        content = cq["dialog"][str(index)]
+        if content.get("legacy index", "") != "":
+            i = content["legacy index"]
+        else:
+            i = str(index)
+        document.add_paragraph(safe_text(""))
+        document.add_heading(safe_text(f'{i}: {content["text"]}'), 2)
+        transcription_table = document.add_table(rows=0, cols=2, style="Table Grid")
+        row_cells = transcription_table.add_row().cells
+        row_cells[0].text = safe_text("Pivot (if not English)")
+        row_cells[1].text = safe_text("")
+        row_cells = transcription_table.add_row().cells
+        row_cells[0].text = safe_text(f'Sentence in {target_language}')
+        row_cells[1].text = safe_text("")
+        document.add_paragraph(safe_text(" "))
+        p = document.add_paragraph()
+        p.add_run(safe_text("Connections between word(s) and concept(s):")).bold = True
+        document.add_paragraph(safe_text("In this segment, which word(s) contribute to which concept(s) below? One word can appear in multiple concepts, or in none. Multiple words can appear in a single concept."))
+        concept_table = document.add_table(rows=1, cols=2, style="Table Grid")
+        hdr_cells = concept_table.rows[0].cells
+        hdr_cells[0].text = safe_text("Concept")
+        hdr_cells[1].text = safe_text("Word(s) contributing to this concept")
+        if content.get("intent", []) != []:
+            row_cells = concept_table.add_row().cells
+            row_cells[0].text = safe_text(f'Intent: {"+".join(content["intent"])}')
+            row_cells[1].text = safe_text("")
+        if content.get("predicate", []) != []:
+            row_cells = concept_table.add_row().cells
+            row_cells[0].text = safe_text(f'Type of predicate: {"+".join(content["predicate"])}')
+            row_cells[1].text = safe_text("")
+        for c in content["concept"]:
+            row_cells = concept_table.add_row().cells
+            row_cells[0].text = safe_text(c)
+            row_cells[1].text = safe_text("")
+
+    # Save to a BytesIO buffer instead of disk
+    docx_buffer = BytesIO()
+    document.save(docx_buffer)
+    docx_buffer.seek(0)  # Reset buffer position
+
+    return docx_buffer
 
 def generate_docx_from_kg_index_list(kg, delimiters, kg_index_list):
     kg = utils.normalize_user_strings(kg)

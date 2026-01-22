@@ -365,16 +365,28 @@ if st.session_state.has_access:
                 cqsb = True
                 pairsb = True
                 docsb = True
-                if "cq_knowledge.json" not in os.listdir(os.path.join(BASE_LD_PATH, lang, "cq", "cq_knowledge")):
+                try:
+                    if "cq_knowledge.json" not in os.listdir(os.path.join(BASE_LD_PATH, lang, "cq", "cq_knowledge")):
+                        cqsb = False
+                except FileNotFoundError:
                     cqsb = False
-                pdf_files = [file for file in os.listdir(os.path.join(BASE_LD_PATH, lang, "descriptions", "sources"))
-                             if file.endswith('.pdf')]
-                if pdf_files == []:
+                    st.write(f"language {lang} CQs malformed")
+                try:
+                    pdf_files = [file for file in os.listdir(os.path.join(BASE_LD_PATH, lang, "descriptions", "sources"))
+                                 if file.endswith('.pdf')]
+                    if pdf_files == []:
+                        docsb = False
+                        st.write(f"language {lang} docs malformed")
+                except FileNotFoundError:
                     docsb = False
-                pairs_files = [file for file in os.listdir(os.path.join(BASE_LD_PATH, lang, "sentence_pairs", "pairs"))
-                               if file.endswith('.json')]
-                if pairs_files == []:
+                try:
+                    pairs_files = [file for file in os.listdir(os.path.join(BASE_LD_PATH, lang, "sentence_pairs", "pairs"))
+                                   if file.endswith('.json')]
+                    if pairs_files == []:
+                        pairsb = False
+                except FileNotFoundError:
                     pairsb = False
+                    st.write(f"language {lang} pairs malformed")
                 if not cqsb and not pairsb and not docsb:
                     empty_l_list.append(lang)
             if st.button("Erase {}?".format(", ".join(empty_l_list))):

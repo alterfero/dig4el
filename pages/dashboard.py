@@ -390,8 +390,8 @@ with tab1:
     if role in ["admin", "caretaker"]:
         with pl2:
             st.markdown("#### ⬆️ Infer grammar from CQs")
-            st.caption("Choose CQs to use and infer grammar.")
-            if st.button("Select and Infer", use_container_width=True):
+            st.caption("Make DIG4EL guess the grammar of {}.".format(st.session_state.indi_language))
+            if st.button("Infer grammar from CQs", use_container_width=True):
                 st.switch_page("pages/infer_from_knowledge_and_cqs.py")
 
     if st.session_state.indi_language in os.listdir(BASE_LD_PATH):
@@ -418,15 +418,15 @@ with tab1:
                 else:
                     st.write("Select a CQ in the table to see its content.")
 
-            if role == "admin" and st.session_state.admin_verbose:
-                if "cq_knowledge" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq")):
-                    if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
-                                                                      "cq",
-                                                                      "cq_knowledge")):
+            if "cq_knowledge" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq")):
+                if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,
+                                                                  "cq",
+                                                                  "cq_knowledge")):
 
-                        st.success("admin: Knowledge from CQs has been computed.")
-                else:
-                    st.warning("admin: Knowledge from CQs has not been computed.")
+                    st.success("Inferences from CQ have been performed")
+                    st.markdown("*If you add or edit CQ translations, re-compute inferences*")
+            else:
+                st.warning("No Inferences on CQs computed yet")
 
 with tab2:
     with st.popover("How to upload and prepare documents"):

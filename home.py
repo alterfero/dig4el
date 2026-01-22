@@ -1,6 +1,5 @@
 import json
 import os
-
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -17,6 +16,10 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+
+with open("./version.json", "r") as v:
+    v_json = json.load(v)
+dig4el_version = v_json["version"]
 
 # components.html("""
 # <div style="
@@ -138,15 +141,15 @@ with h2:
 
 st.markdown("For any enquiry, contact sebastien.christian@upf.pf")
 st.markdown("----------------------------------------------------")
-st.markdown("""
+st.markdown(f"""
 DIG4EL prototype 
-Version 1.0.3
+Version {dig4el_version}
 
-Copyright © 2025 Sebastien Christian,
+Copyright © 2026 Sebastien Christian,
 Licensed under GNU Affero General Public License v3.0.
 
 If you use this software in your research, please cite:
-- Christian S. (2025). DIG4EL (Version 1.0.1) DOI: 10.5281/zenodo.16944459
+- Christian S. (2025). DIG4EL (Version 1.1.0) DOI: 10.5281/zenodo.16944459
 - WALS, instructions at https://wals.info/
 - Grambank, instructions at https://github.com/grambank/grambank/wiki/Citing-grambank
 
@@ -157,7 +160,7 @@ st.divider()
 st.markdown("""DIG4EL is a research effort supported by the [CNRS](https://www.cnrs.fr/en) as part 
 of the [Heliceo](https://www.cnrs.fr/en/ri2-project/heliceo) project, 
 managed by the [Maison des Sciences de l'Homme du Pacifique](https://recherche.upf.pf/en/laboratoire/maison-des-sciences-de-lhomme-du-pacifique/)
- in the [University of French Polynesia](https://www.upf.pf/en).
+ at the [University of French Polynesia](https://www.upf.pf/en).
 """)
 
 st.image("./pics/logos.png")
@@ -171,7 +174,6 @@ with st.sidebar:
     st.sidebar.page_link("pages/generate_grammar.py", label="Generate Grammar", icon=":material/bolt:")
     st.page_link("pages/DIG4EL_processes_menu.py", label="Processes", icon=":material/manufacturing:")
     st.page_link("pages/Conveqs_home.py", label="Switch to ConveQs", icon=":material/ballot:")
-
 
 
 ## One-off

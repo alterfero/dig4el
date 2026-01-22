@@ -870,9 +870,9 @@ if st.session_state["cq_is_chosen"]:
 
     st.markdown("#### 4. Publish and/or Download")
     st.markdown("Published CQs will become visible to other ConveQs and DIG4EL users, and be used by DIG4EL to generate grammatical descriptions.")
-    st.markdown("Publishing the same CQ replaces the previous version on the server.")
+    st.markdown("Re-publishing the same CQ translation replaces the previous version on the server.")
     st.markdown("Downloaded CQs are not saved on the server, but can be re-uploaded to continue working on them.")
-    colf, colg = st.columns(2)
+    colf, colg, colh = st.columns(3)
     colf.download_button(label="**Download your CQ translation**",
                          data=utils.dumps_json_normalized(st.session_state["recording"], indent=4), file_name=filename)
     if role in ["admin", "caretaker"]:
@@ -897,6 +897,8 @@ if st.session_state["cq_is_chosen"]:
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq", "cq_translations", filename), "w") as fp:
                 u.save_json_normalized(data=st.session_state["recording"], fp=fp)
             st.success("Your CQ has been added to the CQs of language {}".format(st.session_state.indi_language))
+        if colh.button("Compute inferences"):
+            pass
     else:
         colg.markdown("Only caretakers can publish CQs.")
         colg.markdown("Send us a mail at sebastien.christian@upf.pf to be added as a caretaker of {}"
