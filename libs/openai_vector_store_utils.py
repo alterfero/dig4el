@@ -278,7 +278,7 @@ def delete_empty_vector_stores_sync():
 
 # ================================= TEST SCRIPTS ====================================
 
-# delete_vector_store_sync('vs_689a3af047d88191b21b7f18a5ee1020')
+# delete_vector_store_sync('vs_696c11ddabc48191b705e181ed14c0bd')
 #
 # def print_vs_list():
 #     print("OA Vector Stores list")
