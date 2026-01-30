@@ -486,7 +486,7 @@ if st.session_state.has_access:
     with st.expander("Grammar seeds"):
         with open("./grammar_seeds/grammar_seeds.json", "r") as f:
             seeds = json.load(f)
-        selected_seed = st.selectbox("Select a topic to edit its seed", seeds.keys())
+        selected_seed = st.selectbox("Select a topic to edit its blueprint", seeds.keys())
         if selected_seed:
             new_seed = st.text_area("Seed", value=seeds[selected_seed]["guidance"])
             if st.button("Save new seed"):
