@@ -45,7 +45,7 @@ st.markdown("""*DIG4EL (Digital Inferential Grammar for Endangered Languages) is
 
 h1, h2 = st.columns(2)
 with h1:
-    st.markdown("### Worth reading")
+    st.markdown("### Worth reading before generating")
     with st.popover("Notice", width='stretch'):
         st.markdown(""" 
         *Notice: DIG4EL is currently in the early production stage.*
@@ -126,16 +126,19 @@ with h1:
         st.markdown("**Didactic grammars of endangered languages**")
         st.markdown("Vernaudon J. 2013. L’enseignement des langues kanak en Nouvelle-Calédonie. Hermès. n° 65. , [ p.]. 10.4267/2042/51507 or Vernaudon, Jacques. (2018). Les métalangues du tahitien à l'école, https://www.researchgate.net/publication/333261526_Les_metalangues_du_tahitien_a_l'ecole")
     with st.popover("The CNRS Heliceo project", width="stretch"):
+        st.image("./pics/heliceo_overview.png")
         st.markdown("[Overview on the CNRS website](https://www.cnrs.fr/en/ri2-project/heliceo)")
 
 with h2:
-    st.markdown("### Overview Video")
+    st.markdown("### Media")
+    st.markdown("**Overview video**")
     st.video("https://youtu.be/EiogHTmpiHc")
-    st.markdown("### Podcast")
+    st.markdown("**Podcast**")
     st.image("./pics/thought_vectors.png")
     st.audio("./audio/AI_Creates_Endangered_Language_Lessons.m4a", format="audio/m4a")
     st.markdown("[Or listen to it on Spotify and discover other **Though Vector** episodes!](https://open.spotify.com/episode/5sAHKiDQVgw7TerDBQJZsF?si=XHjDHIy9SKm0CXlt8LvJtw)")
-st.markdown("For any enquiry, contact sebastien.christian@upf.pf")
+    st.markdown("For any enquiry, contact sebastien.christian@upf.pf")
+
 st.markdown("----------------------------------------------------")
 st.markdown(f"""
 DIG4EL prototype 

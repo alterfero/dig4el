@@ -7,6 +7,7 @@ from agents import Agent, ModelSettings, function_tool, Runner
 from typing import List, Literal, Tuple, Union, Optional
 from pydantic import BaseModel, Field, Extra
 import nest_asyncio
+from libs import openai_vector_store_utils as ovu
 
 nest_asyncio.apply()
 
@@ -310,6 +311,7 @@ async def contribute_from_alterlingua(query: str, sentences: list[dict]) -> dict
     return result.final_output.dict()
 
 async def file_search_request(indi_language: str, vsids: list[str], query: str):
+    print("File search async request, vsids: {}".format(", ".join(vsids)))
     prompt = f"""
     You are an agent specialized in retrieving grammatical information about {indi_language} in the provided documents.
     to answer a user's query. Retrieve all relevant information from the documents and compile them into a detailed 
@@ -321,13 +323,14 @@ async def file_search_request(indi_language: str, vsids: list[str], query: str):
     """
     client = openai.OpenAI(api_key=api_key)
     # get vector store
-    vs_list = client.vector_stores.list()
+    vs_list = ovu.list_vector_stores_sync()
     active_vs = [vs for vs in vs_list if vs.id in vsids]
     if active_vs == []:
         print("No vector store with this id")
         print(vs_list)
         return None
     else:
+        print("File search, VS found, running request with vs_ids {}".format(", ".join([vector_store.id for vector_store in active_vs])))
         response = client.responses.create(
             model="gpt-4.1",
             input=prompt,

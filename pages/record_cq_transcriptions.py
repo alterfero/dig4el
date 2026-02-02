@@ -500,6 +500,13 @@ with st.sidebar:
     st.divider()
     st.page_link("home.py", label="Home", icon=":material/home:")
     st.page_link("pages/dashboard.py", label="Back to Dashboard", icon=":material/home:")
+    with open("./templates/cq_spreadsheets/cq_templates.zip", "rb") as f:
+        zip_bytes = f.read()
+    st.download_button(
+        label="📥 Download Excel transcription sheets for all CQs",
+        data=zip_bytes,
+        file_name='cq_templates.zip',
+        mime="application/zip")
 
 # Language selection
 st.markdown("#### 1. Select language")
@@ -660,9 +667,8 @@ if st.session_state["cq_is_chosen"]:
     xlsx_file = ogu.generate_transcription_xlsx(cq, st.session_state.indi_language,
                                                st.session_state.pivot_language)
     with st.sidebar:
-        st.markdown("You can download an Excel spreadsheet to complete it offline and then import it here.")
         st.download_button(
-            label="📥 Download an EMPTY transcription Excel sheet for this CQ",
+            label="📥 Download an Excel transcription sheet for this CQ",
             data=xlsx_file,
             file_name=f'{cq["title"]}_transcription_sheet.xlsx',
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")

@@ -13,8 +13,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
-import pickle
-
 from datetime import datetime
 import streamlit as st
 import json
@@ -24,10 +22,7 @@ from libs import file_manager_utils as fmu
 from libs import grammar_generation_agents as gga
 from libs import grammar_generation_utils as ggu
 from libs import output_generation_utils as ogu
-from libs import retrieval_augmented_generation_utils as ragu
 from libs import semantic_description_agents as sda
-from libs import semantic_description_utils as sdu
-from libs import semantic_description_utils
 import streamlit_authenticator as stauth
 import yaml
 from pathlib import Path
@@ -680,10 +675,18 @@ if st.session_state.run_sources:
     # document agent
     if st.session_state.is_doc and st.session_state.use_doc:
         vsids = [st.session_state.info_dict["documents"]["oa_vector_store_id"]]
+        if role == "admin":
+            st.markdown("admin: Using vector store(s) {}".format(vsids))
         with st.spinner("Generating contribution from documents"):
             full_response = gga.file_search_request_sync(st.session_state.indi,
                                                          vsids,
                                                          st.session_state.query)
+            try:
+                with open(os.path.join(".", "tmp", "raw_doc_response.json"), "w") as fr:
+                    json.dump(full_response, f)
+            except:
+                if role == "admin":
+                    st.warning("Failed saving full doc response")
             try:
                 raw_response = full_response.output[1].content
                 if raw_response is not None:
@@ -696,13 +699,22 @@ if st.session_state.run_sources:
                         "text": "",
                         "sources": []
                     }
-                    print("Response from document retrieval is None")
+                    if role == "admin":
+                        st.warning("Response from document retrieval is None")
+                        with st.expander("Full response"):
+                            st.write(full_response)
             except:
                 st.session_state.documents_contribution = {
                     "text": "",
                     "sources": []
                 }
-                print("Response from document retrieval is None")
+                if role == "admin":
+                    st.error("Exception in reading full_response.output[1].content")
+                    try:
+                        st.write("Full response")
+                        st.write(full_response)
+                    except:
+                        st.error("Exception displaying full response")
     else:
         st.warning("Not using documents")
         st.session_state.documents_contribution = {
