@@ -466,7 +466,7 @@ st.markdown(
       <span class="dig4el-icon">📂</span>
     </div>
     <div class="dig4el-title">Start or load a CQ</div>
-    <p class="dig4el-text">Recover your last session, upload a CQ from your computer, or start a new one from scratch.</p>
+    <p class="dig4el-text">Recover your last session, upload a CQ from your computer, select a published CQ to edit, or start a new one from scratch.</p>
   </div>
 
   <div class="dig4el-step">
@@ -570,6 +570,27 @@ if not st.session_state["loaded_existing_transcription"]:
                     st.stop()
             else:
                 st.warning(f"File format not compatible: {existing_recording.name}")
+    #EDIT A PUBLISHED VERSION
+    with st.expander("Edit a published CQ translation in {}"
+                             .format(st.session_state.indi_language)):
+        if role in ["admin", "caretaker"]:
+            if "cq" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language)):
+                existing_cqs = [f for f in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq", "cq_translations")) if f.endswith(".json")]
+            if existing_cqs != []:
+                published_cq_to_edit = st.selectbox("Choose a CQ transcription to edit and click on the Edit button", existing_cqs)
+                if st.button("Edit"):
+                    try:
+                        cq_path = os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq", "cq_translations", published_cq_to_edit)
+                        with open(cq_path, "r") as cqf:
+                            st.session_state["recording"] = json.load(cqf)
+                            st.session_state["loaded_existing_transcription"] = True
+                            st.success("CQ loaded, you can edit and re-publish it to save your changes.")
+                    except:
+                        st.error("Unable to load this published CQ translation")
+            else:
+                st.warning("There is no published CQ translations in {}".format(st.session_state.indi_language))
+        else:
+            st.warning("You must be a caretaker of {} to edit published CQ translations.".format(st.session_state.indi_language))
 
 # FILL DEFAULTS ACCORDING TO RECOVERED OR UPLOADED
 if st.session_state["loaded_existing_transcription"]:

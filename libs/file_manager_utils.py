@@ -25,34 +25,20 @@ default_delimiters = [" ",
     "\u2026"]
 
 def create_ld(BASE_LD_PATH, lname):
-    if lname not in os.listdir(BASE_LD_PATH):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname))
-    if "cq" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "cq"))
-    if "cq_translations" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "cq")):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "cq", "cq_translations"))
-    if "cq_knowledge" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "cq")):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "cq", "cq_knowledge"))
-    if "descriptions" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions"))
-    if "sources" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "descriptions")):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions", "sources"))
-    if "embeddings" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "descriptions")):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "descriptions", "embeddings"))
-    if "sentence_pairs" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs"))
-    if "augmented_pairs" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs")):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "augmented_pairs"))
-    if "pairs" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs")):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "pairs"))
-    if "vector_ready_pairs" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs")):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "vector_ready_pairs"))
-    if "vectors" not in os.listdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs")):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "vectors"))
-    if "monolingual" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "monolingual"))
-    if "outputs" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "outputs"))
+    os.makedirs(os.path.join(BASE_LD_PATH, lname), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "cq"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "cq", "cq_translations"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "cq", "cq_knowledge"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "descriptions"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "descriptions", "sources"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "descriptions", "embeddings"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "sentence_pairs"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "augmented_pairs"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "pairs"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "vector_ready_pairs"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "sentence_pairs", "vectors"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "monolingual"), exist_ok=True)
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "outputs"), exist_ok=True)
     if "info.json" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
         with open(os.path.join(BASE_LD_PATH, lname, "info.json"), "w", encoding='utf-8') as f:
             u.save_json_normalized(doc_info, f)
@@ -63,8 +49,7 @@ def create_ld(BASE_LD_PATH, lname):
         bids = {"batch_id": "no_id_set"}
         with open(os.path.join(BASE_LD_PATH, lname, "batch_id_store.json"), "w", encoding='utf-8') as f:
             u.save_json_normalized(bids, f)
-    if "conveqs" not in os.listdir(os.path.join(BASE_LD_PATH, lname)):
-        os.mkdir(os.path.join(BASE_LD_PATH, lname, "conveqs"))
+    os.makedirs(os.path.join(BASE_LD_PATH, lname, "conveqs"), exist_ok=True)
 
 def display_file_manager(folder_path: str, file_extensions: list[str] = None):
     """

@@ -438,6 +438,8 @@ if st.session_state.has_access:
         if st.button("Erase all empty vector stores"):
             vsu.delete_empty_vector_stores_sync()
 
+# =============== USER MANAGEMENT ===========================================
+
     with st.expander("User management"):
         colu1, colu2 = st.columns(2)
         if colu1.button("Load auth data"):
@@ -463,6 +465,10 @@ if st.session_state.has_access:
             if st.button("Reset caretaker list for {}".format(selected_user)):
                 st.session_state.authdata["credentials"]["usernames"][selected_user]["caretaker"] = []
                 st.rerun()
+
+            if st.button("Reset password for {}".format(selected_user)):
+                st.session_state.authdata["credentials"]["usernames"][selected_user]["password"] = au.make_hash("TemporaryPassw0rd!")
+                st.success("Password for {} has been reset.".format(selected_user))
 
             if st.button("Delete {}".format(selected_user)):
                 del st.session_state.authdata["credentials"]["usernames"][selected_user]

@@ -35,7 +35,7 @@ dig4el_version = v_json["version"]
 # </div>
 # """, height=90)
 
-st.markdown("## Assisted grammatical description of endangered languages")
+st.markdown("## Assisted Grammatical Description of Endangered Languages")
 
 st.markdown("""*DIG4EL (Digital Inferential Grammar for Endangered Languages) is a research software prototype designed to support the computer-assisted creation of 
             **grammar-learning material for linguists and teachers of endangered languages**. DIG4EL combines multiple 
@@ -43,7 +43,7 @@ st.markdown("""*DIG4EL (Digital Inferential Grammar for Endangered Languages) is
             DIG4EL follows the [FAIR](https://www.go-fair.org/fair-principles/) and 
             [CARE](https://www.gida-global.org/care) principles for data governance and respect of their owners.*""")
 
-h1, h2 = st.columns(2)
+h1, h2 = st.columns(2, gap="large", border=False)
 with h1:
     st.markdown("### Worth reading before generating")
     with st.popover("Notice", width='stretch'):
@@ -136,7 +136,7 @@ with h2:
     st.markdown("**Podcast**")
     st.image("./pics/thought_vectors.png")
     st.audio("./audio/AI_Creates_Endangered_Language_Lessons.m4a", format="audio/m4a")
-    st.markdown("[Or listen to it on Spotify and discover other **Though Vector** episodes!](https://open.spotify.com/episode/5sAHKiDQVgw7TerDBQJZsF?si=XHjDHIy9SKm0CXlt8LvJtw)")
+    st.markdown("[Or listen to it on Spotify and discover other **Though Vectors** episodes!](https://open.spotify.com/episode/5sAHKiDQVgw7TerDBQJZsF?si=XHjDHIy9SKm0CXlt8LvJtw)")
     st.markdown("For any enquiry, contact sebastien.christian@upf.pf")
 
 st.markdown("----------------------------------------------------")

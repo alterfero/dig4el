@@ -373,6 +373,39 @@ div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
 tab1, tab3, tab2 = st.tabs(["📝CQ", "🔗Sentence Pairs", "📁Documents", ])
 
 with tab1:
+    with st.popover("What is a CQ?"):
+        st.markdown("""
+        ### What is a CQ?
+
+        **Conversational Questionnaires (CQs)** are short, structured dialogs designed to be translated into a language under study.  
+        They are specifically crafted to **elicit grammatical features** through context, which makes them far more informative than isolated sentences.
+
+        The original concept of CQs was introduced by Alexandre François  
+        ([full paper](https://hal.science/hal-02061237/document)).
+
+        ---
+
+        ### How a CQ is used
+
+        1. The **entire dialog** is first read to the speaker in a shared *lingua franca*.
+        2. The speaker is then asked to **translate each segment**, one by one, as they appear in the interface.
+
+        This progressive approach helps maintain context and reduces ambiguity.
+
+        ---
+
+        ### Augmented CQs in DIG4EL
+
+        DIG4EL extends the original CQ concept with **augmented CQs**, allowing users to:
+
+        - Specify the **exact sentence used in the lingua franca**,
+        - **Link expected concepts** to word(s) in the target language,
+        - Add a **literal English back-translation** when the target sentence diverges strongly from the source,
+        - Include **comments**, all of which are used by the system during analysis.
+
+        These augmentations make CQs both a **data-collection tool** and a **structured grammatical signal** for inference.
+        """)
+
     st.markdown("""
    - **To create new Conversational Questionnaires translations**, click on "Enter CQ Translations".
    - With or without CQ translations, click on **Process information from databases and CQs** to make dig4el build 
