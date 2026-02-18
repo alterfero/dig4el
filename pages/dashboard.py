@@ -1042,7 +1042,7 @@ with tab3:
                                if ktc not in slap["word connections"].keys()]
             if role == "admin" and st.session_state.admin_verbose:
                 st.write("unconnected_ktc: {}".format(unconnected_ktc))
-                st.write('slap["word connections"].keys(): {}'.format(slap["word connections"].keys()))
+                st.write('slap["word connections"].keys(): {}'.format(slap["word connections"]))
             for ktc in unconnected_ktc:
                 source_concept = colc1.text_input("Concept (edit if needed)", value=ktc, key="ktc_"+ktc)
                 connected_words = colc2.multiselect(f"is expressed by",
