@@ -684,7 +684,7 @@ with tab3:
         file_to_convert = st.file_uploader("Convert file",
                                            accept_multiple_files=False,
                                            key="convert_file_upload")
-        source_format = st.selectbox("Format", ["Pangloss XML"])
+        source_format = st.selectbox("Format", ["Pangloss XML", "FLEX Sentence gloss XML"])
         if file_to_convert is not None:
             tmp_filepath = os.path.join("./", "tmp", file_to_convert.name)
             with open(tmp_filepath, "wb") as tf:
@@ -701,7 +701,12 @@ with tab3:
                                            mime="application/json")
                     except Exception as e:
                         st.error("Error converting file: {}".format(e))
-
+                if source_format == "FLEX Sentence gloss XML":
+                    meta, converted_sentence_pairs = ffu.flex_xml_gloss_to_dig4el(os.path.join("./", "tmp", file_to_convert.name))
+                    st.download_button("Download converted sentence pairs",
+                                       data=json.dumps(converted_sentence_pairs, ensure_ascii=False, indent=4),
+                                       file_name="converted_sentence_pairs.json",
+                                       mime="application/json")
 
     # ====== NEW PAIRS FILE UPLOAD FORM ==================================
     if role in ["guest", "user"]:

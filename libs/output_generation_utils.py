@@ -112,6 +112,8 @@ def cq_translation_from_transcription_xlsx(
     data: Dict[str, Any] = {}
 
     current_index: Optional[str] = None
+    segment_number = 0
+    segment_number_str = "0"
 
     # Iterate rows after header
     for r in ws_t.iter_rows(min_row=2, values_only=True):
@@ -126,59 +128,61 @@ def cq_translation_from_transcription_xlsx(
 
         if idx:
             current_index = idx
+            segment_number += 1
+            segment_number_str = str(segment_number)
         #
         # if not current_index:
         #     # no index yet => ignore stray rows
         #     continue
+        if current_index:
+            if segment_number_str not in data:
+                data[segment_number_str] = {
+                    "legacy index": current_index,
+                    "cq": english,
+                    "alternate_pivot": pivot,
+                    "translation": target_sentence,
+                    "concept_words": {},
+                    "lebt": "",
+                    "comment": ""
+                }
 
-        if current_index not in data:
-            data[current_index] = {
-                "legacy index": current_index,
-                "cq": english,
-                "alternate_pivot": pivot,
-                "translation": target_sentence,
-                "concept_words": {},
-                "lebt": "",
-                "comment": ""
-            }
+            entry = data[segment_number_str]
 
-        entry = data[current_index]
+            # Update turn-level fields if present on this row
+            if english:
+                entry["cq"] = english
+            if pivot:
+                entry["alternate_pivot"] = pivot
+            if target_sentence:
+                entry["translation"] = target_sentence
 
-        # Update turn-level fields if present on this row
-        if english:
-            entry["cq"] = english
-        if pivot:
-            entry["alternate_pivot"] = pivot
-        if target_sentence:
-            entry["translation"] = target_sentence
+            if lebt:
+                entry["lebt"] = lebt
+            if notes:
+                entry["comment"] = notes
 
-        if lebt:
-            entry["lebt"] = lebt
-        if notes:
-            entry["comment"] = notes
-
-        # Concept mapping row
-        if concept_item:
-            # concept_words in the form word1...word2...etc
-            if concept_words:
-                # print("idx: {}".format(idx))
-                # print("entry: {}".format(entry))
-                # print("translation: {}".format(entry["translation"]))
-                # print("concept_item: {}".format(concept_item))
-                # print("concept_words: {}".format(concept_words))
-                # cleaning and validation (valid if in the target sentence)
-                words_in_sentence = stats.custom_split(entry["translation"])
-                # print("words_in_sentence: {}".format(words_in_sentence))
-                wcl_tmp = concept_words.split("...")
-                wcl = [w.lower().strip() for w in wcl_tmp]
-                validated_wcl = [w for w in wcl if w in words_in_sentence]
-                # print("validated_wcl: {}".format(validated_wcl))
-                validated_concept_words = "...".join(validated_wcl)
-                entry["concept_words"][concept_item] = validated_concept_words
-                # print("validated_concept_words: {}".format(validated_concept_words))
-                # print("final entry: {}".format(entry))
-            else:
-                entry["concept_words"][concept_item] = ""
+            # Concept mapping row
+            if concept_item:
+                # concept_words in the form word1...word2...etc
+                if concept_words:
+                    # print("idx: {}".format(idx))
+                    # print("entry: {}".format(entry))
+                    # print("translation: {}".format(entry["translation"]))
+                    # print("concept_item: {}".format(concept_item))
+                    # print("concept_words: {}".format(concept_words))
+                    # cleaning and validation (valid if in the target sentence)
+                    words_in_sentence = stats.custom_split(entry["translation"])
+                    # print("words_in_sentence: {}".format(words_in_sentence))
+                    wcl_tmp = concept_words.split("...")
+                    wcl = [w.lower().strip() for w in wcl_tmp]
+                    validated_wcl = [w for w in wcl if w in words_in_sentence]
+                    # print("validated_wcl: {}".format(validated_wcl))
+                    validated_concept_words = "...".join(validated_wcl)
+                    entry["concept_words"][concept_item] = validated_concept_words
+                    # print("validated_concept_words: {}".format(validated_concept_words))
+                    # print("final entry: {}".format(entry))
+                else:
+                    entry["concept_words"][concept_item] = ""
 
 
     # ---- Build final JSON ----

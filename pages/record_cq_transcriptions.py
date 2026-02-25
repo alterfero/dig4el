@@ -565,6 +565,9 @@ if not st.session_state["loaded_existing_transcription"]:
                     cq_translation = ogu.cq_translation_from_transcription_xlsx(existing_recording.getvalue())
                     st.session_state["recording"] = cq_translation
                     st.session_state["loaded_existing_transcription"] = True
+                    if role == "admin":
+                        with st.expander("Converted CQ"):
+                            st.write(st.session_state["recording"])
                 except Exception as e:
                     st.error(f"Failed to parse the workbook: {e}")
                     st.stop()
