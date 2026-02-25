@@ -522,7 +522,7 @@ if not st.session_state["loaded_existing_transcription"]:
                 try:
                     with open(os.path.join(st.session_state.tmp_save_path, "tmp_cq.json"), "r") as rf:
                         st.session_state["recording"] = json.load(rf)
-                    st.session_state.indi_language = st.session_state["recording"]["target language"]
+                    # st.session_state.indi_language = st.session_state["recording"]["target language"]
                     st.session_state.pivot_language = st.session_state["recording"]["pivot language"] \
                         if st.session_state["recording"]["pivot language"] != "" \
                         else "English"
@@ -600,7 +600,7 @@ if st.session_state["loaded_existing_transcription"]:
     default_interviewer = st.session_state["recording"]["interviewer"]
     default_interviewee = st.session_state["recording"]["interviewee"]
     default_target_language = st.session_state["recording"]["target language"]
-    st.session_state.indi_language = st.session_state["recording"]["target language"]
+    # st.session_state.indi_language = st.session_state["recording"]["target language"]
     st.session_state.pivot_language = st.session_state["recording"]["pivot language"] \
         if st.session_state["recording"]["pivot language"] \
         else "English"
@@ -906,6 +906,7 @@ if st.session_state["cq_is_chosen"]:
     colf.download_button(label="**Download your CQ translation**",
                          data=utils.dumps_json_normalized(st.session_state["recording"], indent=4), file_name=filename)
     if role in ["admin", "caretaker"]:
+        st.write(st.session_state.indi_language)
         if colg.button("**Publish this CQ translation**"):
             now = datetime.now()
             readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
