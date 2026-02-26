@@ -160,34 +160,120 @@ def _is_punct(tok: str) -> bool:
 
 # =================================================
 
-def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath):
+import xml.etree.ElementTree as ET
 
+
+def _get_direct_child_text(parent, tag, *, lang=None):
+    """
+    Return the text of the first direct child <tag> of parent.
+    If lang is provided, match xml:lang exactly.
+    """
+    for child in list(parent):
+        if child.tag != tag:
+            continue
+        if lang is not None:
+            if child.get("{http://www.w3.org/XML/1998/namespace}lang") != lang:
+                continue
+        if child.text and child.text.strip():
+            return child.text.strip()
+    return None
+
+
+def _reconstruct_target_from_words(sentence, form_kind_preference=("phono", "orth", None)):
+    """
+    Build target sentence by concatenating W/FORM tokens.
+    Tries kindOf preferences in order; falls back to first FORM if none match.
+    """
+    tokens = []
+    for w in sentence.findall("./W"):
+        form_el = None
+
+        # Try preferred kindOf values first
+        for kind in form_kind_preference:
+            if kind is None:
+                continue
+            for cand in w.findall("./FORM"):
+                if cand.get("kindOf") == kind and cand.text and cand.text.strip():
+                    form_el = cand
+                    break
+            if form_el is not None:
+                break
+
+        # Fallback: any FORM
+        if form_el is None:
+            for cand in w.findall("./FORM"):
+                if cand.text and cand.text.strip():
+                    form_el = cand
+                    break
+
+        if form_el is not None:
+            tokens.append(form_el.text.strip())
+
+    # Simple join; Pangloss tokens often already include hyphens etc.
+    return " ".join(tokens).strip() if tokens else None
+
+
+def pangloss_xml_to_sentence_pairs_json(pangloss_xml_filepath, *, pivot_lang="fr", target_form_kind=("phono", "orth")):
     with open(pangloss_xml_filepath, "rb") as f:
         xml_data = f.read()
 
-    # Parse XML
     root = ET.fromstring(xml_data)
 
-    # Extract sentences
     data = []
-    for sentence in root.findall('.//S'):
+    for s in root.findall(".//S"):
         try:
-            source = sentence.find('.//TRANSL').text
-            target = sentence.find('.//FORM').text.strip()
-            word_connections = {}
+            # 1) SOURCE: sentence-level translation (direct child of S), prefer pivot_lang
+            source = _get_direct_child_text(s, "TRANSL", lang=pivot_lang) \
+                     or _get_direct_child_text(s, "TRANSL")  # fallback any lang
 
-            for word in sentence.findall('.//W'):
-                target_word = word.find('.//FORM').text.strip()
-                source_word = word.find('.//TRANSL').text.strip()
-                word_connections[source_word] = [target_word]
+            # 2) TARGET: sentence-level FORM if present, else reconstruct from W tokens
+            target = _get_direct_child_text(s, "FORM")  # some Pangloss exports put it here
+            if not target:
+                target = _reconstruct_target_from_words(s, form_kind_preference=(*target_form_kind, None))
+
+            # 3) WORD CONNECTIONS: token-level mapping from W/TRANSL -> W/FORM
+            word_connections = {}
+            for w in s.findall("./W"):
+                # pick word-level translation in pivot_lang if possible
+                w_transl = _get_direct_child_text(w, "TRANSL", lang=pivot_lang) or _get_direct_child_text(w, "TRANSL")
+                if not w_transl:
+                    continue
+
+                # pick word-level form with preferred kindOf
+                w_form = None
+                for kind in (*target_form_kind, None):
+                    if kind is None:
+                        # any FORM
+                        w_form = _get_direct_child_text(w, "FORM")
+                        if w_form:
+                            break
+                    else:
+                        for cand in w.findall("./FORM"):
+                            if cand.get("kindOf") == kind and cand.text and cand.text.strip():
+                                w_form = cand.text.strip()
+                                break
+                        if w_form:
+                            break
+
+                if not w_form:
+                    continue
+
+                # handle repeated source tokens by accumulating
+                word_connections.setdefault(w_transl, []).append(w_form)
+
+            # Skip unusable sentences cleanly
+            if not source and not target:
+                continue
 
             data.append({
-                'source': source,
-                'target': target,
-                'word connections': word_connections
+                "source": source or "",
+                "target": target or "",
+                "word connections": word_connections
             })
-        except:
-            print("issue with sentence {}".format(sentence))
+
+        except Exception as e:
+            sid = s.get("id", "<?>")
+            print(f"issue with sentence id={sid}: {e}")
 
     return data
 

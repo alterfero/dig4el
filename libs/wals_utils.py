@@ -356,16 +356,24 @@ def build_domain_elements_by_language_and_languages_by_domain_element():
 
 # ---------------------------------------------------------------------------
 # HYPER-PARAMETERS
-N_MIN = 1     # keep edge only if we saw B in ≥ N_MIN languages
-K_MIN = 1     # …and A∧B in ≥ K_MIN languages
+N_MIN = 50     # keep edge only if we saw B in ≥ N_MIN languages
+K_MIN = 0     # …and A∧B in ≥ K_MIN languages
 EPSILON = 0.001   # Beta(α,β) prior → avoid 0   (α=β=1)
 # ---------------------------------------------------------------------------
 
 def compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts = False):
     """
-    Posterior-mean estimate of  P(A|B)
-    P(A|B) estimated as (count(A=ai | B=bj) + epsilon) / (count(B=bj) + epsilon * vocabulary_size)
-    Lidstone smoothing with epsilon to avoid zeros.
+    Estimate P(A|B) where A and B are *binary* "value present in language" indicators.
+
+    For a set of languages L:
+      n_B      = #{l in L : B present in l}
+      k_A_and_B= #{l in L : A and B present in l}
+
+    We return an epsilon-regularized frequency estimate to avoid degenerate probabilities:
+      p_hat = (k_A_and_B + EPSILON) / (n_B + 2*EPSILON)
+
+    If n_B == 0, P(A|B) is undefined and we return None.
+    Optionally returns (p_hat, n_B, k_A_and_B).
     """
     b_count = 0
     a_and_b = 0
@@ -388,7 +396,7 @@ def compute_conditional_de_proba(a_pk, b_pk, language_pks, return_counts = False
         return None  # undefined
     else:
         # Bayesian posterior mean
-        p_hat = (a_and_b + EPSILON) / (b_count + EPSILON)
+        p_hat = (a_and_b + EPSILON) / (b_count + 2 * EPSILON)
 
         if return_counts:
             return p_hat, b_count, a_and_b
@@ -400,7 +408,12 @@ def build_conditional_probability_table(filtered_params=True,
                                         language_filter=None,
                                         exclude_lids=None):
     """
-    Build a CPT with *None* where counts are too small.
+    Build a |V| x |V| matrix M where M[a,b] estimates P(A|B) over a selected language set.
+
+  Cells are set to NaN when support is too small:
+  n_B < N_MIN or k_A_and_B < K_MIN.
+
+A separate “trust” matrix stores k_A_and_B (co-occurrence counts).
     """
     language_filter = language_filter or {}
 
