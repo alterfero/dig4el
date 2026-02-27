@@ -166,6 +166,20 @@ def load_config(path: Path) -> dict:
 
 
 # ------ HELPER FUNCTIONS -------------------------------------------------------------------------
+def reset_page():
+    st.session_state["current_cq"] = cq_list[0]
+    st.session_state["cq_is_chosen"] = False
+    st.session_state["current_sentence_number"] = 1
+    st.session_state["delimiters"] = delimiters["English"]
+    st.session_state.pivot_language = "English"
+    st.session_state["counter"] = 1
+    st.session_state["recording"] = {"target language": st.session_state.indi_language,
+                                         "delimiters": st.session_state["delimiters"],
+                                         "pivot language": "English", "cq_uid": "xxx", "data": {},
+                                         "interviewer": "", "interviewee": ""}
+    st.session_state["loaded_existing_transcription"] = False
+    st.session_state["existing_filename"] = ""
+    st.rerun()
 
 def save_config_atomic(data: dict, path: Path):
     d = os.path.dirname(path) or "."
@@ -903,6 +917,8 @@ if st.session_state["cq_is_chosen"]:
     st.markdown("Re-publishing the same CQ translation replaces the previous version on the server.")
     st.markdown("Downloaded CQs are not saved on the server, but can be re-uploaded to continue working on them.")
     colf, colg, colh = st.columns(3)
+    if colh.button("**Reset this page**"):
+        reset_page()
     colf.download_button(label="**Download your CQ translation**",
                          data=utils.dumps_json_normalized(st.session_state["recording"], indent=4), file_name=filename)
     if role in ["admin", "caretaker"]:
@@ -928,8 +944,6 @@ if st.session_state["cq_is_chosen"]:
             with open(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq", "cq_translations", filename), "w") as fp:
                 u.save_json_normalized(data=st.session_state["recording"], fp=fp)
             st.success("Your CQ has been added to the CQs of language {}".format(st.session_state.indi_language))
-        if colh.button("Compute inferences"):
-            pass
     else:
         colg.markdown("Only caretakers can publish CQs.")
         colg.markdown("Send us a mail at sebastien.christian@upf.pf to be added as a caretaker of {}"

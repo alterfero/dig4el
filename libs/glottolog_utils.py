@@ -6,8 +6,12 @@ PREFIX = "."
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"), "storage")
 
-with open(os.path.join(BASE_LD_PATH, "languages.json"), "r", encoding='utf-8') as f:
-    GLOTTO_LANGUAGE_LIST = json.load(f)
+try:
+    with open(os.path.join(BASE_LD_PATH, "languages.json"), "r", encoding='utf-8') as f:
+        GLOTTO_LANGUAGE_LIST = json.load(f)
+except FileNotFoundError:
+    with open("../ld/storage/languages.json", "r", encoding='utf-8') as f:
+        GLOTTO_LANGUAGE_LIST = json.load(f)
 
 LLIST = sorted(GLOTTO_LANGUAGE_LIST.keys())
 

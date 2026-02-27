@@ -20,7 +20,7 @@ import pandas as pd
 import math
 import numpy as np
 import pickle
-from collections import defaultdict
+from collections import defaultdict, Counter
 from pathlib import Path
 import libs.utils as u
 from multiprocessing import Pool, cpu_count
@@ -1077,4 +1077,117 @@ def build_language_pk_by_family_subfamily_genus_macroarea():
         json.dump(language_pk_by_genus, f, ensure_ascii=False)
     with open("./external_data/wals_derived/language_pk_by_macroarea.json", "w", encoding='utf-8') as f:
         json.dump(language_pk_by_macroarea, f, ensure_ascii=False)
+
+# ========================= WALS GRAPH ANALYSIS ===================================================
+
+def analyze_total_wals_parameter_graph(
+    min_non_nan=1,                        # edge exists if >= this many non-NaN cells
+    drop_self_loops=True,
+):
+    """
+    Build and analyze the *global* directed parameter graph induced by a value–value CPT.
+
+    Edge Pi -> Pj exists if the extracted matrix P(Pj | Pi) has at least `min_non_nan`
+    non-NaN cells after slicing.
+
+    Returns a report dict + a lightweight edge list.
+    """
+
+    with open("../external_data/wals_derived/de_conditional_probability_df.json", "r") as f:
+        active_wals_cpt = pd.DataFrame(json.load(f))
+
+
+    # Make sure labels are strings to match your extraction assumptions
+    cpt = active_wals_cpt.copy()
+    cpt.index = cpt.index.astype(str)
+    cpt.columns = cpt.columns.astype(str)
+
+    # parameter list
+    ppk_list = list(domain_elements_pk_by_parameter_pk.keys())
+    ppk_list = [str(x) for x in ppk_list]
+
+    # helper: count non-NaN in extracted block quickly
+    def block_non_nan_count(ppk_child, ppk_parent):
+        child_vals = [str(x) for x in domain_elements_pk_by_parameter_pk.get(str(ppk_child), [])]
+        parent_vals = [str(x) for x in domain_elements_pk_by_parameter_pk.get(str(ppk_parent), [])]
+        if not child_vals or not parent_vals:
+            return 0
+
+        # slice: rows child, cols parent = P(child_value | parent_value)
+        try:
+            block = cpt.loc[child_vals, parent_vals]
+        except KeyError:
+            return 0
+
+        return int(block.notna().sum().sum())
+
+    edges = []  # (parent_ppk, child_ppk, non_nan_cells)
+    out_deg = Counter()
+    in_deg = Counter()
+
+    for parent in ppk_list:
+        for child in ppk_list:
+            if drop_self_loops and child == parent:
+                continue
+            nn = block_non_nan_count(child, parent)
+            if nn >= min_non_nan:
+                edges.append((parent, child, nn))
+                out_deg[parent] += 1
+                in_deg[child] += 1
+
+    n = len(ppk_list)
+    m = len(edges)
+    max_edges = n * (n - 1) if drop_self_loops else n * n
+    density = m / max_edges if max_edges else 0.0
+
+    # connected components (undirected view)
+    undirected = defaultdict(set)
+    for u, v, _ in edges:
+        undirected[u].add(v)
+        undirected[v].add(u)
+    for p in ppk_list:
+        undirected[p] |= set()
+
+    visited = set()
+    comps = []
+    for p in ppk_list:
+        if p in visited:
+            continue
+        stack = [p]
+        visited.add(p)
+        comp = set()
+        while stack:
+            x = stack.pop()
+            comp.add(x)
+            for y in undirected[x]:
+                if y not in visited:
+                    visited.add(y)
+                    stack.append(y)
+        comps.append(comp)
+    comps = sorted(comps, key=len, reverse=True)
+
+    def deg_stats(counter):
+        vals = list(counter.values())
+        if not vals:
+            return {"min": 0, "max": 0, "mean": 0.0}
+        return {"min": min(vals), "max": max(vals), "mean": sum(vals)/len(vals)}
+
+    # optional name mapping for readability
+    ppk_to_name = None
+    if parameter_pk_by_name:
+        ppk_to_name = {str(v): k for k, v in parameter_pk_by_name.items()}
+
+    report = {
+        "nodes_parameters": n,
+        "directed_edges": m,
+        "density_directed": density,
+        "min_non_nan_threshold": min_non_nan,
+        "out_degree": deg_stats(out_deg),
+        "in_degree": deg_stats(in_deg),
+        "components_count": len(comps),
+        "largest_components_sizes": [len(c) for c in comps[:10]],
+        "ppk_to_name_available": ppk_to_name is not None,
+    }
+
+    return report, edges
 
