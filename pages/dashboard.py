@@ -272,7 +272,10 @@ colq, colw = st.columns(2)
 if role == "guest":
     st.session_state.llist = ["Tahitian"]
 else:
-    st.session_state.llist = gu.LLIST
+    with open(os.path.join(BASE_LD_PATH, "languages.json"), "r") as llf:
+        gll = json.load(llf)
+        st.session_state.llist = sorted(gll.keys())
+
 
 # LANGUAGE SELECTION
 coli1, coli2 = st.columns(2)
@@ -299,6 +302,7 @@ if free_language_input != "":
         language_list_json[free_language_input.capitalize()] = free_language_input + "+"
         with open(os.path.join(BASE_LD_PATH, "languages.json"), "w") as fgg:
             json.dump(language_list_json, fgg, indent=4)
+
 else:
     selected_language = selected_language_from_list
 
