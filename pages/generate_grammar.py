@@ -387,13 +387,14 @@ colq, colw = st.columns(2)
 #                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 #                        key="test_docx")
 
-
+if "llist" not in st.session_state:
+    with open(os.path.join(BASE_LD_PATH, "languages.json"), "r") as llf:
+        tmpll = json.load(llf)
+        st.session_state.llist = sorted(tmpll.keys())
 if "l_with_data" not in st.session_state:
-    st.session_state.l_with_data = None
-# languages with existing data
-st.session_state.l_with_data = [lu for lu in os.listdir(os.path.join(BASE_LD_PATH))
+    st.session_state.l_with_data = [lu for lu in os.listdir(os.path.join(BASE_LD_PATH))
                                 if (os.path.isdir(os.path.join(BASE_LD_PATH, lu))
-                                and lu in list(gu.GLOTTO_LANGUAGE_LIST.keys()))]
+                                and lu in st.session_state.llist)]
 if role == "guest":
     st.session_state.l_with_data = ["Tahitian", "Mwotlap"]
     colq.markdown(
