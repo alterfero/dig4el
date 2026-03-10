@@ -58,7 +58,7 @@ with st.sidebar:
     st.page_link("pages/Grammatical_Description.py", label="Generate Grammars", icon=":material/menu_book:")
 
     st.write("**Expert features**")
-    st.page_link("pages/4_CQ Editor.py", label="Edit CQs", icon=":material/question_exchange:")
+    st.page_link("pages/4_CQ_Editor.py", label="Edit CQs", icon=":material/question_exchange:")
     st.page_link("pages/Concept_graph_editor.py", label="Edit Concept Graph", icon=":material/device_hub:")
 
     st.write("**Explore DIG4EL processes**")

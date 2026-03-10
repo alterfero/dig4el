@@ -17,9 +17,7 @@ import json
 import os
 import copy
 import random
-
 import pandas as pd
-
 from libs import wals_utils as wu, grambank_utils as gu, grambank_wals_utils as gwu
 import math
 import pickle
@@ -153,85 +151,299 @@ class LanguageParameter:
         #     print(self.beliefs_history)
 
 
-    def update_beliefs_from_observations(self, influence_distribution = "uniform", observation_influence=0.9, autolock_threshold=0.9, verbose=False):
-        """this function takes in the observation inbox a dict of observation counts of the values of the said parameter
-        and uses it to update the corresponding uncertain variable.
-        observations is of the form {value1: count1, value2: count2...}"""
-        #TODO Implement non uniform influence distribution
-        # check if the observations given include all the values
-        if verbose:
-            print("LanguageParameter {}: Updating current beliefs with {} observations".format(self.name, len(self.observations_inbox)))
-        if verbose and self.locked:
-            print("Language Parameter {}: value locked. Observations not taken into account.".format(self.name))
-        else:
-            for observations in self.observations_inbox:
-                values_check = True
-                for de_pk in self.beliefs.keys():
-                    if de_pk not in observations.keys():
-                        values_check = False
-                if values_check:
-                    priors = self.beliefs
-                    if verbose:
-                        print("LanguageParameter {}: Priors: {}".format(self.name, priors))
-                    n_values = len(observations.keys())
-                    if n_values > 1:
-                        p_yes = observation_influence
-                        p_not = (1 - p_yes)/(n_values - 1)
-                    else:
-                        print("there's just one value... can't update beliefs.")
-                        return False
-                    total_number_of_observations = 0
-                    for de_pk in observations.keys():
-                        total_number_of_observations += observations[de_pk]
+    # def update_beliefs_from_observations(self, influence_distribution = "uniform", observation_influence=0.9, autolock_threshold=0.9, verbose=False):
+    #     """this function takes in the observation inbox a dict of observation counts of the values of the said parameter
+    #     and uses it to update the corresponding uncertain variable.
+    #     observations is of the form {value1: count1, value2: count2...}"""
+    #     #TODO Implement non uniform influence distribution
+    #     # check if the observations given include all the values
+    #     if verbose:
+    #         print("LanguageParameter {}: Updating current beliefs with {} observations".format(self.name, len(self.observations_inbox)))
+    #     if verbose and self.locked:
+    #         print("Language Parameter {}: value locked. Observations not taken into account.".format(self.name))
+    #     else:
+    #         for observations in self.observations_inbox:
+    #             values_check = True
+    #             for de_pk in self.beliefs.keys():
+    #                 if de_pk not in observations.keys():
+    #                     values_check = False
+    #             if values_check:
+    #                 priors = self.beliefs
+    #                 if verbose:
+    #                     print("LanguageParameter {}: Priors: {}".format(self.name, priors))
+    #                 n_values = len(observations.keys())
+    #                 if n_values > 1:
+    #                     p_yes = observation_influence
+    #                     p_not = (1 - p_yes)/(n_values - 1)
+    #                 else:
+    #                     print("there's just one value... can't update beliefs.")
+    #                     return False
+    #                 total_number_of_observations = 0
+    #                 for de_pk in observations.keys():
+    #                     total_number_of_observations += observations[de_pk]
+    #
+    #                 # multinomial factor used to account for hidden parameters
+    #                 multinomial_factor_numerator = math.factorial(total_number_of_observations)
+    #                 multinomial_factor_denominator = 1
+    #                 for obs in observations.keys():
+    #                     multinomial_factor_denominator = multinomial_factor_denominator * math.factorial(observations[obs])
+    #                 multinomial_factor = multinomial_factor_numerator / multinomial_factor_denominator
+    #                 # likelihoods, probabilities of observing these observations given that the true value is X
+    #                 # P(Observations | X = xi)
+    #                 likelihoods = {}
+    #                 for de_pk in observations.keys():
+    #                     # assuming this de_pk is the true value, compute the probability of making these observations
+    #                     likelihoods[de_pk] = multinomial_factor
+    #                     for observation_key in observations.keys():
+    #                         if observation_key == de_pk:
+    #                             likelihoods[de_pk] = likelihoods[de_pk] * math.pow(p_yes, observations[observation_key])
+    #                         else:
+    #                             likelihoods[de_pk] = likelihoods[de_pk] * math.pow(p_not, observations[observation_key])
+    #                 if verbose:
+    #                     print("LanguageParameter {}: Likelihoods: {}".format(self.name, likelihoods))
+    #                 # update of current beliefs (priors)
+    #                 # normalization factor
+    #                 normalization_factor = 0
+    #                 for de_pk in observations:
+    #                     normalization_factor += likelihoods[de_pk]*priors[de_pk]
+    #                 # updating beliefs
+    #                 posteriors = {}
+    #                 for de_pk in observations:
+    #                     posteriors[de_pk] = likelihoods[de_pk] * priors[de_pk] / normalization_factor
+    #                 self.beliefs = posteriors
+    #                 self.beliefs_history.append(copy.deepcopy(self.beliefs))
+    #                 if verbose:
+    #                     print("LanguageParameter {}: posteriors: {}".format(self.name, posteriors))
+    #                     print("LanguageParameter {}: beliefs_history updated by observations, length {}.".format(self.name, len(self.beliefs_history)))
+    #                     print(self.beliefs_history)
+    #                 # AUTOLOCK
+    #                 for belief in self.beliefs:
+    #                     if self.beliefs[belief] > autolock_threshold:
+    #                         self.locked = True
+    #                         if self.verbose:
+    #                             print("LanguageParameter {}: lock is on. Belief {} at {}, above threshold {}.".format(self.name,
+    #                                                                                                            belief,
+    #                                                                                                            self.beliefs[
+    #                                                                                                                belief],
+    #                                                                                                           autolock_threshold
+    #                                                                                                            ))
+    #         self.observations_inbox = []
+    #         self.beliefs_history.append(copy.deepcopy(self.beliefs))
+    #         self.update_entropy()
 
-                    # multinomial factor used to account for hidden parameters
-                    multinomial_factor_numerator = math.factorial(total_number_of_observations)
-                    multinomial_factor_denominator = 1
-                    for obs in observations.keys():
-                        multinomial_factor_denominator = multinomial_factor_denominator * math.factorial(observations[obs])
-                    multinomial_factor = multinomial_factor_numerator / multinomial_factor_denominator
-                    # likelihoods, probabilities of observing these observations given that the true value is X
-                    # P(Observations | X = xi)
-                    likelihoods = {}
-                    for de_pk in observations.keys():
-                        # assuming this de_pk is the true value, compute the probability of making these observations
-                        likelihoods[de_pk] = multinomial_factor
-                        for observation_key in observations.keys():
-                            if observation_key == de_pk:
-                                likelihoods[de_pk] = likelihoods[de_pk] * math.pow(p_yes, observations[observation_key])
-                            else:
-                                likelihoods[de_pk] = likelihoods[de_pk] * math.pow(p_not, observations[observation_key])
-                    if verbose:
-                        print("LanguageParameter {}: Likelihoods: {}".format(self.name, likelihoods))
-                    # update of current beliefs (priors)
-                    # normalization factor
-                    normalization_factor = 0
-                    for de_pk in observations:
-                        normalization_factor += likelihoods[de_pk]*priors[de_pk]
-                    # updating beliefs
-                    posteriors = {}
-                    for de_pk in observations:
-                        posteriors[de_pk] = likelihoods[de_pk] * priors[de_pk] / normalization_factor
-                    self.beliefs = posteriors
-                    self.beliefs_history.append(copy.deepcopy(self.beliefs))
-                    if verbose:
-                        print("LanguageParameter {}: posteriors: {}".format(self.name, posteriors))
-                        print("LanguageParameter {}: beliefs_history updated by observations, length {}.".format(self.name, len(self.beliefs_history)))
-                        print(self.beliefs_history)
-                    # AUTOLOCK
-                    for belief in self.beliefs:
-                        if self.beliefs[belief] > autolock_threshold:
-                            self.locked = True
-                            if self.verbose:
-                                print("LanguageParameter {}: lock is on. Belief {} at {}, above threshold {}.".format(self.name,
-                                                                                                               belief,
-                                                                                                               self.beliefs[
-                                                                                                                   belief],
-                                                                                                              autolock_threshold
-                                                                                                               ))
-            self.observations_inbox = []
+    # SAME AS COMMENTED BUT WITH LOG COMPUTATION TO DEAL WITH SMALL NUMBERS
+
+    import math
+    import copy
+
+    def update_beliefs_from_observations(
+            self,
+            influence_distribution="uniform",
+            observation_influence=0.9,
+            autolock_threshold=0.9,
+            verbose=False
+    ):
+        """
+        Takes from observations_inbox dicts of observation counts for the values
+        of this parameter and updates the corresponding uncertain variable.
+
+        Each observation dict is of the form:
+            {value1: count1, value2: count2, ...}
+
+        Current implementation uses a symmetric observation model:
+        - if the true value is v, observing v has probability p_yes
+        - observing any other value has probability p_not
+        """
+
+        # TODO: implement non-uniform influence distributions
+        if influence_distribution != "uniform":
+            raise NotImplementedError("Only 'uniform' influence_distribution is currently implemented.")
+
+        if verbose:
+            print(
+                "LanguageParameter {}: Updating current beliefs with {} observations".format(
+                    self.name, len(self.observations_inbox)
+                )
+            )
+
+        if self.locked:
+            if verbose:
+                print(
+                    "Language Parameter {}: value locked. Observations not taken into account.".format(
+                        self.name
+                    )
+                )
+            return False
+
+        for observations in self.observations_inbox:
+            # Check that observations include all values present in beliefs
+            values_check = all(de_pk in observations for de_pk in self.beliefs)
+
+            if not values_check:
+                if verbose:
+                    print(
+                        "LanguageParameter {}: observation keys do not match belief keys. "
+                        "Skipping observations: {}".format(self.name, observations)
+                    )
+                continue
+
+            priors = self.beliefs
+
+            if verbose:
+                print("LanguageParameter {}: Priors: {}".format(self.name, priors))
+
+            n_values = len(observations)
+            if n_values <= 1:
+                if verbose:
+                    print("LanguageParameter {}: only one value... can't update beliefs.".format(self.name))
+                return False
+
+            p_yes = observation_influence
+            p_not = (1 - p_yes) / (n_values - 1)
+
+            # Basic sanity checks
+            if not (0.0 < p_yes < 1.0):
+                raise ValueError(
+                    "observation_influence must be strictly between 0 and 1, got {}".format(p_yes)
+                )
+            if not (0.0 < p_not < 1.0):
+                raise ValueError(
+                    "Derived p_not must be strictly between 0 and 1, got {}".format(p_not)
+                )
+
+            total_number_of_observations = sum(observations.values())
+
+            if total_number_of_observations == 0:
+                if verbose:
+                    print(
+                        "LanguageParameter {}: total number of observations is 0. "
+                        "Skipping update.".format(self.name)
+                    )
+                continue
+
+            # ------------------------------------------------------------------
+            # LOG-SPACE MULTINOMIAL FACTOR
+            # log(n! / (n1! n2! ... nm!)) = lgamma(n+1) - sum(lgamma(nk+1))
+            # ------------------------------------------------------------------
+            log_multinomial_factor = math.lgamma(total_number_of_observations + 1)
+            for obs_count in observations.values():
+                log_multinomial_factor -= math.lgamma(obs_count + 1)
+
+            # ------------------------------------------------------------------
+            # LOG LIKELIHOODS: log P(Observations | X = xi)
+            # ------------------------------------------------------------------
+            log_likelihoods = {}
+            for hypothesized_true_value in observations.keys():
+                log_likelihood = log_multinomial_factor
+
+                for observed_value, count in observations.items():
+                    if count == 0:
+                        continue
+
+                    if observed_value == hypothesized_true_value:
+                        p = p_yes
+                    else:
+                        p = p_not
+
+                    log_likelihood += count * math.log(p)
+
+                log_likelihoods[hypothesized_true_value] = log_likelihood
+
+            if verbose:
+                print(
+                    "LanguageParameter {}: Log-likelihoods: {}".format(
+                        self.name, log_likelihoods
+                    )
+                )
+
+            # ------------------------------------------------------------------
+            # LOG POSTERIOR SCORES: log P(O|X=xi) + log P(X=xi)
+            # ------------------------------------------------------------------
+            log_scores = {}
+            for de_pk in observations.keys():
+                prior = priors[de_pk]
+
+                if prior <= 0:
+                    # impossible under current prior
+                    log_scores[de_pk] = float("-inf")
+                else:
+                    log_scores[de_pk] = log_likelihoods[de_pk] + math.log(prior)
+
+            if verbose:
+                print(
+                    "LanguageParameter {}: Log-scores: {}".format(
+                        self.name, log_scores
+                    )
+                )
+
+            # If all priors were zero or numerically impossible, skip safely
+            finite_scores = [score for score in log_scores.values() if score != float("-inf")]
+            if not finite_scores:
+                if verbose:
+                    print(
+                        "LanguageParameter {}: all posterior scores are impossible. "
+                        "Skipping update.".format(self.name)
+                    )
+                continue
+
+            # ------------------------------------------------------------------
+            # STABLE NORMALIZATION WITH LOG-SUM-EXP
+            # posterior_i = exp(log_score_i - max_log_score) / sum_j exp(...)
+            # ------------------------------------------------------------------
+            max_log_score = max(finite_scores)
+
+            exp_scores = {}
+            for de_pk, score in log_scores.items():
+                if score == float("-inf"):
+                    exp_scores[de_pk] = 0.0
+                else:
+                    exp_scores[de_pk] = math.exp(score - max_log_score)
+
+            normalization_factor = sum(exp_scores.values())
+
+            if normalization_factor == 0:
+                if verbose:
+                    print(
+                        "LanguageParameter {}: normalization factor is 0 after log-sum-exp. "
+                        "Skipping update.".format(self.name)
+                    )
+                continue
+
+            posteriors = {}
+            for de_pk in observations.keys():
+                posteriors[de_pk] = exp_scores[de_pk] / normalization_factor
+
+            self.beliefs = posteriors
             self.beliefs_history.append(copy.deepcopy(self.beliefs))
-            self.update_entropy()
+
+            if verbose:
+                print("LanguageParameter {}: Posteriors: {}".format(self.name, posteriors))
+                print(
+                    "LanguageParameter {}: beliefs_history updated by observations, length {}.".format(
+                        self.name, len(self.beliefs_history)
+                    )
+                )
+                print(self.beliefs_history)
+
+            # AUTOLOCK
+            for belief in self.beliefs:
+                if self.beliefs[belief] > autolock_threshold:
+                    self.locked = True
+                    if self.verbose:
+                        print(
+                            "LanguageParameter {}: lock is on. Belief {} at {}, above threshold {}.".format(
+                                self.name,
+                                belief,
+                                self.beliefs[belief],
+                                autolock_threshold
+                            )
+                        )
+                    break
+
+        self.observations_inbox = []
+        self.beliefs_history.append(copy.deepcopy(self.beliefs))
+        self.update_entropy()
+        return True
 
 # ************************************************************************
 

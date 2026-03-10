@@ -830,9 +830,9 @@ if st.session_state["cq_is_chosen"]:
     for concept in concept_list:
         concept_default = []
         if str(st.session_state["counter"]) in st.session_state["recording"]["data"].keys():
-            print("YYY concept {} keys {}".format(concept, st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"].keys()))
+            # print("YYY concept {} keys {}".format(concept, st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"].keys()))
             if concept in st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"].keys():
-                print("XXX {}:{}".format(concept, st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"]))
+                # print("XXX {}:{}".format(concept, st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"]))
                 target_word_list = utils.listify(
                     st.session_state["recording"]["data"][str(st.session_state["counter"])]["concept_words"][concept])
                 if all(element in segmented_target_sentence for element in target_word_list):

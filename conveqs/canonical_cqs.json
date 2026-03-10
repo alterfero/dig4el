@@ -2,7 +2,7 @@
   "Q01": {
     "title": "Q01 We're going fishing",
     "uid": "1716315461",
-    "context": "Un homme [A] et sa femme croisent une autre femme [B] en chemin.",
+    "context": "CONTEXT: A man [A] and his wife run into a woman [B] on the road.",
     "dialog":
             [
               { "index": "1",

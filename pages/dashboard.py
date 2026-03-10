@@ -1173,3 +1173,5 @@ with tab3:
 if role == "admin" and st.session_state.admin_verbose:
     with st.sidebar:
         st.page_link("pages/File_explorer.py", label="danger zone")
+        st.page_link("pages/Concept_graph_editor.py", label="GCG Editor")
+        st.page_link("pages/4_CQ_Editor.py", label="SRG Editor")
