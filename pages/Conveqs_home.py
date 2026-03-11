@@ -378,9 +378,12 @@ def show_cq_map(cqs):
     try:
         with open(filepath, "r", encoding="utf-8") as ccf:
             data = json.load(ccf)["data"]
-
+        if data["1"]["lingua franca"] == "":
+            df_col = ["index", "cq", "translation"]
+        else:
+            df_col = ["index", "cq", "lingua franca", "translation"]
         data_df = pd.DataFrame(data).T
-        st.dataframe(data_df, use_container_width=True)
+        st.dataframe(data_df, use_container_width=True, hide_index=True)
 
     except FileNotFoundError:
         st.error(f"File not found: {selected_cq['filename']}")
@@ -717,11 +720,8 @@ with tab1:
     if transposed_cq_catalog == []:
         st.markdown("*No CQ transposed to the ConveQs common file format yet.*")
     else:
-
         show_cq_map(transposed_cq_catalog)
 
-        tcc_df = pandas.DataFrame(transposed_cq_catalog, columns=["title", "language", "language documenter"])
-        st.dataframe(tcc_df)
 
 
 
