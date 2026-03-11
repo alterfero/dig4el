@@ -28,6 +28,8 @@ import pandas as pd
 from streamlit_folium import st_folium
 import folium
 from libs import conveqs_utils as cu
+from folium import DivIcon
+from collections import defaultdict
 
 # TODO: Save alert / Autosave
 # TODO: Explain the difference between the original file and the local file.
@@ -101,6 +103,8 @@ if "picked_location" not in st.session_state:
     st.session_state.picked_location = {"lat": 0, "lng": 200}
 if "map_zoom" not in st.session_state:
     st.session_state.map_zoom = 2
+if "delete_file" not in st.session_state:
+    st.session_state.delete_file = False
 
 CONVEQS_BASE_PATH = os.path.join(BASE_LD_PATH, "conveqs")
 
@@ -214,6 +218,175 @@ else:
     role = None
     st.info("Please log in or click on the 'Use without logging in' button")
 
+# ========================== HELPERS ===================================================
+
+def show_cq_map(cqs):
+    # Keep only CQs with valid coordinates and a language
+    valid_cqs = [
+        cq for cq in cqs
+        if cq.get("collection_location")
+        and cq["collection_location"].get("lat") is not None
+        and cq["collection_location"].get("lng") is not None
+        and cq.get("language")
+    ]
+
+    if not valid_cqs:
+        st.info("No CQ with both a valid collection_location and a language.")
+        return
+
+    # Session state
+    if "selected_language" not in st.session_state:
+        st.session_state.selected_language = None
+
+    if "selected_cq_in_language" not in st.session_state:
+        st.session_state.selected_cq_in_language = 0
+
+    # Group CQs by language
+    grouped_cqs = defaultdict(list)
+    for cq in valid_cqs:
+        grouped_cqs[cq["language"]].append(cq)
+
+    # Build language markers at barycenters
+    language_groups = []
+    for language, cq_list in grouped_cqs.items():
+        center_lat = sum(cq["collection_location"]["lat"] for cq in cq_list) / len(cq_list)
+        center_lng = sum(cq["collection_location"]["lng"] for cq in cq_list) / len(cq_list)
+
+        language_groups.append({
+            "language": language,
+            "center": (center_lat, center_lng),
+            "cqs": cq_list,
+        })
+
+    # Sort for stable display / stable indexing
+    language_groups.sort(key=lambda g: g["language"].lower())
+
+    # Center map on average of language barycenters
+    center_lat = sum(group["center"][0] for group in language_groups) / len(language_groups)
+    center_lng = sum(group["center"][1] for group in language_groups) / len(language_groups)
+
+    m = folium.Map(location=[center_lat, center_lng], zoom_start=3)
+
+    # Add one marker per language
+    for i, group in enumerate(language_groups):
+        lat, lng = group["center"]
+        language = group["language"]
+        cq_list = group["cqs"]
+        count = len(cq_list)
+
+        if count == 1:
+            hover_text = f"{language} — 1 CQ"
+        else:
+            hover_text = f"{language} — {count} CQs"
+
+        # Internal id via tooltip hack
+        tooltip = f"{i}|{hover_text}"
+
+        html = f"""
+        <div style="position: relative; width: 32px; height: 42px;">
+            <div style="
+                position: absolute;
+                left: 50%;
+                top: 100%;
+                transform: translate(-50%, -100%);
+                font-size: 34px;
+                line-height: 34px;
+            ">📍</div>
+            <div style="
+                position: absolute;
+                right: -4px;
+                top: -2px;
+                min-width: 18px;
+                height: 18px;
+                padding: 0 4px;
+                border-radius: 9px;
+                background: #b22222;
+                color: white;
+                font-size: 11px;
+                font-weight: bold;
+                text-align: center;
+                line-height: 18px;
+                border: 1px solid white;
+            ">{count}</div>
+        </div>
+        """
+
+        folium.Marker(
+            location=[lat, lng],
+            tooltip=tooltip,
+            icon=DivIcon(html=html),
+        ).add_to(m)
+
+    map_data = st_folium(
+        m,
+        height=500,
+        use_container_width=True,
+        returned_objects=["last_object_clicked_tooltip"],
+        key="cq_map_by_language",
+    )
+
+    clicked_tooltip = map_data.get("last_object_clicked_tooltip")
+    if clicked_tooltip:
+        try:
+            group_idx = int(clicked_tooltip.split("|", 1)[0])
+            clicked_language = language_groups[group_idx]["language"]
+
+            if st.session_state.selected_language != clicked_language:
+                st.session_state.selected_language = clicked_language
+                st.session_state.selected_cq_in_language = 0
+
+        except (ValueError, IndexError):
+            st.warning(f"Could not parse clicked tooltip: {clicked_tooltip}")
+
+    selected_language = st.session_state.selected_language
+    if selected_language is None:
+        st.info("Click a language marker to view available CQs.")
+        return
+
+    cq_list = grouped_cqs[selected_language]
+
+    st.markdown(f"### {selected_language}")
+    st.caption(f"{len(cq_list)} CQ{'s' if len(cq_list) > 1 else ''}")
+
+    if len(cq_list) > 1:
+        labels = [
+            cq.get("title", "Untitled CQ")
+            for cq in cq_list
+        ]
+
+        st.session_state.selected_cq_in_language = st.selectbox(
+            "Select a CQ",
+            options=range(len(cq_list)),
+            index=st.session_state.selected_cq_in_language,
+            format_func=lambda i: labels[i],
+            key="cq_selector_for_language",
+        )
+
+    selected_cq = cq_list[st.session_state.selected_cq_in_language]
+
+    title = selected_cq.get("title", "Untitled CQ")
+    language = selected_cq.get("language", "Unknown language")
+
+    st.subheader(f"{title} in {language}")
+
+    filepath = os.path.join(
+        CONVEQS_BASE_PATH,
+        "transposed_files",
+        selected_cq["filename"],
+    )
+
+    try:
+        with open(filepath, "r", encoding="utf-8") as ccf:
+            data = json.load(ccf)["data"]
+
+        data_df = pd.DataFrame(data).T
+        st.dataframe(data_df, use_container_width=True)
+
+    except FileNotFoundError:
+        st.error(f"File not found: {selected_cq['filename']}")
+    except KeyError:
+        st.error(f"Missing 'data' key in file: {selected_cq['filename']}")
+
 
 # =========================== LOGIC AND UI =============================================
 
@@ -282,7 +455,7 @@ div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
 
 tab1, tab2, tab3 = st.tabs(["🔍Explore", "⬆️Upload", "📂My files"])
 
-# ========== CONSULT FILES ==========================
+# ========== MY FILES ==========================
 with tab3:
     st.markdown("""#### My files""")
     if role == "guest":
@@ -296,63 +469,69 @@ with tab3:
         else:
             conveqs_index_df = pd.DataFrame(user_files)
 
-            selected = st.dataframe(conveqs_index_df.style.hide(axis="index"), column_order=["language", "name"],
+            selected = st.dataframe(conveqs_index_df.style.hide(axis="index"), column_order=["language", "original_filename", "date"],
                                     hide_index=True, selection_mode="single-cell", on_select="rerun")
 
             if selected["selection"]["cells"] != []:
                 selected_row = selected["selection"]["cells"][0][0]
                 selected_item = conveqs_index[selected_row]
-                st.markdown("{}, collected from **{}** by **{}**".format(
-                    selected_item.get("name", "*unknown*"),
-                    selected_item.get("informant", "*unknown*"),
-                    selected_item.get("field_worker", "*unknown*")
-                ))
-                st.markdown("On the {}, in {}".format(
-                    selected_item.get("collection_date", "*unknown*"),
-                    selected_item.get("collection_location", "*unknown*")
-                ))
                 st.markdown("Uploaded on {}".format(
                     selected_item["date"]))
+                col1, col2, col3 = st.columns([1, 1, 5])
 
-                col1, col2 = st.columns(2)
-
-                with open(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]), "rb") as f:
+                with open(os.path.join(CONVEQS_BASE_PATH, "original_files", selected_item["actual_filename"]), "rb") as f:
                     data = f.read()
-                col1.download_button("You can download this file", data, file_name=selected_item["filename"])
+                col1.download_button("Download", data, file_name=selected_item["original_filename"])
 
-                if col2.button("Delete this file"):
-                    del conveqs_index[selected_row]
-                    with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w") as f:
-                        json.dump(conveqs_index, f)
-                    try:
-                        os.remove(os.path.join(CONVEQS_BASE_PATH, selected_item["filename"]))
-                    except FileNotFoundError:
-                        print("{} does not exist".format(selected_item["filename"]))
-                    st.rerun()
+                if col2.button("Delete"):
+                    st.session_state.delete_file = True
+                if st.session_state.delete_file:
+                    st.markdown("Deleting your file will also delete any version of your content transposed to the ConveQs common format")
+                    if st.button("Confirm deletion"):
+                        # delete transposed
+                        transposed = selected_item["transposed_as"]
+                        for tfn in transposed:
+                            try:
+                                os.remove(os.path.join(CONVEQS_BASE_PATH, "transposed_files", tfn))
+                            except FileNotFoundError:
+                                print("Can't find {} to delete".format(tfn))
+                        # delete original file
+                        try:
+                            os.remove(os.path.join(CONVEQS_BASE_PATH, "original_files", selected_item["actual_filename"]))
+                        except FileNotFoundError:
+                            print("{} does not exist".format(selected_item["filename"]))
+                        # delete index entry
+                        del conveqs_index[selected_row]
+                        with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w") as ci:
+                            u.save_json_normalized(conveqs_index, ci, indent=4)
+                        st.session_state.delete_file = False
+                        st.rerun()
+
 
 # ========== UPLOAD FILES ============================
-with tab2:
-    with st.sidebar:
-        st.divider()
-        st.markdown("By using the templates below to collect CQs, we can automate the transposition to the ConveQs common format.")
-        st.image("./pics/download_cqs.png")
-        with open("./conveqs/conveqs_cq_templates.zip", "rb") as file:
-            file_data = file.read()
-        st.download_button(label="Download CQ templates",
-                           data=file_data,
-                           mime="application/zip",
-                           file_name="conveqs_cq_template.zip")
+with (tab2):
     st.markdown("### Upload CQ translations in any format.")
     if role == "guest":
         st.markdown("*Guests cannot upload or manage Conversational Questionnaires.*")
         st.markdown("*If you have Conversational Questionnaires to upload, contact us to become a registered user!*")
     else:
-        st.markdown("""You can upload CQ translations **in any format**. 
+        co1, co2 = st.columns(2, gap="large", border=True)
+        co1.markdown("""You can upload CQ translations **in any format**. 
         As the uploader of the files, you will be able to download and delete them at any time in the future. 
-        The files you upload require a partially manual process to be transposed in a format allowing 
-        the CQs to be consulted and compared: Allow some time for your files to be transposed to the common ConveQs format, 
-        or download the Excel templates in the right panel for an automated transposition. 
+        The files you upload require to be transposed in a format allowing 
+        the CQs to be consulted and compared: Allow some time for your files to be transposed
+        or use the Excel templates for an automated transposition. 
         """)
+        with co2:
+            st.markdown(
+                "You can utomate the transposition to the ConveQs common format by using the Excel templates below.")
+            with open("./conveqs/conveqs_cq_templates.zip", "rb") as file:
+                file_data = file.read()
+            st.download_button(label="Download CQ templates",
+                               data=file_data,
+                               mime="application/zip",
+                               icon="📁",
+                               file_name="conveqs_cq_template.zip")
         # SELECT LANGUAGE
         colq, colw = st.columns(2)
 
@@ -365,6 +544,7 @@ with tab2:
                 st.warning("This language is already in the list! It is now selected.")
                 selected_language = free_language_input.capitalize()
             else:
+                selected_language = free_language_input.capitalize()
                 if st.button("Create new language {}?".format(free_language_input)):
                     selected_language = free_language_input.capitalize()
                     os.makedirs(os.path.join(CONVEQS_BASE_PATH, "original_files"), exist_ok=True)
@@ -389,18 +569,13 @@ with tab2:
 
             with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json")) as ci:
                 conveqs_index = json.load(ci)
-            existing_filenames = [fn["filename"] for fn in conveqs_index]
-
-            cq_list = list(st.session_state.uid_dict.values())
-            cq_list.sort()
-            cq_list.append("multiple")
 
             # FILE UPLOAD FORM
 
             sub_ready = False
             valid = False
             new_cq = st.file_uploader(
-                "Add a new CQ translation file to the repository",
+                "Add a new CQ translation file in {} to the repository".format(st.session_state.upload_language),
                 accept_multiple_files=False,
                 key="new_cq" + str(st.session_state.new_cq_counter)
             )
@@ -452,39 +627,74 @@ with tab2:
                                         """)
 
             if st.button("Confirm and upload"):
-                if consent_received:
-                    with open(os.path.join(CONVEQS_BASE_PATH, new_cq.name), "wb") as f:
-                        f.write(new_cq.read())
-                    st.success(f"Saved `{new_cq.name}` on the server.")
-
-                    now = datetime.now()
-                    readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
-                    conveqs_index.append(
-                        {
-                            "filename": new_cq.name,
-                            "id": username + "_" + str(time.time()),
-                            "name": name,
-                            "language": st.session_state.upload_language,
-                            "collection_date": collection_date.strftime("%Y-%m-%d"),
-                            "collection_location": st.session_state.picked_location,
-                            "informant": informant,
-                            "field_worker": field_worker,
-                            "consent": consent_received,
-                            "uploaded by": username,
-                            "date": readable_date_time,
-                            "transposed_as": []
-                        }
-                    )
-                    if new_cq.name in existing_filenames:
-                        existing_filename_index = existing_filenames.index(new_cq.name)
-                        del conveqs_index[existing_filename_index]
-                        print("Deleted item to replace at index {}".format(existing_filename_index))
-                    with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w",
-                              encoding='utf-8') as f:
-                        u.save_json_normalized(conveqs_index, f)
-                    st.success("{} successfully indexed.".format(new_cq.name))
+                if not new_cq:
+                    st.warning("Upload a file before submitting!")
                 else:
-                    st.markdown("You must receive and record the consent of the speaker(s) to upload a document.")
+                    if consent_received:
+                        file_record_name = ":".join(str(time.time()).split(".")) + "_" + new_cq.name
+                        with open(os.path.join(CONVEQS_BASE_PATH, "original_files", file_record_name), "wb") as f:
+                            f.write(new_cq.read())
+                        st.success(f"Your file `{new_cq.name}` has been uploade to the server.")
+
+                        # AUTO TRANSPOSITION TEST IF XLS
+                        if ".xls" in new_cq.name:
+                            transposed, message = cu.conveqs_cq_translation_from_transcription_xlsx(new_cq)
+                            if transposed is not None:
+                                addict = {
+                                    "name": name,
+                                    "language": st.session_state.upload_language,
+                                    "collection_date": collection_date.strftime("%Y-%m-%d"),
+                                    "collection_location": st.session_state.picked_location,
+                                    "speaker": informant,
+                                    "language documenter": field_worker,
+                                    "consent": consent_received,
+                                    "uploaded by": username
+                                }
+                                mergedict = transposed | addict
+
+                                fn = "?title:" + transposed["title"][
+                                                 :4] + "?language:" + st.session_state.upload_language + "?uid:" + \
+                                     transposed["recording_uid"] + ".json"
+
+                                with open(os.path.join(CONVEQS_BASE_PATH, "transposed_files", fn), "w") as tf:
+                                    u.save_json_normalized(mergedict, tf)
+
+                                st.success("Your file has been successfully transposed to the ConveQs common format and is available for consultation and comparison.")
+                        else:
+                            transposed = None
+
+                        # Adding/editing to conveqs_index
+                        now = datetime.now()
+                        readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
+                        conveqs_index.append(
+                            {
+                                "username": username,
+                                "original_filename": new_cq.name,
+                                "actual_filename": file_record_name,
+                                "id": username + "_" + str(time.time()),
+                                "name": name,
+                                "language": st.session_state.upload_language,
+                                "collection_date": collection_date.strftime("%Y-%m-%d"),
+                                "collection_location": st.session_state.picked_location,
+                                "speaker": informant,
+                                "language documenter": field_worker,
+                                "consent": consent_received,
+                                "uploaded by": username,
+                                "date": readable_date_time,
+                                "transposed_as": [] if transposed is None else [fn]
+                            }
+                        )
+                        with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "w",
+                                  encoding='utf-8') as f:
+                            u.save_json_normalized(conveqs_index, f, indent=4)
+
+                        st.markdown("To upload another file, just click on the button below, change the document, edit fields and press submit again.")
+                        st.markdown("Note that uploading the same file creates separate copies. You can manage your files in the *My Files* tab")
+                        if st.button("Close this upload session"):
+                            st.rerun()
+
+                    else:
+                        st.markdown("You must receive and record the consent of the speaker(s) to upload a document.")
         if role == "admin":
             with st.expander("ADMIN: Check index"):
                 with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
@@ -507,7 +717,10 @@ with tab1:
     if transposed_cq_catalog == []:
         st.markdown("*No CQ transposed to the ConveQs common file format yet.*")
     else:
-        tcc_df = pandas.DataFrame(transposed_cq_catalog)
+
+        show_cq_map(transposed_cq_catalog)
+
+        tcc_df = pandas.DataFrame(transposed_cq_catalog, columns=["title", "language", "language documenter"])
         st.dataframe(tcc_df)
 
 

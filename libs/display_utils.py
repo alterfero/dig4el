@@ -114,7 +114,6 @@ def display_cq(cqo: dict, delimiters, title, uid, gloss=False):
     st.markdown("### {}".format(title))
     st.markdown("In **{}**, pivot: **{}**.".format(indi, pivot))
     st.markdown("**Collected** from {}, by {}".format(cqo["interviewee"], cqo["interviewer"]))
-    st.markdown("**Owner(s)**: {}".format("Jacques Vernaudon et Mirose Paia"))
     st.markdown("CQ unique **identification number**: {}".format(cqo["cq_uid"]))
     st.markdown("**Recording unique identification number**: {}".format(cqo["recording_uid"]))
     st.markdown("**Access**: {}".format("accessed read-only by anyone via ConveQs and DIG4EL tools"))

@@ -1,6 +1,6 @@
 {
-  "Q01": {
-    "title": "Q01 We're going fishing",
+  "CQ01 We're going fishing.": {
+    "title": "CQ01 We're going fishing.",
     "uid": "1716315461",
     "context": "CONTEXT: A man [A] and his wife run into a woman [B] on the road.",
     "dialog":
@@ -119,7 +119,7 @@
               },
               {"index": "29",
                 "speaker": "A",
-                "english": "YouDU’ll give usEXC:PL some vegetables, and weEXC:DU’ll give youDU some fish."
+                "english": "YouDU’ll give usEXC:PL some vegetables, and weEXC:DU’ll give youPL some fish."
               },
               {"index": "30",
                 "speaker": "A",
@@ -135,14 +135,14 @@
               }
             ]
   },
-  "Q02":{
-    "title": "Q02 Preparing for the New Year",
+  "CQ02 Preparing for the New Year.":{
+    "title": "CQ02 Preparing for the New Year.",
     "uid": "1716403492",
     "context": "Two adults, A and B, are speaking together.",
     "dialog": [
-  { "index": "1",  "speaker": "A", "english": "Hey, you know what? In two months’ time, we’ll have celebrations for the New Year" },
+  { "index": "1",  "speaker": "A", "english": "Hey, you know what? In two months’ time, we’ll have celebrations for the New Year." },
   { "index": "2",  "speaker": "B", "english": "Oh, that’s right. This time, the people from village X will all be coming to our community:" },
-  { "index": "3",  "speaker": "B", "english": "men and women, children, old people, entire families…" },
+  { "index": "3",  "speaker": "B", "english": "men and women, children, old people, entire families..." },
   { "index": "4",  "speaker": "A", "english": "We should welcome them in a friendly way," },
   { "index": "5",  "speaker": "A", "english": "just like they did to us last year." },
   { "index": "6",  "speaker": "B", "english": "Yes of course, like we always do." },
@@ -151,14 +151,14 @@
   { "index": "9",  "speaker": "B", "english": "After that, we’ll all share lunch together." },
   { "index": "10", "speaker": "B", "english": "In the afternoon, I hope we can have songs and dances." },
   { "index": "11", "speaker": "B", "english": "The people of X will sing their songs, dance their dances;" },
-  { "index": "12", "speaker": "B", "english": "we too, we shall sing our own songs, and do our own dances…" },
+  { "index": "12", "speaker": "B", "english": "we too, we shall sing our own songs, and do our own dances..." },
   { "index": "13", "speaker": "A", "english": "Yes, good idea. Everyone loves music and dance." },
   { "index": "14", "speaker": "B", "english": "As we find some rest, our elders will be able to tell stories from the olden times, for the young to hear." },
   { "index": "15", "speaker": "A", "english": "This will be great. They know so many stories." },
   { "index": "16", "speaker": "B", "english": "And then, in the late afternoon, our two communities will part again." },
   { "index": "17", "speaker": "B", "english": "That will be the end of the day of celebration." },
   { "index": "18", "speaker": "A", "english": "Remember that you and I are in charge of the organization this year." },
-  { "index": "19", "speaker": "B", "english": "Perhaps we INC:DU should call a meeting tomorrow morning in the community" },
+  { "index": "19", "speaker": "B", "english": "Perhaps weINC:DU should call a meeting tomorrow morning in the community" },
   { "index": "20", "speaker": "B", "english": "and tell our people what they should do." },
   { "index": "21", "speaker": "A", "english": "Some of us can clean the village area," },
   { "index": "22", "speaker": "A", "english": "set up the place for the celebration." },
@@ -171,20 +171,20 @@
   { "index": "29", "speaker": "A", "english": "A lot of work indeed. Let us start today!" }
     ]
   },
-    "Q03":{
-    "title": "Q03 Seeing the doctor",
+  "CQ03 At the doctor.":{
+    "title": "CQ03 At the doctor.",
     "uid": "1715973404",
     "context": "A patient [A] visits the doctor [B]",
       "dialog": [
   { "index": "1",  "speaker": "A", "english": "Good morning Doctor, how are you?" },
   { "index": "2",  "speaker": "B", "english": "I’m fine, and you?" },
-  { "index": "3",  "speaker": "A", "english": "Well… I’m not feeling well these days." },
+  { "index": "3",  "speaker": "A", "english": "Well... I’m not feeling well these days." },
   { "index": "4",  "speaker": "A", "english": "That’s why I came to see you." },
   { "index": "5",  "speaker": "B", "english": "What’s happening to you? You look sick." },
   { "index": "6",  "speaker": "A", "english": "I can’t sleep well at night." },
   { "index": "7",  "speaker": "A", "english": "I sweat, I have nightmares, and then I wake up in the middle of the night." },
   { "index": "8",  "speaker": "A", "english": "Sometimes I feel hot, sometimes I’m cold. I must have fever?" },
-  { "index": "9",  "speaker": "B", "english": "Let me check your forehead… Oh yes, you’re hot!" },
+  { "index": "9",  "speaker": "B", "english": "Let me check your forehead... Oh yes, you’re hot!" },
   { "index": "10", "speaker": "B", "english": "Do you cough?" },
   { "index": "11", "speaker": "A", "english": "No, I don’t cough." },
   { "index": "12", "speaker": "A", "english": "But every time I wake up, I’m very thirsty; I feel I need to drink." },
@@ -193,7 +193,7 @@
   { "index": "15", "speaker": "A", "english": "Mostly at night. I don’t know why." },
   { "index": "16", "speaker": "A", "english": "Doctor, I’m a bit worried: what is going on?" },
   { "index": "17", "speaker": "B", "english": "Did you eat anything particular lately?" },
-  { "index": "18", "speaker": "A", "english": "Hm, let me remember… No, I don’t think so." },
+  { "index": "18", "speaker": "A", "english": "Hm, let me remember... No, I don’t think so." },
   { "index": "19", "speaker": "A", "english": "Oh wait, actually yes I did!" },
   { "index": "20", "speaker": "A", "english": "Last week, my child came back from the forest with some strange fruit I had never seen." },
   { "index": "21", "speaker": "A", "english": "He gave them to me, for me to try." },
@@ -215,8 +215,8 @@
   { "index": "37", "speaker": "A", "english": "Thank you so much!" }
       ]
     },
-  "Q04":{
-    "title": "Q04 Where’s my notebook?",
+  "CQ04 Where’s my notebook?":{
+    "title": "CQ04 Where’s my notebook?",
     "uid": "1716497507",
     "context": "A young girl [A] is asking her elder brother [B] for her school notebook.",
       "dialog":
@@ -232,12 +232,12 @@
   { "index": "9",  "speaker": "B", "english": "Hm, did you look in our room, beside your bed?" },
   { "index": "10", "speaker": "A", "english": "Yes I did; it’s not there." },
   { "index": "11", "speaker": "B", "english": "Or perhaps on Dad’s desk, maybe it’s hidden under another book?" },
-  { "index": "12", "speaker": "A", "english": "Wait… No, I can’t find it." },
-  { "index": "13", "speaker": "B", "english": "Let me look in the kitchen… Hm, not here either." },
+  { "index": "12", "speaker": "A", "english": "Wait... No, I can’t find it." },
+  { "index": "13", "speaker": "B", "english": "Let me look in the kitchen... Hm, not here either." },
   { "index": "14", "speaker": "A", "english": "But I need it for my math class today!" },
   { "index": "15", "speaker": "A", "english": "The teacher will be quite angry if I don’t have my notebook with me." },
   { "index": "16", "speaker": "A", "english": "He will think I didn’t do my homework." },
-  { "index": "17", "speaker": "B", "english": "Uh oh… I think I found it!" },
+  { "index": "17", "speaker": "B", "english": "Uh oh... I think I found it!" },
   { "index": "18", "speaker": "A", "english": "Really?! where?" },
   { "index": "19", "speaker": "B", "english": "Look at our little brother out there in the garden." },
   { "index": "20", "speaker": "B", "english": "What’s that he’s holding in his hands?" },
@@ -247,11 +247,11 @@
   { "index": "24", "speaker": "A", "english": "Oh dear, what happened to my homework?!" },
   { "index": "25", "speaker": "A", "english": "Now I need to buy a new notebook," },
   { "index": "26", "speaker": "A", "english": "and start my work all over again." },
-  { "index": "27", "speaker": "A", "english": "Poor me! What a disaster…" }
+  { "index": "27", "speaker": "A", "english": "Poor me! What a disaster..." }
 ]
         },
-  "Q05": {
-    "title": "Q05 A family album",
+  "CQ05 A family album.": {
+    "title": "CQ05 A family album.",
     "uid": "1716852912",
     "context": " A person [A] is showing a photo album to a friend [B].",
       "dialog":
