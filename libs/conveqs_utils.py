@@ -218,5 +218,3 @@ def conveqs_cq_translation_from_transcription_xlsx(xlsx):
     }
 
     return out, ""
-
-def convert_dig4el_to_conveqs_cq(cq):
