@@ -19,6 +19,7 @@ import pandas as pd
 import json
 import os
 from libs import stats
+from libs import utils as u
 import io
 
 
@@ -107,8 +108,43 @@ def capitalize_sentences(text: str) -> str:
 
     return "".join(out).strip()
 
-
 def display_cq(cqo: dict, delimiters, title, uid, gloss=False):
+    indi = cqo.get("target language", "target language unknown")
+    pivot = cqo.get("pivot language", "lingua franca unknown")
+    st.markdown("### {}".format(title))
+    st.markdown("In **{}**, lingua franca: **{}**.".format(indi, pivot))
+    st.markdown("**Collected** from {}, by {}".format(cqo["interviewee"], cqo["interviewer"]))
+    st.markdown("CQ unique **identification number**: {}".format(cqo["cq_uid"]))
+    st.markdown("**Recording unique identification number**: {}".format(cqo["recording_uid"]))
+    st.markdown("**Access**: {}".format("accessed read-only by anyone via ConveQs and DIG4EL tools"))
+    st.divider()
+    for index, data in cqo["data"].items():
+        st.markdown("Index {}: {}".format(data["legacy index"], data["cq"]))
+        if pivot != "lingua franca unknown" and pivot != "English":
+            st.markdown("{}: {}".format(pivot, data["alternate_pivot"]))
+        st.markdown("**{}**: **{}**".format(indi, data["translation"]))
+        # concept words
+        rev_cwc = {}
+        for concept, words in data["concept_words"].items():
+            wlist = words.split("...")
+            for word in wlist:
+                rev_cwc[word] = concept
+        sentence_words = stats.custom_split(data["translation"], cqo["delimiters"])
+        pseudo_gloss = []
+        for w in sentence_words:
+            pseudo_gloss.append(
+                {indi: w, "concept": rev_cwc.get(w, "")}
+            )
+        pg_df = pd.DataFrame(pseudo_gloss).T
+        st.dataframe(pg_df, hide_index=True)
+        st.divider()
+
+
+
+
+
+
+def display_cq_canonical(cqo: dict, delimiters, title, uid, gloss=False):
     indi = cqo.get("target language", "target language unknown")
     pivot = cqo.get("pivot language", "pivot language unknown")
     st.markdown("### {}".format(title))
