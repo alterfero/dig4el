@@ -51,8 +51,6 @@ st.markdown("""
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"), "storage")
 
-if "indi_path_check" not in st.session_state:
-    st.session_state.indi_path_check = False
 if "upload_language" not in st.session_state:
     if "indi_language" in st.session_state:
         st.session_state.upload_language = st.session_state.indi_language
@@ -62,30 +60,12 @@ if "indi_glottocode" not in st.session_state:
     st.session_state["indi_glottocode"] = "abkh1242"
 if "is_guest" not in st.session_state:
     st.session_state.is_guest = None
-if "caretaker_of" not in st.session_state:
-    st.session_state.caretaker_of = []
-if "caretaker_trigger" not in st.session_state:
-    st.session_state.caretaker_trigger = False
+
 if "use" not in st.session_state:
     st.session_state.use = "consult"
 if "new_cq_counter" not in st.session_state:
     st.session_state.new_cq_counter = 0
-if "knowledge_graph" not in st.session_state:
-    st.session_state.knowledge_graph = {}
-if "cq_transcriptions" not in st.session_state:
-    st.session_state.cq_transcriptions = []
-if "active_language" not in st.session_state:
-    st.session_state.active_language = None
-if "delimiters" not in st.session_state:
-    st.session_state.delimiters = None
-if "selected_concept" not in st.session_state:
-    st.session_state["selected_concept"] = ""
-if "pdict" not in st.session_state:
-    st.session_state["pdict"] = {}
-if "pfilter" not in st.session_state:
-    st.session_state["pfilter"] = {"intent": [], "enunciation": [], "predicate": {}, "ip": {}, "rp": []}
-if "cdict" not in st.session_state:
-    st.session_state["cdict"] = {}
+
 if "uid_dict" not in st.session_state:
     with open("./uid_dict.json", "r") as uid:
         st.session_state.uid_dict = json.load(uid)
@@ -108,7 +88,6 @@ if "delete_file" not in st.session_state:
 
 CONVEQS_BASE_PATH = os.path.join(BASE_LD_PATH, "conveqs")
 
-
 # ------ AUTH SETUP --------------------------------------------------------------------------------
 CFG_PATH = Path(
     os.getenv("AUTH_CONFIG_PATH") or
@@ -116,6 +95,7 @@ CFG_PATH = Path(
 )
 # Cookie secret (override YAML)
 COOKIE_KEY = os.getenv("AUTH_COOKIE_KEY", None)
+
 
 # ---------- Load config ----------
 def load_config(path: Path) -> dict:
@@ -128,6 +108,7 @@ def load_config(path: Path) -> dict:
         cfg.setdefault("cookie", {})["key"] = COOKIE_KEY
     return cfg
 
+
 # --- helper: atomic YAML write ---
 def save_config_atomic(data: dict, path: Path):
     d = os.path.dirname(path) or "."
@@ -135,6 +116,7 @@ def save_config_atomic(data: dict, path: Path):
         yaml.safe_dump(data, tmp, sort_keys=False, allow_unicode=True)
         tmp_path = tmp.name
     os.replace(tmp_path, path)  # atomic on POSIX
+
 
 cfg = load_config(CFG_PATH)
 authenticator = stauth.Authenticate(
@@ -163,24 +145,24 @@ if st.session_state.is_guest:
     st.session_state["name"] = "Guest"
 else:
     authenticator.login(
-        location="main",                 # "main" | "sidebar" | "unrendered"
-        max_concurrent_users=20,         # soft cap; useful for small apps
-        max_login_attempts=5,            # lockout window is managed internally
-        fields={                         # optional label overrides
+        location="main",  # "main" | "sidebar" | "unrendered"
+        max_concurrent_users=20,  # soft cap; useful for small apps
+        max_login_attempts=5,  # lockout window is managed internally
+        fields={  # optional label overrides
             "Form name": "Sign in",
             "Username": "email",
             "Password": "Password",
             "Login": "Sign in",
         },
-        captcha=False,                    # simple built-in captcha
-        single_session=True,             # block multiple sessions per user
+        captcha=False,  # simple built-in captcha
+        single_session=True,  # block multiple sessions per user
         clear_on_submit=True,
-        key="login_form_v1",             # avoid WidgetID collisions
+        key="login_form_v1",  # avoid WidgetID collisions
     )
 
 auth_status = st.session_state.get("authentication_status", None)
-name        = st.session_state.get("name", None)
-username    = st.session_state.get("username", None)
+name = st.session_state.get("name", None)
+username = st.session_state.get("username", None)
 
 if auth_status:
     role = cfg["credentials"]["usernames"].get(username, {}).get("role", "guest")
@@ -218,6 +200,7 @@ else:
     role = None
     st.info("Please log in or click on the 'Use without logging in' button")
 
+
 # ========================== HELPERS ===================================================
 
 def show_cq_map(cqs):
@@ -225,9 +208,9 @@ def show_cq_map(cqs):
     valid_cqs = [
         cq for cq in cqs
         if cq.get("collection_location")
-        and cq["collection_location"].get("lat") is not None
-        and cq["collection_location"].get("lng") is not None
-        and cq.get("language")
+           and cq["collection_location"].get("lat") is not None
+           and cq["collection_location"].get("lng") is not None
+           and cq.get("language")
     ]
 
     if not valid_cqs:
@@ -289,13 +272,13 @@ def show_cq_map(cqs):
                 left: 50%;
                 top: 100%;
                 transform: translate(-50%, -100%);
-                font-size: 34px;
-                line-height: 34px;
-            ">📍</div>
+                font-size: 20px;
+                line-height: 20px;
+            ">⭕</div>
             <div style="
                 position: absolute;
                 right: -4px;
-                top: -2px;
+                top: 16px;
                 min-width: 18px;
                 height: 18px;
                 padding: 0 4px;
@@ -346,7 +329,6 @@ def show_cq_map(cqs):
     cq_list = grouped_cqs[selected_language]
 
     st.markdown(f"### {selected_language}")
-    st.caption(f"{len(cq_list)} CQ{'s' if len(cq_list) > 1 else ''}")
 
     if len(cq_list) > 1:
         labels = [
@@ -383,7 +365,7 @@ def show_cq_map(cqs):
         else:
             df_col = ["index", "cq", "lingua franca", "translation"]
         data_df = pd.DataFrame(data).T
-        st.dataframe(data_df, use_container_width=True, hide_index=True)
+        st.dataframe(data_df, use_container_width=True, hide_index=True, column_order=df_col)
 
     except FileNotFoundError:
         st.error(f"File not found: {selected_cq['filename']}")
@@ -392,15 +374,25 @@ def show_cq_map(cqs):
 
 
 # =========================== LOGIC AND UI =============================================
-
-
+with st.sidebar:
+    st.markdown(
+        "You can utomate the transposition to the ConveQs common format by using the Excel templates!")
+    with open("./conveqs/conveqs_cq_templates.zip", "rb") as file:
+        file_data = file.read()
+    st.download_button(label="Download CQ templates",
+                       data=file_data,
+                       mime="application/zip",
+                       icon="📁",
+                       file_name="conveqs_cq_template.zip")
 
 cole1, cole2 = st.columns(2)
 with cole1:
     with st.popover("What are Conversational Questionnaires?"):
         st.markdown("#### An introduction to Conversational Questionnaires")
-        st.markdown("Conversational Questionnaires (CQ) are a linguistic data collection method. The method consists in eliciting speech not at the level of words or of isolated sentences, but in the form of a chunk of dialogue. Ahead of fieldwork, a number of scripted conversations are written in the area’s lingua franca, each anchored in a plausible real-world situation – whether universal or culture-specific. Native speakers are then asked to come up with the most naturalistic utterances that would occur in each context, resulting in a plausible conversation in the target language. Experience shows that conversational questionnaires provide a number of advantages in linguistic fieldwork, compared to traditional elicitation methods. The anchoring in real-life situations lightens the cognitive burden on consultants, making the fieldwork experience easier for all. The method enables efficient coverage of various linguistic structures at once, from phonetic to pragmatic dimensions, from morphosyntax to phraseology. The tight-knit structure of each dialogue makes it an effective tool for cross-linguistic comparison, whether areal, historical or typological. Conversational questionnaires help the linguist make quick progress in language proficiency, which in turn facilitates further stages of data collection. Finally, these stories can serve as learning resources for language teaching and revitalization.")
-        st.markdown("Reference: François, Alexandre. 2019. A proposal for conversa­tional ques­tionnaires. In Lahaussois, Aimée & Vuillermet, Marine (eds.), Methodological Tools for Linguistic Description and Typology, Language Documentation & Conservation Special Publication No. 16. Honolulu: University of Hawai'i Press.")
+        st.markdown(
+            "Conversational Questionnaires (CQ) are a linguistic data collection method. The method consists in eliciting speech not at the level of words or of isolated sentences, but in the form of a chunk of dialogue. Ahead of fieldwork, a number of scripted conversations are written in the area’s lingua franca, each anchored in a plausible real-world situation – whether universal or culture-specific. Native speakers are then asked to come up with the most naturalistic utterances that would occur in each context, resulting in a plausible conversation in the target language. Experience shows that conversational questionnaires provide a number of advantages in linguistic fieldwork, compared to traditional elicitation methods. The anchoring in real-life situations lightens the cognitive burden on consultants, making the fieldwork experience easier for all. The method enables efficient coverage of various linguistic structures at once, from phonetic to pragmatic dimensions, from morphosyntax to phraseology. The tight-knit structure of each dialogue makes it an effective tool for cross-linguistic comparison, whether areal, historical or typological. Conversational questionnaires help the linguist make quick progress in language proficiency, which in turn facilitates further stages of data collection. Finally, these stories can serve as learning resources for language teaching and revitalization.")
+        st.markdown(
+            "Reference: François, Alexandre. 2019. A proposal for conversa­tional ques­tionnaires. In Lahaussois, Aimée & Vuillermet, Marine (eds.), Methodological Tools for Linguistic Description and Typology, Language Documentation & Conservation Special Publication No. 16. Honolulu: University of Hawai'i Press.")
         st.markdown("https://scholarspace.manoa.hawaii.edu/items/ef98c1c0-bee6-4ac9-9ea0-0543594ce3b3")
 with cole2:
     with st.popover("What is ConveQs?"):
@@ -472,7 +464,8 @@ with tab3:
         else:
             conveqs_index_df = pd.DataFrame(user_files)
 
-            selected = st.dataframe(conveqs_index_df.style.hide(axis="index"), column_order=["language", "original_filename", "date"],
+            selected = st.dataframe(conveqs_index_df.style.hide(axis="index"),
+                                    column_order=["language", "original_filename", "date"],
                                     hide_index=True, selection_mode="single-cell", on_select="rerun")
 
             if selected["selection"]["cells"] != []:
@@ -482,14 +475,16 @@ with tab3:
                     selected_item["date"]))
                 col1, col2, col3 = st.columns([1, 1, 5])
 
-                with open(os.path.join(CONVEQS_BASE_PATH, "original_files", selected_item["actual_filename"]), "rb") as f:
+                with open(os.path.join(CONVEQS_BASE_PATH, "original_files", selected_item["actual_filename"]),
+                          "rb") as f:
                     data = f.read()
                 col1.download_button("Download", data, file_name=selected_item["original_filename"])
 
                 if col2.button("Delete"):
                     st.session_state.delete_file = True
                 if st.session_state.delete_file:
-                    st.markdown("Deleting your file will also delete any version of your content transposed to the ConveQs common format")
+                    st.markdown(
+                        "Deleting your file will also delete any version of your content transposed to the ConveQs common format")
                     if st.button("Confirm deletion"):
                         # delete transposed
                         transposed = selected_item["transposed_as"]
@@ -500,7 +495,8 @@ with tab3:
                                 print("Can't find {} to delete".format(tfn))
                         # delete original file
                         try:
-                            os.remove(os.path.join(CONVEQS_BASE_PATH, "original_files", selected_item["actual_filename"]))
+                            os.remove(
+                                os.path.join(CONVEQS_BASE_PATH, "original_files", selected_item["actual_filename"]))
                         except FileNotFoundError:
                             print("{} does not exist".format(selected_item["filename"]))
                         # delete index entry
@@ -509,7 +505,6 @@ with tab3:
                             u.save_json_normalized(conveqs_index, ci, indent=4)
                         st.session_state.delete_file = False
                         st.rerun()
-
 
 # ========== UPLOAD FILES ============================
 with (tab2):
@@ -566,7 +561,7 @@ with (tab2):
         if selected_language != st.session_state.upload_language:
             st.session_state.upload_language = selected_language
             st.session_state.indi_glottocode = st.session_state.languages.get(st.session_state.upload_language,
-                                                                           "glottocode not found")
+                                                                              "glottocode not found")
 
         if role in ["admin", "user"]:
 
@@ -585,7 +580,8 @@ with (tab2):
             name = st.text_input("Which CQ(s) does your document contain?")
             collection_date = st.date_input("Collection date (last day if multiple)")
 
-            collection_location = st.text_input("Collection location: Enter the name of the location in the text box and click on the map.")
+            collection_location = st.text_input(
+                "Collection location: Enter the name of the location in the text box and click on the map.")
             # collection_coordinates with map =================================================================
             m = folium.Map(
                 location=[
@@ -616,11 +612,12 @@ with (tab2):
                 st.session_state.map_zoom = map_data["zoom"]
                 st.rerun()
             # =================================================================
-
+            st.write("picked location: {}".format(st.session_state.picked_location))
             informant = st.text_input("Collected from (speaker(s) full name(s))")
             field_worker = st.text_input("Collected by (language documenter's full name)")
             visibility = "Everyone"
-            consent_received = st.checkbox("**I have recorded the consent of the {} speaker(s)**".format(st.session_state.upload_language))
+            consent_received = st.checkbox(
+                "**I have recorded the consent of the {} speaker(s)**".format(st.session_state.upload_language))
 
             st.markdown("""
                                         Reminder: Uploading a document engages your responsibility. 
@@ -662,7 +659,8 @@ with (tab2):
                                 with open(os.path.join(CONVEQS_BASE_PATH, "transposed_files", fn), "w") as tf:
                                     u.save_json_normalized(mergedict, tf)
 
-                                st.success("Your file has been successfully transposed to the ConveQs common format and is available for consultation and comparison.")
+                                st.success(
+                                    "Your file has been successfully transposed to the ConveQs common format and is available for consultation and comparison.")
                         else:
                             transposed = None
 
@@ -691,8 +689,10 @@ with (tab2):
                                   encoding='utf-8') as f:
                             u.save_json_normalized(conveqs_index, f, indent=4)
 
-                        st.markdown("To upload another file, just click on the button below, change the document, edit fields and press submit again.")
-                        st.markdown("Note that uploading the same file creates separate copies. You can manage your files in the *My Files* tab")
+                        st.markdown(
+                            "To upload another file, just click on the button below, change the document, edit fields and press submit again.")
+                        st.markdown(
+                            "Note that uploading the same file creates separate copies. You can manage your files in the *My Files* tab")
                         if st.button("Close this upload session"):
                             st.rerun()
 
@@ -703,25 +703,39 @@ with (tab2):
                 with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
                     st.write(json.load(f))
 
-
 # ========== EXPLORE CQs =============================
 os.makedirs(os.path.join(CONVEQS_BASE_PATH, "original_files"), exist_ok=True)
 os.makedirs(os.path.join(CONVEQS_BASE_PATH, "transposed_files"), exist_ok=True)
 
 with tab1:
-
     st.markdown("""
                 #### Consult and compare CQ translations
                 """)
-    st.markdown("""
-    This page allows to display the content of, and compare all CQs that have been transposed to the ConveQs Common Format
-    """)
     transposed_cq_catalog = cu.catalog_transposed_conveqs_cqs()
     if transposed_cq_catalog == []:
         st.markdown("*No CQ transposed to the ConveQs common file format yet.*")
     else:
         show_cq_map(transposed_cq_catalog)
 
+    st.divider()
+
+    st.markdown("#### Compare CQs")
+    selected_title = st.selectbox("Select a CQ", st.session_state.ccq.keys())
+    available_languages = list(set([c["language"] for c in transposed_cq_catalog if c["title"] == selected_title]))
+    st.markdown("{} languages available for this CQ".format(len(available_languages)))
+    selected_languages = st.multiselect("Select the languages to compare", available_languages)
+    if st.button("Compare"):
+        c_to_display = [c for c in transposed_cq_catalog
+                     if c["title"] == selected_title and c["language"] in selected_languages]
+        display_dict = {}
+        for item in c_to_display:
+            with open(os.path.join(CONVEQS_BASE_PATH, "transposed_files", item["filename"]), "r") as f:
+                tfd = json.load(f)
+            display_dict[item["language"]] = [tfd["data"][k]["translation"] for k in tfd["data"].keys()]
+            display_dict["English"] = [tfd["data"][k]["cq"] for k in tfd["data"].keys()]
+            display_dict["Index"] = [tfd["data"][k]["index"] for k in tfd["data"].keys()]
+        disp_df = pd.DataFrame(display_dict)
+        st.dataframe(disp_df, hide_index=True, column_order=["Index", "English"] + selected_languages)
 
 
 

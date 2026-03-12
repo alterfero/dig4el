@@ -182,7 +182,11 @@ def conveqs_cq_translation_from_transcription_xlsx(xlsx):
         english = _norm(r[2])
         pivot = _norm(r[3])
         target_sentence = _norm(r[4])
-        notes = _norm(r[5])
+        try:
+            notes = _norm(r[5])
+        except IndexError:
+            print("error at idx={}".format(idx))
+            notes = ""
 
         data[idx] = {
             "index": idx,
