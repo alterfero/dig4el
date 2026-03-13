@@ -203,6 +203,16 @@ else:
 
 # ========================== HELPERS ===================================================
 
+def normalize_lng(lng: float) -> float:
+    """
+    Normalize longitude to [-180, 180).
+    Examples:
+        210.5859375 -> -149.4140625
+        -190 -> 170
+        360 -> 0
+    """
+    return ((lng + 180) % 360) - 180
+
 def show_cq_map(cqs):
     # Keep only CQs with valid coordinates and a language
     valid_cqs = [
@@ -376,7 +386,7 @@ def show_cq_map(cqs):
 # =========================== LOGIC AND UI =============================================
 with st.sidebar:
     st.markdown(
-        "You can utomate the transposition to the ConveQs common format by using the Excel templates!")
+        "You can automate the transposition to the ConveQs common format by using the Excel templates!")
     with open("./conveqs/conveqs_cq_templates.zip", "rb") as file:
         file_data = file.read()
     st.download_button(label="Download CQ templates",
@@ -470,7 +480,7 @@ with tab3:
 
             if selected["selection"]["cells"] != []:
                 selected_row = selected["selection"]["cells"][0][0]
-                selected_item = conveqs_index[selected_row]
+                selected_item = user_files[selected_row]
                 st.markdown("Uploaded on {}".format(
                     selected_item["date"]))
                 col1, col2, col3 = st.columns([1, 1, 5])
@@ -667,6 +677,10 @@ with (tab2):
                         # Adding/editing to conveqs_index
                         now = datetime.now()
                         readable_date_time = now.strftime("%A, %d %B %Y at %H:%M:%S")
+                        recorded_location = {
+                            "lat": st.session_state.picked_location["lat"],
+                            "lng": normalize_lng(st.session_state.picked_location["lng"])
+                        }
                         conveqs_index.append(
                             {
                                 "username": username,
@@ -676,7 +690,7 @@ with (tab2):
                                 "name": name,
                                 "language": st.session_state.upload_language,
                                 "collection_date": collection_date.strftime("%Y-%m-%d"),
-                                "collection_location": st.session_state.picked_location,
+                                "collection_location": recorded_location,
                                 "speaker": informant,
                                 "language documenter": field_worker,
                                 "consent": consent_received,
