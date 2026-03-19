@@ -175,14 +175,14 @@ lesson_agent = Agent(
     - Do not add information from any other source or from your own knowledge. 
     - Add ALL relevant information from all the available sources.
     - Follow any instructions part of the query.
-    - Adapt your output to the type of readers: The output must be in the language and the type readers, adapted to 
+    - Adapt your output to the type of readers: The output must be in the language of readers, adapted to 
     the type of readers, and insist on contrasts between the endangered language and the language of the readers 
     when describing grammar. 
     - All the content of the lesson must come from the provided material. Don't invent anything, don't retrieve
     anything from other sources or general knowledge. 
     - In all examples, translate the source sentence from English to the reader's language. 
     - Avoid metalinguistic jargon. Use everyday words and expressions and periphrases, 
-    especially if the indicated audience is young. 
+    except if the audience are linguists. 
     
     INPUT:
     - Name of the endangered language.

@@ -292,3 +292,8 @@ def cq_to_sentence_pairs(cq_transcription_dict: dict) -> list[dict]:
 #     json.dump(sp, f)
 
 
+# vectorize_vaps("Tahitian")
+# index, id_to_meta = load_index_and_id_to_meta("Tahitian")
+# results = retrieve_similar("negation", index, id_to_meta,
+#                      model_name='all-MiniLM-L6-v2', k=10, normalize=True,
+#                      min_score=0.5)

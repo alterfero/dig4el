@@ -32,3 +32,4 @@ def extract_and_clean_cq_alterlingua(indi_language: str) -> list[dict]:
         )
     return out_list
 
+print(extract_and_clean_cq_alterlingua("Tahitian"))

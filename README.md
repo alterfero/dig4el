@@ -48,6 +48,14 @@ pip install -r requirements.txt
 Then execute `streamlit run home.py`
 A local browser window will open to run the software locally. 
 
+You must also have REDIS installed to perform LLM-based sentence augmentation. 
+Install REDIS and run it (check online for instructions)
+check it is running with `redis-cli ping`, to which a running REDIS will respond `PONG`. 
+Then launch the worker with `python rq_worker.py` and keep that terminal window open. 
+The terminal will display a message about the worker starting, then 
+`*** Listening on sentence...`
+Nothing else to do there, this terminal window will keep you informed about the worker's activity. 
+
 
 ## License
 

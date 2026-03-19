@@ -30,6 +30,7 @@ import folium
 from libs import conveqs_utils as cu
 from folium import DivIcon
 from collections import defaultdict
+import math
 
 # TODO: Save alert / Autosave
 # TODO: Explain the difference between the original file and the local file.
@@ -213,6 +214,44 @@ def normalize_lng(lng: float) -> float:
     """
     return ((lng + 180) % 360) - 180
 
+def mean_lat_lng(coords):
+    """
+    coords: list of (lat, lng)
+    Returns:
+        mean latitude
+        circular mean longitude
+    """
+    mean_lat = sum(lat for lat, lng in coords) / len(coords)
+
+    x = sum(math.cos(math.radians(normalize_lng(lng))) for lat, lng in coords)
+    y = sum(math.sin(math.radians(normalize_lng(lng))) for lat, lng in coords)
+
+    mean_lng = math.degrees(math.atan2(y, x))
+    mean_lng = normalize_lng(mean_lng)
+
+    return mean_lat, mean_lng
+
+def representative_point(cq_list):
+    """
+    Return the real CQ location closest to the centroid.
+    """
+    coords = [
+        (
+            float(cq["collection_location"]["lat"]),
+            normalize_lng(float(cq["collection_location"]["lng"]))
+        )
+        for cq in cq_list
+    ]
+
+    centroid_lat, centroid_lng = mean_lat_lng(coords)
+
+    def sqdist(a, b):
+        lat1, lng1 = a
+        lat2, lng2 = b
+        return (lat1 - lat2) ** 2 + (lng1 - lng2) ** 2
+
+    return min(coords, key=lambda p: sqdist(p, (centroid_lat, centroid_lng)))
+
 def show_cq_map(cqs):
     # Keep only CQs with valid coordinates and a language
     valid_cqs = [
@@ -222,6 +261,16 @@ def show_cq_map(cqs):
            and cq["collection_location"].get("lng") is not None
            and cq.get("language")
     ]
+    if role == "admin" and valid_cqs and st.checkbox("Show displayed coordinates"):
+        for cq in valid_cqs:
+            lat = cq["collection_location"]["lat"]
+            lng = cq["collection_location"]["lng"]
+            st.write(
+                "MARKER INPUT",
+                cq.get("filename"),
+                type(lat), repr(lat),
+                type(lng), repr(lng),
+            )
 
     if not valid_cqs:
         st.info("No CQ with both a valid collection_location and a language.")
@@ -239,26 +288,40 @@ def show_cq_map(cqs):
     for cq in valid_cqs:
         grouped_cqs[cq["language"]].append(cq)
 
-    # Build language markers at barycenters
+    # Build language groups with representative marker locations
     language_groups = []
     for language, cq_list in grouped_cqs.items():
-        center_lat = sum(cq["collection_location"]["lat"] for cq in cq_list) / len(cq_list)
-        center_lng = sum(cq["collection_location"]["lng"] for cq in cq_list) / len(cq_list)
+        clean_cqs = []
+        for cq in cq_list:
+            loc = cq.get("collection_location", {})
+            if loc.get("lat") is None or loc.get("lng") is None:
+                continue
+
+            cq_copy = dict(cq)
+            cq_copy["collection_location"] = {
+                "lat": float(loc["lat"]),
+                "lng": normalize_lng(float(loc["lng"]))
+            }
+            clean_cqs.append(cq_copy)
+
+        if not clean_cqs:
+            continue
+
+        marker_lat, marker_lng = representative_point(clean_cqs)
 
         language_groups.append({
             "language": language,
-            "center": (center_lat, center_lng),
-            "cqs": cq_list,
+            "center": (marker_lat, marker_lng),
+            "cqs": clean_cqs,
         })
 
     # Sort for stable display / stable indexing
     language_groups.sort(key=lambda g: g["language"].lower())
 
-    # Center map on average of language barycenters
-    center_lat = sum(group["center"][0] for group in language_groups) / len(language_groups)
-    center_lng = sum(group["center"][1] for group in language_groups) / len(language_groups)
-
-    m = folium.Map(location=[center_lat, center_lng], zoom_start=3)
+    m = folium.Map(location=[0, -150], zoom_start=3)
+    if language_groups:
+        bounds = [group["center"] for group in language_groups]
+        m.fit_bounds(bounds, padding=(30, 30))
 
     # Add one marker per language
     for i, group in enumerate(language_groups):
@@ -617,7 +680,7 @@ with (tab2):
             if map_data and map_data.get("last_clicked"):
                 st.session_state.picked_location = {
                     "lat": map_data["last_clicked"]["lat"],
-                    "lng": map_data["last_clicked"]["lng"],
+                    "lng": normalize_lng(map_data["last_clicked"]["lng"]),
                 }
                 st.session_state.map_zoom = map_data["zoom"]
                 st.rerun()

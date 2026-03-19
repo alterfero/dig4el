@@ -36,6 +36,13 @@ Mood = Literal[
     "permissive",     # allowance
     "interrogative",  # direct questions (sometimes treated as a mood)
     "injunctive",     # prohibitions, negative commands
+    "epistemic-possibility",
+    "epistemic-probability",
+    "epistemic-necessity",
+    "deontic-obligation",
+    "deontic-permission",
+    "deontic-prohibition",
+    "desiderative",
     "other"           # catch-all
 ]
 
@@ -124,6 +131,8 @@ Directionality = Literal[
     "translocative", # motion away from the deictic center
     "uphill",        # movement upward or inland
     "downhill",      # movement downward or seaward
+    "upwind",        # in the direction the wind is coming from
+    "downwind",      # in the direction the wind is going to
     "seaward",       # toward the ocean
     "landward",      # toward the land
     "inward",        # into an enclosed space
@@ -173,15 +182,6 @@ ClassifierType = Literal["gender", "other classifier"]
 
 NumberQuantifier = Literal["zero", "one", "two", "three", "a few", "many", "none", "some", "all"]
 
-Modality = Literal[
-    # epistemic: speaker commitment
-    "epistemic-possibility", "epistemic-probability", "epistemic-necessity",
-    # deontic: obligation/permission
-    "deontic-obligation", "deontic-permission", "deontic-prohibition",
-    # dynamic/ability
-    "dynamic-ability", "dynamic-volition", "desiderative"
-]
-
 Evidentiality = Literal[
     "direct", "reported", "inferred", "assumed", "visual", "nonvisual", "hearsay"
 ]
@@ -196,7 +196,6 @@ class Sentence(BaseModel):
     mood: List[Mood]
     act_of_speech: List[ActOfSpeech]
     type_of_predicate: Optional[List[TypeOfPredicate]] = None
-    modality: Optional[List[Modality]] = None
     evidentiality: Optional[List[Evidentiality]] = None
     voice: Optional[List[Voice]] = None
     polarity: Optional[List[Polarity]] = None
@@ -227,12 +226,10 @@ class Sentence(BaseModel):
 
         # Build facets only for fields that have values; join lists with " & "
 
-
         add_facet_and_keywords("intent", self.intent, facets, kw)
         add_facet_and_keywords("mood", self.mood, facets, kw)
         add_facet_and_keywords("act_of_speech", self.act_of_speech, facets, kw)
         add_facet_and_keywords("type_of_predicate", self.type_of_predicate, facets, kw)
-        add_facet_and_keywords("modality", self.modality, facets, kw)
         add_facet_and_keywords("evidentiality", self.evidentiality, facets, kw)
         add_facet_and_keywords("voice", self.voice, facets, kw)
         add_facet_and_keywords("polarity", self.polarity, facets, kw)
@@ -340,15 +337,15 @@ MAPPING RULES:
     “X has Y / have/has” → have_verb and predicative.
     Guess and add  "alienable" and/or "inalienable" as needed (one's nose or arm is inalienable, one's dog or car is).
 
-- "key_translation_concepts" must be a list of short anchors copied from the English sentence itself (tokens or short phrases). 
-Choose the items whose translation in another language will most constrain or explain the overall translation 
+- "key_translation_concepts" must be a list of language-independent lexical and grammatical concepts from 
+the English sentence. Choose the items whose translation in another language will most constrain or 
+explain the overall translation.
 (i.e., highest cross-linguistic explanatory power).
-Examples (anchors only)
-- “Please don’t open the door.” → ["do not (neg)", "please (politeness)", "open", "door"]
-- “Let’s head back inland tomorrow.” → ["let us (hortative)", "back (dir)", "inland (landward)", "tomorrow (future time)"]
-- “If I had known, I would have called you earlier.” → ["if (conditional)", "had (perfect)", "would have (conditional+perfect)", "calling", "earlier"]
-- “I have never seen those mountains.” → ["have … seen (perfect)", "never (neg)", "those (demonstrative distal plural)", "mountains (plural)"]
-- “The report was completed because the data couldn’t be accessed.” → ["was completed (passive)", "because (causal)", "could not (modal+neg)", "be accessed (passive)", "data"]
+Examples:
+- “Please don’t open the door.” → ["request", "negation", "politeness", "open", "door"]
+- “Let’s head back inland tomorrow.” → ["hortative", "back (dir)", "inland", "tomorrow"]
+- “If I had known, I would have called you earlier.” → ["1sg", "conditional", "perfect", "conditional+perfect", "calling", "earlier"]
+- “I have never seen those mountains.” → ["1sg", "perfect", "negation", "demonstrative distal (plural)", "mountains (plural)"]
 
 -"comment": ≤120 characters; include ambiguity notes or parsing rationale if useful.
 """,
