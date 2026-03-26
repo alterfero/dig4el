@@ -419,7 +419,7 @@ with tab1:
     """)
     pl1, pl2 = st.columns(2)
     with pl1:
-        st.markdown("#### 🆕 Create / resume a CQ translation")
+        st.markdown("#### 🆕 Create/Upload/Edit CQs")
         st.caption("Create new DIG4EL CQ translations or resume working on one.")
         if st.button("Open CQ Editor", use_container_width=True):
             st.switch_page("pages/record_cq_transcriptions.py")  # requires multipage + Streamlit that supports switch_page
@@ -787,10 +787,12 @@ with tab3:
 
     # DISPLAY AUGMENTED SENTENCE PAIRS
 
-    st.subheader("2. Augment sentence pairs with automatic grammatical descriptions")
+    st.subheader("2. Augment sentence pairs with automatic grammatical descriptions and concepts")
     st.markdown("""Sentence pairs are augmented with grammatical descriptions, so they can be used efficiently.
     This is a long process that will run in the background once started (you can
-    leave this page or turn off your computer and come back later.)
+    leave this page or turn off your computer and come back later. At any moment you can click on the 
+    "Save new augmented sentences" button to retrieve the latest augmented sentence and work on connecting 
+    words and concepts in 3 below.)
     """)
 
     # Display available augmented pairs
@@ -1036,7 +1038,7 @@ with tab3:
             source = st.text_input("Edit Source", value=slap.get("source", ""))
             target = st.text_input("Edit {}".format(st.session_state.indi_language), value=slap.get("target", ""))
             comments = st.text_input("Add/edit comments", value=slap.get("comments", ""))
-            with st.expander("Edit LLM content"):
+            with st.expander("Edit grammatical description and concepts"):
                 description = st.text_input("Edit description", value=slap.get("description", ""))
                 keywords_string = st.text_input("Edit keywords (respect format)", value=", ".join(slap.get("keywords", [])))
                 keywords = keywords_string.split(", ")
