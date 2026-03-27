@@ -47,6 +47,25 @@ st.markdown("""
         .block-container {
             padding-top: 1rem;
         }
+
+        .stProgress {
+            width: 100%;
+        }
+
+        .stProgress > div {
+            width: 100%;
+        }
+
+        .stProgress > div > div > div {
+            height: 1rem;
+            background-color: #d1d5db;
+            border-radius: 999px;
+        }
+
+        .stProgress > div > div > div > div {
+            background: linear-gradient(90deg, #0f766e 0%, #14b8a6 100%);
+            border-radius: 999px;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -258,6 +277,60 @@ def feedback_form():
             with open(os.path.join(BASE_LD_PATH, "feedback.json"), "w") as h:
                 json.dump(feedback, h)
             st.success("Thank you for your feedback!")
+
+
+def initialize_generation_progress():
+    total_steps = 2  # prepare generation + finalize output
+    if st.session_state.is_cq and st.session_state.use_cq:
+        total_steps += 2
+    if st.session_state.is_doc and st.session_state.use_doc:
+        total_steps += 1
+    if st.session_state.is_pairs and st.session_state.use_pairs:
+        total_steps += 1
+    if st.session_state.run_aggregation:
+        total_steps += 1
+        if (st.session_state.document_format == "Grammar lesson"
+                and st.session_state.polished_output):
+            total_steps += 1
+
+    status_placeholder = st.empty()
+    progress_bar = st.progress(0)
+    caption_placeholder = st.empty()
+
+    return {
+        "current_step": 0,
+        "total_steps": total_steps,
+        "status_placeholder": status_placeholder,
+        "progress_bar": progress_bar,
+        "caption_placeholder": caption_placeholder
+    }
+
+
+def update_generation_progress(progress_state, message):
+    if progress_state is None:
+        return
+    progress_state["status_placeholder"].info(f"In progress: {message}")
+    progress_state["caption_placeholder"].caption(
+        f"Step {progress_state['current_step'] + 1} of {progress_state['total_steps']}"
+    )
+
+
+def complete_generation_step(progress_state, message):
+    if progress_state is None:
+        return
+    progress_state["current_step"] += 1
+    progress_value = min(
+        progress_state["current_step"] / progress_state["total_steps"],
+        1.0
+    )
+    progress_state["progress_bar"].progress(progress_value)
+    progress_state["status_placeholder"].info(f"Completed: {message}")
+    if progress_state["current_step"] < progress_state["total_steps"]:
+        progress_state["caption_placeholder"].caption(
+            f"Step {progress_state['current_step'] + 1} of {progress_state['total_steps']}"
+        )
+    else:
+        progress_state["caption_placeholder"].caption("Generation complete.")
 
 
 # ------ AUTH SETUP --------------------------------------------------------------------------------
@@ -638,7 +711,10 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
             st.session_state.run_sources = True
 
 if st.session_state.run_sources:
+    generation_progress = initialize_generation_progress()
+
     # check and populate seed if available
+    update_generation_progress(generation_progress, "Preparing generation context")
     if st.session_state.seed is None:
         with open("./grammar_seeds/grammar_seeds.json", "r") as f:
             seeds = json.load(f)
@@ -657,17 +733,29 @@ if st.session_state.run_sources:
                 """
             else:
                 st.session_state.query = f"TOPIC: {st.session_state.bare_query}"
+    complete_generation_step(generation_progress, "Generation context prepared")
+
     # cq agents
     if st.session_state.is_cq and st.session_state.use_cq:
         # grammatical parameters selection
         available_params = ggu.extract_parameter_names_from_cq_knowledge(st.session_state.indi)
-        with st.spinner("Selecting relevant grammatical parameters among {} available".format(len(available_params))):
-            st.session_state.relevant_parameters = gga.select_parameters_sync(st.session_state.bare_query, available_params)
+        update_generation_progress(
+            generation_progress,
+            "Selecting relevant grammatical parameters among {} available".format(len(available_params))
+        )
+        st.session_state.relevant_parameters = gga.select_parameters_sync(
+            st.session_state.bare_query,
+            available_params
+        )
+        complete_generation_step(generation_progress, "Relevant grammatical parameters selected")
         # alterlingua agent
         alterlingua_sentences = ggu.extract_and_clean_cq_alterlingua(st.session_state.indi)
-        with st.spinner("Generating contribution from CQ pseudo-gloss analysis"):
-            st.session_state.alterlingua_contribution = gga.contribute_from_alterlingua_sync(st.session_state.query,
-                                                                                             alterlingua_sentences)
+        update_generation_progress(generation_progress, "Generating contribution from CQ pseudo-gloss analysis. This is a long step, be patient!")
+        st.session_state.alterlingua_contribution = gga.contribute_from_alterlingua_sync(
+            st.session_state.query,
+            alterlingua_sentences
+        )
+        complete_generation_step(generation_progress, "CQ pseudo-gloss contribution generated")
     else:
         st.warning("Not using CQs.")
         st.session_state.relevant_parameters = {}
@@ -678,44 +766,45 @@ if st.session_state.run_sources:
         vsids = [st.session_state.info_dict["documents"]["oa_vector_store_id"]]
         if role == "admin":
             st.markdown("admin: Using vector store(s) {}".format(vsids))
-        with st.spinner("Generating contribution from documents"):
-            full_response = gga.file_search_request_sync(st.session_state.indi,
-                                                         vsids,
-                                                         st.session_state.query)
-            try:
-                with open(os.path.join(".", "tmp", "raw_doc_response.json"), "w") as fr:
-                    json.dump(full_response, f)
-            except:
-                if role == "admin":
-                    st.warning("Failed saving full doc response")
-            try:
-                raw_response = full_response.output[1].content
-                if raw_response is not None:
-                    st.session_state.documents_contribution = {
-                        "text": raw_response[0].text,
-                        "sources": list(set([a.filename for a in raw_response[0].annotations]))
-                    }
-                else:
-                    st.session_state.documents_contribution = {
-                        "text": "",
-                        "sources": []
-                    }
-                    if role == "admin":
-                        st.warning("Response from document retrieval is None")
-                        with st.expander("Full response"):
-                            st.write(full_response)
-            except:
+        update_generation_progress(generation_progress, "Generating contribution from documents")
+        full_response = gga.file_search_request_sync(st.session_state.indi,
+                                                     vsids,
+                                                     st.session_state.query)
+        try:
+            with open(os.path.join(".", "tmp", "raw_doc_response.json"), "w") as fr:
+                json.dump(full_response, f)
+        except:
+            if role == "admin":
+                st.warning("Failed saving full doc response")
+        try:
+            raw_response = full_response.output[1].content
+            if raw_response is not None:
+                st.session_state.documents_contribution = {
+                    "text": raw_response[0].text,
+                    "sources": list(set([a.filename for a in raw_response[0].annotations]))
+                }
+            else:
                 st.session_state.documents_contribution = {
                     "text": "",
                     "sources": []
                 }
                 if role == "admin":
-                    st.error("Exception in reading full_response.output[1].content")
-                    try:
-                        st.write("Full response")
+                    st.warning("Response from document retrieval is None")
+                    with st.expander("Full response"):
                         st.write(full_response)
-                    except:
-                        st.error("Exception displaying full response")
+        except:
+            st.session_state.documents_contribution = {
+                "text": "",
+                "sources": []
+            }
+            if role == "admin":
+                st.error("Exception in reading full_response.output[1].content")
+                try:
+                    st.write("Full response")
+                    st.write(full_response)
+                except:
+                    st.error("Exception displaying full response")
+        complete_generation_step(generation_progress, "Document contribution generated")
     else:
         st.warning("Not using documents")
         st.session_state.documents_contribution = {
@@ -737,43 +826,44 @@ if st.session_state.run_sources:
     #             print("Augmented pairs descriptions vectorized and indexed")
     #         ragu.create_hard_kw_index(st.session_state.indi)
     if st.session_state.is_pairs and st.session_state.use_pairs:
-        with st.spinner("Retrieving a helpful selection of sentence pairs..."):
-            # retrieve N sentences using embeddings XXX RULED OUT, NOT RELEVANT ENOUGH
-            # index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "description_vectors", "index.faiss")
-            # index, id_to_meta = ragu.load_descriptions_index_and_id_to_meta(st.session_state.indi)
-            # if index and id_to_meta:
-            #     vec_retrieved = ragu.retrieve_similar(query, index, id_to_meta, k=10, min_score=0.3)
-            #     vecf_retrieved = [i["filename"][:-4]+".json" for i in vec_retrieved]
-                # retrieve sentences from keywords
+        update_generation_progress(generation_progress, "Retrieving a helpful selection of sentence pairs")
+        # retrieve N sentences using embeddings XXX RULED OUT, NOT RELEVANT ENOUGH
+        # index_path = os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs", "vectors", "description_vectors", "index.faiss")
+        # index, id_to_meta = ragu.load_descriptions_index_and_id_to_meta(st.session_state.indi)
+        # if index and id_to_meta:
+        #     vec_retrieved = ragu.retrieve_similar(query, index, id_to_meta, k=10, min_score=0.3)
+        #     vecf_retrieved = [i["filename"][:-4]+".json" for i in vec_retrieved]
+            # retrieve sentences from keywords
 
-            # HARD-RETRIEVE COMMENTED
-            # kw_retrieved = ragu.hard_retrieve_from_query(query, st.session_state.indi)
-            # print("KW-retrieved sentences: {}".format(kw_retrieved))
+        # HARD-RETRIEVE COMMENTED
+        # kw_retrieved = ragu.hard_retrieve_from_query(query, st.session_state.indi)
+        # print("KW-retrieved sentences: {}".format(kw_retrieved))
 
-            # Direct LLM retrieve
-            sentence_pool = []
-            for sf in [fn
-                       for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
-                                                         "sentence_pairs", "augmented_pairs"))
-                       if fn.endswith(".json")]:
-                with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs",
-                                       "augmented_pairs", sf), encoding="utf-8") as f:
-                    tmpd = json.load(f)
-                    sentence_pool.append(tmpd["source"])
-            print("sentence pool created with {} sentences".format(len(sentence_pool)))
-            llm_selection_raw = sda.select_sentences_sync(st.session_state.bare_query, sentence_pool)
-            llm_selection = llm_selection_raw.sentence_list
-            llm_filenames_retrieved = []
-            for sentence in llm_selection:
-                expected_filename = u.clean_sentence(sentence, filename=True) + ".json"
-                if expected_filename in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs",
-                                                     "augmented_pairs")):
-                    llm_filenames_retrieved.append(expected_filename)
-                else:
-                    print("no {} file in augmented sentences".format(expected_filename))
-            # aggregate
-            # st.session_state.selected_pairs = list(set(llm_filenames_retrieved + kw_retrieved))
-            st.session_state.selected_pairs = list(set(llm_filenames_retrieved))
+        # Direct LLM retrieve
+        sentence_pool = []
+        for sf in [fn
+                   for fn in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
+                                                     "sentence_pairs", "augmented_pairs"))
+                   if fn.endswith(".json")]:
+            with open(os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs",
+                                   "augmented_pairs", sf), encoding="utf-8") as f:
+                tmpd = json.load(f)
+                sentence_pool.append(tmpd["source"])
+        print("sentence pool created with {} sentences".format(len(sentence_pool)))
+        llm_selection_raw = sda.select_sentences_sync(st.session_state.bare_query, sentence_pool)
+        llm_selection = llm_selection_raw.sentence_list
+        llm_filenames_retrieved = []
+        for sentence in llm_selection:
+            expected_filename = u.clean_sentence(sentence, filename=True) + ".json"
+            if expected_filename in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi, "sentence_pairs",
+                                                 "augmented_pairs")):
+                llm_filenames_retrieved.append(expected_filename)
+            else:
+                print("no {} file in augmented sentences".format(expected_filename))
+        # aggregate
+        # st.session_state.selected_pairs = list(set(llm_filenames_retrieved + kw_retrieved))
+        st.session_state.selected_pairs = list(set(llm_filenames_retrieved))
+        complete_generation_step(generation_progress, "Sentence pairs selected")
     else:
         st.warning("Not using sentence pairs")
         st.session_state.selected_pairs = []
@@ -795,6 +885,7 @@ if (st.session_state.alterlingua_contribution
     or st.session_state.selected_pairs):
 
 # ============= AGGREGATION ============================
+    generation_progress = locals().get("generation_progress")
 
     if st.session_state.run_aggregation:
         st.session_state.run_aggregation = False
@@ -845,63 +936,68 @@ if (st.session_state.alterlingua_contribution
         else:
             sentence_pairs_blob = "No available sentence pairs."
 
-        with st.spinner("Aggregating sources..."):
-            if st.session_state.document_format == "Grammar lesson":
-                first_aggregation = gga.create_lesson_sync(
-                    indi_language=st.session_state.indi,
+        update_generation_progress(generation_progress, "Aggregating sources into the final output")
+        if st.session_state.document_format == "Grammar lesson":
+            first_aggregation = gga.create_lesson_sync(
+                indi_language=st.session_state.indi,
+                source_language=st.session_state.readers_language,
+                query=st.session_state.query,
+                readers_type=st.session_state.readers_type,
+                grammatical_params=selected_params_blob,
+                alterlingua_explanation=alterlingua_explanation,
+                alterlingua_examples=alterlingua_examples,
+                doc_contribution=doc_contribution,
+                sentence_pairs=sentence_pairs_blob
+            )
+            complete_generation_step(generation_progress, "Sources aggregated into lesson output")
+            if st.session_state.polished_output:
+                update_generation_progress(generation_progress, "Post-processing lesson")
+                st.session_state.output_dict = gga.review_lesson_sync(
+                    lesson=first_aggregation,
                     source_language=st.session_state.readers_language,
-                    query=st.session_state.query,
-                    readers_type=st.session_state.readers_type,
-                    grammatical_params=selected_params_blob,
-                    alterlingua_explanation=alterlingua_explanation,
-                    alterlingua_examples=alterlingua_examples,
-                    doc_contribution=doc_contribution,
-                    sentence_pairs=sentence_pairs_blob
-                )
-                if st.session_state.polished_output:
-                    with st.spinner("Post-processing lesson..."):
-                        st.session_state.output_dict = gga.review_lesson_sync(
-                            lesson=first_aggregation,
-                            source_language=st.session_state.readers_language,
-                            readers_type=st.session_state.readers_type
-                            )
-                else:
-                    st.session_state.output_dict = first_aggregation
-
+                    readers_type=st.session_state.readers_type
+                    )
+                complete_generation_step(generation_progress, "Lesson post-processing complete")
             else:
-                st.session_state.output_dict = gga.create_sketch_sync(
-                    indi_language=st.session_state.indi,
-                    source_language=st.session_state.readers_language,
-                    query=st.session_state.query,
-                    readers_type=st.session_state.readers_type,
-                    grammatical_params=selected_params_blob,
-                    alterlingua_explanation=alterlingua_explanation,
-                    alterlingua_examples=alterlingua_examples,
-                    doc_contribution=doc_contribution,
-                    sentence_pairs=sentence_pairs_blob
-                )
+                st.session_state.output_dict = first_aggregation
 
-            # adding sources
-            tmp_sources = {}
-            if st.session_state.is_cq and st.session_state.use_cq:
-                tmp_sources["cqs"] = st.session_state.cq_files
-            if st.session_state.is_doc and st.session_state.use_doc:
-                tmp_sources["documents"] = st.session_state.documents_contribution["sources"]
-            if st.session_state.is_pairs and st.session_state.use_pairs:
-                pair_file_list = []
-                for pair in st.session_state.info_dict["pairs"]:
-                    pair_file_list.append(f'{pair["name"]} ({pair["author"]})')
-                tmp_sources["pairs"] = pair_file_list
-            st.session_state.output_dict["sources"] = tmp_sources
+        else:
+            st.session_state.output_dict = gga.create_sketch_sync(
+                indi_language=st.session_state.indi,
+                source_language=st.session_state.readers_language,
+                query=st.session_state.query,
+                readers_type=st.session_state.readers_type,
+                grammatical_params=selected_params_blob,
+                alterlingua_explanation=alterlingua_explanation,
+                alterlingua_examples=alterlingua_examples,
+                doc_contribution=doc_contribution,
+                sentence_pairs=sentence_pairs_blob
+            )
+            complete_generation_step(generation_progress, "Sources aggregated into grammar sketch")
 
-            # adding identifiers, date etc.
-            from datetime import datetime
-            now = datetime.now()
-            st.session_state.output_dict["date"] = now.strftime("%A, %-d %B %Y at %H:%M")
-            with open("version.json", "r") as f:
-                v = json.load(f)
-                version = v.get("version", "no version")
-            st.session_state.output_dict["version"] = version
+        update_generation_progress(generation_progress, "Finalizing output metadata")
+        # adding sources
+        tmp_sources = {}
+        if st.session_state.is_cq and st.session_state.use_cq:
+            tmp_sources["cqs"] = st.session_state.cq_files
+        if st.session_state.is_doc and st.session_state.use_doc:
+            tmp_sources["documents"] = st.session_state.documents_contribution["sources"]
+        if st.session_state.is_pairs and st.session_state.use_pairs:
+            pair_file_list = []
+            for pair in st.session_state.info_dict["pairs"]:
+                pair_file_list.append(f'{pair["name"]} ({pair["author"]})')
+            tmp_sources["pairs"] = pair_file_list
+        st.session_state.output_dict["sources"] = tmp_sources
+
+        # adding identifiers, date etc.
+        from datetime import datetime
+        now = datetime.now()
+        st.session_state.output_dict["date"] = now.strftime("%A, %-d %B %Y at %H:%M")
+        with open("version.json", "r") as f:
+            v = json.load(f)
+            version = v.get("version", "no version")
+        st.session_state.output_dict["version"] = version
+        complete_generation_step(generation_progress, "Output metadata finalized")
 
         st.success("Done! Output available.")
 
@@ -1055,9 +1151,6 @@ if st.session_state.output_dict:
         if role == "admin":
             if st.checkbox("Show JSON"):
                 st.write(st.session_state.output_dict)
-
-
-
 
 
 

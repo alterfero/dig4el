@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import time
+from io import BytesIO
 
 import pandas
 import streamlit as st
@@ -86,6 +87,12 @@ if "map_zoom" not in st.session_state:
     st.session_state.map_zoom = 2
 if "delete_file" not in st.session_state:
     st.session_state.delete_file = False
+if "compare_disp_df" not in st.session_state:
+    st.session_state.compare_disp_df = None
+if "compare_column_order" not in st.session_state:
+    st.session_state.compare_column_order = None
+if "compare_export_name" not in st.session_state:
+    st.session_state.compare_export_name = "cq_comparison"
 
 CONVEQS_BASE_PATH = os.path.join(BASE_LD_PATH, "conveqs")
 
@@ -117,6 +124,14 @@ def save_config_atomic(data: dict, path: Path):
         yaml.safe_dump(data, tmp, sort_keys=False, allow_unicode=True)
         tmp_path = tmp.name
     os.replace(tmp_path, path)  # atomic on POSIX
+
+
+def dataframe_to_excel_bytes(dataframe):
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine="openpyxl") as writer:
+        dataframe.to_excel(writer, index=False, sheet_name="Comparison")
+    output.seek(0)
+    return output.getvalue()
 
 
 cfg = load_config(CFG_PATH)
@@ -811,8 +826,19 @@ with tab1:
             display_dict[item["language"]] = [tfd["data"][k]["translation"] for k in tfd["data"].keys()]
             display_dict["English"] = [tfd["data"][k]["cq"] for k in tfd["data"].keys()]
             display_dict["Index"] = [tfd["data"][k]["index"] for k in tfd["data"].keys()]
-        disp_df = pd.DataFrame(display_dict)
-        st.dataframe(disp_df, hide_index=True, column_order=["Index", "English"] + selected_languages)
+        st.session_state.compare_disp_df = pd.DataFrame(display_dict)
+        st.session_state.compare_column_order = ["Index", "English"] + selected_languages
+        st.session_state.compare_export_name = selected_title.replace(" ", "_").replace("/", "_").replace(".", "_")
 
-
+    if st.session_state.compare_disp_df is not None:
+        disp_df = st.session_state.compare_disp_df
+        column_order = st.session_state.compare_column_order
+        st.dataframe(disp_df, hide_index=True, column_order=column_order)
+        st.download_button(
+            "Download as Excel",
+            data=dataframe_to_excel_bytes(disp_df[column_order]),
+            file_name=f"{st.session_state.compare_export_name}_comparison.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            on_click="ignore",
+        )
 
