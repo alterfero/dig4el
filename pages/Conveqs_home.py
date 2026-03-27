@@ -93,6 +93,10 @@ if "compare_column_order" not in st.session_state:
     st.session_state.compare_column_order = None
 if "compare_export_name" not in st.session_state:
     st.session_state.compare_export_name = "cq_comparison"
+if "converted_editor_filename" not in st.session_state:
+    st.session_state.converted_editor_filename = None
+if "converted_editor_data" not in st.session_state:
+    st.session_state.converted_editor_data = {}
 
 CONVEQS_BASE_PATH = os.path.join(BASE_LD_PATH, "conveqs")
 
@@ -488,8 +492,8 @@ with cole2:
         st.markdown("""
         ConveQs, the system you are accessing through this website, is designed for the storage, consultation, and sharing of Conversational Questionnaires (CQs).
         - As a registered user you can upload files containing CQs in any format, for your languages of expertise.These files are archived and you can at any time download and delete them. 
-        - The files are then processed to be transposed to the ConveQs Common Format. 
-        - Once transposed, all ConveQs users, registered or not, can consult and compare CQ translations in all available languages.
+        - The files are then processed to be converted to the ConveQs Common Format. 
+        - Once converted, all ConveQs users, registered or not, can consult and compare CQ translations in all available languages.
         """)
         st.markdown("""
         All documents on this platform follow a [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) licence.
@@ -540,13 +544,15 @@ tab1, tab2, tab3 = st.tabs(["🔍Explore", "⬆️Upload", "📂My files"])
 
 # ========== MY FILES ==========================
 with tab3:
+    with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
+        conveqs_index = json.load(f)
+    user_files = [item for item in conveqs_index if item["username"] == username]
     st.markdown("""#### My files""")
     if role == "guest":
         st.markdown("Guest users cannot upload files. Contact us to become a registered user !")
     else:
-        with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
-            conveqs_index = json.load(f)
-        user_files = [item for item in conveqs_index if item["username"] == username]
+        st.markdown("##### Original files")
+
         if user_files == []:
             st.markdown("*You have'nt uploaded any file yet.*")
         else:
@@ -572,7 +578,9 @@ with tab3:
                     st.session_state.delete_file = True
                 if st.session_state.delete_file:
                     st.markdown(
-                        "Deleting your file will also delete any version of your content transposed to the ConveQs common format")
+                        """Deleting your file will also **delete any content converted 
+                        to the ConveQs common format** based on your original file. Any **modification** you would have 
+                        made on converted files will be **lost**.""")
                     if st.button("Confirm deletion"):
                         # delete transposed
                         transposed = selected_item["transposed_as"]
@@ -594,6 +602,76 @@ with tab3:
                         st.session_state.delete_file = False
                         st.rerun()
 
+            st.markdown("##### My converted files")
+            converted_files = []
+            for user_file in user_files:
+                for transposed_file in user_file.get("transposed_as", []):
+                    converted_files.append(
+                        {"language": user_file["language"],
+                         "original file": user_file["original_filename"],
+                         "converted file": transposed_file
+                         }
+                    )
+            if converted_files == []:
+                st.markdown("*No converted file yet*")
+            else:
+                st.markdown("*Click on any converted file to visualize and edit it*")
+                converted_files_df = pd.DataFrame(converted_files)
+                converted_selection = st.dataframe(converted_files_df,
+                                                   hide_index=True,
+                                                   selection_mode="single-cell",
+                                                   on_select="rerun")
+                if converted_selection["selection"]["cells"] != []:
+                    converted_selected_row = converted_selection["selection"]["cells"][0][0]
+                    converted_selected_item = converted_files[converted_selected_row]
+
+                    converted_filename = converted_selected_item["converted file"]
+                    converted_filepath = os.path.join(CONVEQS_BASE_PATH, "transposed_files", converted_filename)
+
+                    with open(converted_filepath, "r", encoding="utf-8") as f:
+                        current_cqt = json.load(f)
+
+                    # loading the corresponding canonical CQ
+                    with open(os.path.join(".", "conveqs", "canonical_cqs.json")) as ccqf:
+                        canonical = json.load(ccqf)
+                    current_canonical = canonical[current_cqt["title"]]
+
+                    if st.session_state.converted_editor_filename != converted_filename:
+                        st.session_state.converted_editor_filename = converted_filename
+                        st.session_state.converted_editor_data = {
+                            index: dict(data)
+                            for index, data in current_cqt["data"].items()
+                        }
+
+                    st.info("You can edit the translations in {} and **save your changes with the button** at the end of the CQ.".format(current_cqt["target language"]))
+
+                    st.markdown('#### Title: "{}" in {}'.format(current_cqt["title"], current_cqt["target language"]))
+                    if current_cqt["pivot language"] != "":
+                        st.markdown("*Lingua franca used: {}*".format(current_cqt["pivot language"]))
+                    st.markdown("Context: {}".format(current_canonical["context"]))
+                    dialog = current_cqt["data"]
+                    canonical_index = 0
+                    for index, data in dialog.items():
+                        speaker = current_canonical["dialog"][canonical_index]["speaker"]
+                        st.markdown("{}--{}: {}".format(index, speaker, data["cq"]))
+                        if current_cqt["pivot language"] not in ["", "English"]:
+                            st.markdown("{}: {}".format(current_cqt["pivot language"], data["lingua franca"]))
+                        translation_key = "translation_{}_{}".format(converted_filename, index)
+                        edited_translation = st.text_input(
+                            current_cqt["target language"],
+                            value=st.session_state.converted_editor_data[index].get("translation", ""),
+                            key=translation_key,
+                        )
+                        st.session_state.converted_editor_data[index]["translation"] = edited_translation
+                        canonical_index += 1
+
+                    if st.button("Save changes to this converted file", key="save_" + converted_filename):
+                        current_cqt["data"] = st.session_state.converted_editor_data
+                        with open(converted_filepath, "w", encoding="utf-8") as updated_cqtf:
+                            u.save_json_normalized(current_cqt, updated_cqtf, indent=4)
+                        st.success("Saved changes to {}.".format(converted_filename))
+
+
 # ========== UPLOAD FILES ============================
 with (tab2):
     st.markdown("### Upload CQ translations in any format.")
@@ -604,8 +682,8 @@ with (tab2):
         co1, co2 = st.columns(2, gap="large", border=True)
         co1.markdown("""You can upload CQ translations **in any format**. 
         As the uploader of the files, you will be able to download and delete them at any time in the future. 
-        The files you upload require to be transposed in a format allowing 
-        the CQs to be consulted and compared: Allow some time for your files to be transposed
+        The files you upload require to be converted in a format allowing 
+        the CQs to be consulted and compared: Allow some time for your files to be converted
         or use the Excel templates for an automated transposition. 
         """)
         with co2:
@@ -841,4 +919,3 @@ with tab1:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             on_click="ignore",
         )
-
