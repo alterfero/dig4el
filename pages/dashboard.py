@@ -374,68 +374,57 @@ div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
 </style>
 """, unsafe_allow_html=True)
 
-tab1, tab3, tab2 = st.tabs(["📝CQ", "🔗Sentence Pairs", "📁Documents", ])
+tab1, tab3, tab2 = st.tabs(["📝DCQ", "🔗Sentence Pairs", "📁Documents", ])
 
 with tab1:
-    with st.popover("What is a CQ?"):
+    with st.popover("What is a DIG4EL Conversational Questionnaire (DCQ)?"):
         st.markdown("""
-        ### What is a CQ?
+        ### What is a DCQ?
 
-        **Conversational Questionnaires (CQs)** are short, structured dialogs designed to be translated into a language under study.  
-        They are specifically crafted to **elicit grammatical features** through context, which makes them far more informative than isolated sentences.
+        **DIG4EL Conversational Questionnaires (CQs)** are short, structured, contextualized dialogs designed to elicit 
+        predictable grammatical translations when translated into otherlanguages.  
 
-        The original concept of CQs was introduced by Alexandre François  
+        The original concept of Conversational Questionnaires was introduced by Alexandre François  
         ([full paper](https://hal.science/hal-02061237/document)).
+        
+        They have been adapted top optimize computational retrieval of grammatical information. 
 
         ---
 
-        ### How a CQ is used
+        ### How to use a DCQ in the field?
 
-        1. The **entire dialog** is first read to the speaker in a shared *lingua franca*.
-        2. The speaker is then asked to **translate each segment**, one by one, as they appear in the interface.
+        1. Read the **entire dialog** first to the speaker in a shared *lingua franca*, 
+        making clear the context and who is speaking each time.
+        2. Go through the dialog a second time, asking the speaker to **translate each segment**,
+        as presented by the interface or the spreadsheet,
+        and to connect word(s) in their language with expected concepts listed by the interface or the spreadsheet.
 
         This progressive approach helps maintain context and reduces ambiguity.
 
-        ---
-
-        ### Augmented CQs in DIG4EL
-
-        DIG4EL extends the original CQ concept with **augmented CQs**, allowing users to:
-
-        - Specify the **exact sentence used in the lingua franca**,
-        - **Link expected concepts** to word(s) in the target language,
-        - Add a **literal English back-translation** when the target sentence diverges strongly from the source,
-        - Include **comments**, all of which are used by the system during analysis.
-
-        These augmentations make CQs both a **data-collection tool** and a **structured grammatical signal** for inference.
         """)
 
     st.markdown("""
-   - **To create new Conversational Questionnaires translations**, click on "Enter CQ Translations".
-   - With or without CQ translations, click on **Process information from databases and CQs** to make dig4el build 
-   upon existing knowlede and process CQs if available. 
-    
-   
+   - **To upload, edit or create new Conversational Questionnaires translations**, click on "Open DCQ Editor".
+   - With or without DCQ translations, click on **Infer Grammar** before generating content
+    to make dig4el build knowledge upon existing knowledge and process CQs if available. 
     """)
     pl1, pl2 = st.columns(2)
     with pl1:
-        st.markdown("#### 🆕 Create/Upload/Edit CQs")
-        st.caption("Create new DIG4EL CQ translations or resume working on one.")
-        if st.button("Open CQ Editor", use_container_width=True):
+        st.markdown("#### 🆕 Create/Upload/Edit DCQs")
+        if st.button("Open DCQ Editor", use_container_width=True):
             st.switch_page("pages/record_cq_transcriptions.py")  # requires multipage + Streamlit that supports switch_page
 
     if role in ["admin", "caretaker"]:
         with pl2:
-            st.markdown("#### ⬆️ Infer grammar from CQs")
-            st.caption("Make DIG4EL guess the grammar of {}.".format(st.session_state.indi_language))
-            if st.button("Infer grammar from CQs", use_container_width=True):
+            st.markdown("#### ⬆️ Infer grammar")
+            if st.button("Infer grammar", use_container_width=True):
                 st.switch_page("pages/infer_from_knowledge_and_cqs.py")
 
     if st.session_state.indi_language in os.listdir(BASE_LD_PATH):
         if "cq" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language)):
             existing_cqs = [f for f in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq", "cq_translations")) if f.endswith(".json")]
             if existing_cqs:
-                st.success("{} CQ translations available: click in the table to display a CQ".format(len(existing_cqs)))
+                st.success("{} DCQ translations available: click in the table to display any.".format(len(existing_cqs)))
                 cq_catalog = u.catalog_all_available_cqs(language=st.session_state.indi_language)
                 cq_catalog_df = pd.DataFrame(cq_catalog).sort_values(by="title")
                 selected_cell = st.dataframe(cq_catalog_df, hide_index=True,
@@ -453,7 +442,7 @@ with tab1:
                                   uid=catalog_entry["uid"],
                                   gloss=False)
                 else:
-                    st.write("Select a CQ in the table to see its content.")
+                    st.write("Select a DCQ in the table to see its content.")
 
             if "cq_knowledge" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language, "cq")):
                 if "cq_knowledge.json" in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi_language,

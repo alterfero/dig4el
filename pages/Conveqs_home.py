@@ -14,6 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import time
 from io import BytesIO
+from html import escape
 
 import pandas
 import streamlit as st
@@ -32,6 +33,8 @@ from libs import conveqs_utils as cu
 from folium import DivIcon
 from collections import defaultdict
 import math
+
+DEFAULT_MAP_CENTER = {"lat": 0.0, "lng": -150.0}
 
 # TODO: Save alert / Autosave
 # TODO: Explain the difference between the original file and the local file.
@@ -82,9 +85,11 @@ if "llist" not in st.session_state:
         gll = json.load(llf)
         st.session_state.llist = sorted(gll.keys())
 if "picked_location" not in st.session_state:
-    st.session_state.picked_location = {"lat": 0, "lng": 200}
+    st.session_state.picked_location = dict(DEFAULT_MAP_CENTER)
+if "picked_location_selected" not in st.session_state:
+    st.session_state.picked_location_selected = False
 if "map_zoom" not in st.session_state:
-    st.session_state.map_zoom = 2
+    st.session_state.map_zoom = 1
 if "delete_file" not in st.session_state:
     st.session_state.delete_file = False
 if "compare_disp_df" not in st.session_state:
@@ -136,6 +141,78 @@ def dataframe_to_excel_bytes(dataframe):
         dataframe.to_excel(writer, index=False, sheet_name="Comparison")
     output.seek(0)
     return output.getvalue()
+
+
+def render_wrapped_table(dataframe: pd.DataFrame, column_order: list[str]):
+    display_df = dataframe.reindex(columns=column_order).fillna("")
+
+    header_html = "".join(
+        f"<th>{escape(str(column))}</th>"
+        for column in display_df.columns
+    )
+
+    row_html = []
+    for _, row in display_df.iterrows():
+        cells = []
+        for column in display_df.columns:
+            cell_value = row[column]
+            cells.append(f"<td>{escape(str(cell_value))}</td>")
+        row_html.append(f"<tr>{''.join(cells)}</tr>")
+
+    table_html = f"""
+    <style>
+        .cq-table-wrapper {{
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid rgba(49, 51, 63, 0.16);
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+        }}
+        .cq-table {{
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            font-size: 0.95rem;
+        }}
+        .cq-table th {{
+            background: #f7f9fc;
+            color: #1f2937;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid rgba(49, 51, 63, 0.12);
+        }}
+        .cq-table td {{
+            padding: 0.85rem 1rem;
+            border-top: 1px solid rgba(49, 51, 63, 0.08);
+            vertical-align: top;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            line-height: 1.45;
+        }}
+        .cq-table tbody tr:nth-child(even) {{
+            background: #fbfcfe;
+        }}
+        .cq-table th:first-child,
+        .cq-table td:first-child {{
+            width: 72px;
+        }}
+    </style>
+    <div class="cq-table-wrapper">
+        <table class="cq-table">
+            <thead>
+                <tr>{header_html}</tr>
+            </thead>
+            <tbody>
+                {''.join(row_html)}
+            </tbody>
+        </table>
+    </div>
+    """
+
+    st.markdown(table_html, unsafe_allow_html=True)
 
 
 cfg = load_config(CFG_PATH)
@@ -271,6 +348,13 @@ def representative_point(cq_list):
 
     return min(coords, key=lambda p: sqdist(p, (centroid_lat, centroid_lng)))
 
+def wrapped_longitudes(lng: float) -> list[float]:
+    """
+    Return the base longitude and wrapped copies on both sides of the dateline.
+    """
+    base_lng = normalize_lng(lng)
+    return [base_lng - 360, base_lng, base_lng + 360]
+
 def show_cq_map(cqs):
     # Keep only CQs with valid coordinates and a language
     valid_cqs = [
@@ -337,10 +421,10 @@ def show_cq_map(cqs):
     # Sort for stable display / stable indexing
     language_groups.sort(key=lambda g: g["language"].lower())
 
-    m = folium.Map(location=[0, -150], zoom_start=3)
-    if language_groups:
-        bounds = [group["center"] for group in language_groups]
-        m.fit_bounds(bounds, padding=(30, 30))
+    m = folium.Map(
+        location=[DEFAULT_MAP_CENTER["lat"], DEFAULT_MAP_CENTER["lng"]],
+        zoom_start=3,
+    )
 
     # Add one marker per language
     for i, group in enumerate(language_groups):
@@ -361,9 +445,8 @@ def show_cq_map(cqs):
         <div style="position: relative; width: 32px; height: 42px;">
             <div style="
                 position: absolute;
-                left: 50%;
-                top: 100%;
-                transform: translate(-50%, -100%);
+                left: 0%;
+                top: 0%;
                 font-size: 20px;
                 line-height: 20px;
             ">⭕</div>
@@ -386,11 +469,12 @@ def show_cq_map(cqs):
         </div>
         """
 
-        folium.Marker(
-            location=[lat, lng],
-            tooltip=tooltip,
-            icon=DivIcon(html=html),
-        ).add_to(m)
+        for wrapped_lng in wrapped_longitudes(lng):
+            folium.Marker(
+                location=[lat, wrapped_lng],
+                tooltip=tooltip,
+                icon=DivIcon(html=html),
+            ).add_to(m)
 
     map_data = st_folium(
         m,
@@ -457,7 +541,7 @@ def show_cq_map(cqs):
         else:
             df_col = ["index", "cq", "lingua franca", "translation"]
         data_df = pd.DataFrame(data).T
-        st.dataframe(data_df, use_container_width=True, hide_index=True, column_order=df_col)
+        render_wrapped_table(data_df, df_col)
 
     except FileNotFoundError:
         st.error(f"File not found: {selected_cq['filename']}")
@@ -546,12 +630,17 @@ tab1, tab2, tab3 = st.tabs(["🔍Explore", "⬆️Upload", "📂My files"])
 with tab3:
     with open(os.path.join(CONVEQS_BASE_PATH, "conveqs_index.json"), "r") as f:
         conveqs_index = json.load(f)
-    user_files = [item for item in conveqs_index if item["username"] == username]
+    if role == "admin":
+        user_files = conveqs_index
+    else:
+        user_files = [item for item in conveqs_index if item["username"] == username]
+
     st.markdown("""#### My files""")
     if role == "guest":
         st.markdown("Guest users cannot upload files. Contact us to become a registered user !")
     else:
         st.markdown("##### Original files")
+        st.markdown("*You can click on any file to download or delete it*")
 
         if user_files == []:
             st.markdown("*You have'nt uploaded any file yet.*")
@@ -757,7 +846,7 @@ with (tab2):
                 zoom_start=st.session_state.map_zoom,
             )
 
-            if st.session_state.picked_location["lng"] != 200:
+            if st.session_state.picked_location_selected:
                 folium.Marker(
                     [
                         st.session_state.picked_location["lat"],
@@ -775,6 +864,7 @@ with (tab2):
                     "lat": map_data["last_clicked"]["lat"],
                     "lng": normalize_lng(map_data["last_clicked"]["lng"]),
                 }
+                st.session_state.picked_location_selected = True
                 st.session_state.map_zoom = map_data["zoom"]
                 st.rerun()
             # =================================================================
@@ -911,7 +1001,7 @@ with tab1:
     if st.session_state.compare_disp_df is not None:
         disp_df = st.session_state.compare_disp_df
         column_order = st.session_state.compare_column_order
-        st.dataframe(disp_df, hide_index=True, column_order=column_order)
+        render_wrapped_table(disp_df, column_order)
         st.download_button(
             "Download as Excel",
             data=dataframe_to_excel_bytes(disp_df[column_order]),

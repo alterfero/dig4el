@@ -687,6 +687,7 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
         query_standard = colq1b.selectbox("Select a standard grammar sketch topic", ["no selection"] + sketch_topics)
         colq2b.markdown("Or enter your custom query")
         query_custom = colq2b.text_input("query")
+        st.markdown("Queries formulated in a language different than English may yield sub-optimal outputs.")
         if query_standard != "no selection":
             query = query_standard
         elif query_custom is not None:
