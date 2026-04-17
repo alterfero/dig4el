@@ -12,6 +12,8 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from __future__ import annotations
+from typing import Any
 import copy
 import re
 import os
@@ -60,7 +62,420 @@ def dumps_json_normalized(data, *args, **kwargs):
     kwargs.setdefault("ensure_ascii", False)
     return json.dumps(normalize_user_strings(data), *args, **kwargs)
 
+def combine_sp_files(path):
+    fl = [f for f in os.listdir(path) if f.endswith("json")]
+    of = []
+    for f in fl:
+        with open(os.path.join(path, f), "r") as ft:
+            fc = json.load(ft)
+        of += fc
+    with open(os.path.join(path, "combined_pairs.json"), "w") as fo:
+        json.dump(of, fo)
 
+
+
+
+def stringify_lesson(lesson: dict[str, Any]) -> str:
+    """
+    Convert a lesson JSON object into a stable plain-text representation
+    suitable for LLM judging.
+
+    The goal is not pretty rendering. The goal is consistent, information-rich,
+    low-ambiguity serialization.
+    """
+
+    def clean(value: Any) -> str:
+        if value is None:
+            return ""
+        if isinstance(value, str):
+            return value.strip()
+        return str(value).strip()
+
+    def section_examples(section: dict[str, Any]) -> list[dict[str, Any]]:
+        examples = section.get("example")
+        if examples is None:
+            examples = section.get("examples")
+        if isinstance(examples, list):
+            return [ex for ex in examples if isinstance(ex, dict)]
+        return []
+
+    lines: list[str] = []
+
+    # =========================
+    # Header / metadata
+    # =========================
+    title = clean(lesson.get("title"))
+    date = clean(lesson.get("date"))
+    version = clean(lesson.get("version"))
+
+    lines.append("LESSON")
+    if title:
+        lines.append(f"Title: {title}")
+    if date:
+        lines.append(f"Date: {date}")
+    if version:
+        lines.append(f"Version: {version}")
+
+    # =========================
+    # Introduction
+    # =========================
+    introduction = clean(lesson.get("introduction"))
+    if introduction:
+        lines.append("")
+        lines.append("INTRODUCTION")
+        lines.append(introduction)
+
+    # =========================
+    # Sections
+    # =========================
+    sections = lesson.get("sections", [])
+    if isinstance(sections, list) and sections:
+        lines.append("")
+        lines.append("SECTIONS")
+
+        for i, section in enumerate(sections, start=1):
+            if not isinstance(section, dict):
+                continue
+
+            focus = clean(section.get("focus"))
+            description = clean(section.get("description"))
+            examples = section_examples(section)
+
+            lines.append("")
+            lines.append(f"Section {i}")
+            if focus:
+                lines.append(f"Focus: {focus}")
+            if description:
+                lines.append(f"Description: {description}")
+
+            if examples:
+                lines.append("Examples:")
+                for j, ex in enumerate(examples, start=1):
+                    target = clean(ex.get("target_sentence"))
+                    source = clean(ex.get("source_sentence"))
+                    ex_description = clean(ex.get("description"))
+
+                    lines.append(f"  Example {i}.{j}")
+                    if source:
+                        lines.append(f"    Source sentence: {source}")
+                    if target:
+                        lines.append(f"    Target sentence: {target}")
+                    if ex_description:
+                        lines.append(f"    Description: {ex_description}")
+
+    # =========================
+    # Conclusion
+    # =========================
+    conclusion = clean(lesson.get("conclusion"))
+    if conclusion:
+        lines.append("")
+        lines.append("CONCLUSION")
+        lines.append(conclusion)
+
+    return "\n".join(lines)
+
+lesson_string = stringify_lesson({
+  "title": "Negation in Bwatoo_e2a",
+  "introduction": "Across languages, negation is typically built with one of three frequent patterns: specialised negative particles (about half of the world’s languages), negative affixes (about a third), or dedicated negative verbs (about one eighth). Negation can target the whole clause (sentence negation) or only a part of it (constituent negation). Within sentence negation, we can distinguish negation of existence, location, category/equative, identification, quality/state, and process/event, and we should also watch for aspectual nuances such as ‘never’, ‘no more/anymore’, or ‘not yet’. In English, the dominant strategy is a specialised particle such as “not” (as in “This is not a dog”), and English also has negative-like morphology in words such as “im-possible”. In Bwatoo_e2a, the dominant strategy is also specialised negative particles: the clause-level negator is **cipa** (placed before the predicate), while **cau** serves as an existential/constituent negator (‘no/none, not here’) and as the standalone “No!”. Secondary resources include a negative locative predicate **ciede-** ‘not be (there/here)’ and a lexical verb **cede-** ‘cease/disappear’ that expresses ‘no more/anymore’. No productive negative affixes are evidenced in the available data. Note: the descriptive documents retrieved do not detail negation, but the sentence-level analyses and paired examples do provide consistent forms and uses.",
+  "sections": [
+    {
+      "focus": "Most frequent pattern and placement: specialised negative particles",
+      "example": [
+        {
+          "target_sentence": "cau! cipa zho vup",
+          "source_sentence": "No, I don’t cough.",
+          "description": "Clause negation with **cipa** placed before the predicate; initial **cau** is the standalone “No!”. Scope: process/event (‘cough’)."
+        },
+        {
+          "target_sentence": "cau! cipa bu hme butriin",
+          "source_sentence": "No, no! We won’t be bathing.",
+          "description": "**cipa** scopes over a near-future predicate; appears clause-initial, before the subject and predicate. Shows interaction with future/near-future aspect."
+        },
+        {
+          "target_sentence": "cipa zho hme koon",
+          "source_sentence": "I can’t find it.",
+          "description": "**cipa** negates an ability/finding periphrasis; it takes clausal scope over the predicate complex."
+        },
+        {
+          "target_sentence": "cipa xahnange-ong daamin bwe-tralo",
+          "source_sentence": "Well… I’m not feeling well these days.",
+          "description": "**cipa** negates an adjectival/experiential predicate (quality/state)."
+        },
+        {
+          "target_sentence": "cipa ti ne-go",
+          "source_sentence": "Isn’t it your notebook?",
+          "description": "**cipa** negates an equative/identificational predicate (NP predicate)."
+        }
+      ],
+      "description": "Bwatoo_e2a primarily uses the specialised clausal negator **cipa**. It is clause-initial and precedes the predicate (verbal, adjectival, or equative/NP). The existential/constituent negator **cau** is also very frequent, and can stand alone as “No!”. The data show no productive negative affixation. Secondary negative(-like) predicates include **ciede-** ‘not be (there)’ and **cede-** ‘cease/disappear’ (‘no more/anymore’)."
+    },
+    {
+      "focus": "Process/event negation and prohibitives with cipa",
+      "example": [
+        {
+          "target_sentence": "cau! cipa zho vup",
+          "source_sentence": "No, I don’t cough.",
+          "description": "Sentence negation of a process with **cipa** before the predicate; full clausal scope."
+        },
+        {
+          "target_sentence": "mo koon, cipa go vadanake",
+          "source_sentence": "Also, don’t forget",
+          "description": "Prohibitive with **cipa** + verb (‘don’t V’). **cipa** forms a negative imperative."
+        },
+        {
+          "target_sentence": "cipa go hme vadi",
+          "source_sentence": "Don’t go to work",
+          "description": "Another prohibitive with **cipa** clause-initial before the verb phrase."
+        },
+        {
+          "target_sentence": "lama-na Coujol cipa ra wanake ani u-moo-la-n nya-ko ni ma xhoomu-le nya-ko ni doote-le ma ni ma le cami",
+          "source_sentence": "As for Coujol, he did not change his behavior toward the elders regarding their lands and their plantings.",
+          "description": "Narrative process negation: **cipa** negates a change-of-state/process predicate. The particle appears before the predicate complex."
+        }
+      ],
+      "description": "For processes/events, **cipa** directly precedes the predicate and takes wide scope. The same **cipa** strategy also builds prohibitives (‘don’t V’)."
+    },
+    {
+      "focus": "Existential and constituent negation with cau (‘no/none’, negative presentative)",
+      "example": [
+        {
+          "target_sentence": "cau! cau vadi",
+          "source_sentence": "No, there’s no celebration.",
+          "description": "Existential negation: **cau** as a negative presentative/quantifier with the NP (‘no celebration’)."
+        },
+        {
+          "target_sentence": "naae, je cau xhwiaman ca bala fomwa",
+          "source_sentence": "Now we have nothing left at home!",
+          "description": "Constituent/existential negation: **cau** + NP conveys ‘no X (left)’. Scope is on existence/availability rather than on a possessive relation."
+        },
+        {
+          "target_sentence": "cau! cau cahni",
+          "source_sentence": "Hm, not here.",
+          "description": "Locational constituent negation: **cau** + locative adverb (‘not here’)."
+        },
+        {
+          "target_sentence": "juu cau ca ma le vwa ko-na le juu vwa-teke ma le xhwii na ni bolomakau",
+          "source_sentence": "They really did not know what to do because of the damage done by the cattle.",
+          "description": "Within a complex clause, **cau** functions as a negative quantifier (‘no (way/thing)’), illustrating constituent-level negation inside larger structures."
+        }
+      ],
+      "description": "**cau** functions as a negative presentative/quantifier meaning ‘no/none’, and as the interjection ‘No!’. It commonly builds existential or NP-level negation and also negates locational adverbs (‘not here’)."
+    },
+    {
+      "focus": "Negation of localisation: specialised predicate and presentative strategy",
+      "example": [
+        {
+          "target_sentence": "tra ciede-a",
+          "source_sentence": "It’s not there.",
+          "description": "Specialised negative locative predicate **ciede-** ‘not be (there/here)’. This is a negative verb-like predicate restricted to location."
+        },
+        {
+          "target_sentence": "cau! cau cahni",
+          "source_sentence": "Hm, not here.",
+          "description": "Constituent/location negation via **cau** + locative (‘not here’), an adverbial presentative strategy."
+        }
+      ],
+      "description": "Locational negation can be expressed either by the dedicated negative locative predicate **ciede-** (‘not be located’) or by **cau** combined with a locative adverb (‘not here/there’)."
+    },
+    {
+      "focus": "Equative and category membership negation with cipa",
+      "example": [
+        {
+          "target_sentence": "cipa ti ne-go",
+          "source_sentence": "Isn’t it your notebook?",
+          "description": "Identification/equative negation: **cipa** precedes the NP predicate to negate identification with a specific referent."
+        },
+        {
+          "target_sentence": "naae, cipa je thapia-ong, je xhoomu-ong hni",
+          "source_sentence": "But I’m not a child any more, I’ve grown up.",
+          "description": "Category-membership negation: **cipa** before a nominal predicate (‘not a child’). The clause adds an ‘any more’ inference (see aspectual notes)."
+        }
+      ],
+      "description": "For equative or category predicates, **cipa** is placed before the NP predicate to negate inclusion in a category or identification with a specific referent."
+    },
+    {
+      "focus": "Existential negation with cipa + existential predicate",
+      "example": [
+        {
+          "target_sentence": "ni bolomakau je vwa ni nyai-le ka je hmwanija-le ka cipa vwa vala koo-le",
+          "source_sentence": "Now the cattle were increasing in number, and since there was no fence,",
+          "description": "Existential negation expressed with **cipa** + existential/stative predicate **vwa** plus the NP (‘no fence’). This shows that beyond **cau**, existence can be negated with **cipa** scoping over an existential predicate."
+        }
+      ],
+      "description": "In addition to **cau**, the corpus shows existence negated via **cipa** with an existential predicate (**vwa**), yielding ‘there is not X’. This broadens the existential negation options in Bwatoo_e2a."
+    },
+    {
+      "focus": "Possession and the scope of negation: relation vs existence",
+      "example": [
+        {
+          "target_sentence": "ani xa-finati ne-ong, a bo waa-nyima-n cana zho cipa hme ko a ti",
+          "source_sentence": "The teacher will be quite angry if I don’t have my notebook.",
+          "description": "Negating the possessive relation: **cipa** + possessive predicate **hme** (‘have’) targets the relation (‘I do not have X’)."
+        },
+        {
+          "target_sentence": "naae, je cau xhwiaman ca bala fomwa",
+          "source_sentence": "Now we have nothing left at home!",
+          "description": "Negating existence/availability: **cau** + NP conveys ‘no X (left)’, with scope on existence rather than on a possessive link."
+        }
+      ],
+      "description": "Bwatoo_e2a distinguishes negation of the possessive relation (**cipa** + possessive predicate like **hme**) from negation of existence/availability (**cau** + NP ‘no X (left)’). The former says ‘I don’t have X’; the latter says ‘there is no X (for us/now)’.“},{"
+    },
+    {
+      "focus": "Aspectual nuances: ‘never’, ‘no more/anymore’, and the gap (‘not yet’ not attested)",
+      "example": [
+        {
+          "target_sentence": "cipa go xala-a",
+          "source_sentence": "You’ve never met him.",
+          "description": "‘Never’ is conveyed with **cipa** under a past/perfective context; there is no dedicated ‘never’ word in the data."
+        },
+        {
+          "target_sentence": "cipa zho xalake ani xape-nyi-foto",
+          "source_sentence": "but I’ve never seen your pictures.",
+          "description": "Again, **cipa** provides ‘never’ with a perfective/past reading from context."
+        },
+        {
+          "target_sentence": "a mwa finati a pi muci ne-a, pi cede-a",
+          "source_sentence": "That was an old school that doesn’t exist anymore.",
+          "description": "‘No more/anymore’ is expressed lexically by **cede-** ‘cease/disappear’, often with **pi** ‘already’."
+        },
+        {
+          "target_sentence": "naae, je cau xhwiaman ca bala fomwa",
+          "source_sentence": "Now we have nothing left at home!",
+          "description": "Depleted existence (‘none left’) is expressed by **cau** + NP. This is an existential ‘no more’ reading. “}],"
+        }
+      ],
+      "description": "Aspectually, Bwatoo_e2a marks ‘never’ with **cipa** plus past/perfective context; ‘no more/anymore’ is often lexical (**cede-**) or existential (**cau** + NP, ‘none left’). The dataset does not attest a ‘not yet’ construction. Questions may use **pi** with an ‘ever’ reading, while negative answers use **cipa** (as noted in the sentence analysis)."
+    },
+    {
+      "focus": "Inability: periphrastic negation vs dedicated inability predicate",
+      "example": [
+        {
+          "target_sentence": "cipa zho hme koon",
+          "source_sentence": "I can’t find it.",
+          "description": "Periphrastic ability is negated by **cipa** taking clausal scope over the ability/finding complex."
+        },
+        {
+          "target_sentence": "lama je hami naai je vwathoon nya koo-le ma le cami-xaman",
+          "source_sentence": "The situation became such that they could no longer cultivate their lands.",
+          "description": "Dedicated inability predicate **vwathoon** ‘cannot’ is used beside the main activity; no **cipa** is required in this construction."
+        }
+      ],
+      "description": "Bwatoo_e2a expresses inability either by negating an ability periphrasis with **cipa**, or by employing the dedicated predicate **vwathoon** ‘cannot’. Both strategies are attested."
+    },
+    {
+      "focus": "Notes on sources and contradictions",
+      "example": [
+        {
+          "target_sentence": "cau! cau vadi",
+          "source_sentence": "No, there’s no celebration.",
+          "description": "Corpus-based example showing **cau** as a negative presentative (‘no X’), contrary to the document summary that reported no explicit negation forms."
+        }
+      ],
+      "description": "The descriptive documents retrieved report no explicit forms for negation in Bwatoo_e2a. In contrast, the sentence-level analyses and paired examples consistently show specialised negative particles (**cipa**, **cau**) and negative(-like) predicates (**ciede-**, **cede-**, **vwathoon**). The lesson above follows the attested corpus evidence while flagging the documentary gap."
+    }
+  ],
+  "conclusion": "What to remember: Bwatoo_e2a relies on specialised negative particles. **cipa** is the core clausal negator, clause-initial, and it scopes over processes, qualities, and equatives; it also builds prohibitives. **cau** serves as a negative presentative/quantifier (‘no/none, not here’) and as the interjection ‘No!’, and it handles many existential and constituent-negation contexts. Locational negation can use the specialised predicate **ciede-** ‘not be (there/here)’. ‘No more/anymore’ is often lexical (**cede-**) or existential (**cau** + NP ‘none left’). Inability can be expressed either by **cipa** over an ability periphrasis or via **vwathoon** ‘cannot’. There is no evidence of negative affixes in the data. Keep in mind the scope contrast between negating a possessive relation (**cipa** + **hme**) and negating existence/availability (**cau** + NP).",
+  "translation_drills": [
+    {
+      "target": "cau! cipa zho vup",
+      "source": "No, I don’t cough."
+    },
+    {
+      "target": "cipa zho hme koon",
+      "source": "I can’t find it."
+    },
+    {
+      "target": "mo koon, cipa go vadanake",
+      "source": "Also, don’t forget"
+    },
+    {
+      "target": "cipa go hme vadi",
+      "source": "Don’t go to work"
+    },
+    {
+      "target": "cipa go xala-a",
+      "source": "You’ve never met him."
+    },
+    {
+      "target": "cipa zho xalake ani xape-nyi-foto",
+      "source": "but I’ve never seen your pictures."
+    },
+    {
+      "target": "cau! cipa bu hme butriin",
+      "source": "No, no! We won’t be bathing."
+    },
+    {
+      "target": "cau! cau vadi",
+      "source": "No, there’s no celebration."
+    },
+    {
+      "target": "a mwa finati a pi muci ne-a, pi cede-a",
+      "source": "That was an old school that doesn’t exist anymore."
+    },
+    {
+      "target": "naae, je cau xhwiaman ca bala fomwa",
+      "source": "Now we have nothing left at home!"
+    },
+    {
+      "target": "ani xa-finati ne-ong, a bo waa-nyima-n cana zho cipa hme ko a ti",
+      "source": "The teacher will be quite angry if I don’t have my notebook."
+    },
+    {
+      "target": "tra ciede-a",
+      "source": "It’s not there."
+    },
+    {
+      "target": "cau! cau cahni",
+      "source": "Hm, not here."
+    },
+    {
+      "target": "cipa ti ne-go",
+      "source": "Isn’t it your notebook?"
+    },
+    {
+      "target": "cipa xahnange-ong daamin bwe-tralo",
+      "source": "Well… I’m not feeling well these days."
+    },
+    {
+      "target": "naae, cipa je thapia-ong, je xhoomu-ong hni",
+      "source": "But I’m not a child any more, I’ve grown up."
+    },
+    {
+      "target": "lama-na Coujol cipa ra wanake ani u-moo-la-n nya-ko ni ma xhoomu-le nya-ko ni doote-le ma ni ma le cami",
+      "source": "As for Coujol, he did not change his behavior toward the elders regarding their lands and their plantings."
+    },
+    {
+      "target": "ni bolomakau je vwa ni nyai-le ka je hmwanija-le ka cipa vwa vala koo-le",
+      "source": "Now the cattle were increasing in number, and since there was no fence,"
+    },
+    {
+      "target": "lama je hami naai je vwathoon nya koo-le ma le cami-xaman",
+      "source": "The situation became such that they could no longer cultivate their lands."
+    },
+    {
+      "target": "juu cau ca ma le vwa ko-na le juu vwa-teke ma le xhwii na ni bolomakau",
+      "source": "They really did not know what to do because of the damage done by the cattle."
+    }
+  ],
+  "sources": {
+    "cqs": [
+      "recording_cq_A family album_1716852912_Haeke_Antoine Corral_Adèle Wabéalo_1764284567.json",
+      "recording_cq_where is my notebook_1716497507_Bwatoo_Antoine Corral_Adèle Wabéalo_1764483194.json",
+      "recording_cq_Going fishing_1716315461_Bwatoo_Antoine Corral_Adèle Wabéalo_1764386043.json",
+      "recording_cq_Preparing for the New Year_1716403492_Bwatoo_Antoine Corral_Adèle Wabéalo_1764475165.json",
+      "recording_cq_At the doctor_1715973404_Bwatoo_Antoine Corral_Adèle Wabéalo_1764194244.json"
+    ],
+    "documents": [],
+    "pairs": [
+      "deuil original (AC)",
+      "exode original (AC)",
+      "mariage original (AC)"
+    ]
+  },
+  "date": "Tuesday, 7 April 2026 at 03:47",
+  "version": "1.1.0"
+})
+print(lesson_string)
 
 
 def csv_to_dict(csv_file_path):

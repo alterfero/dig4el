@@ -57,6 +57,8 @@ The terminal will display a message about the worker starting, then
 Nothing else to do there, this terminal window will keep you informed about the worker's activity. 
 
 
+
+
 ## License
 
 This program is free software: you can redistribute it and/or modify it under the terms of the 

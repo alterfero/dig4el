@@ -126,8 +126,9 @@ with h1:
         st.markdown("**Didactic grammars of endangered languages**")
         st.markdown("Vernaudon J. 2013. L’enseignement des langues kanak en Nouvelle-Calédonie. Hermès. n° 65. , [ p.]. 10.4267/2042/51507 or Vernaudon, Jacques. (2018). Les métalangues du tahitien à l'école, https://www.researchgate.net/publication/333261526_Les_metalangues_du_tahitien_a_l'ecole")
     with st.popover("The CNRS Heliceo project", width="stretch"):
-        st.image("./pics/heliceo_overview.png")
         st.markdown("[Overview on the CNRS website](https://www.cnrs.fr/en/ri2-project/heliceo)")
+        st.image("./pics/heliceo_overview.png")
+        st.image("./pics/group_photo.jpeg")
 
 with h2:
     st.markdown("### Media")
