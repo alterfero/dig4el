@@ -128,10 +128,6 @@ with h1:
     with st.popover("The CNRS Heliceo project", width="stretch"):
         st.markdown("[Overview on the CNRS website](https://www.cnrs.fr/en/ri2-project/heliceo)")
         st.image("./pics/heliceo_overview.png")
-        try:
-            st.image("./pics/group_photo.jpeg")
-        except:
-            print("image not found")
 
 with h2:
     st.markdown("### Media")
