@@ -53,7 +53,7 @@ with h1:
     about a language. The dissemination of these outputs is beyond the control and knowledge of the DIG4EL team. 
     The DIG4EL team assumes no responsibility or liability for the use, interpretation, or redistribution of 
     these outputs. 
-    2) **Expert review requirement**: System outputs are provided for expert review and editing. All outputs are 
+    2) **Expert review requirement**: System outputs contain errors. They are provided for expert review and editing. All outputs are 
     available in editable formats for this purpose.
     3) **Limitation of liability**: The DIG4EL team disclaims any responsibility for the use, modification, 
     or distribution of system outputs by third parties.
