@@ -1,0 +1,1523 @@
+[
+    {
+        "source": "Histoire du crabe de cocotier et du bernard-l'hermite.",
+        "target": "Bongu eu me ov̄ethet",
+        "word connections": {
+            "histoire": [
+                "Bongu"
+            ],
+            "crabe de cocotier": [
+                "eu"
+            ],
+            "et": [
+                "me"
+            ],
+            "bernard-l'hermite": [
+                "ov̄ethet"
+            ]
+        }
+    },
+    {
+        "source": "Un jour, une grand'mère envoya chercher tous les animaux et les oiseaux de l'île pour une réunion.",
+        "target": "Haba hnyi ke bong me ame ûxûnöng ke soohmwecaa ka hawâ omenâ hnyi bomene he ka ûxacaaköu.",
+        "word connections": {
+            "quant à": [
+                "Haba"
+            ],
+            "dans": [
+                "hnyi"
+            ],
+            "un": [
+                "ke"
+            ],
+            "jour": [
+                "bong"
+            ],
+            "alors": [
+                "me"
+            ],
+            "elle+procès": [
+                "ame"
+            ],
+            "envoyer": [
+                "ûxûnöng"
+            ],
+            "une": [
+                "ke"
+            ],
+            "vieille": [
+                "soohmwecaa"
+            ],
+            "pour": [
+                "ka"
+            ],
+            "convoquer": [
+                "hawâ"
+            ],
+            "collectif+bête": [
+                "omenâ"
+            ],
+            "île": [
+                "bomene"
+            ],
+            "aller": [
+                "he"
+            ],
+            "se réunir": [
+                "ûxacaaköu"
+            ]
+        }
+    },
+    {
+        "source": "Elle souhaitait les bénir",
+        "target": "Ame weeny ka oohnahiciörin.",
+        "word connections": {
+            "elle+procès": [
+                "Ame"
+            ],
+            "vouloir": [
+                "weeny"
+            ],
+            "pour": [
+                "ka"
+            ],
+            "bénir+eux": [
+                "oohnahiciörin"
+            ]
+        }
+    },
+    {
+        "source": "et mieux valait le faire avant de mourir.",
+        "target": "E soo amaa biliny he ka mōk, ke aa umdö bee oohnahiciörin.",
+        "word connections": {
+            "il": [
+                "E"
+            ],
+            "bon": [
+                "soo"
+            ],
+            "elle+futur": [
+                "amaa"
+            ],
+            "après": [
+                "biliny"
+            ],
+            "aller": [
+                "he"
+            ],
+            "pour": [
+                "ka"
+            ],
+            "mourir": [
+                "mōk"
+            ],
+            "mais": [
+                "ke"
+            ],
+            "elle+accompli": [
+                "aa"
+            ],
+            "finir": [
+                "umdö"
+            ],
+            "vouloir": [
+                "bee"
+            ],
+            "bénir+eux": [
+                "oohnahiciörin"
+            ]
+        }
+    },
+    {
+        "source": "La nouvelle se répandit dans toute l'île.",
+        "target": "Aa he but ûthumetu hnyi bomene.",
+        "word connections": {
+            "il+accompli": [
+                "Aa"
+            ],
+            "aller": [
+                "he"
+            ],
+            "révolu": [
+                "but"
+            ],
+            "message": [
+                "ûthumetu"
+            ],
+            "dans": [
+                "hnyi"
+            ],
+            "île": [
+                "bomene"
+            ]
+        }
+    },
+    {
+        "source": "Bon ! Voilà les animaux qui arrivent.",
+        "target": "Awe, fai...n thidhö omenâ.",
+        "word connections": {
+            "exclam.": [
+                "Awe"
+            ],
+            "sortir": [
+                "fain"
+            ],
+            "alors": [
+                "thidhö"
+            ],
+            "collectif+bête": [
+                "omenâ"
+            ]
+        }
+    },
+    {
+        "source": "Ceux qui volent, ceux qui rampent et ceux qui marchent.",
+        "target": "Omenâ adreme gâ, me omenâ adreme iââu me omenâ adreme he.",
+        "word connections": {
+            "collectif+bête": [
+                "omenâ"
+            ],
+            "elles+procès": [
+                "adreme"
+            ],
+            "voler": [
+                "gâ"
+            ],
+            "et": [
+                "me"
+            ],
+            "ramper": [
+                "iââu"
+            ],
+            "marcher": [
+                "he"
+            ]
+        }
+    },
+    {
+        "source": "\"Grand'mère, nous sommes tous là, nous venons t'écouter.",
+        "target": "\"Buba soohmwecaa, walöhmun dut eang! öhmune oo but ka löng hwâm.",
+        "word connections": {
+            "\"grand-mère": [
+                "Buba"
+            ],
+            "vieille": [
+                "soohmwecaa"
+            ],
+            "voilà+nous": [
+                "walöhmun"
+            ],
+            "révolu": [
+                "but"
+            ],
+            "ici": [
+                "eang"
+            ],
+            "nous+procès": [
+                "öhmune"
+            ],
+            "arriver": [
+                "oo"
+            ],
+            "pour": [
+                "ka"
+            ],
+            "entendre": [
+                "löng"
+            ],
+            "voix+à toi": [
+                "hwâm"
+            ]
+        }
+    },
+    {
+        "source": "- Vérifiez bien pour voir si vous êtes tous là.",
+        "target": "-Bee wâ öbun, ka habe, öbun hia budh e...",
+        "word connections": {
+            "optatif": [
+                "Bee"
+            ],
+            "voir": [
+                "wâ"
+            ],
+            "vous": [
+                "öbun"
+            ],
+            "-": [
+                "ka"
+            ],
+            "que": [
+                "habe"
+            ],
+            "tous": [
+                "hia"
+            ],
+            "révolu": [
+                "budh"
+            ],
+            "là": [
+                "e"
+            ]
+        }
+    },
+    {
+        "source": "- Non ! Il y a deux absents,",
+        "target": "-Ebë, e hu ke li at biiju ae hiööru.",
+        "word connections": {
+            "non": [
+                "Ebë"
+            ],
+            "il": [
+                "e"
+            ],
+            "y avoir": [
+                "hu"
+            ],
+            "indéfini": [
+                "ke"
+            ],
+            "deux": [
+                "li"
+            ],
+            "individus": [
+                "at"
+            ],
+            "de reste": [
+                "biiju"
+            ],
+            "qui": [
+                "ae"
+            ],
+            "absents+eux2": [
+                "hiööru"
+            ]
+        }
+    },
+    {
+        "source": "ce sont les fameux crabe de cocotier et bernard-l'hermite.",
+        "target": "Jia nganya eu me ovethet.",
+        "word connections": {
+            "c'est": [
+                "Jia"
+            ],
+            "ceux-là": [
+                "nganya"
+            ],
+            "crabe de cocotier": [
+                "eu"
+            ],
+            "et": [
+                "me"
+            ],
+            "bernard-l'hermite": [
+                "ovethet"
+            ]
+        }
+    },
+    {
+        "source": "- Où sont-ils donc ? N'ont-ils pas entendu le message ?",
+        "target": "-Ödru ua? adree caa hnyi löng ûthumetu?",
+        "word connections": {
+            "ils2": [
+                "Ödru"
+            ],
+            "où": [
+                "ua"
+            ],
+            "on+accompli": [
+                "adree"
+            ],
+            "ne pas": [
+                "caa"
+            ],
+            "aussi": [
+                "hnyi"
+            ],
+            "entendre": [
+                "löng"
+            ],
+            "message": [
+                "ûthumetu"
+            ]
+        }
+    },
+    {
+        "source": "Nous allons les attendre un peu !\".",
+        "target": "Ötinaa bee halubahingödru.",
+        "word connections": {
+            "nous+futur": [
+                "Ötinaa"
+            ],
+            "un peu": [
+                "bee"
+            ],
+            "attendre+eux2": [
+                "halubahingödru"
+            ]
+        }
+    },
+    {
+        "source": "Mais nos deux gaillards sont encore au milieu de la forêt, en pleine discussion.",
+        "target": "Haba li xobwee me ka tiga ödru waben hnyoot, ödrumwe bee hom dö puco.",
+        "word connections": {
+            "quant à": [
+                "Haba"
+            ],
+            "les2": [
+                "li"
+            ],
+            "individus-là": [
+                "xobwee"
+            ],
+            "alors": [
+                "me"
+            ],
+            "assertif": [
+                "ka"
+            ],
+            "encore": [
+                "tiga"
+            ],
+            "eux2": [
+                "ödru"
+            ],
+            "milieu": [
+                "waben"
+            ],
+            "brousse": [
+                "hnyoot"
+            ],
+            "ils2+procès": [
+                "ödrumwe"
+            ],
+            "un peu": [
+                "bee"
+            ],
+            "prendre": [
+                "hom"
+            ],
+            "ponctuel": [
+                "dö"
+            ],
+            "parole": [
+                "puco"
+            ]
+        }
+    },
+    {
+        "source": "Le bernard-l'hermite dit au crabe de cocotier :",
+        "target": "Ame ha ov̄ethet köö eu, ka habe:",
+        "word connections": {
+            "il+procès": [
+                "Ame"
+            ],
+            "dire": [
+                "ha"
+            ],
+            "bernard-l'hermite": [
+                "ov̄ethet"
+            ],
+            "à": [
+                "köö"
+            ],
+            "crabe de cocotier": [
+                "eu"
+            ],
+            "-": [
+                "ka"
+            ],
+            "discours direct": [
+                "habe"
+            ]
+        }
+    },
+    {
+        "source": "\"Eeii ! Dis donc ! la punition qui nous attend va être terrible !",
+        "target": "-Eeiii! hööu! amaa caa soo hnöötu.",
+        "word connections": {
+            "exclam.": [
+                "Eeiii"
+            ],
+            "à toi": [
+                "hööu"
+            ],
+            "il+futur": [
+                "amaa"
+            ],
+            "ne pas": [
+                "caa"
+            ],
+            "bon": [
+                "soo"
+            ],
+            "pour+nous2": [
+                "hnöötu"
+            ]
+        }
+    },
+    {
+        "source": "On devrait se dépêcher d'aller participer à la réunion.",
+        "target": "Ötumwaa he logot ka hnyi hanen ûxacaaköu.",
+        "word connections": {
+            "nous2+futur": [
+                "Ötumwaa"
+            ],
+            "aller": [
+                "he"
+            ],
+            "vite": [
+                "logot"
+            ],
+            "vers": [
+                "ka"
+            ],
+            "dans": [
+                "hnyi"
+            ],
+            "assistance": [
+                "hanen"
+            ],
+            "réunion": [
+                "ûxacaaköu"
+            ]
+        }
+    },
+    {
+        "source": "- Mais non ! les femmes ne doivent pas nous commander. Tu entends ?",
+        "target": "-Ebë! ame caa musi ötin omoomo, umwe löng?",
+        "word connections": {
+            "non": [
+                "Ebë"
+            ],
+            "il+procès": [
+                "ame"
+            ],
+            "ne pas": [
+                "caa"
+            ],
+            "commander": [
+                "musi"
+            ],
+            "nous": [
+                "ötin"
+            ],
+            "les femmes": [
+                "omoomo"
+            ],
+            "tu+procès": [
+                "umwe"
+            ],
+            "entendre": [
+                "löng"
+            ]
+        }
+    },
+    {
+        "source": "- Hé ! Tu ne dois pas parler comme ça ! c'est interdit !",
+        "target": "-Ee, umwaa caa puco helâe... E kap.",
+        "word connections": {
+            "exclam.": [
+                "Ee"
+            ],
+            "tu+futur": [
+                "umwaa"
+            ],
+            "ne pas": [
+                "caa"
+            ],
+            "parler": [
+                "puco"
+            ],
+            "comme cela": [
+                "helâe"
+            ],
+            "c'est": [
+                "E"
+            ],
+            "défendu": [
+                "kap"
+            ]
+        }
+    },
+    {
+        "source": "- Amusons-nous encore un peu et puis nous irons\".",
+        "target": "-Ötumwe bee walak tö... m'ötu he dhö...",
+        "word connections": {
+            "nous2+procès": [
+                "Ötumwe"
+            ],
+            "un peu": [
+                "bee"
+            ],
+            "jouer": [
+                "walak"
+            ],
+            "ponctuel": [
+                "dhö"
+            ],
+            "et+nous2": [
+                "m'ötu"
+            ],
+            "aller": [
+                "he"
+            ]
+        }
+    },
+    {
+        "source": "Et nos deux gaillard de continuer leurs bavardages et leurs plaisanteries.",
+        "target": "Muju li xop, m'ödru ka tootru he ka puco me anyâ hluma.",
+        "word connections": {
+            "rester": [
+                "Muju"
+            ],
+            "les2": [
+                "li"
+            ],
+            "individus": [
+                "xop"
+            ],
+            "et eux2": [
+                "m'ödru"
+            ],
+            "assertif": [
+                "ka"
+            ],
+            "s'arrêter": [
+                "tootru"
+            ],
+            "aller": [
+                "he"
+            ],
+            "pour": [
+                "ka"
+            ],
+            "bavarder": [
+                "puco"
+            ],
+            "et": [
+                "me"
+            ],
+            "faire": [
+                "anyâ"
+            ],
+            "rire": [
+                "hluma"
+            ]
+        }
+    },
+    {
+        "source": "Quoi donc ? Une vieille femme les commanderait-elle ?",
+        "target": "Ieû dhö, ame musii ödru soohmwecaa?",
+        "word connections": {
+            "quoi": [
+                "Ieû"
+            ],
+            "alors": [
+                "dhö"
+            ],
+            "elle+procès": [
+                "ame"
+            ],
+            "commander": [
+                "musii"
+            ],
+            "eux2": [
+                "ödru"
+            ],
+            "vieille femme": [
+                "soohmwecaa"
+            ]
+        }
+    },
+    {
+        "source": "\"Héé ! Allons-y... j'ai peur !",
+        "target": "-Ee, ötu he dhö... Iny oot...",
+        "word connections": {
+            "exclam.": [
+                "Ee"
+            ],
+            "nous2": [
+                "ötu"
+            ],
+            "aller": [
+                "he"
+            ],
+            "ponctuel": [
+                "dhö"
+            ],
+            "moi": [
+                "Iny"
+            ],
+            "peur": [
+                "oot"
+            ]
+        }
+    },
+    {
+        "source": "- Bon ! courons vite !\"",
+        "target": "-Awe, ötumwaa ûtr hwege...!",
+        "word connections": {
+            "exclam.": [
+                "Awe"
+            ],
+            "nous2+futur": [
+                "ötumwaa"
+            ],
+            "courir": [
+                "ûtr"
+            ],
+            "fort": [
+                "hwege"
+            ]
+        }
+    },
+    {
+        "source": "Et les voilà qui courent.",
+        "target": "Ödru ûtr thibut.",
+        "word connections": {
+            "ils2": [
+                "Ödru"
+            ],
+            "courir": [
+                "ûtr"
+            ],
+            "révolu": [
+                "thibut"
+            ]
+        }
+    },
+    {
+        "source": "Là-bas, les autres animaux ont tous reçu leur bénédiction.",
+        "target": "Ke haba elee me aa um hia dhö omenâ kap anyidrin jee bwihlaany.",
+        "word connections": {
+            "mais": [
+                "Ke"
+            ],
+            "quant à": [
+                "haba"
+            ],
+            "là": [
+                "elee"
+            ],
+            "alors": [
+                "dhö"
+            ],
+            "il+accompli": [
+                "aa"
+            ],
+            "fini": [
+                "um"
+            ],
+            "tous": [
+                "hia"
+            ],
+            "collectif+bête": [
+                "omenâ"
+            ],
+            "recevoir": [
+                "kap"
+            ],
+            "leur": [
+                "anyidrin"
+            ],
+            "les": [
+                "jee"
+            ],
+            "dons": [
+                "bwihlaany"
+            ]
+        }
+    },
+    {
+        "source": "Le chien a reçu des poils pour se protéger du froid et du soleil.",
+        "target": "Haba kuli me ehu leûnen hnâân mëëge hnyi megic, me tung ge seûnö.",
+        "word connections": {
+            "quant à": [
+                "Haba"
+            ],
+            "chien": [
+                "kuli"
+            ],
+            "alors": [
+                "me"
+            ],
+            "avoir": [
+                "ehu"
+            ],
+            "poils+à lui": [
+                "leûnen"
+            ],
+            "pour": [
+                "hnâân"
+            ],
+            "chaud": [
+                "mëëge"
+            ],
+            "dans": [
+                "hnyi"
+            ],
+            "froid": [
+                "megic"
+            ],
+            "et": [
+                "me"
+            ],
+            "s'abriter": [
+                "tung"
+            ],
+            "du": [
+                "ge"
+            ],
+            "soleil": [
+                "seûnö"
+            ]
+        }
+    },
+    {
+        "source": "Le pigeon vert a été pourvu de plumes contre la pluie et l'insolation.",
+        "target": "Ka helâe biny, ehu leûnen me ame caa xi me dei.",
+        "word connections": {
+            "assertif": [
+                "Ka"
+            ],
+            "pareil": [
+                "helâe"
+            ],
+            "pigeon vert": [
+                "biny"
+            ],
+            "il y a": [
+                "ehu"
+            ],
+            "plumes+à lui": [
+                "leûnen"
+            ],
+            "pour que": [
+                "me"
+            ],
+            "il": [
+                "ame"
+            ],
+            "ne pas": [
+                "caa"
+            ],
+            "se mouillersous la pluie": [
+                "xi"
+            ],
+            "et": [
+                "me"
+            ],
+            "chauffer au soleil": [
+                "dei"
+            ]
+        }
+    },
+    {
+        "source": "La distribution prenait fin juste au moment où les deux compères apparaissent.",
+        "target": "Adreme ka um wisa ju, ke kaa fai...n li xop.",
+        "word connections": {
+            "ils+procès": [
+                "Adreme"
+            ],
+            "assertif": [
+                "ka"
+            ],
+            "fini": [
+                "um"
+            ],
+            "justement": [
+                "wisa"
+            ],
+            "ingressif": [
+                "ju"
+            ],
+            "et": [
+                "ke"
+            ],
+            "quand": [
+                "kaa"
+            ],
+            "sortir": [
+                "fain"
+            ],
+            "les deux": [
+                "li"
+            ],
+            "individus": [
+                "xop"
+            ]
+        }
+    },
+    {
+        "source": "A peine ont-ils franchi le seuil de la case, que la grand-mère les interroge :",
+        "target": "Ödrumwe tiga ditr hnyi ito, k'ame hnei m'ödru soohmwecaa ka habe:",
+        "word connections": {
+            "ils2": [
+                "Ödrumwe"
+            ],
+            "encore": [
+                "tiga"
+            ],
+            "pénétrer": [
+                "ditr"
+            ],
+            "dans": [
+                "hnyi"
+            ],
+            "case": [
+                "ito"
+            ],
+            "mais elle+procès": [
+                "k'ame"
+            ],
+            "questionner": [
+                "hnei"
+            ],
+            "de+eux2": [
+                "m'ödru"
+            ],
+            "vieille femme": [
+                "soohmwecaa"
+            ],
+            "-": [
+                "ka"
+            ],
+            "discours direct": [
+                "habe"
+            ]
+        }
+    },
+    {
+        "source": "\"C'est seulement maintenant que vous arrivez ?",
+        "target": "-Haba e me öbwe hap oo ju?",
+        "word connections": {
+            "quant à": [
+                "Haba"
+            ],
+            "là": [
+                "e"
+            ],
+            "alors": [
+                "me"
+            ],
+            "vous2": [
+                "öbwe"
+            ],
+            "maintenant": [
+                "hap"
+            ],
+            "arriver": [
+                "oo"
+            ],
+            "ingressif": [
+                "ju"
+            ]
+        }
+    },
+    {
+        "source": "- Auu ! grand-mère ! nous avons été retardés quelque part, là haut.",
+        "target": "-Auu, buba! öhmwee hweetr eheeiö.",
+        "word connections": {
+            "exclam.": [
+                "Auu"
+            ],
+            "grand-mère": [
+                "buba"
+            ],
+            "nous2": [
+                "öhmwee"
+            ],
+            "occupés": [
+                "hweetr"
+            ],
+            "par là-bas": [
+                "eheeiö"
+            ]
+        }
+    },
+    {
+        "source": "- Vous n'avez donc pas reçu le message qui était adressé à tous ?",
+        "target": "-Öbwee caa löng ûthumetu kööbun hia?",
+        "word connections": {
+            "vous2": [
+                "Öbwee"
+            ],
+            "ne pas": [
+                "caa"
+            ],
+            "entendre": [
+                "löng"
+            ],
+            "message": [
+                "ûthumetu"
+            ],
+            "à vous": [
+                "kööbun"
+            ],
+            "tous": [
+                "hia"
+            ]
+        }
+    },
+    {
+        "source": "- C'est de la faute à cet individu !",
+        "target": "-Mo...nu anyin adhaang.",
+        "word connections": {
+            "faute": [
+                "Monu"
+            ],
+            "de": [
+                "anyin"
+            ],
+            "celui-ci": [
+                "adhaang"
+            ]
+        }
+    },
+    {
+        "source": "Il n'arrêtait pas de dire qu'il ne fallait pas t'écouter car tu es une femme.",
+        "target": "Aa laba ga haa me öhmwa caa löng hwâm a u moomo.",
+        "word connections": {
+            "il+accompli": [
+                "Aa"
+            ],
+            "rester": [
+                "laba"
+            ],
+            "pour": [
+                "ga"
+            ],
+            "dire": [
+                "haa"
+            ],
+            "que": [
+                "me"
+            ],
+            "nous2+futur": [
+                "öhmwa"
+            ],
+            "ne pas": [
+                "caa"
+            ],
+            "écouter": [
+                "löng"
+            ],
+            "voix+à toi": [
+                "hwâm"
+            ],
+            "parceque": [
+                "a"
+            ],
+            "toi": [
+                "u"
+            ],
+            "femme": [
+                "moomo"
+            ]
+        }
+    },
+    {
+        "source": "- Hein ! c'est bien cela que tu as dit ?",
+        "target": "-Haa! uje haa helâe?",
+        "word connections": {
+            "haa": [
+                "Haa"
+            ],
+            "tu+accompli": [
+                "uje"
+            ],
+            "parler": [
+                "haa"
+            ],
+            "comme cela": [
+                "helâe"
+            ]
+        }
+    },
+    {
+        "source": "Le crabe de cocotier ne put que baisser la tête sans dire un mot.",
+        "target": "Haba eu me ame xudrung thibi, ke bë puco.",
+        "word connections": {
+            "quant à": [
+                "Haba"
+            ],
+            "crabe de cocotier": [
+                "eu"
+            ],
+            "alors": [
+                "me"
+            ],
+            "il+procès": [
+                "ame"
+            ],
+            "baisser la tête": [
+                "xudrung"
+            ],
+            "seulement": [
+                "thibi"
+            ],
+            "mais": [
+                "ke"
+            ],
+            "sans": [
+                "bë"
+            ],
+            "parole": [
+                "puco"
+            ]
+        }
+    },
+    {
+        "source": "- Il n'y a plus aucune bénédiction.",
+        "target": "-Haba ang me ebë but hnahic.",
+        "word connections": {
+            "quant à": [
+                "Haba"
+            ],
+            "maintenant": [
+                "ang"
+            ],
+            "alors": [
+                "me"
+            ],
+            "ne pas avoir": [
+                "ebë"
+            ],
+            "révolu": [
+                "but"
+            ],
+            "bénédiction": [
+                "hnahic"
+            ]
+        }
+    },
+    {
+        "source": "Au pigeon vert, j'ai donné des plumes pour qu'il ne se mouille pas sous la pluie,",
+        "target": "Haba biny me ogee haam leûnen me e kaa ta we me ame caa xi.",
+        "word connections": {
+            "quant à": [
+                "Haba"
+            ],
+            "pigeon vert": [
+                "biny"
+            ],
+            "alors": [
+                "me"
+            ],
+            "je+accompli": [
+                "ogee"
+            ],
+            "donner": [
+                "haam"
+            ],
+            "plumes+àlui": [
+                "leûnen"
+            ],
+            "pour que": [
+                "me"
+            ],
+            "il": [
+                "e"
+            ],
+            "quand": [
+                "kaa"
+            ],
+            "tomber": [
+                "ta"
+            ],
+            "pluie": [
+                "we"
+            ],
+            "il+procès": [
+                "ame"
+            ],
+            "ne pas": [
+                "caa"
+            ],
+            "se mouiller": [
+                "xi"
+            ]
+        }
+    },
+    {
+        "source": "et pour qu'il soit protégé si le soleil tape dur.",
+        "target": "Ke anee hlâ seûnö, me ame caa he ka dei.",
+        "word connections": {
+            "mais": [
+                "Ke"
+            ],
+            "si": [
+                "anee"
+            ],
+            "brûler": [
+                "hlâ"
+            ],
+            "soleil": [
+                "seûnö"
+            ],
+            "alors": [
+                "me"
+            ],
+            "il+procès": [
+                "ame"
+            ],
+            "ne pas": [
+                "caa"
+            ],
+            "aller": [
+                "he"
+            ],
+            "pour": [
+                "ka"
+            ],
+            "chauffer au soleil": [
+                "dei"
+            ]
+        }
+    },
+    {
+        "source": "Pareil pour le chien et pour le rat.",
+        "target": "Ka helâe kuli me tep.",
+        "word connections": {
+            "assertif": [
+                "Ka"
+            ],
+            "pareil": [
+                "helâe"
+            ],
+            "chien": [
+                "kuli"
+            ],
+            "et": [
+                "me"
+            ],
+            "rat": [
+                "tep"
+            ]
+        }
+    },
+    {
+        "source": "Je ne vois vraiment pas ce que je pourrais vous donner.",
+        "target": "Ebë ûnyi ae xatöö-nya he ka haam kööbu.",
+        "word connections": {
+            "il n'y a pas": [
+                "Ebë"
+            ],
+            "chose": [
+                "ûnyi"
+            ],
+            "que": [
+                "ae"
+            ],
+            "savoir-moi": [
+                "xatöö-nya"
+            ],
+            "aller": [
+                "he"
+            ],
+            "pour": [
+                "ka"
+            ],
+            "donner": [
+                "haam"
+            ],
+            "à+vous2": [
+                "kööbu"
+            ]
+        }
+    },
+    {
+        "source": "Par contre, voilà votre punition.",
+        "target": "Wale bi ang hnööbu.",
+        "word connections": {
+            "voici": [
+                "Wale"
+            ],
+            "seulement": [
+                "bi"
+            ],
+            "maintenant": [
+                "ang"
+            ],
+            "punition+à vous2": [
+                "hnööbu"
+            ]
+        }
+    },
+    {
+        "source": "Toi, bernard-l'hermite ! le moins que rien, ta vie durant, tu voleras les vêtements des autres.",
+        "target": "Haba u, wanak ûnyi ovethet, umwaa he thibut ka wenâu omjehen vëdh eheang.",
+        "word connections": {
+            "quant à": [
+                "Haba"
+            ],
+            "toi": [
+                "u"
+            ],
+            "petite": [
+                "wanak"
+            ],
+            "chose": [
+                "ûnyi"
+            ],
+            "bernard-l'hermite": [
+                "ovethet"
+            ],
+            "tu+futur": [
+                "umwaa"
+            ],
+            "aller": [
+                "he"
+            ],
+            "toujours": [
+                "thibut"
+            ],
+            "pour": [
+                "ka"
+            ],
+            "voler": [
+                "wenâu"
+            ],
+            "affaires des": [
+                "omjehen"
+            ],
+            "gens": [
+                "vëdh"
+            ],
+            "par ici": [
+                "eheang"
+            ]
+        }
+    },
+    {
+        "source": "Tu iras d'un vêtement à l'autre.",
+        "target": "Umwaa hinöju hnyi ke umwen me ke umwen ju.",
+        "word connections": {
+            "tu+futur": [
+                "Umwaa"
+            ],
+            "rentrer": [
+                "hinöju"
+            ],
+            "dans": [
+                "hnyi"
+            ],
+            "une": [
+                "ke"
+            ],
+            "maison": [
+                "umwen"
+            ],
+            "et": [
+                "me"
+            ],
+            "une autre": [
+                "ke"
+            ],
+            "ingressif": [
+                "ju"
+            ]
+        }
+    },
+    {
+        "source": "Va-t-en !",
+        "target": "He dhö!",
+        "word connections": {
+            "aller": [
+                "He"
+            ],
+            "impératif": [
+                "dhö"
+            ]
+        }
+    },
+    {
+        "source": "Il en sera ainsi jusqu'à la fin des temps.",
+        "target": "Ame he ka helâ thibut e ga oo nyiele.",
+        "word connections": {
+            "il+procès": [
+                "Ame"
+            ],
+            "aller": [
+                "he"
+            ],
+            "pour": [
+                "ga"
+            ],
+            "pareil": [
+                "helâ"
+            ],
+            "toujours": [
+                "thibut"
+            ],
+            "cela": [
+                "e"
+            ],
+            "arriver": [
+                "oo"
+            ],
+            "à l'avenir": [
+                "nyiele"
+            ]
+        }
+    },
+    {
+        "source": "Et toi ! source de bêtises, puisque tu as donné le mauvais exemple, tu marcheras tout nu jusqu'à la fin des temps.",
+        "target": "-Ke haba u, ûjen mo...nu, caan a uje saa tulut ae kong, umwaa ka he uthethu ju helâe ka oo nyielee.",
+        "word connections": {
+            "et": [
+                "Ke"
+            ],
+            "quant à": [
+                "haba"
+            ],
+            "toi": [
+                "u"
+            ],
+            "responsable de": [
+                "ûjen"
+            ],
+            "faute": [
+                "monu"
+            ],
+            "cause": [
+                "caan"
+            ],
+            "que": [
+                "a"
+            ],
+            "tu+accompli": [
+                "uje"
+            ],
+            "jeter": [
+                "saa"
+            ],
+            "exemple": [
+                "tulut"
+            ],
+            "qui": [
+                "ae"
+            ],
+            "mauvais": [
+                "kong"
+            ],
+            "tu+futur": [
+                "umwaa"
+            ],
+            "assertif": [
+                "ka"
+            ],
+            "aller": [
+                "he"
+            ],
+            "nu": [
+                "uthethu"
+            ],
+            "ingressif": [
+                "ju"
+            ],
+            "comme cela": [
+                "helâe"
+            ],
+            "pour": [
+                "ka"
+            ],
+            "arriver": [
+                "oo"
+            ],
+            "à l'avenir": [
+                "nyielee"
+            ]
+        }
+    },
+    {
+        "source": "Le jour, tu cacheras tes deux testicules et tu ne sortiras que la nuit\".",
+        "target": "Umwaa ixâlâ li ohmëëkâm hnyi laany ke umwaa ta hnyööu ai thibi hnyi litr.",
+        "word connections": {
+            "tu+futur": [
+                "umwaa"
+            ],
+            "cacher": [
+                "ixâlâ"
+            ],
+            "les2": [
+                "li"
+            ],
+            "testicules à toi": [
+                "ohmëëkâm"
+            ],
+            "dans": [
+                "hnyi"
+            ],
+            "jour": [
+                "laany"
+            ],
+            "et": [
+                "ke"
+            ],
+            "sortir": [
+                "ta"
+            ],
+            "dehors": [
+                "hnyööu"
+            ],
+            "vers": [
+                "ai"
+            ],
+            "seulement": [
+                "thibi"
+            ],
+            "nuit": [
+                "litr"
+            ]
+        }
+    },
+    {
+        "source": "C'est ce qu'ils firent jusqu'à ce jour (et ils le font encore !).",
+        "target": "Wale but e huliwa ame anyâ ov̄ethet me eu ka oo hnyi bong ang.",
+        "word connections": {
+            "voilà": [
+                "Wale"
+            ],
+            "révolu": [
+                "but"
+            ],
+            "là": [
+                "e"
+            ],
+            "travail": [
+                "huliwa"
+            ],
+            "il+procès": [
+                "ame"
+            ],
+            "faire": [
+                "anyâ"
+            ],
+            "bernard-l'hermite": [
+                "ov̄ethet"
+            ],
+            "et": [
+                "me"
+            ],
+            "crabe de cocotier": [
+                "eu"
+            ],
+            "pour": [
+                "ka"
+            ],
+            "arriver": [
+                "oo"
+            ],
+            "dans": [
+                "hnyi"
+            ],
+            "jour": [
+                "bong"
+            ],
+            "ci": [
+                "ang"
+            ]
+        }
+    }
+]

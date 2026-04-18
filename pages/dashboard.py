@@ -264,6 +264,7 @@ else:
 # ------------------
 ch1, ch2 = st.columns([8,2])
 ch1.header("Sources Dashboard")
+ch1.markdown("*Remember that any uploaded document, and any document created here, must be compatible with a* [Creative Commons BY-NC license](https://creativecommons.org/licenses/by-nc/4.0/).")
 
 if "llist" not in st.session_state:
     st.session_state.llist = None

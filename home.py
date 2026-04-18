@@ -106,7 +106,7 @@ with h1:
         st.markdown(
             "Dryer, Matthew S. & Haspelmath, Martin (eds.) 2013. The World Atlas of Language Structures Online. Leipzig: Max Planck Institute for Evolutionary Anthropology.")
         st.markdown("Dataset version 2020.3, https://doi.org/10.5281/zenodo.7385533")
-        st.markdown("Dataset under Creative Commons licence CC BY 4.0 https://creativecommons.org/licenses/by/4.0/")
+        st.markdown("Dataset governed by a [Creative Commons BY-NC license](https://creativecommons.org/licenses/by-nc/4.0/)")
 
         st.divider()
 

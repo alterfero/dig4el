@@ -580,7 +580,7 @@ with cole2:
         - Once converted, all ConveQs users, registered or not, can consult and compare CQ translations in all available languages.
         """)
         st.markdown("""
-        All documents on this platform follow a [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) licence.
+        All documents on this platform follow a [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) licence.
         The software itself is [open source](https://github.com/alterfero/dig4el), under a [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html).
         """)
         st.markdown("""ConveQs and DIG4EL are research efforts supported by the [CNRS](https://www.cnrs.fr/en) as part 
