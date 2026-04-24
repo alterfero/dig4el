@@ -79,6 +79,9 @@ def init_session_state() -> None:
         "empty_language_scan": None,
         "vector_store_listing": None,
         "manual_vector_store_id": "",
+        "prepared_archive_path": None,
+        "prepared_archive_name": None,
+        "prepared_archive_label": None,
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -203,10 +206,45 @@ def atomic_write_yaml(path: Path, payload: dict[str, Any]) -> None:
             tmp_path.unlink(missing_ok=True)
 
 
-def build_zip_from_directory(directory: Path) -> bytes:
+def archive_cache_dir() -> Path:
+    preferred_dir = ROOT_PATH.parent / "_prepared_archives"
+    try:
+        preferred_dir.mkdir(parents=True, exist_ok=True)
+        return preferred_dir.resolve()
+    except OSError:
+        fallback_dir = Path(tempfile.gettempdir()) / "dig4el_prepared_archives"
+        fallback_dir.mkdir(parents=True, exist_ok=True)
+        return fallback_dir.resolve()
+
+
+def clear_prepared_archive() -> None:
+    archive_path = st.session_state.get("prepared_archive_path")
+    if archive_path:
+        try:
+            Path(archive_path).unlink(missing_ok=True)
+        except OSError:
+            pass
+    st.session_state.prepared_archive_path = None
+    st.session_state.prepared_archive_name = None
+    st.session_state.prepared_archive_label = None
+
+
+def remember_prepared_archive(archive_path: Path, file_name: str, label: str) -> None:
+    clear_prepared_archive()
+    st.session_state.prepared_archive_path = str(archive_path)
+    st.session_state.prepared_archive_name = file_name
+    st.session_state.prepared_archive_label = label
+
+
+def build_zip_from_directory(directory: Path) -> Path:
     tmp_path: Path | None = None
     try:
-        with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
+        with tempfile.NamedTemporaryFile(
+            suffix=".zip",
+            prefix="storage_backup_",
+            dir=archive_cache_dir(),
+            delete=False,
+        ) as tmp:
             tmp_path = Path(tmp.name)
 
         with zipfile.ZipFile(tmp_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
@@ -215,16 +253,22 @@ def build_zip_from_directory(directory: Path) -> bytes:
                     continue
                 archive.write(file_path, arcname=file_path.relative_to(directory))
 
-        return tmp_path.read_bytes()
-    finally:
+        return tmp_path
+    except Exception:
         if tmp_path and tmp_path.exists():
             tmp_path.unlink(missing_ok=True)
+        raise
 
 
-def build_zip_from_files(files: list[Path]) -> bytes:
+def build_zip_from_files(files: list[Path]) -> Path:
     tmp_path: Path | None = None
     try:
-        with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
+        with tempfile.NamedTemporaryFile(
+            suffix=".zip",
+            prefix="folder_backup_",
+            dir=archive_cache_dir(),
+            delete=False,
+        ) as tmp:
             tmp_path = Path(tmp.name)
 
         with zipfile.ZipFile(tmp_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
@@ -233,10 +277,40 @@ def build_zip_from_files(files: list[Path]) -> bytes:
                     continue
                 archive.write(file_path, arcname=file_path.name)
 
-        return tmp_path.read_bytes()
-    finally:
+        return tmp_path
+    except Exception:
         if tmp_path and tmp_path.exists():
             tmp_path.unlink(missing_ok=True)
+        raise
+
+
+def render_prepared_archive_download() -> None:
+    archive_path_raw = st.session_state.get("prepared_archive_path")
+    archive_name = st.session_state.get("prepared_archive_name")
+    archive_label = st.session_state.get("prepared_archive_label")
+
+    if not archive_path_raw or not archive_name or not archive_label:
+        return
+
+    archive_path = Path(archive_path_raw)
+    if not archive_path.exists():
+        clear_prepared_archive()
+        st.warning("The prepared ZIP is no longer available. Please prepare it again.")
+        return
+
+    st.caption(
+        f"Prepared archive: `{archive_name}` ({format_size(archive_path.stat().st_size)})"
+    )
+    with archive_path.open("rb") as archive_file:
+        st.download_button(
+            archive_label,
+            data=archive_file,
+            file_name=archive_name,
+            mime="application/zip",
+            use_container_width=True,
+            on_click="ignore",
+            key="prepared_archive_download",
+        )
 
 
 def delete_files_only(folder: Path) -> dict[str, Any]:
@@ -576,25 +650,38 @@ if selected_admin_section == "Storage Explorer":
         if not files:
             st.warning("There are no files in the current folder to package.")
         else:
-            with st.spinner("Preparing archive..."):
-                archive_bytes = build_zip_from_files(files)
-            st.download_button(
-                "Download current-folder ZIP",
-                data=archive_bytes,
-                file_name=f"{current_directory.name or 'storage'}_files.zip",
-                mime="application/zip",
-                use_container_width=True,
-            )
+            try:
+                with st.spinner("Preparing archive..."):
+                    archive_path = build_zip_from_files(files)
+                archive_name = f"{current_directory.name or 'storage'}_files.zip"
+                remember_prepared_archive(
+                    archive_path,
+                    archive_name,
+                    "Download current-folder ZIP",
+                )
+                st.success(
+                    f"Archive ready ({format_size(archive_path.stat().st_size)}). "
+                    "Use the download button below."
+                )
+            except Exception as exc:
+                st.error(f"Could not prepare the current-folder ZIP: {exc}")
     if zip_col2.button("Prepare full storage backup ZIP", use_container_width=True):
-        with st.spinner("Preparing recursive storage archive..."):
-            archive_bytes = build_zip_from_directory(ROOT_PATH)
-        st.download_button(
-            "Download storage backup ZIP",
-            data=archive_bytes,
-            file_name="dig4el_storage_backup.zip",
-            mime="application/zip",
-            use_container_width=True,
-        )
+        try:
+            with st.spinner("Preparing recursive storage archive..."):
+                archive_path = build_zip_from_directory(ROOT_PATH)
+            remember_prepared_archive(
+                archive_path,
+                "dig4el_storage_backup.zip",
+                "Download storage backup ZIP",
+            )
+            st.success(
+                f"Archive ready ({format_size(archive_path.stat().st_size)}). "
+                "Use the download button below."
+            )
+        except Exception as exc:
+            st.error(f"Could not prepare the storage backup ZIP: {exc}")
+
+    render_prepared_archive_download()
 
     with st.form("upload_file_form", clear_on_submit=True):
         uploaded_file = st.file_uploader("Upload a file to this folder")

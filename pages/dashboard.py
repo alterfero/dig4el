@@ -718,6 +718,7 @@ with tab3:
                 if new_pair_file.name[-4:] in ["json", ".csv"]:
                     try:
                         if new_pair_file.name[-4:] == ".csv":
+                            print("Got CSV")
                             sentence_pairs = u.csv_to_dict(new_pair_file)
                             server_filename = new_pair_file.name[:-4] + ".json"
                         else:
