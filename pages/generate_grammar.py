@@ -35,6 +35,7 @@ BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"),
     "storage"
 )
+GRAMMAR_SEEDS_PATH = u.ensure_grammar_seeds_file()
 
 st.set_page_config(
     page_title="DIG4EL",
@@ -128,7 +129,12 @@ if "seed" not in st.session_state:
     st.session_state.seed = None
 if "bare_query" not in st.session_state:
     st.session_state.bare_query = None
-
+if "show_all_details" not in st.session_state:
+    st.session_state.show_all_details = False
+if "use_gp" not in st.session_state:
+    st.session_state.use_gp = True
+if "use_pseudo_gloss" not in st.session_state:
+    st.session_state.use_pseudo_gloss = True
 
 # ----- HELPERS -----------------------------------------------------------------------------------
 def display_lesson_output(output_dict):
@@ -448,18 +454,6 @@ else:
 # ------------------------------------------------------------------------------------------------
 colq, colw = st.columns(2)
 
-# if role == "admin":
-#     with open("/Users/sebastienchristian/Desktop/DIG4EL_test/NEGATION Mwotlap/dig4el_unverified_lesson_Mwotlap_negation_3(English)__11_November_2025_at_01_18.json", "r") as f:
-#         o = json.load(f)
-#     docx = ogu.generate_lesson_docx_from_aggregated_output(o,
-#                                                            "Iaai",
-#                                                            "English")
-#     st.download_button(label="Download TEST DOCX output",
-#                        data=docx,
-#                        file_name="test_lesson_DOCX.docx",
-#                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-#                        key="test_docx")
-
 if "llist" not in st.session_state:
     with open(os.path.join(BASE_LD_PATH, "languages.json"), "r") as llf:
         tmpll = json.load(llf)
@@ -622,13 +616,19 @@ else:
 
 st.sidebar.write("✅ CQ Ready" if st.session_state.is_cq else "No CQ")
 if st.session_state.is_cq:
-    st.session_state.use_cq = st.sidebar.toggle("Use CQ", value=st.session_state.use_cq)
+    st.session_state.use_cq = st.sidebar.toggle("Use CQs", value=st.session_state.use_cq)
+    if st.session_state.use_cq:
+        st.session_state.use_gp = st.sidebar.toggle("Use inferred GPs", value=st.session_state.use_gp)
+        st.session_state.use_pseudo_gloss = st.sidebar.toggle("Use pseudo-gloss", value=st.session_state.use_pseudo_gloss)
+
 st.sidebar.write("✅ Docs Ready" if st.session_state.is_doc else "No documents")
 if st.session_state.is_doc:
     st.session_state.use_doc = st.sidebar.toggle("Use documents", value=st.session_state.use_doc)
 st.sidebar.write("✅ Pairs Ready" if st.session_state.is_pairs else "No pairs")
 if st.session_state.is_pairs:
     st.session_state.use_pairs = st.sidebar.toggle("Use Pairs", value=st.session_state.use_pairs)
+with st.sidebar:
+    st.session_state.show_all_details = st.checkbox("Show computation details")
 
 # ======== SELECTION OF OUTPUT PARAMETERS ==================
 
@@ -639,7 +639,7 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
     colq1a, colq2a = st.columns(2)
     st.session_state.document_format = colq1a.selectbox("Format", ["Grammar lesson", "Grammar sketch"])
     st.session_state.readers_language = colq2a.selectbox("What is the language of readers?",
-                                                     ["English","Bislama", "Chinese", "French", "Japanese", "Russian",
+                                                     ["English", "Bislama", "Chinese", "French", "German", "Indonesian", "Japanese", "Russian",
                                                       "Spanish", "Swedish", "Tahitian"])
     if st.session_state.document_format == "Grammar lesson":
         st.session_state.readers_type = colq1a.selectbox("The grammar is generated for...",
@@ -648,7 +648,7 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
         st.session_state.readers_type = "Linguists"
 
     if st.session_state.document_format == "Grammar lesson":
-        with open("./grammar_seeds/grammar_seeds.json", "r") as gs:
+        with open(GRAMMAR_SEEDS_PATH, "r", encoding="utf-8") as gs:
             seeds = json.load(gs)
         grammatical_topics_progression = list(seeds.keys())
         colq1, colq2 = st.columns(2)
@@ -717,7 +717,7 @@ if st.session_state.run_sources:
     # check and populate seed if available
     update_generation_progress(generation_progress, "Preparing generation context")
     if st.session_state.seed is None:
-        with open("./grammar_seeds/grammar_seeds.json", "r") as f:
+        with open(GRAMMAR_SEEDS_PATH, "r", encoding="utf-8") as f:
             seeds = json.load(f)
             if st.session_state.bare_query in seeds.keys():
                 print("There is a seed entry for {}".format(st.session_state.bare_query))
@@ -738,25 +738,47 @@ if st.session_state.run_sources:
 
     # cq agents
     if st.session_state.is_cq and st.session_state.use_cq:
-        # grammatical parameters selection
-        available_params = ggu.extract_parameter_names_from_cq_knowledge(st.session_state.indi)
-        update_generation_progress(
-            generation_progress,
-            "Selecting relevant grammatical parameters among {} available".format(len(available_params))
-        )
-        st.session_state.relevant_parameters = gga.select_parameters_sync(
-            st.session_state.bare_query,
-            available_params
-        )
-        complete_generation_step(generation_progress, "Relevant grammatical parameters selected")
+        if st.session_state.use_gp:
+            # grammatical parameters selection
+            available_params = ggu.extract_parameter_names_from_cq_knowledge(st.session_state.indi)
+            update_generation_progress(
+                generation_progress,
+                "Selecting relevant grammatical parameters among {} available".format(len(available_params))
+            )
+            st.session_state.relevant_parameters = gga.select_parameters_sync(
+                st.session_state.bare_query,
+                available_params
+            )
+            if st.session_state.show_all_details:
+                st.markdown("**Selecting relevant Grammatical Parameters**")
+                st.write("Available GPs: {}".format(available_params))
+                st.write("Selected GPs: {}".format(st.session_state.relevant_parameters))
+                st.divider()
+            complete_generation_step(generation_progress, "Relevant grammatical parameters selected")
+        else:
+            st.session_state.relevant_parameters = {}
+            if st.session_state.show_all_details:
+                st.markdown("**Not using inferred GPs**")
+                st.divider()
+
         # alterlingua agent
-        alterlingua_sentences = ggu.extract_and_clean_cq_alterlingua(st.session_state.indi)
-        update_generation_progress(generation_progress, "Generating contribution from CQ pseudo-gloss analysis. This is a long step, be patient!")
-        st.session_state.alterlingua_contribution = gga.contribute_from_alterlingua_sync(
-            st.session_state.query,
-            alterlingua_sentences
-        )
-        complete_generation_step(generation_progress, "CQ pseudo-gloss contribution generated")
+        if st.session_state.use_pseudo_gloss:
+            alterlingua_sentences = ggu.extract_and_clean_cq_alterlingua(st.session_state.indi)
+            update_generation_progress(generation_progress, "Generating contribution from CQ pseudo-gloss analysis. This is a long step, be patient!")
+            st.session_state.alterlingua_contribution = gga.contribute_from_alterlingua_sync(
+                st.session_state.query,
+                alterlingua_sentences
+            )
+            if st.session_state.show_all_details:
+                st.markdown("**Alterlingua contribution computed**")
+                st.write(st.session_state.alterlingua_contribution)
+                st.divider()
+            complete_generation_step(generation_progress, "CQ pseudo-gloss contribution generated")
+        else:
+            st.session_state.alterlingua_contribution = {}
+            if st.session_state.show_all_details:
+                st.markdown("**Not using pseudo-gloss**")
+                st.divider()
     else:
         st.warning("Not using CQs.")
         st.session_state.relevant_parameters = {}
@@ -772,11 +794,18 @@ if st.session_state.run_sources:
                                                      vsids,
                                                      st.session_state.query)
         try:
-            with open(os.path.join(".", "tmp", "raw_doc_response.json"), "w") as fr:
-                json.dump(full_response, f)
-        except:
+            serializable_response = (
+                full_response.model_dump()
+                if hasattr(full_response, "model_dump")
+                else full_response
+            )
+            with open(os.path.join(".", "tmp", "raw_doc_response.json"), "w", encoding="utf-8") as fr:
+                json.dump(serializable_response, fr, ensure_ascii=False, indent=2, default=str)
+        except Exception as exc:
             if role == "admin":
-                st.warning("Failed saving full doc response")
+                st.warning(
+                    f"Failed saving full doc response: {type(exc).__name__}: {exc}"
+                )
         try:
             raw_response = full_response.output[1].content
             if raw_response is not None:
@@ -784,6 +813,10 @@ if st.session_state.run_sources:
                     "text": raw_response[0].text,
                     "sources": list(set([a.filename for a in raw_response[0].annotations]))
                 }
+            if st.session_state.show_all_details:
+                st.markdown("**Document contribution unfiltered**")
+                st.write(raw_response[0])
+                st.divider()
             else:
                 st.session_state.documents_contribution = {
                     "text": "",
@@ -864,6 +897,10 @@ if st.session_state.run_sources:
         # aggregate
         # st.session_state.selected_pairs = list(set(llm_filenames_retrieved + kw_retrieved))
         st.session_state.selected_pairs = list(set(llm_filenames_retrieved))
+        if st.session_state.show_all_details:
+            st.markdown("**Selected pairs**")
+            st.write(st.session_state.selected_pairs)
+            st.divider()
         complete_generation_step(generation_progress, "Sentence pairs selected")
     else:
         st.warning("Not using sentence pairs")
@@ -880,7 +917,6 @@ if st.session_state.documents_contribution and st.sidebar.checkbox("Show isolate
 if st.session_state.selected_pairs and st.sidebar.checkbox("Show selected sentence pairs"):
     st.write(st.session_state.selected_pairs)
 
-
 if (st.session_state.alterlingua_contribution
     or st.session_state.documents_contribution
     or st.session_state.selected_pairs):
@@ -889,15 +925,35 @@ if (st.session_state.alterlingua_contribution
     generation_progress = locals().get("generation_progress")
 
     if st.session_state.run_aggregation:
+        if st.session_state.show_all_details:
+            st.divider()
+            st.markdown("**Starting Aggregation**")
         st.session_state.run_aggregation = False
         if st.session_state.is_cq and st.session_state.use_cq:
-            tmp_p_blob = json.dumps([p for p in st.session_state.cq_knowledge["grammar_priors"]
-                                     if p["Parameter"] in st.session_state.relevant_parameters], ensure_ascii=False)
-            if tmp_p_blob == "":
-                tmp_p_blob = "No relevant grammatical parameter."
+            if st.session_state.use_gp:
+                tmp_p_blob = json.dumps([p for p in st.session_state.cq_knowledge["grammar_priors"]
+                                         if p["Parameter"] in st.session_state.relevant_parameters], ensure_ascii=False)
+                # Alternate for big context window: pass all available inferred params:
+                # tmp_p_blob = json.dumps(st.session_state.cq_knowledge["grammar_priors"])
+                if tmp_p_blob == "":
+                    tmp_p_blob = "No relevant grammatical parameter."
+            else:
+                tmp_p_blob = "No grammatical parameters available."
             selected_params_blob = tmp_p_blob
-            alterlingua_explanation = st.session_state.alterlingua_contribution["explanation"]
-            alterlingua_examples = json.dumps(st.session_state.alterlingua_contribution["examples"], ensure_ascii=False)
+            if st.session_state.show_all_details:
+                st.markdown("**Using GP inferences**")
+                st.write("GP blob: ")
+                st.write(tmp_p_blob)
+
+            if st.session_state.use_pseudo_gloss:
+                alterlingua_explanation = st.session_state.alterlingua_contribution["explanation"]
+                alterlingua_examples = json.dumps(st.session_state.alterlingua_contribution["examples"], ensure_ascii=False)
+            else:
+                alterlingua_explanation = "No description from sentence analysis."
+                alterlingua_examples = "No available examples from sentence analysis."
+            if st.session_state.show_all_details:
+                st.markdown("**Adding pseudo-gloss and examples**")
+                st.write(st.session_state.alterlingua_contribution)
         else:
             selected_params_blob = "No relevant grammatical parameter."
             alterlingua_explanation = "No description from sentence analysis."
@@ -905,6 +961,9 @@ if (st.session_state.alterlingua_contribution
 
         if st.session_state.is_doc and st.session_state.use_doc:
             doc_contribution = st.session_state.documents_contribution["text"]
+            if st.session_state.show_all_details:
+                st.markdown("**Adding document contribution**")
+
         else:
             doc_contribution = "No available contribution from documents."
 
@@ -931,6 +990,9 @@ if (st.session_state.alterlingua_contribution
                         print("Augmented pair file {} not found in ".format(spf, os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
                                            "sentence_pairs", "augmented_pairs"))))
                 sentence_pairs_blob = json.dumps(sps, ensure_ascii=False)
+                if st.session_state.show_all_details:
+                    st.markdown("**Adding augmented sentence pairs**")
+                    st.write(sentence_pairs_blob)
             except:
                 st.warning("Issue with sentence pair: {}".format(st.session_state.selected_pairs))
                 sentence_pairs_blob = "No available sentence pairs."
@@ -1152,7 +1214,5 @@ if st.session_state.output_dict:
         if role == "admin":
             if st.checkbox("Show JSON"):
                 st.write(st.session_state.output_dict)
-
-
 
 

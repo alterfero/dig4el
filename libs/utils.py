@@ -18,8 +18,10 @@ import copy
 import re
 import os
 import json
+import shutil
 from os.path import isfile, join
 from os import listdir
+from pathlib import Path
 import pandas as pd
 import hashlib
 import streamlit as st
@@ -31,6 +33,19 @@ from collections.abc import Mapping, Sequence
 
 BASE_LD_PATH = os.path.join(
     os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "./ld"), "storage")
+REPO_ROOT = Path(__file__).resolve().parent.parent
+GRAMMAR_SEEDS_PATH = (Path(BASE_LD_PATH) / "grammar_seeds.json").resolve()
+LEGACY_GRAMMAR_SEEDS_PATH = (
+    REPO_ROOT / "grammar_seeds" / "grammar_seeds.json"
+).resolve()
+
+
+def ensure_grammar_seeds_file() -> Path:
+    """Return the runtime grammar seed file path, migrating the legacy copy if needed."""
+    GRAMMAR_SEEDS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    if not GRAMMAR_SEEDS_PATH.exists() and LEGACY_GRAMMAR_SEEDS_PATH.exists():
+        shutil.copy2(LEGACY_GRAMMAR_SEEDS_PATH, GRAMMAR_SEEDS_PATH)
+    return GRAMMAR_SEEDS_PATH
 
 
 def normalize_text(text: str) -> str:

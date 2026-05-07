@@ -31,6 +31,7 @@ import yaml
 from libs import auth_utils as au
 from libs import glottolog_utils as gu
 from libs import openai_vector_store_utils as vsu
+from libs import utils as u
 
 
 st.set_page_config(
@@ -57,7 +58,7 @@ ROOT_PATH = Path(
     )
 ).resolve()
 
-GRAMMAR_SEEDS_PATH = Path("./grammar_seeds/grammar_seeds.json").resolve()
+GRAMMAR_SEEDS_PATH = u.ensure_grammar_seeds_file()
 TEMP_PASSWORD = "TemporaryPassw0rd!"
 LANGUAGE_OPTIONS = sorted(gu.GLOTTO_LANGUAGE_LIST.keys())
 PAIR_RESET_TARGETS = [
@@ -1403,6 +1404,17 @@ if selected_admin_section == "Grammar Seeds":
     else:
         st.metric("Seed topics", len(grammar_seeds))
         if grammar_seeds:
+            pending_selected_seed = st.session_state.pop(
+                "pending_selected_grammar_seed",
+                None,
+            )
+            if pending_selected_seed in grammar_seeds:
+                st.session_state.selected_grammar_seed = pending_selected_seed
+
+            current_selected_seed = st.session_state.get("selected_grammar_seed")
+            if current_selected_seed not in grammar_seeds:
+                st.session_state.selected_grammar_seed = sorted(grammar_seeds.keys())[0]
+
             selected_seed = st.selectbox(
                 "Select a topic to edit",
                 options=sorted(grammar_seeds.keys()),
@@ -1428,7 +1440,64 @@ if selected_admin_section == "Grammar Seeds":
                     atomic_write_json(GRAMMAR_SEEDS_PATH, grammar_seeds)
                     set_flash(f"Saved grammar seed `{selected_seed}`.")
                     st.rerun()
+
+            st.divider()
+            action_col1, action_col2 = st.columns(2)
+
+            with action_col1:
+                with st.form(f"rename_seed_form_{selected_seed}"):
+                    renamed_topic = st.text_input(
+                        "Rename topic",
+                        value=selected_seed,
+                    )
+                    rename_seed_submitted = st.form_submit_button(
+                        "Rename seed",
+                        use_container_width=True,
+                    )
+                if rename_seed_submitted:
+                    normalized_topic = renamed_topic.strip()
+                    if not normalized_topic:
+                        st.error("Topic is required.")
+                    elif normalized_topic == selected_seed:
+                        st.info("The topic name is unchanged.")
+                    elif normalized_topic in grammar_seeds:
+                        st.error("That topic already exists.")
+                    else:
+                        renamed_seeds: dict[str, Any] = {}
+                        for topic, seed_payload in grammar_seeds.items():
+                            if topic == selected_seed:
+                                renamed_seeds[normalized_topic] = seed_payload
+                            else:
+                                renamed_seeds[topic] = seed_payload
+                        atomic_write_json(GRAMMAR_SEEDS_PATH, renamed_seeds)
+                        st.session_state.pending_selected_grammar_seed = normalized_topic
+                        set_flash(
+                            f"Renamed grammar seed `{selected_seed}` to `{normalized_topic}`."
+                        )
+                        st.rerun()
+
+            with action_col2:
+                delete_seed_phrase = f"delete {selected_seed}"
+                st.caption(
+                    f"Type `{delete_seed_phrase}` to permanently delete this grammar seed."
+                )
+                typed_phrase = st.text_input(
+                    "Delete confirmation",
+                    key=f"delete_seed_confirmation_{selected_seed}",
+                    placeholder=delete_seed_phrase,
+                ).strip()
+                if st.button(
+                    "Delete seed",
+                    key=f"delete_seed_button_{selected_seed}",
+                    disabled=typed_phrase != delete_seed_phrase,
+                    use_container_width=True,
+                ):
+                    del grammar_seeds[selected_seed]
+                    atomic_write_json(GRAMMAR_SEEDS_PATH, grammar_seeds)
+                    set_flash(f"Deleted grammar seed `{selected_seed}`.")
+                    st.rerun()
         else:
+            st.session_state.pop("selected_grammar_seed", None)
             st.info("No grammar seed topics exist yet. Use the form below to create the first one.")
 
         st.divider()

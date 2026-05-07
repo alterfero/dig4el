@@ -299,10 +299,12 @@ sketch_agent = Agent(
 # ==================================== ASYNC CALLS ================================================
 
 
-async def select_parameters(query: str, parameters: list[str]) -> dict:
+async def select_parameters(query: str, parameters: list[str]) -> list:
     data = f"Query: {query} --- Parameters: {parameters}"
     result = await Runner.run(cq_parameter_selector_agent, data)
-    return result.final_output.dict()
+    dict_out = result.final_output.dict()["selection"]
+    list_out = [d["parameter"] for d in dict_out]
+    return list_out
 
 
 async def contribute_from_alterlingua(query: str, sentences: list[dict]) -> dict:

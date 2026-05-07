@@ -463,7 +463,7 @@ if not st.session_state["preprocessing_done"]:
             st.session_state["G"] = psu.load_all_cpts(BASE_DIR)
             print(f'Graph: |V|={st.session_state["G"].number_of_nodes()}, |E|={st.session_state["G"].number_of_edges()}')
 
-            # naive uniform priors (replace with family priors if it makes sense) ---
+            # naive uniform priors
             priors = {v: 1 / st.session_state["G"].number_of_nodes() for v in st.session_state["G"].nodes}
             parameter_selection_belief = psu.BeliefState(priors)
 
@@ -506,8 +506,8 @@ if not st.session_state["preprocessing_done"]:
 
             # seeds = all values whose belief ≥ BELIEF_MIN
             st.session_state["strong_seeds"] = set(parameter_selection_belief.strong_values(0.9))
-
-            st.session_state["selected_parameters"] = psu.suggest_parameters(
+            # gwu.get_pname_from_value_code(p[0])
+            tmp_selected_params = psu.suggest_parameters(
                 st.session_state["G"],
                 parameter_selection_belief,
                 θ_CP=CP_MIN,  # floor on edge weights kept during frontier expansion.
@@ -516,6 +516,12 @@ if not st.session_state["preprocessing_done"]:
                 θ_score=SCORE_MIN,  # minimum score for a candidate to be proposed
                 K=K,  # top‑k suggestions to return
             )
+            tmp_filtered_params = []
+            for tp in tmp_selected_params: #TODO: find how Neg GPs are leaking through previous filters.
+                if "neg" not in gwu.get_pname_from_value_code(tp[0]) and "Neg" not in gwu.get_pname_from_value_code(tp[0]):
+                    tmp_filtered_params.append(tp)
+
+            st.session_state["selected_parameters"] = tmp_filtered_params
             st.write("{} Strong parameters, enabling a reach of {} other parameters.".format(len(st.session_state["strong_seeds"]),
                                                                                              len(st.session_state["selected_parameters"])))
 
@@ -990,7 +996,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                                 "Origin": origin,
                                 "Winner": P.get_winning_belief_name(),
                                 "Confidence": round(100 * (1 - P.entropy)),
-                                "Examples by value": examples_by_value})
+                                "Examples by value": {}}) # Removed the examples. They are in the pseudo-gloss.
     # build sentence_data_list
     if st.session_state["kg"]:
         sentence_data_list = kgu.build_alterlingua_list_from_kg(st.session_state["kg"],
