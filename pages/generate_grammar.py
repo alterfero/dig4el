@@ -813,10 +813,6 @@ if st.session_state.run_sources:
                     "text": raw_response[0].text,
                     "sources": list(set([a.filename for a in raw_response[0].annotations]))
                 }
-            if st.session_state.show_all_details:
-                st.markdown("**Document contribution unfiltered**")
-                st.write(raw_response[0])
-                st.divider()
             else:
                 st.session_state.documents_contribution = {
                     "text": "",
@@ -826,6 +822,10 @@ if st.session_state.run_sources:
                     st.warning("Response from document retrieval is None")
                     with st.expander("Full response"):
                         st.write(full_response)
+            if st.session_state.show_all_details:
+                st.markdown("**Document contribution unfiltered**")
+                st.write(raw_response[0])
+                st.divider()
         except:
             st.session_state.documents_contribution = {
                 "text": "",

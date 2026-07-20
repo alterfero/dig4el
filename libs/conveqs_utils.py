@@ -162,7 +162,7 @@ def conveqs_cq_translation_from_transcription_xlsx(xlsx):
     else:
         canonical_cq = canonical_cqs[title]
 
-    target_language = _norm(info_kv.get("Target language", "")) or default_target_language
+    target_language = _norm(info_kv.get("Target language", "")) or "English"
     pivot_language = _norm(info_kv.get("Lingua franca", "")) or "English"
 
     transcription_made_by = _norm(info_kv.get("Language documenter", "missing"))
