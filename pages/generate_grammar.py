@@ -454,21 +454,25 @@ else:
 # ------------------------------------------------------------------------------------------------
 colq, colw = st.columns(2)
 
-if "llist" not in st.session_state:
-    with open(os.path.join(BASE_LD_PATH, "languages.json"), "r") as llf:
-        tmpll = json.load(llf)
-        st.session_state.llist = sorted(tmpll.keys())
-if "l_with_data" not in st.session_state:
-    st.session_state.l_with_data = [lu for lu in os.listdir(os.path.join(BASE_LD_PATH))
-                                if (os.path.isdir(os.path.join(BASE_LD_PATH, lu))
-                                and lu in st.session_state.llist)]
+# Rebuild from disk so deleted workspaces disappear from existing sessions.
+with open(os.path.join(BASE_LD_PATH, "languages.json"), "r") as llf:
+    st.session_state.llist = sorted(json.load(llf))
+st.session_state.l_with_data = [lu for lu in os.listdir(BASE_LD_PATH)
+                               if (os.path.isdir(os.path.join(BASE_LD_PATH, lu))
+                                   and lu in st.session_state.llist)]
 if role == "guest":
-    st.session_state.l_with_data = ["Tahitian", "Mwotlap"]
+    st.session_state.l_with_data = [language for language in ["Tahitian", "Mwotlap"]
+                                    if language in st.session_state.l_with_data]
     colq.markdown(
         "**Note**: *As a guest, you can perform generation on a restricted collection of language. Contact us to access more languages!*")
 
+if not st.session_state.l_with_data:
+    st.info("No language workspaces are available.")
+    st.stop()
+default_language_index = (st.session_state.l_with_data.index(st.session_state.indi)
+                          if st.session_state.indi in st.session_state.l_with_data else 0)
 selected_language = colq.selectbox("What language are we generating learning content for?",
-                                   st.session_state.l_with_data, index=st.session_state.l_with_data.index(st.session_state.indi))
+                                   st.session_state.l_with_data, index=default_language_index)
 if colq.button("Select {}".format(selected_language)):
     st.session_state.indi = selected_language
     st.session_state.is_cq = False

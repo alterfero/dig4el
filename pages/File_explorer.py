@@ -340,6 +340,51 @@ def delete_directory_safe(directory: Path) -> None:
     shutil.rmtree(resolved)
 
 
+def confirmed_form_submit(label: str, typed_phrase: str, expected_phrase: str) -> bool:
+    # Form inputs reach Python only when the (enabled) submit button is clicked.
+    submitted = st.form_submit_button(label, use_container_width=True)
+    if submitted and typed_phrase != expected_phrase:
+        st.error(f"Confirmation does not match. Type `{expected_phrase}` exactly.")
+        return False
+    return submitted
+
+
+def delete_language_workspace(language: str) -> None:
+    directory = ensure_path_within_root(ROOT_PATH / language)
+    if directory.parent != ROOT_PATH or directory.name != language:
+        raise ValueError("Expected a direct language workspace under the storage root.")
+    if (ROOT_PATH / language).is_symlink() or not directory.is_dir():
+        raise ValueError("Expected an existing language workspace, not a symlink.")
+
+    registry_path = ROOT_PATH / "languages.json"
+    languages = load_json_file(registry_path)
+    if not isinstance(languages, dict):
+        raise ValueError("languages.json must contain a language mapping.")
+    updated_languages = {name: code for name, code in languages.items() if name != language}
+    # Check/persist the registry first so a write failure cannot leave a deleted
+    # workspace advertised in the language list. Restore it if deletion fails.
+    atomic_write_json(registry_path, updated_languages)
+    try:
+        delete_directory_safe(directory)
+    except Exception:
+        atomic_write_json(registry_path, languages)
+        raise
+
+    gu.GLOTTO_LANGUAGE_LIST.clear()
+    gu.GLOTTO_LANGUAGE_LIST.update(updated_languages)
+    gu.LLIST[:] = sorted(updated_languages)
+    st.session_state.languages = updated_languages
+    st.session_state.llist = sorted(updated_languages)
+    if "l_with_data" in st.session_state:
+        st.session_state.l_with_data = [
+            name for name in st.session_state.l_with_data if name != language
+        ]
+    st.session_state.empty_language_scan = None
+    browsing_path = Path(st.session_state.get("current_path", ROOT_PATH)).resolve()
+    if browsing_path == directory or directory in browsing_path.parents:
+        st.session_state.current_path = str(ROOT_PATH)
+
+
 def load_json_file(path: Path) -> Any:
     with open(path, "r", encoding="utf-8") as file_handle:
         return json.load(file_handle)
@@ -872,10 +917,8 @@ if selected_admin_section == "Language Maintenance":
                     f"Type `{reset_pairs_phrase}`",
                     placeholder=reset_pairs_phrase,
                 )
-                submitted = st.form_submit_button(
-                    "Reset pairs",
-                    disabled=typed_phrase != reset_pairs_phrase,
-                    use_container_width=True,
+                submitted = confirmed_form_submit(
+                    "Reset pairs", typed_phrase, reset_pairs_phrase
                 )
             if submitted:
                 try:
@@ -894,10 +937,8 @@ if selected_admin_section == "Language Maintenance":
                     f"Type `{reset_outputs_phrase}`",
                     placeholder=reset_outputs_phrase,
                 )
-                submitted = st.form_submit_button(
-                    "Reset outputs",
-                    disabled=typed_phrase != reset_outputs_phrase,
-                    use_container_width=True,
+                submitted = confirmed_form_submit(
+                    "Reset outputs", typed_phrase, reset_outputs_phrase
                 )
             if submitted:
                 try:
@@ -916,10 +957,8 @@ if selected_admin_section == "Language Maintenance":
                     f"Type `{reset_vs_phrase}`",
                     placeholder=reset_vs_phrase,
                 )
-                submitted = st.form_submit_button(
-                    "Delete matching vector stores",
-                    disabled=typed_phrase != reset_vs_phrase,
-                    use_container_width=True,
+                submitted = confirmed_form_submit(
+                    "Delete matching vector stores", typed_phrase, reset_vs_phrase
                 )
             if submitted:
                 try:
@@ -945,19 +984,17 @@ if selected_admin_section == "Language Maintenance":
         st.divider()
         delete_language_phrase = f"DELETE {selected_language}"
         with st.form(f"delete_language_form_{selected_language}"):
-            st.warning("This removes the entire language workspace directory recursively.")
+            st.warning("This removes the entire language workspace directory recursively and removes the language from the language list.")
             typed_phrase = st.text_input(
                 f"Type `{delete_language_phrase}`",
                 placeholder=delete_language_phrase,
             )
-            delete_submitted = st.form_submit_button(
-                f"Delete {selected_language} workspace",
-                disabled=typed_phrase != delete_language_phrase,
-                use_container_width=True,
+            delete_submitted = confirmed_form_submit(
+                f"Delete {selected_language} workspace", typed_phrase, delete_language_phrase
             )
         if delete_submitted:
             try:
-                delete_directory_safe(ROOT_PATH / selected_language)
+                delete_language_workspace(selected_language)
             except Exception as exc:
                 st.error(f"Language deletion failed: {exc}")
             else:
@@ -999,7 +1036,7 @@ if selected_admin_section == "Language Maintenance":
                     for row in empty_language_scan:
                         language = row["Language"]
                         try:
-                            delete_directory_safe(ROOT_PATH / language)
+                            delete_language_workspace(language)
                             deleted_languages.append(language)
                         except Exception as exc:
                             errors.append(f"{language}: {exc}")

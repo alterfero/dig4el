@@ -77,13 +77,10 @@ if "uid_dict" not in st.session_state:
 if "ccq" not in st.session_state:
     with open("./conveqs/canonical_cqs.json", "r") as f:
         st.session_state.ccq = json.load(f)
-if "languages" not in st.session_state:
-    with open(os.path.join(BASE_LD_PATH, "languages.json"), "r") as lf:
-        st.session_state.languages = json.load(lf)
-if "llist" not in st.session_state:
-    with open(os.path.join(BASE_LD_PATH, "languages.json"), "r") as llf:
-        gll = json.load(llf)
-        st.session_state.llist = sorted(gll.keys())
+# Refresh on rerun so admin removals are reflected in existing sessions too.
+with open(os.path.join(BASE_LD_PATH, "languages.json"), "r") as lf:
+    st.session_state.languages = json.load(lf)
+st.session_state.llist = sorted(st.session_state.languages)
 if "picked_location" not in st.session_state:
     st.session_state.picked_location = dict(DEFAULT_MAP_CENTER)
 if "picked_location_selected" not in st.session_state:
