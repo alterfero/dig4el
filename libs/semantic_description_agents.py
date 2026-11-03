@@ -250,7 +250,7 @@ class Sentence(BaseModel):
 
 grammatical_descriptor = Agent(
     name="Grammatical Descriptor",
-    model="o4-mini-2025-04-16",
+    model="gpt-6-luna",
     instructions="""
 You analyze one English sentence and return only JSON that instantiates the Sentence schema below.
 Be exhaustive but conservative: include what is textually expressed or licensed by clear grammatical cues. Do not infer world knowledge.
@@ -359,7 +359,7 @@ class SimpleSentenceList(BaseModel):
 
 sentence_selector = Agent(
     name="Sentence Selector",
-    model="o4-mini-2025-04-16",
+    model="gpt-6-luna",
     instructions="""
 You select pedagogical example sentences to teach a grammar topic.
 

@@ -79,7 +79,7 @@ Lesson.model_rebuild()
 
 cq_parameter_selector_agent = Agent(
     name="grammar_beliefs_selector",
-    model="o4-mini-2025-04-16",
+    model="gpt-6-luna",
     instructions="""
     You are a grammar expert selecting from a provided list the grammatical parameters best suited to 
     answer a user's query. 
@@ -103,7 +103,7 @@ cq_parameter_selector_agent = Agent(
 
 cq_alterlingua_agent = Agent(
     name="alterlingua_informant",
-    model="gpt-5-2025-08-07",
+    model="gpt-6-luna",
     instructions="""
     You are an agent answering a user's query about the grammar of a target language 
     based only on the material provided.
@@ -162,7 +162,7 @@ cq_alterlingua_agent = Agent(
 
 lesson_agent = Agent(
     name="lesson_creator",
-    model="gpt-5-2025-08-07",
+    model="gpt-6-luna",
     instructions=""" 
     You are an agent specialized in creating grammar teaching material for an endangered language.
     Students are speaking the source language.  
@@ -220,7 +220,7 @@ lesson_agent = Agent(
 
 lesson_improvement_agent = Agent(
 name="lesson_reviewer",
-    model="gpt-5-2025-08-07",
+    model="gpt-6-luna",
     instructions="""
 You are given:
 - A grammar lesson about an endangered language, formatted as JSON.
@@ -253,7 +253,7 @@ Return the adapted lesson in the same JSON structure.
 
 sketch_agent = Agent(
     name="grammar_sketcher",
-    model="gpt-5-2025-08-07",
+    model="gpt-6-luna",
     instructions="""
     You are an agent specialized in creating detailed grammar descriptions to document endangered languages.
     You are provided with a user query with optional instructions, and materials from different sources.
@@ -334,7 +334,7 @@ async def file_search_request(indi_language: str, vsids: list[str], query: str):
     else:
         print("File search, VS found, running request with vs_ids {}".format(", ".join([vector_store.id for vector_store in active_vs])))
         response = client.responses.create(
-            model="gpt-4.1",
+            model="gpt-6-luna",
             input=prompt,
             tools=[{
                 "type": "file_search",

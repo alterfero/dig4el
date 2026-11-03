@@ -1486,7 +1486,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
             side_info.write("Waiting for LLM output...")
 
             st.session_state["response"] = openai.chat.completions.create(
-                model="gpt-4.1",
+                model="gpt-6-luna",
                 messages=messages,
                 temperature=0.3,
                 max_tokens=5000
@@ -1507,7 +1507,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
                 print("Raw Response")
                 print(st.session_state["response"])
                 fixed_response = openai.chat.completions.create(
-                    model="gpt-3.5-turbo",
+                    model="gpt-6-luna",
                     messages=[{"role": "system", "content": "SYSTEM: The previous response was not valid JSON. "
                                                             "Return exactly the same content but formatted as valid JSON. "
                                                             "Do not add any extra keys, comments, or prose."},
@@ -1585,7 +1585,7 @@ if st.session_state["ga_output_available"] and st.session_state["results_approve
 
 
         final_response = openai.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-6-luna",
             messages=[{"role": "system", "content": final_system_prompt},
                       {"role": "user", "content": st.session_state["response"]}],
             temperature=0.3,

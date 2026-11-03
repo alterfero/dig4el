@@ -241,7 +241,7 @@ class DocumentPairInput(BaseModel):
 
 judge = Agent(
     name="Judge",
-    model="gpt-5",
+    model="gpt-6-luna",
     instructions="""
 You are a strict evaluator of two grammar lessons labelled Lesson A and Lesson B.
 

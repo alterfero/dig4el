@@ -15,7 +15,7 @@ def file_search_request(vector_store_names, prompt):
         return None
     else:
         response = client.responses.create(
-            model="gpt-4.1",
+            model="gpt-6-luna",
             input=prompt,
             tools=[{
                 "type": "file_search",
