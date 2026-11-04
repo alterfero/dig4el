@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
+import openai
 from datetime import datetime
 import streamlit as st
 import json
@@ -597,8 +598,7 @@ else:
 # documents
 st.session_state.vs_name = st.session_state.info_dict["documents"]["oa_vector_store_name"]
 
-if st.session_state.info_dict["documents"]["oa_vector_store_id"] != "":
-    st.session_state.is_doc = True
+st.session_state.is_doc = bool(st.session_state.info_dict["documents"].get("oa_vector_store_id"))
 
 # pairs
 if "description_vectors" not in os.listdir(os.path.join(BASE_LD_PATH, st.session_state.indi,
@@ -713,6 +713,11 @@ if ((st.session_state.is_cq and st.session_state.use_cq) or (st.session_state.is
             st.session_state.bare_query = query
             st.session_state.relevant_parameters = None
             st.session_state.alterlingua_contribution = None
+            st.session_state.documents_contribution = None
+            st.session_state.selected_pairs = None
+            st.session_state.output_dict = None
+            st.session_state.seed = None
+            st.session_state.run_aggregation = True
             st.session_state.run_sources = True
 
 if st.session_state.run_sources:
@@ -794,9 +799,25 @@ if st.session_state.run_sources:
         if role == "admin":
             st.markdown("admin: Using vector store(s) {}".format(vsids))
         update_generation_progress(generation_progress, "Generating contribution from documents")
-        full_response = gga.file_search_request_sync(st.session_state.indi,
-                                                     vsids,
-                                                     st.session_state.query)
+        try:
+            full_response = gga.file_search_request_sync(
+                st.session_state.indi, vsids, st.session_state.query
+            )
+            st.session_state.documents_contribution = gga.extract_document_contribution(full_response)
+        except (openai.OpenAIError, ValueError) as exc:
+            st.session_state.documents_contribution = None
+            st.session_state.output_dict = None
+            st.session_state.run_sources = False
+            st.session_state.run_aggregation = False
+            st.session_state.query = None  # allow submitting the same query again
+            generation_progress["status_placeholder"].error("Document retrieval failed")
+            st.error(
+                "Generation stopped because the documents could not be searched or read. "
+                "Please submit again to retry."
+            )
+            if role == "admin":
+                st.exception(exc)
+            st.stop()
         try:
             serializable_response = (
                 full_response.model_dump()
@@ -810,38 +831,14 @@ if st.session_state.run_sources:
                 st.warning(
                     f"Failed saving full doc response: {type(exc).__name__}: {exc}"
                 )
-        try:
-            raw_response = full_response.output[1].content
-            if raw_response is not None:
-                st.session_state.documents_contribution = {
-                    "text": raw_response[0].text,
-                    "sources": list(set([a.filename for a in raw_response[0].annotations]))
-                }
-            else:
-                st.session_state.documents_contribution = {
-                    "text": "",
-                    "sources": []
-                }
-                if role == "admin":
-                    st.warning("Response from document retrieval is None")
-                    with st.expander("Full response"):
-                        st.write(full_response)
-            if st.session_state.show_all_details:
-                st.markdown("**Document contribution unfiltered**")
-                st.write(raw_response[0])
-                st.divider()
-        except:
-            st.session_state.documents_contribution = {
-                "text": "",
-                "sources": []
-            }
-            if role == "admin":
-                st.error("Exception in reading full_response.output[1].content")
-                try:
-                    st.write("Full response")
-                    st.write(full_response)
-                except:
-                    st.error("Exception displaying full response")
+        if st.session_state.documents_contribution["search_result_count"] == 0:
+            st.warning("Document search completed, but no passages matched this query.")
+        if st.session_state.show_all_details:
+            st.markdown("**Document contribution unfiltered**")
+            st.write(st.session_state.documents_contribution)
+            with st.expander("Document search response and retrieved passages"):
+                st.write(full_response.model_dump())
+            st.divider()
         complete_generation_step(generation_progress, "Document contribution generated")
     else:
         st.warning("Not using documents")

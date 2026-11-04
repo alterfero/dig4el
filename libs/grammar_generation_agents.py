@@ -7,7 +7,6 @@ from agents import Agent, ModelSettings, function_tool, Runner
 from typing import List, Literal, Tuple, Union, Optional
 from pydantic import BaseModel, Field, Extra
 import nest_asyncio
-from libs import openai_vector_store_utils as ovu
 
 nest_asyncio.apply()
 
@@ -313,6 +312,9 @@ async def contribute_from_alterlingua(query: str, sentences: list[dict]) -> dict
     return result.final_output.dict()
 
 async def file_search_request(indi_language: str, vsids: list[str], query: str):
+    if not vsids or any(not isinstance(vsid, str) or not vsid.strip() for vsid in vsids):
+        raise ValueError("No vector store is configured for document retrieval.")
+    vsids = list(dict.fromkeys(vsid.strip() for vsid in vsids))
     print("File search async request, vsids: {}".format(", ".join(vsids)))
     prompt = f"""
     You are an agent specialized in retrieving grammatical information about {indi_language} in the provided documents.
@@ -321,28 +323,67 @@ async def file_search_request(indi_language: str, vsids: list[str], query: str):
     - Use only information from the documents. Do not invent any additional information or examples. If there are no relevant 
     information in the documents, just output "no relevant information about the query in the documents". 
     - If the query comes with instructions about how to formulate an answer, follow these instructions. 
+    - Search the provided documents before answering and cite the files supporting your answer.
     USER QUERY: {query}
     """
-    client = openai.OpenAI(api_key=api_key)
-    # get vector store
-    vs_list = ovu.list_vector_stores_sync()
-    active_vs = [vs for vs in vs_list if vs.id in vsids]
-    if active_vs == []:
-        print("No vector store with this id")
-        print(vs_list)
-        return None
-    else:
-        print("File search, VS found, running request with vs_ids {}".format(", ".join([vector_store.id for vector_store in active_vs])))
-        response = client.responses.create(
+    # The saved IDs can be searched directly; listing every store adds an
+    # unrelated API dependency and previously nested asyncio.run inside this call.
+    async with openai.AsyncOpenAI(api_key=api_key) as client:
+        return await client.responses.create(
             model="gpt-6-luna",
             input=prompt,
             tools=[{
                 "type": "file_search",
-                "vector_store_ids": [vector_store.id for vector_store in active_vs]
+                "vector_store_ids": vsids
             }],
+            tool_choice={"type": "file_search"},
             include=["file_search_call.results"]
         )
-        return response
+
+
+def extract_document_contribution(response) -> dict:
+    """Read document text and citations without assuming an output item order."""
+    if response is None or response.status != "completed":
+        raise ValueError("Document retrieval did not complete. Please retry.")
+
+    searches = [item for item in response.output if item.type == "file_search_call"]
+    if not searches or any(search.status != "completed" for search in searches):
+        raise ValueError("Document search did not complete. Please retry.")
+    if any(search.results is None for search in searches):
+        raise ValueError("Document search returned no retrieval details. Please retry.")
+
+    result_count = sum(len(search.results) for search in searches)
+    if result_count == 0:
+        # Do not pass an unsupported model answer into the lesson if no chunks
+        # were retrieved. A successful search with no matches is not an API error.
+        return {
+            "text": "No relevant information about the query was found in the documents.",
+            "sources": [],
+            "search_result_count": 0,
+        }
+
+    texts = []
+    sources = []
+    for item in response.output:
+        if item.type != "message":
+            continue
+        for content in item.content:
+            if content.type != "output_text":
+                continue
+            if content.text.strip():
+                texts.append(content.text)
+            for annotation in content.annotations:
+                if annotation.type == "file_citation" and annotation.filename:
+                    if annotation.filename not in sources:
+                        sources.append(annotation.filename)
+
+    if not texts:
+        raise ValueError("Document search returned no answer text. Please retry.")
+    return {
+        "text": "\n\n".join(texts),
+        "sources": sources,
+        "search_result_count": result_count,
+    }
 
 
 async def create_lesson(indi_language,
