@@ -7,7 +7,7 @@ BASE_LD_FOLDER = os.path.join(
 def extract_parameter_names_from_cq_knowledge(indi_language: str):
     with open(os.path.join(BASE_LD_FOLDER, indi_language, "cq", "cq_knowledge", "cq_knowledge.json"), "r", encoding='utf-8') as fi:
         cq_knowledge = json.load(fi)
-    return [k["Parameter"] for k in cq_knowledge["grammar_priors"]]
+    return [k["Parameter"] for k in cq_knowledge.get("grammar_priors") or []]
 
 
 def extract_and_clean_cq_alterlingua(indi_language: str) -> list[dict]:
@@ -15,7 +15,7 @@ def extract_and_clean_cq_alterlingua(indi_language: str) -> list[dict]:
     with open(os.path.join(BASE_LD_FOLDER, indi_language, "cq", "cq_knowledge", "cq_knowledge.json"), "r", encoding='utf-8') as fi:
         cq_knowledge = json.load(fi)
     out_list = []
-    for item in cq_knowledge["sentences"]:
+    for item in cq_knowledge.get("sentences") or []:
         alterlingua = (item["alterlingua"]
                        .replace("(IP: | ", "(")
                        .replace("RP:)", ")")
@@ -31,5 +31,3 @@ def extract_and_clean_cq_alterlingua(indi_language: str) -> list[dict]:
             }
         )
     return out_list
-
-print(extract_and_clean_cq_alterlingua("Tahitian"))

@@ -307,6 +307,8 @@ async def select_parameters(query: str, parameters: list[str]) -> list:
 
 
 async def contribute_from_alterlingua(query: str, sentences: list[dict]) -> dict:
+    if not sentences:
+        return {}
     data = f"Query: {query} --- Sentences: {sentences}"
     result = await Runner.run(cq_alterlingua_agent, data)
     return result.final_output.dict()
